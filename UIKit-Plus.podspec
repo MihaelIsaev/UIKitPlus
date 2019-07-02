@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint CodyFire.podspec' to ensure this is a
+# Be sure to run `pod lib lint UIKit-Plus.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'UIKitPlus'
+  s.name             = 'UIKit-Plus'
   s.version          = '0.2.0'
-  s.summary          = '🏰 SwiftUI inspired declarative UIKit wrapper'
+  s.summary          = '🏰 Declarative UIKit wrapper inspired by SwiftUI'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
