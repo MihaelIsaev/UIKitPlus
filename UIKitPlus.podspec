@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'UIKitPlus'
-  s.version          = '1.0.0'
+  s.version          = '0.2.0'
   s.summary          = '🏰 SwiftUI inspired declarative UIKit wrapper'
 
 # This description is used to generate tags and improve search results.
