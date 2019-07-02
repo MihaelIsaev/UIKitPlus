@@ -81,7 +81,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     }
     
     @discardableResult
-    public func contentInset(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> ScrollView {
+    public func contentInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> ScrollView {
         return contentInset(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
