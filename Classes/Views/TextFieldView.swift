@@ -1,18 +1,14 @@
-//
-//  TextField.swift
-//  UIKitPlus
-//
-//  Created by Mihael Isaev on 29/06/2019.
-//
-
 import UIKit
 
-open class TextField: UITextField, UITextFieldDelegate, DeclarativeView {
+open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: TextField { return self }
     
-    public var _circleCorners: Bool = false
-    public var _customCorners: CustomCorners?
-    public lazy var _borders = Borders()
+    var _circleCorners: Bool = false
+    var _customCorners: CustomCorners?
+    lazy var _borders = Borders()
+    
+    var _preConstraints = DeclarativePreConstraints()
+    var _constraints: DeclarativeConstraintsCollection = [:]
     
     private weak var outsideDelegate: TextFieldDelegate?
     
@@ -35,7 +31,13 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeView {
         onLayoutSubviews()
     }
     
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        movedToSuperview()
+    }
+    
     private func setup() {
+        NSLayoutConstraint.activate([heightAnchor.constraint(equalToConstant: 30)])
         translatesAutoresizingMaskIntoConstraints = false
         delegate = self
         addTarget(self, action: #selector(__editingDidBegin), for: .editingDidBegin)
@@ -75,6 +77,28 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeView {
     @discardableResult
     public func center() -> TextField {
         textAlignment = .center
+        return self
+    }
+    
+    @discardableResult
+    public func secure() -> TextField {
+        isSecureTextEntry = true
+        return self
+    }
+    
+    @discardableResult
+    public func placeholder(_ text: String) -> TextField {
+        placeholder = text
+        return self
+    }
+    
+    @discardableResult
+    public func placeholder(_ attributedStrings: AttributedString...) -> TextField {
+        var attrStr = NSMutableAttributedString(string: "")
+        attributedStrings.forEach {
+            attrStr.append($0.attributedString)
+        }
+        attributedPlaceholder = attrStr
         return self
     }
     
