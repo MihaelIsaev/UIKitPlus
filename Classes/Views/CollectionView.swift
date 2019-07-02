@@ -1,18 +1,14 @@
-//
-//  CollectionView.swift
-//  UIKitPlus
-//
-//  Created by Mihael Isaev on 30/06/2019.
-//
-
 import UIKit
 
-open class CollectionView: UICollectionView, DeclarativeView {
+open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: CollectionView { return self }
     
-    public var _circleCorners: Bool = false
-    public var _customCorners: CustomCorners?
-    public lazy var _borders = Borders()
+    var _circleCorners: Bool = false
+    var _customCorners: CustomCorners?
+    lazy var _borders = Borders()
+    
+    var _preConstraints = DeclarativePreConstraints()
+    var _constraints: DeclarativeConstraintsCollection = [:]
     
     public init (_ layout: UICollectionViewLayout = UICollectionViewFlowLayout()) {
         super.init(frame: .zero, collectionViewLayout: layout)
@@ -30,6 +26,11 @@ open class CollectionView: UICollectionView, DeclarativeView {
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
+    }
+    
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        movedToSuperview()
     }
     
     // MARK: Paging
