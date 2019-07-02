@@ -1,18 +1,14 @@
-//
-//  TableView.swift
-//  UIKitPlus
-//
-//  Created by Mihael Isaev on 30/06/2019.
-//
-
 import UIKit
 
-open class TableView: UITableView, DeclarativeView {
+open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: TableView { return self }
     
-    public var _circleCorners: Bool = false
-    public var _customCorners: CustomCorners?
-    public lazy var _borders = Borders()
+    var _circleCorners: Bool = false
+    var _customCorners: CustomCorners?
+    lazy var _borders = Borders()
+    
+    var _preConstraints = DeclarativePreConstraints()
+    var _constraints: DeclarativeConstraintsCollection = [:]
     
     public init (_ style: UITableView.Style = .plain) {
         super.init(frame: .zero, style: style)
@@ -31,5 +27,10 @@ open class TableView: UITableView, DeclarativeView {
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
+    }
+    
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        movedToSuperview()
     }
 }
