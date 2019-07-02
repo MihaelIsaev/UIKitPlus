@@ -75,12 +75,6 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     @discardableResult
-    public func center() -> TextField {
-        textAlignment = .center
-        return self
-    }
-    
-    @discardableResult
     public func secure() -> TextField {
         isSecureTextEntry = true
         return self
