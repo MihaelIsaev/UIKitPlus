@@ -11,4 +11,11 @@ extension DeclarativeProtocol {
         animation.values = values
         declarativeView.layer.add(animation, forKey: "shake")
     }
+    
+    public func shake(_ values: CGFloat...,
+                      duration: CFTimeInterval = 0.6,
+                      axis: NSLayoutConstraint.Axis = .horizontal,
+                      timing: CAMediaTimingFunctionName = .linear) {
+        shake(values: values, duration: duration, axis: axis, timing: timing)
+    }
 }
