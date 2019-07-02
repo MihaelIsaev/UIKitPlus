@@ -1,10 +1,3 @@
-//
-//  UIFont+Family.swift
-//  UIKitPlus
-//
-//  Created by Mihael Isaev on 30/06/2019.
-//
-
 import UIKit
 
 extension UIFont {
@@ -27,9 +20,9 @@ public struct FontIdentifier: FontIdentifierable {
 
 /** Usage example
  extension FontIdentifier {
-    public static var sfProBold = FontIdentifier("SFProDisplay-Bold")
-    public static var sfProRegular = FontIdentifier("SFProDisplay-Regular")
-    public static var sfProMedium = FontIdentifier("SFProDisplay-Medium")
+ public static var sfProBold = FontIdentifier("SFProDisplay-Bold")
+ public static var sfProRegular = FontIdentifier("SFProDisplay-Regular")
+ public static var sfProMedium = FontIdentifier("SFProDisplay-Medium")
  }
  
  And then somewhere
