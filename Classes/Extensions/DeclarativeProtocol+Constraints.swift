@@ -39,15 +39,6 @@ extension DeclarativeProtocol {
     // MARK: - Edges
     
     @discardableResult
-    public func edgesToSuperview(_ value: CGFloat = 0) -> Self {
-        topToSuperview(value)
-        leadingToSuperview(value)
-        trailingToSuperview(value * (-1))
-        bottomToSuperview(value * (-1))
-        return self
-    }
-    
-    @discardableResult
     public func edge(_ side: DeclarativeConstraintXSide, toSuperview anchor: NSLayoutAnchor<NSLayoutXAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
         let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, xAnchor: anchor)
         _declarativeView._preConstraints.super[side.side] = preConstraint
@@ -108,6 +99,24 @@ extension DeclarativeProtocol {
     }
     
     // MARK: - Superview
+    
+    @discardableResult
+    public func edgesToSuperview(_ value: CGFloat = 0) -> Self {
+        topToSuperview(value)
+        leadingToSuperview(value)
+        trailingToSuperview(value * (-1))
+        bottomToSuperview(value * (-1))
+        return self
+    }
+    
+    @discardableResult
+    public func edgesToSuperview(top: CGFloat = 0, leading: CGFloat = 0, trailing: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        topToSuperview(top)
+        leadingToSuperview(leading)
+        trailingToSuperview(trailing)
+        bottomToSuperview(bottom)
+        return self
+    }
     
     @discardableResult
     public func topToSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
@@ -241,9 +250,23 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
+    public func centerInSuperview(x: ConstraintValue = CGFloat(0), y: ConstraintValue = CGFloat(0)) -> Self {
+        centerXInSuperview(x)
+        centerYInSuperview(y)
+        return self
+    }
+    
+    @discardableResult
     public func center(in view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         edge(.centerX, to: view.centerXAnchor, value)
         edge(.centerY, to: view.centerYAnchor, value)
+        return self
+    }
+    
+    @discardableResult
+    public func center(in view: UIView, x: ConstraintValue = CGFloat(0), y: ConstraintValue = CGFloat(0)) -> Self {
+        edge(.centerX, to: view.centerXAnchor, x)
+        edge(.centerY, to: view.centerYAnchor, y)
         return self
     }
     
