@@ -1,19 +1,14 @@
-//
-//  VerificationCode.swift
-//  UIKitPlus
-//
-//  Created by Mihael Isaev on 30/06/2019.
-//
-
 import UIKit
 
-@available(iOS 9.0, *)
-open class VerificationCodeField: UIView, DeclarativeView {
-    public var declarativeView: VerificationCodeField { return self }
+open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: VerificationCodeView { return self }
     
-    public var _circleCorners: Bool = false
-    public var _customCorners: CustomCorners?
-    public lazy var _borders = Borders()
+    var _circleCorners: Bool = false
+    var _customCorners: CustomCorners?
+    lazy var _borders = Borders()
+    
+    var _preConstraints = DeclarativePreConstraints()
+    var _constraints: DeclarativeConstraintsCollection = [:]
     
     private let quantity: Int
     
@@ -41,6 +36,11 @@ open class VerificationCodeField: UIView, DeclarativeView {
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
+    }
+    
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        movedToSuperview()
     }
     
     lazy var hiddenTextField = TextField().alpha(0.05)
@@ -72,13 +72,13 @@ open class VerificationCodeField: UIView, DeclarativeView {
     var spaceConstraints: [NSLayoutConstraint] = []
     
     @discardableResult
-    public func digitWidth(_ value: CGFloat) -> VerificationCodeField {
+    public func digitWidth(_ value: CGFloat) -> VerificationCodeView {
         widthOfDigitView = value
         return self
     }
     
     @discardableResult
-    public func digitsMargin(_ margin: CGFloat) -> VerificationCodeField {
+    public func digitsMargin(_ margin: CGFloat) -> VerificationCodeView {
         spaceBetweenDigitViews = margin
         return self
     }
@@ -86,70 +86,68 @@ open class VerificationCodeField: UIView, DeclarativeView {
     private var digitColor: UIColor = .black
     
     @discardableResult
-    public func digitColor(_ color: UIColor) -> VerificationCodeField {
+    public func digitColor(_ color: UIColor) -> VerificationCodeView {
         digitColor = color
         digitViews.forEach { $0.labelColor = color }
         return self
     }
     
     @discardableResult
-    public func digitColor(_ number: Int) -> VerificationCodeField {
+    public func digitColor(_ number: Int) -> VerificationCodeView {
         return digitColor(number.color)
     }
     
     var digitBackground: UIColor = .clear
     
     @discardableResult
-    public func digitBackground(_ color: UIColor) -> VerificationCodeField {
+    public func digitBackground(_ color: UIColor) -> VerificationCodeView {
         digitBackground = color
         digitViews.forEach { $0.labelBackground = color }
         return self
     }
     
     @discardableResult
-    public func digitBackground(_ number: Int) -> VerificationCodeField {
+    public func digitBackground(_ number: Int) -> VerificationCodeView {
         return digitBackground(number.color)
     }
     
     @discardableResult
-    public func font(v: UIFont?) -> VerificationCodeField {
+    public func font(v: UIFont?) -> VerificationCodeView {
         digitViews.forEach { $0.labelFont = v }
         return self
     }
     
     @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> VerificationCodeField {
+    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> VerificationCodeView {
         return font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
-    public func digitBorder(_ width: CGFloat, _ color: UIColor) -> VerificationCodeField {
+    public func digitBorder(_ width: CGFloat, _ color: UIColor) -> VerificationCodeView {
         digitViews.forEach { $0.label.border(width, color) }
         return self
     }
     
     @discardableResult
-    public func digitBorder(_ width: CGFloat, _ number: Int) -> VerificationCodeField {
+    public func digitBorder(_ width: CGFloat, _ number: Int) -> VerificationCodeView {
         digitBorder(width, number.color)
         return self
     }
     
-    @available(iOS 9.0, *)
     @discardableResult
-    public func digitBorder(_ side: Borders.Side, _ width: CGFloat, _ color: UIColor) -> VerificationCodeField {
+    public func digitBorder(_ side: Borders.Side, _ width: CGFloat, _ color: UIColor) -> VerificationCodeView {
         digitViews.forEach { $0.label.border(side, width, color) }
         return self
     }
     
     @discardableResult
-    public func digitBorder(_ side: Borders.Side, _ width: CGFloat, _ number: Int) -> VerificationCodeField {
+    public func digitBorder(_ side: Borders.Side, _ width: CGFloat, _ number: Int) -> VerificationCodeView {
         digitBorder(side, width, number.color)
         return self
     }
     
-    @available(iOS 9.0, *)
     @discardableResult
-    public func removeDigitBorder(_ side: Borders.Side) -> VerificationCodeField {
+    public func removeDigitBorder(_ side: Borders.Side) -> VerificationCodeView {
         digitViews.forEach { $0.label.removeBorder(side) }
         return self
     }
@@ -220,7 +218,7 @@ open class VerificationCodeField: UIView, DeclarativeView {
     }
     
     @discardableResult
-    public func entered(_ closure: @escaping EnteredClosure) -> VerificationCodeField {
+    public func entered(_ closure: @escaping EnteredClosure) -> VerificationCodeView {
         enteredClosure = closure
         return self
     }
@@ -235,14 +233,16 @@ open class VerificationCodeField: UIView, DeclarativeView {
     }
 }
 
-@available(iOS 9.0, *)
-extension VerificationCodeField {
-    class DigitView: UIView, DeclarativeView {
+extension VerificationCodeView {
+    class DigitView: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
         public var declarativeView: DigitView { return self }
         
-        public var _circleCorners: Bool = false
-        public var _customCorners: CustomCorners?
-        public lazy var _borders = Borders()
+        var _circleCorners: Bool = false
+        var _customCorners: CustomCorners?
+        lazy var _borders = Borders()
+        
+        var _preConstraints = DeclarativePreConstraints()
+        var _constraints: DeclarativeConstraintsCollection = [:]
         
         public init () {
             super.init(frame: .zero)
@@ -265,6 +265,11 @@ extension VerificationCodeField {
             onLayoutSubviews()
         }
         
+        open override func didMoveToSuperview() {
+            super.didMoveToSuperview()
+            movedToSuperview()
+        }
+        
         var labelBackground: UIColor = .clear {
             didSet {
                 label.backgroundColor = labelBackground
@@ -283,7 +288,7 @@ extension VerificationCodeField {
             }
         }
         
-        lazy var label = Label().center()
+        lazy var label = Label().alignment(.center)
         
         func setupView() {
             addSubview(label)
