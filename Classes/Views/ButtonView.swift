@@ -1,18 +1,14 @@
-//
-//  Button.swift
-//  UIKitPlus
-//
-//  Created by Mihael Isaev on 29/06/2019.
-//
-
 import UIKit
 
-open class Button: UIButton, DeclarativeView {
+open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Button { return self }
     
-    public var _circleCorners: Bool = false
-    public var _customCorners: CustomCorners?
-    public lazy var _borders = Borders()
+    var _circleCorners: Bool = false
+    var _customCorners: CustomCorners?
+    lazy var _borders = Borders()
+    
+    var _preConstraints = DeclarativePreConstraints()
+    var _constraints: DeclarativeConstraintsCollection = [:]
     
     public init (_ title: String = "") {
         super.init(frame: .zero)
@@ -32,6 +28,41 @@ open class Button: UIButton, DeclarativeView {
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
+    }
+    
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        movedToSuperview()
+    }
+    
+    open override var isHighlighted: Bool {
+        didSet {
+            if originalBackground == nil {
+                originalBackground = backgroundColor
+            }
+            if isHighlighted {
+                backgroundColor = backgroundHighlighted ?? backgroundColor
+            } else {
+                backgroundColor = originalBackground ?? backgroundColor
+            }
+        }
+    }
+    
+    // MARK: Background Highlighted
+    
+    var originalBackground: UIColor?
+    var backgroundHighlighted: UIColor?
+    
+    @discardableResult
+    public func backgroundHighlighted(_ color: UIColor, _ state: UIControl.State = .normal) -> Button {
+        backgroundHighlighted = color
+        return self
+    }
+    
+    @discardableResult
+    public func backgroundHighlighted(_ number: Int, _ state: UIControl.State = .normal) -> Button {
+        backgroundHighlighted = number.color
+        return self
     }
     
     // MARK: Title
@@ -85,12 +116,12 @@ open class Button: UIButton, DeclarativeView {
     
     // MARK: TouchUpInside
     
-    public typealias BackAction = ()->Void
+    public typealias TapAction = ()->Void
     
-    private var tapCallback: BackAction?
+    private var tapCallback: TapAction?
     
     @discardableResult
-    public func onTap(_ callback: BackAction?) -> Button {
+    public func tapAction(_ callback: TapAction?) -> Button {
         tapCallback = callback
         addTarget(self, action: #selector(tapEvent), for: .touchUpInside)
         return self
