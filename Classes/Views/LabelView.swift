@@ -1,23 +1,29 @@
-//
-//  UILabel.swift
-//  UIKitPlus
-//
-//  Created by Mihael Isaev on 29/06/2019.
-//
-
 import UIKit
 
-open class Label: UILabel, DeclarativeView {
+open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Label { return self }
     
-    public var _circleCorners: Bool = false
-    public var _customCorners: CustomCorners?
-    public lazy var _borders = Borders()
+    var _circleCorners: Bool = false
+    var _customCorners: CustomCorners?
+    lazy var _borders = Borders()
+    
+    var _preConstraints = DeclarativePreConstraints()
+    var _constraints: DeclarativeConstraintsCollection = [:]
     
     public init (_ text: String = "") {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         self.text = text
+    }
+    
+    public init (_ attributedStrings: AttributedString...) {
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        var attrStr = NSMutableAttributedString(string: "")
+        attributedStrings.forEach {
+            attrStr.append($0.attributedString)
+        }
+        attributedText = attrStr
     }
     
     public override init(frame: CGRect) {
@@ -32,6 +38,11 @@ open class Label: UILabel, DeclarativeView {
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
+    }
+    
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        movedToSuperview()
     }
     
     @discardableResult
@@ -66,12 +77,6 @@ open class Label: UILabel, DeclarativeView {
     @discardableResult
     public func alignment(_ alignment: NSTextAlignment) -> Label {
         textAlignment = alignment
-        return self
-    }
-    
-    @discardableResult
-    public func center() -> Label {
-        textAlignment = .center
         return self
     }
     
