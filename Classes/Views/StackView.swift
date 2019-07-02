@@ -1,19 +1,24 @@
-//
-//  StackView.swift
-//  UIKitPlus
-//
-//  Created by Mihael Isaev on 30/06/2019.
-//
-
 import UIKit
 
-@available(iOS 9.0, *)
-open class StackView: UIStackView, DeclarativeView {
-    public var declarativeView: StackView { return self }
+open class StackView: _StackView {
+    // Mask: Axis
     
-    public var _circleCorners: Bool = false
-    public var _customCorners: CustomCorners?
-    public lazy var _borders = Borders()
+    @discardableResult
+    public func axis(_ axis: NSLayoutConstraint.Axis) -> StackView {
+        self.axis = axis
+        return self
+    }
+}
+
+open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: _StackView { return self }
+    
+    var _circleCorners: Bool = false
+    var _customCorners: CustomCorners?
+    lazy var _borders = Borders()
+    
+    var _preConstraints = DeclarativePreConstraints()
+    var _constraints: DeclarativeConstraintsCollection = [:]
     
     public init () {
         super.init(frame: .zero)
@@ -34,11 +39,32 @@ open class StackView: UIStackView, DeclarativeView {
         onLayoutSubviews()
     }
     
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        movedToSuperview()
+    }
+    
     // Mask: Axis
     
     @discardableResult
-    public func axis(_ axis: NSLayoutConstraint.Axis) -> StackView {
-        self.axis = axis
+    public func alignment(_ alignment: UIStackView.Alignment) -> _StackView {
+        self.alignment = alignment
+        return self
+    }
+    
+    // Mask: Axis
+    
+    @discardableResult
+    public func distribution(_ distribution: UIStackView.Distribution) -> _StackView {
+        self.distribution = distribution
+        return self
+    }
+    
+    // Mask: Axis
+    
+    @discardableResult
+    public func spacing(_ spacing: CGFloat) -> _StackView {
+        self.spacing = spacing
         return self
     }
 }
