@@ -29,7 +29,7 @@ Support this lib by giving a ⭐️!
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit+Plus', '~> 0.3.0'
+pod 'UIKit+Plus', '~> 0.4.1'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
@@ -71,6 +71,16 @@ import UIKitPlus
 It is just a simple view with ability to customize it declarative way
 ```swift
 View().background(.red).shadow().edgesToSuperview()
+```
+Also you can initialize it with predefined subviews
+```swift
+View.subviews {
+    let avatar = Image("some").size(100)
+                              .edgesToSuperview(top: 0, leading: 0, trailing: 0) // stick to top, left and right
+    let name = Label("John Smith").top(to: avatar, .bottom, 8) // stick top to avatar's bottom with 16pt
+                                  .edgesToSuperview(leading: 0, trailing: 0, bottom: 0) // stick to left, right and bottom
+    return [avatar, name]
+}
 ```
 
 ### WrapperView
@@ -474,25 +484,25 @@ View()heightToSuperview()
 ##### Relative
 Any side of your view could also stick to any side of other view
 ```swift
-View().top(to: otherView.bottomAnchor)
-View().leading(to: otherView.trailingAnchor)
-View().trailing(to: otherView.leadingAnchor)
-View().bottom(to: otherView.topAnchor)
-View().centerX(to: otherView.centerXAnchor)
-View().centerY(to: otherView.centerYAnchor)
-View().width(to: otherView.widthAnchor)
-View().height(to: otherView.heightAnchor)
+View().top(to: otherView, .bottom, 16) // stick view's top to anotherView`s bottom with 16pt (by default 0pt)
+View().leading(to: otherView, .trailing)
+View().trailing(to: otherView, .leading)
+View().bottom(to: otherView, .top)
+View().centerX(to: otherView, .centerX)
+View().centerY(to: otherView, .centerY)
+View().width(to: otherView, .width)
+View().height(to: otherView, .height)
 ```
 or this way
 ```swift
-View().edge(.top, to: anotherView.bottomAnchor)
-View().edge(.leading, to: anotherView.trailingAnchor)
-View().edge(.trailing, to: anotherView.leadingAnchor)
-View().edge(.bottom, to: anotherView.topAnchor)
-View().edge(.centerX, to: anotherView.centerXAnchor)
-View().edge(.centerY, to: anotherView.centerYAnchor)
-View().edge(.width, to: anotherView.widthAnchor)
-View().edge(.height, to: anotherView.heightAnchor)
+View().edge(.top, to: anotherView, .bottom)
+View().edge(.leading, to: anotherView, .trailing)
+View().edge(.trailing, to: anotherView, .leading)
+View().edge(.bottom, to: anotherView, .top)
+View().edge(.centerX, to: anotherView, .centerX)
+View().edge(.centerY, to: anotherView, .centerY)
+View().edge(.width, to: anotherView, .width)
+View().edge(.height, to: anotherView, .height)
 ```
 ##### Center
 Your view could be in center of its superview
