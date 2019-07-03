@@ -161,10 +161,16 @@ Button("Tap me").image("cat")
 You can handle tap action easily
 ```swift
 Button("Tap me").tapAction { print("button tapped") }
+Button("Tap me").tapAction { button in
+    print("button tapped")
+}
 ```
 or like this
 ```swift
 func tapped() { print("button tapped") }
+Button("Tap me").tapAction(tapped)
+
+func tapped(_ button: Button) { print("button tapped") }
 Button("Tap me").tapAction(tapped)
 ```
 
