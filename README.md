@@ -63,6 +63,7 @@ import UIKitPlus
 | Label | UILabel |
 | TextField | UITextField |
 | StackView | UIStackView |
+| VisualEffectView | UIVisualEffectView |
 | HStackView |  |
 | VStackView |  |
 | VerificationCodeView |  |
@@ -257,6 +258,22 @@ TextField().shouldBeginEditing { tf in return true }
            .editingDidBegin { tf in }
            .editingChanged { tf in }
            .editingDidEnd { tf in }
+```
+
+### VisualEffectView
+```swift
+VisualEffectView(.darkBlur)
+VisualEffectView(.lightBlur)
+VisualEffectView(.extraLightBlur)
+// iOS10+
+VisualEffectView(.prominent)
+VisualEffectView(.regular)
+```
+Create your own extension for your custom effects to use them easily like in example above
+```swift
+extension UIVisualEffect {
+    public static var darkBlur: UIVisualEffect { return UIBlurEffect(style: .dark) }
+}
 ```
 
 ### StackView
