@@ -2,7 +2,7 @@ import UIKit
 
 open class FormViewController: ViewController {
     public lazy var scrollView = ScrollView()
-    public lazy var stackView = StackView().axis(.vertical)
+    public lazy var stackView = VStackView()
     
     private var topConstraint: NSLayoutConstraint?
     private var bottomConstraint: NSLayoutConstraint?
