@@ -15,21 +15,6 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    public init (_ innerView: UIView) {
-        super.init(frame: .zero)
-        addSubview(innerView)
-    }
-    
-    public init (_ innerView: () -> (UIView)) {
-        super.init(frame: .zero)
-        addSubview(innerView())
-    }
-    
-    public init (_ innerViews: () -> [UIView]) {
-        super.init(frame: .zero)
-        innerViews().forEach { addSubview($0) }
-    }
-    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
@@ -47,5 +32,28 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         movedToSuperview()
+    }
+}
+
+// MARK: Convenience Initializers
+
+extension View {
+    public convenience init (_ innerView: UIView) {
+        self.init()
+        addSubview(innerView)
+    }
+    
+    public convenience init <V>(_ innerView: () -> V) where V: DeclarativeProtocol {
+        self.init()
+        addSubview(innerView().declarativeView)
+    }
+    
+    public func subviews(_ subviews: () -> [UIView]) -> View {
+        subviews().forEach { addSubview($0) }
+        return self
+    }
+    
+    public static func subviews(_ subviews: () -> [UIView]) -> View {
+        return View().subviews(subviews)
     }
 }
