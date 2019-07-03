@@ -87,9 +87,7 @@ extension DeclarativeProtocol {
     public func edge(_ side: DeclarativeConstraintYSide, to: UIView, _ toSide: DeclarativeConstraintYSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
         let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, ySide: .init(view: to, side: toSide))
         _declarativeView._preConstraints.relative[side.side] = preConstraint
-        if let superview = declarativeView.superview {
-            activateRelative(side.side, to: to, side: toSide.side, preConstraint: preConstraint)
-        }
+        activateRelative(side.side, to: to, side: toSide.side, preConstraint: preConstraint)
         return self
     }
     
@@ -97,9 +95,7 @@ extension DeclarativeProtocol {
     public func edge(_ side: DeclarativeConstraintDSide, to: UIView, _ toSide: DeclarativeConstraintDSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
         let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, dSide: .init(view: to, side: toSide))
         _declarativeView._preConstraints.relative[side.side] = preConstraint
-        if let superview = declarativeView.superview {
-            activateRelative(side.side, to: to, side: toSide.side, preConstraint: preConstraint)
-        }
+        activateRelative(side.side, to: to, side: toSide.side, preConstraint: preConstraint)
         return self
     }
     
@@ -405,7 +401,7 @@ extension DeclarativeProtocol {
         default: return
         }
         if let constraint = constraint {
-            if let original = _declarativeView._constraints[side] {
+            if let _ = _declarativeView._constraints[side] {
                 _declarativeView._constraints.setValue(constraint.constant, for: side)
             } else {
                 _declarativeView._constraints[side] = constraint.update(preConstraint.value).activated()
