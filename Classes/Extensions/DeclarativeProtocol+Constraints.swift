@@ -432,27 +432,9 @@ extension DeclarativeProtocol {
         if let dest = to as? DeclarativeProtocolInternal {
             dest._preConstraints.relative[toSide] = preConstraint
             dest._constraints[toSide] = constraint.update(preConstraint.value)
-            if declarativeView.superview != nil && to.superview != nil || declarativeView.superview == to || to.superview == declarativeView {
-                constraint.isActive = true
-                print("Activated declarative relative to (\(constant))")
-            } else {
-                print("Unable to activate declarative relative to (\(constant))")
-                print("declarativeView.superview: \(declarativeView.superview)")
-                print("to.superview: \(to.superview)")
-                print("declarativeView.superview == to: \(declarativeView.superview == to)")
-                print("to.superview == declarativeView: \(to.superview == declarativeView)")
-            }
-        } else {
-            if declarativeView.superview != nil && to.superview != nil || declarativeView.superview == to || to.superview == declarativeView {
-                constraint.isActive = true
-                print("Activated non-declarative relative to (\(constant))")
-            } else {
-                print("Unable to activate non-declarative relative to (\(constant))")
-                print("declarativeView.superview: \(declarativeView.superview)")
-                print("to.superview: \(to.superview)")
-                print("declarativeView.superview == to: \(declarativeView.superview == to)")
-                print("to.superview == declarativeView: \(to.superview == declarativeView)")
-            }
+        }
+        if declarativeView.superview != nil && to.superview != nil || declarativeView.superview == to || to.superview == declarativeView {
+            constraint.isActive = true
         }
     }
 }
