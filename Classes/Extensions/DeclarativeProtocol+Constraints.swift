@@ -111,11 +111,19 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func edgesToSuperview(top: CGFloat = 0, leading: CGFloat = 0, trailing: CGFloat = 0, bottom: CGFloat = 0) -> Self {
-        topToSuperview(top)
-        leadingToSuperview(leading)
-        trailingToSuperview(trailing)
-        bottomToSuperview(bottom)
+    public func edgesToSuperview(top: CGFloat? = nil, leading: CGFloat? = nil, trailing: CGFloat? = nil, bottom: CGFloat? = nil) -> Self {
+        if let top = top {
+            topToSuperview(top)
+        }
+        if let leading = leading {
+            leadingToSuperview(leading)
+        }
+        if let trailing = trailing {
+            trailingToSuperview(trailing)
+        }
+        if let bottom = bottom {
+            bottomToSuperview(bottom)
+        }
         return self
     }
     
