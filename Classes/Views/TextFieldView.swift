@@ -12,8 +12,9 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     private weak var outsideDelegate: TextFieldDelegate?
     
-    public init () {
+    public init (_ text: String? = nil) {
         super.init(frame: .zero)
+        self.text = text
         setup()
     }
     
@@ -81,13 +82,23 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     @discardableResult
-    public func placeholder(_ text: String) -> TextField {
+    public func text(_ text: String?) -> TextField {
+        self.text = text
+        return self
+    }
+    
+    @discardableResult
+    public func placeholder(_ text: String?) -> TextField {
         placeholder = text
         return self
     }
     
     @discardableResult
     public func placeholder(_ attributedStrings: AttributedString...) -> TextField {
+        guard !attributedStrings.isEmpty else {
+            attributedPlaceholder = nil
+            return self
+        }
         var attrStr = NSMutableAttributedString(string: "")
         attributedStrings.forEach {
             attrStr.append($0.attributedString)
