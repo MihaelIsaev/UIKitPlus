@@ -68,9 +68,9 @@ import UIKitPlus
 | VerificationCodeView |  |
 
 ### View
-It is jsut simple view
+It is just a simple view with ability to customize it declarative way
 ```swift
-View().background(.red).shadow()
+View().background(.red).shadow().edgesToSuperview()
 ```
 
 ### WrapperView
