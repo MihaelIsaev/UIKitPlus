@@ -99,7 +99,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
             attributedPlaceholder = nil
             return self
         }
-        var attrStr = NSMutableAttributedString(string: "")
+        let attrStr = NSMutableAttributedString(string: "")
         attributedStrings.forEach {
             attrStr.append($0.attributedString)
         }

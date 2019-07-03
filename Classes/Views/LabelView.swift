@@ -19,7 +19,7 @@ open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     public init (_ attributedStrings: AttributedString...) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
-        var attrStr = NSMutableAttributedString(string: "")
+        let attrStr = NSMutableAttributedString(string: "")
         attributedStrings.forEach {
             attrStr.append($0.attributedString)
         }

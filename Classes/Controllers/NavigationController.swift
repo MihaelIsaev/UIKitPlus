@@ -76,9 +76,10 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
     
     // MARK: UIGestureRecognizerDelegate
     
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return viewControllers.count > 1
     }
+    
     override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .all
     }
