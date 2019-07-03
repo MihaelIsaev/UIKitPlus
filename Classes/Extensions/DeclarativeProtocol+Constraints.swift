@@ -428,13 +428,31 @@ extension DeclarativeProtocol {
                                                              attribute: toSide,
                                                              multiplier: preConstraint.value.multiplier,
                                                              constant: constant)
-        _declarativeView._constraints[side] = constraint.update(preConstraint.value).activated()
-        if let to = to as? DeclarativeProtocolInternal {
-            to._preConstraints.relative[toSide] = preConstraint
-            to._constraints[toSide] = constraint.update(preConstraint.value).activated()
-            print("Activated relative to (\(constant))")
+        _declarativeView._constraints[side] = constraint.update(preConstraint.value)
+        if let dest = to as? DeclarativeProtocolInternal {
+            dest._preConstraints.relative[toSide] = preConstraint
+            dest._constraints[toSide] = constraint.update(preConstraint.value)
+            if declarativeView.superview != nil && to.superview != nil || declarativeView.superview == to || to.superview == declarativeView {
+                constraint.isActive = true
+                print("Activated declarative relative to (\(constant))")
+            } else {
+                print("Unable to activate declarative relative to (\(constant))")
+                print("declarativeView.superview: \(declarativeView.superview)")
+                print("to.superview: \(to.superview)")
+                print("declarativeView.superview == to: \(declarativeView.superview == to)")
+                print("to.superview == declarativeView: \(to.superview == declarativeView)")
+            }
         } else {
-            print("Unable to activate relative to (\(constant))")
+            if declarativeView.superview != nil && to.superview != nil || declarativeView.superview == to || to.superview == declarativeView {
+                constraint.isActive = true
+                print("Activated non-declarative relative to (\(constant))")
+            } else {
+                print("Unable to activate non-declarative relative to (\(constant))")
+                print("declarativeView.superview: \(declarativeView.superview)")
+                print("to.superview: \(to.superview)")
+                print("declarativeView.superview == to: \(declarativeView.superview == to)")
+                print("to.superview == declarativeView: \(to.superview == declarativeView)")
+            }
         }
     }
 }
