@@ -44,7 +44,7 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
         movedToSuperview()
     }
     
-    // Mask: Axis
+    // Mask: Alignment
     
     @discardableResult
     public func alignment(_ alignment: UIStackView.Alignment) -> _StackView {
@@ -52,7 +52,7 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
         return self
     }
     
-    // Mask: Axis
+    // Mask: Distribution
     
     @discardableResult
     public func distribution(_ distribution: UIStackView.Distribution) -> _StackView {
@@ -60,7 +60,7 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
         return self
     }
     
-    // Mask: Axis
+    // Mask: Spacing
     
     @discardableResult
     public func spacing(_ spacing: CGFloat) -> _StackView {
