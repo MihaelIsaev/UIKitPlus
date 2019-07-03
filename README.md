@@ -10,7 +10,7 @@
     </a>
 </p>
 
-**This project is in active development state and anything may change till 1.0.0**
+**This project is in active development state and anything may be changed till 1.0.0**
 
 Build UI in SwiftUI-like way right now in Xcode10+ and for iOS9 and higher! 😺
 
