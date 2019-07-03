@@ -3,23 +3,47 @@ import UIKit
 class DeclarativePreConstraints {
     // Relative
     class Constraint {
+        class YSideView {
+            let view: UIView
+            let side: DeclarativeConstraintYSide
+            init (view: UIView, side: DeclarativeConstraintYSide) {
+                self.view = view
+                self.side = side
+            }
+        }
+        class XSideView {
+            let view: UIView
+            let side: DeclarativeConstraintXSide
+            init (view: UIView, side: DeclarativeConstraintXSide) {
+                self.view = view
+                self.side = side
+            }
+        }
+        class DSideView {
+            let view: UIView
+            let side: DeclarativeConstraintDSide
+            init (view: UIView, side: DeclarativeConstraintDSide) {
+                self.view = view
+                self.side = side
+            }
+        }
         let value: ConstraintValueType
-        let yAnchor: NSLayoutAnchor<NSLayoutYAxisAnchor>?
-        let xAnchor: NSLayoutAnchor<NSLayoutXAxisAnchor>?
-        let dimension: NSLayoutAnchor<NSLayoutDimension>?
+        let ySide: YSideView?
+        let xSide: XSideView?
+        let dSide: DSideView?
         
-        init (value: ConstraintValueType, yAnchor: NSLayoutAnchor<NSLayoutYAxisAnchor>? = nil, xAnchor: NSLayoutAnchor<NSLayoutXAxisAnchor>? = nil, dimension: NSLayoutAnchor<NSLayoutDimension>? = nil) {
+        init (value: ConstraintValueType, ySide: YSideView? = nil, xSide: XSideView? = nil, dSide: DSideView? = nil) {
             self.value = value
-            self.yAnchor = yAnchor
-            self.xAnchor = xAnchor
-            self.dimension = dimension
+            self.ySide = ySide
+            self.xSide = xSide
+            self.dSide = dSide
         }
         
         init (_ mode: NSLayoutConstraint.Relation = .equal, value: CGFloat, multiplier: CGFloat = 1, priority: UILayoutPriority = .init(1000)) {
             self.value = .init(mode, value, multiplier, priority)
-            self.yAnchor = nil
-            self.xAnchor = nil
-            self.dimension = nil
+            self.ySide = nil
+            self.xSide = nil
+            self.dSide = nil
         }
         
         convenience init (value: ConstraintValue) {

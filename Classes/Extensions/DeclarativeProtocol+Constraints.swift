@@ -5,95 +5,100 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func size(_ w: ConstraintValue, _ h: ConstraintValue) -> Self {
-        _declarativeView._preConstraints.solo[.width] = .init(value: w)
-        _declarativeView._preConstraints.solo[.height] = .init(value: h)
-        _declarativeView._constraints[.width]?.constant = h.constraintValue.value
+        width(w)
+        height(h)
         return self
     }
     
     public func size(_ value: ConstraintValue) -> Self {
-        _declarativeView._preConstraints.solo[.width] = .init(value: value)
-        _declarativeView._preConstraints.solo[.height] = .init(value: value)
+        width(value)
+        height(value)
         return self
     }
     
     @discardableResult
     public func sameSize(as: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        edge(.width, to: `as`.widthAnchor, value)
-        edge(.height, to: `as`.heightAnchor, value)
+        edge(.width, to: `as`, .width, value)
+        edge(.height, to: `as`, .height, value)
         return self
     }
     
     @discardableResult
     public func width(_ value: ConstraintValue) -> Self {
-        _declarativeView._preConstraints.solo[.width] = .init(value: value)
+        let preConstraint = DeclarativePreConstraints.Constraint(value: value)
+        _declarativeView._preConstraints.solo[.width] = preConstraint
+        if let superview = declarativeView.superview {
+            activateSolo(superview: superview, preConstraint: preConstraint, side: .width)
+        }
         return self
     }
     
     @discardableResult
     public func height(_ value: ConstraintValue) -> Self {
-        _declarativeView._preConstraints.solo[.height] = .init(value: value)
+        let preConstraint = DeclarativePreConstraints.Constraint(value: value)
+        _declarativeView._preConstraints.solo[.height] = preConstraint
+        if let superview = declarativeView.superview {
+            activateSolo(superview: superview, preConstraint: preConstraint, side: .height)
+        }
         return self
     }
     
     // MARK: - Edges
     
     @discardableResult
-    public func edge(_ side: DeclarativeConstraintXSide, toSuperview anchor: NSLayoutAnchor<NSLayoutXAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, xAnchor: anchor)
+    public func edge(_ side: DeclarativeConstraintXSide, toSuperview: UIView, _ toSide: DeclarativeConstraintXSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, xSide: .init(view: toSuperview, side: toSide))
         _declarativeView._preConstraints.super[side.side] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: side.side)
+            activateRelative(side.side, to: superview, side: side.side, preConstraint: preConstraint)
         }
         return self
     }
     
     @discardableResult
-    public func edge(_ side: DeclarativeConstraintYSide, toSuperview anchor: NSLayoutAnchor<NSLayoutYAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, yAnchor: anchor)
+    public func edge(_ side: DeclarativeConstraintYSide, toSuperview: UIView, _ toSide: DeclarativeConstraintYSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, ySide: .init(view: toSuperview, side: toSide))
         _declarativeView._preConstraints.super[side.side] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: side.side)
+            activateRelative(side.side, to: superview, side: side.side, preConstraint: preConstraint)
         }
         return self
     }
     
     @discardableResult
-    public func edge(_ side: DeclarativeConstraintDSide, toSuperview anchor: NSLayoutAnchor<NSLayoutDimension>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, dimension: anchor)
+    public func edge(_ side: DeclarativeConstraintDSide, toSuperview: UIView, _ toSide: DeclarativeConstraintDSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, dSide: .init(view: toSuperview, side: toSide))
         _declarativeView._preConstraints.super[side.side] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: side.side)
+            activateRelative(side.side, to: superview, side: side.side, preConstraint: preConstraint)
         }
         return self
     }
     
     @discardableResult
-    public func edge(_ side: DeclarativeConstraintXSide, to: NSLayoutAnchor<NSLayoutXAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, xAnchor: to)
+    public func edge(_ side: DeclarativeConstraintXSide, to: UIView, _ toSide: DeclarativeConstraintXSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, xSide: .init(view: to, side: toSide))
+        _declarativeView._preConstraints.relative[side.side] = preConstraint
+        activateRelative(side.side, to: to, side: toSide.side, preConstraint: preConstraint)
+        return self
+    }
+    
+    @discardableResult
+    public func edge(_ side: DeclarativeConstraintYSide, to: UIView, _ toSide: DeclarativeConstraintYSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, ySide: .init(view: to, side: toSide))
         _declarativeView._preConstraints.relative[side.side] = preConstraint
         if let superview = declarativeView.superview {
-            activateRelative(superview: superview, preConstraint: preConstraint, side: side.side)
+            activateRelative(side.side, to: to, side: toSide.side, preConstraint: preConstraint)
         }
         return self
     }
     
     @discardableResult
-    public func edge(_ side: DeclarativeConstraintYSide, to: NSLayoutAnchor<NSLayoutYAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, yAnchor: to)
+    public func edge(_ side: DeclarativeConstraintDSide, to: UIView, _ toSide: DeclarativeConstraintDSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, dSide: .init(view: to, side: toSide))
         _declarativeView._preConstraints.relative[side.side] = preConstraint
         if let superview = declarativeView.superview {
-            activateRelative(superview: superview, preConstraint: preConstraint, side: side.side)
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func edge(_ side: DeclarativeConstraintDSide, to: NSLayoutAnchor<NSLayoutDimension>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue, dimension: to)
-        _declarativeView._preConstraints.relative[side.side] = preConstraint
-        if let superview = declarativeView.superview {
-            activateRelative(superview: superview, preConstraint: preConstraint, side: side.side)
+            activateRelative(side.side, to: to, side: toSide.side, preConstraint: preConstraint)
         }
         return self
     }
@@ -123,7 +128,7 @@ extension DeclarativeProtocol {
         let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue)
         _declarativeView._preConstraints.super[.top] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: .top)
+            activateRelative(.top, to: superview, side: .top, preConstraint: preConstraint)
         }
         return self
     }
@@ -133,7 +138,7 @@ extension DeclarativeProtocol {
         let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue)
         _declarativeView._preConstraints.super[.leading] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: .leading)
+            activateRelative(.leading, to: superview, side: .leading, preConstraint: preConstraint)
         }
         return self
     }
@@ -143,7 +148,7 @@ extension DeclarativeProtocol {
         let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue)
         _declarativeView._preConstraints.super[.trailing] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: .trailing)
+            activateRelative(.trailing, to: superview, side: .trailing, preConstraint: preConstraint)
         }
         return self
     }
@@ -153,7 +158,7 @@ extension DeclarativeProtocol {
         let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue)
         _declarativeView._preConstraints.super[.bottom] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: .bottom)
+            activateRelative(.bottom, to: superview, side: .bottom, preConstraint: preConstraint)
         }
         return self
     }
@@ -163,7 +168,7 @@ extension DeclarativeProtocol {
         let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue)
         _declarativeView._preConstraints.super[.centerX] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: .centerX)
+            activateRelative(.centerX, to: superview, side: .centerX, preConstraint: preConstraint)
         }
         return self
     }
@@ -173,7 +178,7 @@ extension DeclarativeProtocol {
         let preConstraint = DeclarativePreConstraints.Constraint(value: value.constraintValue)
         _declarativeView._preConstraints.super[.centerY] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: .centerY)
+            activateRelative(.centerY, to: superview, side: .centerY, preConstraint: preConstraint)
         }
         return self
     }
@@ -183,7 +188,7 @@ extension DeclarativeProtocol {
         let preConstraint = DeclarativePreConstraints.Constraint(value:0)
         _declarativeView._preConstraints.super[.width] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: .width)
+            activateRelative(.width, to: superview, side: .width, preConstraint: preConstraint)
         }
         return self
     }
@@ -193,7 +198,7 @@ extension DeclarativeProtocol {
         let preConstraint = DeclarativePreConstraints.Constraint(value:0)
         _declarativeView._preConstraints.super[.height] = preConstraint
         if let superview = declarativeView.superview {
-            activateSuper(superview: superview, preConstraint: preConstraint, side: .height)
+            activateRelative(.height, to: superview, side: .height, preConstraint: preConstraint)
         }
         return self
     }
@@ -201,43 +206,43 @@ extension DeclarativeProtocol {
     // MARK: - Relative
     
     @discardableResult
-    public func top(to: NSLayoutAnchor<NSLayoutYAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        return edge(.top, to: to, value)
+    public func top(to: UIView, _ side: DeclarativeConstraintYSide = .bottom, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        return edge(.top, to: to, side, value)
     }
     
     @discardableResult
-    public func leading(to: NSLayoutAnchor<NSLayoutXAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        return edge(.leading, to: to, value)
+    public func leading(to: UIView, _ side: DeclarativeConstraintXSide = .trailing, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        return edge(.leading, to: to, side, value)
     }
     
     @discardableResult
-    public func trailing(to: NSLayoutAnchor<NSLayoutXAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        return edge(.trailing, to: to, value)
+    public func trailing(to: UIView, _ side: DeclarativeConstraintXSide = .leading, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        return edge(.trailing, to: to, side, value)
     }
     
     @discardableResult
-    public func bottom(to: NSLayoutAnchor<NSLayoutYAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        return edge(.bottom, to: to, value)
+    public func bottom(to: UIView, _ side: DeclarativeConstraintYSide = .top, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        return edge(.bottom, to: to, side, value)
     }
     
     @discardableResult
-    public func centerX(to: NSLayoutAnchor<NSLayoutXAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        return edge(.centerX, to: to, value)
+    public func centerX(to: UIView, _ side: DeclarativeConstraintXSide = .centerX, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        return edge(.centerX, to: to, side, value)
     }
     
     @discardableResult
-    public func centerY(to: NSLayoutAnchor<NSLayoutYAxisAnchor>, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        return edge(.centerY, to: to, value)
+    public func centerY(to: UIView, _ side: DeclarativeConstraintYSide = .centerY, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        return edge(.centerY, to: to, side, value)
     }
     
     @discardableResult
-    public func width(to: NSLayoutAnchor<NSLayoutDimension>) -> Self {
-        return edge(.width, to: to)
+    public func width(to: UIView, _ side: DeclarativeConstraintDSide = .width) -> Self {
+        return edge(.width, to: to, side)
     }
     
     @discardableResult
-    public func height(to: NSLayoutAnchor<NSLayoutDimension>) -> Self {
-        return edge(.height, to: to)
+    public func height(to: UIView, _ side: DeclarativeConstraintDSide = .height) -> Self {
+        return edge(.height, to: to, side)
     }
     
     // MARK: - Center
@@ -258,15 +263,15 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func center(in view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        edge(.centerX, to: view.centerXAnchor, value)
-        edge(.centerY, to: view.centerYAnchor, value)
+        edge(.centerX, to: view,  .centerX, value)
+        edge(.centerY, to: view, .centerY, value)
         return self
     }
     
     @discardableResult
     public func center(in view: UIView, x: ConstraintValue = CGFloat(0), y: ConstraintValue = CGFloat(0)) -> Self {
-        edge(.centerX, to: view.centerXAnchor, x)
-        edge(.centerY, to: view.centerYAnchor, y)
+        edge(.centerX, to: view, .centerX, x)
+        edge(.centerY, to: view, .centerY, y)
         return self
     }
     
@@ -303,7 +308,13 @@ extension DeclarativeProtocol {
     
     public var bottom: CGFloat? {
         get { return _declarativeView._constraints[.bottom]?.constant }
-        set { _declarativeView._constraints.setValue(newValue, for: .bottom) }
+        set {
+            if let _ = _declarativeView._constraints[.bottom] {
+                print("bottom relation exists")
+            } else {
+                print("bottom relation not exists")
+            }
+            _declarativeView._constraints.setValue(newValue, for: .bottom) }
     }
     
     public var centerX: CGFloat? {
@@ -379,7 +390,6 @@ extension DeclarativeProtocol {
     // MARK: - Activation
     
     func activateSolo(superview: UIView, preConstraint: DeclarativePreConstraints.Constraint, side: NSLayoutConstraint.Attribute) {
-        _declarativeView._constraints.removeValue(forKey: side)
         let margin = _declarativeView._preConstraints.margin[side] ?? 0
         let constant = preConstraint.value.value + margin
         var constraint: NSLayoutConstraint?
@@ -395,58 +405,32 @@ extension DeclarativeProtocol {
         default: return
         }
         if let constraint = constraint {
-            _declarativeView._constraints[side] = constraint.update(preConstraint.value).activated()
+            if let original = _declarativeView._constraints[side] {
+                _declarativeView._constraints.setValue(constraint.constant, for: side)
+            } else {
+                _declarativeView._constraints[side] = constraint.update(preConstraint.value).activated()
+            }
         }
     }
     
-    func activateSuper(superview: UIView, preConstraint: DeclarativePreConstraints.Constraint, side: NSLayoutConstraint.Attribute) {
+    func activateRelative(_ side: NSLayoutConstraint.Attribute, to: UIView, side toSide: NSLayoutConstraint.Attribute, preConstraint: DeclarativePreConstraints.Constraint) {
         _declarativeView._constraints.removeValue(for: side)
         let margin = _declarativeView._preConstraints.margin[side] ?? 0
         let constant = preConstraint.value.value + margin
         let constraint = NSLayoutConstraint(item: declarativeView,
-                                            attribute: side,
-                                            relatedBy: preConstraint.value.relation,
-                                            toItem: superview,
-                                            attribute: side,
-                                            multiplier: preConstraint.value.multiplier,
-                                            constant: constant)
+                                                             attribute: side,
+                                                             relatedBy: preConstraint.value.relation,
+                                                             toItem: to,
+                                                             attribute: toSide,
+                                                             multiplier: preConstraint.value.multiplier,
+                                                             constant: constant)
         _declarativeView._constraints[side] = constraint.update(preConstraint.value).activated()
-    }
-    
-    func activateRelative(superview: UIView, preConstraint: DeclarativePreConstraints.Constraint, side: NSLayoutConstraint.Attribute) {
-        _declarativeView._constraints.removeValue(for: side)
-        let margin = _declarativeView._preConstraints.margin[side] ?? 0
-        let constant = preConstraint.value.value + margin
-        var constraint: NSLayoutConstraint?
-        switch side {
-        case .width, .height:
-            let anchor1 = declarativeView.dimensionBy(side)!
-            let anchor2 = preConstraint.dimension!
-            switch preConstraint.value.relation {
-            case .equal: constraint = anchor1.constraint(equalTo: anchor2, constant: constant)
-            case .greaterThanOrEqual: constraint = anchor1.constraint(greaterThanOrEqualTo: anchor2, constant: constant)
-            case .lessThanOrEqual: constraint = anchor1.constraint(lessThanOrEqualTo: anchor2, constant: constant)
-            }
-        case .top, .bottom, .centerY:
-            let anchor1 = declarativeView.yAnchorBy(side)!
-            let anchor2 = preConstraint.yAnchor!
-            switch preConstraint.value.relation {
-            case .equal: constraint = anchor1.constraint(equalTo: anchor2, constant: constant)
-            case .greaterThanOrEqual: constraint = anchor1.constraint(greaterThanOrEqualTo: anchor2, constant: constant)
-            case .lessThanOrEqual: constraint = anchor1.constraint(lessThanOrEqualTo: anchor2, constant: constant)
-            }
-        case .leading, .trailing, .centerX:
-            let anchor1 = declarativeView.xAnchorBy(side)!
-            let anchor2 = preConstraint.xAnchor!
-            switch preConstraint.value.relation {
-            case .equal: constraint = anchor1.constraint(equalTo: anchor2, constant: constant)
-            case .greaterThanOrEqual: constraint = anchor1.constraint(greaterThanOrEqualTo: anchor2, constant: constant)
-            case .lessThanOrEqual: constraint = anchor1.constraint(lessThanOrEqualTo: anchor2, constant: constant)
-            }
-        default: break
-        }
-        if let constraint = constraint {
-            _declarativeView._constraints[side] = constraint.update(preConstraint.value).activated()
+        if let to = to as? DeclarativeProtocolInternal {
+            to._preConstraints.relative[toSide] = preConstraint
+            to._constraints[toSide] = constraint.update(preConstraint.value).activated()
+            print("Activated relative to (\(constant))")
+        } else {
+            print("Unable to activate relative to (\(constant))")
         }
     }
 }
