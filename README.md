@@ -29,7 +29,7 @@ Support this lib by giving a ⭐️!
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit+Plus', '~> 0.1.0'
+pod 'UIKit+Plus', '~> 0.2.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
