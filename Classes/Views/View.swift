@@ -15,6 +15,21 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
+    public init (_ innerView: UIView) {
+        super.init(frame: .zero)
+        addSubview(innerView)
+    }
+    
+    public init (_ innerView: () -> (UIView)) {
+        super.init(frame: .zero)
+        addSubview(innerView())
+    }
+    
+    public init (_ innerViews: () -> [UIView]) {
+        super.init(frame: .zero)
+        innerViews().forEach { addSubview($0) }
+    }
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false

@@ -1,6 +1,15 @@
 import UIKit
 
-open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
+open class WrapperView<V>: UIView, DeclarativeProtocol, DeclarativeProtocolInternal where V: UIView, V: DeclarativeProtocol {
+    public var declarativeView: WrapperView { return self }
+    
+    var _circleCorners: Bool = false
+    var _customCorners: CustomCorners?
+    lazy var _borders = Borders()
+    
+    var _preConstraints = DeclarativePreConstraints()
+    var _constraints: DeclarativeConstraintsCollection = [:]
+    
     public let innerView: V
     
     public init (_ innerView: V) {
@@ -17,6 +26,16 @@ open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        onLayoutSubviews()
+    }
+    
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        movedToSuperview()
     }
     
     @discardableResult
