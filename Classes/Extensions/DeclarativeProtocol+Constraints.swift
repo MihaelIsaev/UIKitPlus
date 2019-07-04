@@ -302,8 +302,10 @@ extension DeclarativeProtocol {
         set { _declarativeView._constraintsMain.setValue(newValue, for: .centerY) }
     }
     
-    public func outer(_ attribute: NSLayoutConstraint.Attribute, withView view: UIView) -> NSLayoutConstraint? {
-        return _declarativeView._constraintsOuter[attribute]?[view]
+    public func outer(_ attribute: NSLayoutConstraint.Attribute, with view: UIView) -> NSLayoutConstraint? {
+        guard let dest = view as? DeclarativeProtocolInternal else { return nil }
+        guard let inactiveConstraint = _declarativeView._constraintsOuter[attribute]?[view]  else { return nil }
+        return dest._constraintsOuter[inactiveConstraint.firstAttribute]?[declarativeView]
     }
     
     // MARK: - Activation
