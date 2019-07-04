@@ -18,4 +18,16 @@ open class ViewController: UIViewController {
     open func buildUI() {
         view.backgroundColor = .white
     }
+    
+    public var isAppearedOnce = false
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !isAppearedOnce {
+            isAppearedOnce = true
+            viewDidAppearFirstTime(animated)
+        }
+    }
+    
+    open func viewDidAppearFirstTime(_ animated: Bool) {}
 }
