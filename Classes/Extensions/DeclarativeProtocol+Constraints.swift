@@ -47,7 +47,7 @@ extension DeclarativeProtocol {
                                                          value: value.constraintValue)
         if let view = view {
             preConstraint.setSide(with: anySide, to: view, toAnySide: toAnySide)
-            if let superview = declarativeView.superview {
+            if let _ = declarativeView.superview {
                 activateSuper(anySide.attribute, to: view, side: toAnySide.attribute, preConstraint: preConstraint)
             }
         }
@@ -414,6 +414,7 @@ extension DeclarativeProtocol {
         }
     }
     
+    @discardableResult
     func activateRelative(_ side: NSLayoutConstraint.Attribute, to: UIView, side toSide: NSLayoutConstraint.Attribute, preConstraint: PreConstraint) -> Self {
         _declarativeView._constraintsOuter.removeValue(forKey: side, andView: to)
         _declarativeView._preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: to)

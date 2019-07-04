@@ -37,26 +37,26 @@ class PreConstraint {
     @discardableResult
     func setSide(with anySide: DeclarativeConstraintAnySide, to view: UIView, toAnySide: DeclarativeConstraintAnySide) -> PreConstraint {
         switch anySide {
-        case .c(let side1):
+        case .c:
             switch toAnySide {
             case .c(let side2):
                 self.anySide = .c(.init(view: view, side: side2))
                 break
             default: break
             }
-        case .d(let side1):
+        case .d:
             switch toAnySide {
             case .d(let side2):
                 self.anySide = .d(.init(view: view, side: side2))
             default: break
             }
-        case .x(let side1):
+        case .x:
             switch toAnySide {
             case .x(let side2):
                 self.anySide = .x(.init(view: view, side: side2))
             default: break
             }
-        case .y(let side1):
+        case .y:
             switch toAnySide {
             case .y(let side2):
                 self.anySide = .y(.init(view: view, side: side2))
