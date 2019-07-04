@@ -25,6 +25,7 @@ class MyViewController : UIViewController {
                 Button("🚀 Tap me!").background(.darkGray)
                                                .backgroundHighlighted(.gray)
                                                .circle()
+                                               .width(120)
                                                .tapAction { button in
                                                 button.title("🎉 Tapped!")
                                                 UIView.animate(withDuration: 0.5) {
