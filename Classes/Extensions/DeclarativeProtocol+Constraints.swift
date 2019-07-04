@@ -306,71 +306,10 @@ extension DeclarativeProtocol {
         return _declarativeView._constraintsOuter[attribute]?[view]
     }
     
-    // MARK: - Margins
-    
-    @discardableResult
-    private func margin(top: CGFloat? = nil, left: CGFloat? = nil, right: CGFloat? = nil, bottom: CGFloat? = nil, centerX: CGFloat? = nil, centerY: CGFloat? = nil) -> Self {
-        if let top = top {
-            _declarativeView._preConstraints.margin[.top] = top
-        }
-        if let left = left {
-            _declarativeView._preConstraints.margin[.leading] = left
-        }
-        if let right = right {
-            _declarativeView._preConstraints.margin[.trailing] = right
-        }
-        if let bottom = bottom {
-            _declarativeView._preConstraints.margin[.bottom] = bottom
-        }
-        if let centerX = centerX {
-            _declarativeView._preConstraints.margin[.centerX] = centerX
-        }
-        if let centerY = centerY {
-            _declarativeView._preConstraints.margin[.centerY] = centerY
-        }
-        return self
-    }
-    
-    @discardableResult
-    private func margin(x: CGFloat? = nil, y: CGFloat? = nil, centerX: CGFloat? = nil, centerY: CGFloat? = nil) -> Self {
-        if let y = y {
-            _declarativeView._preConstraints.margin[.top] = y
-            _declarativeView._preConstraints.margin[.bottom] = y
-        }
-        if let x = x {
-            _declarativeView._preConstraints.margin[.leading] = x
-            _declarativeView._preConstraints.margin[.trailing] = x
-        }
-        if let centerX = centerX {
-            _declarativeView._preConstraints.margin[.centerX] = centerX
-        }
-        if let centerY = centerY {
-            _declarativeView._preConstraints.margin[.centerY] = centerY
-        }
-        return self
-    }
-    
-    @discardableResult
-    private func margin(center: CGFloat) -> Self {
-        _declarativeView._preConstraints.margin[.centerX] = center
-        _declarativeView._preConstraints.margin[.centerY] = center
-        return self
-    }
-    
-    @discardableResult
-    private func margin(_ value: CGFloat) -> Self {
-        _declarativeView._preConstraints.margin[.top] = value
-        _declarativeView._preConstraints.margin[.leading] = value
-        _declarativeView._preConstraints.margin[.trailing] = value
-        _declarativeView._preConstraints.margin[.bottom] = value
-        return self
-    }
-    
     // MARK: - Activation
     
     func activateSolo(preConstraint: PreConstraint, side: NSLayoutConstraint.Attribute) {
-        let margin = _declarativeView._preConstraints.margin[side] ?? 0
-        let constant = preConstraint.value.value + margin
+        let constant = preConstraint.value.value
         var constraint: NSLayoutConstraint?
         switch side {
         case .width, .height:
@@ -395,8 +334,7 @@ extension DeclarativeProtocol {
     func activateSuper(_ side: NSLayoutConstraint.Attribute, to: UIView, side toSide: NSLayoutConstraint.Attribute, preConstraint: PreConstraint) {
         _declarativeView._constraintsMain.removeValue(for: side)
         _declarativeView._preConstraints.super[side] = preConstraint
-        let margin = _declarativeView._preConstraints.margin[side] ?? 0
-        let constant = preConstraint.value.value + margin
+        let constant = preConstraint.value.value
         let constraint = NSLayoutConstraint(item: declarativeView,
                                             attribute: side,
                                             relatedBy: preConstraint.value.relation,
@@ -418,8 +356,7 @@ extension DeclarativeProtocol {
     func activateRelative(_ side: NSLayoutConstraint.Attribute, to: UIView, side toSide: NSLayoutConstraint.Attribute, preConstraint: PreConstraint) -> Self {
         _declarativeView._constraintsOuter.removeValue(forKey: side, andView: to)
         _declarativeView._preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: to)
-        let margin = _declarativeView._preConstraints.margin[side] ?? 0
-        let constant = preConstraint.value.value + margin
+        let constant = preConstraint.value.value
         let constraint = NSLayoutConstraint(item: declarativeView,
                                                              attribute: side,
                                                              relatedBy: preConstraint.value.relation,

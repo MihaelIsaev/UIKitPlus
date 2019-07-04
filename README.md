@@ -576,6 +576,20 @@ view.constraints.top?.constant = 16
 ```
 the same way works with all view's constraints, so you can change them or even delete them just by setting them `nil`.
 
+##### Layout Margin
+```swift
+// to all sides
+View().layoutMargin(10)
+// optional sides
+View().layoutMargin(top: 10)
+View().layoutMargin(left: 10, bottom: 5)
+View().layoutMargin(top: 10, right: 5)
+// vertical and horizontal
+View().layoutMargin(x: 10, y: 5) // top: 5, left: 10, right: 10, bottom: 5
+View().layoutMargin(x: 10) // left: 10, right: 10
+View().layoutMargin(y: 5) // top: 5, bottom: 5
+```
+
 ##### SafeArea
 You could get `safeArea` safely at any view without `#available(iOS 11.0, *)` check like this
 ```swift

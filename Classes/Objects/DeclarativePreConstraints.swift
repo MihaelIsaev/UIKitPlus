@@ -8,6 +8,4 @@ class DeclarativePreConstraints {
     var relative: [NSLayoutConstraint.Attribute: RelativeConstraints] = [:]
     // MARK: SuperView
     var `super`: [NSLayoutConstraint.Attribute: PreConstraint] = [:]
-    // MARK: Margin
-    var margin: [NSLayoutConstraint.Attribute: CGFloat] = [:]
 }
