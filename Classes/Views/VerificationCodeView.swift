@@ -8,7 +8,8 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     lazy var _borders = Borders()
     
     var _preConstraints = DeclarativePreConstraints()
-    var _constraints: DeclarativeConstraintsCollection = [:]
+    var _constraintsMain: DeclarativeConstraintsCollection = [:]
+    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     private let quantity: Int
     
@@ -242,7 +243,8 @@ extension VerificationCodeView {
         lazy var _borders = Borders()
         
         var _preConstraints = DeclarativePreConstraints()
-        var _constraints: DeclarativeConstraintsCollection = [:]
+        var _constraintsMain: DeclarativeConstraintsCollection = [:]
+        var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
         
         public init () {
             super.init(frame: .zero)

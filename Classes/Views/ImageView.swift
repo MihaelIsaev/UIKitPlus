@@ -8,7 +8,8 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
     lazy var _borders = Borders()
     
     var _preConstraints = DeclarativePreConstraints()
-    var _constraints: DeclarativeConstraintsCollection = [:]
+    var _constraintsMain: DeclarativeConstraintsCollection = [:]
+    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     public init (_ named: String) {
         super.init(frame: .zero)

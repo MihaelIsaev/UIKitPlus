@@ -8,7 +8,8 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
     lazy var _borders = Borders()
     
     var _preConstraints = DeclarativePreConstraints()
-    var _constraints: DeclarativeConstraintsCollection = [:]
+    var _constraintsMain: DeclarativeConstraintsCollection = [:]
+    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     public init (_ layout: UICollectionViewLayout = UICollectionViewFlowLayout()) {
         super.init(frame: .zero, collectionViewLayout: layout)

@@ -1,12 +1,13 @@
 import UIKit
 
 public enum DeclarativeConstraintXSide: Int {
-    case leading, trailing, centerX
+    case leading, leadingMargin, trailing, trailingMargin
     var side: NSLayoutConstraint.Attribute {
         switch self {
         case .leading: return .leading
+        case .leadingMargin: return .leadingMargin
         case .trailing: return .trailing
-        case .centerX: return .centerX
+        case .trailingMargin: return .trailingMargin
         }
     }
 }

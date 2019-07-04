@@ -8,7 +8,8 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     lazy var _borders = Borders()
     
     var _preConstraints = DeclarativePreConstraints()
-    var _constraints: DeclarativeConstraintsCollection = [:]
+    var _constraintsMain: DeclarativeConstraintsCollection = [:]
+    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     private weak var outsideDelegate: TextFieldDelegate?
     

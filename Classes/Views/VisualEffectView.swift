@@ -8,7 +8,8 @@ open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, Declarativ
     lazy var _borders = Borders()
     
     var _preConstraints = DeclarativePreConstraints()
-    var _constraints: DeclarativeConstraintsCollection = [:]
+    var _constraintsMain: DeclarativeConstraintsCollection = [:]
+    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     public override init(effect: UIVisualEffect?) {
         super.init(effect: effect)

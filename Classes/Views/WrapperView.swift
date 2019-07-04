@@ -8,7 +8,8 @@ open class WrapperView<V>: UIView, DeclarativeProtocol, DeclarativeProtocolInter
     lazy var _borders = Borders()
     
     var _preConstraints = DeclarativePreConstraints()
-    var _constraints: DeclarativeConstraintsCollection = [:]
+    var _constraintsMain: DeclarativeConstraintsCollection = [:]
+    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     public let innerView: V
     

@@ -6,5 +6,6 @@ internal protocol DeclarativeProtocolInternal: class {
     var _borders: Borders { get }
     
     var _preConstraints: DeclarativePreConstraints { get set }
-    var _constraints: DeclarativeConstraintsCollection { get set }
+    var _constraintsMain: DeclarativeConstraintsCollection { get set }
+    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection { get set }
 }

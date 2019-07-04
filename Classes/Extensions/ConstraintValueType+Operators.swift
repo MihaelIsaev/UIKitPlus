@@ -20,6 +20,7 @@ func *(lhs: ConstraintValue, rhs: CGFloat) -> ConstraintValue {
     return ConstraintValueType(lhs.constraintValue.relation, lhs.constraintValue.value, rhs, lhs.constraintValue.priority)
 }
 
+
 /// Operator for constraint + layout-priority
 /// Example:
 /// ```swift
@@ -30,6 +31,7 @@ infix operator |
 func |(lhs: ConstraintValue, rhs: UILayoutPriority) -> ConstraintValue {
     return ConstraintValueType(lhs.constraintValue.relation, lhs.constraintValue.value, lhs.constraintValue.multiplier, rhs)
 }
+
 func |(lhs: ConstraintValue, rhs: Float) -> ConstraintValue {
     return ConstraintValueType(lhs.constraintValue.relation, lhs.constraintValue.value, lhs.constraintValue.multiplier, .init(rhs))
 }

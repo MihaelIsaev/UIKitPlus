@@ -8,7 +8,8 @@ open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInter
     lazy var _borders = Borders()
     
     var _preConstraints = DeclarativePreConstraints()
-    var _constraints: DeclarativeConstraintsCollection = [:]
+    var _constraintsMain: DeclarativeConstraintsCollection = [:]
+    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     public init (_ style: UITableView.Style = .plain) {
         super.init(frame: .zero, style: style)

@@ -8,7 +8,8 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     lazy var _borders = Borders()
     
     var _preConstraints = DeclarativePreConstraints()
-    var _constraints: DeclarativeConstraintsCollection = [:]
+    var _constraintsMain: DeclarativeConstraintsCollection = [:]
+    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     public init () {
         super.init(frame: .zero)

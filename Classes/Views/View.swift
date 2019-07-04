@@ -8,7 +8,8 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
     lazy var _borders = Borders()
     
     var _preConstraints = DeclarativePreConstraints()
-    var _constraints: DeclarativeConstraintsCollection = [:]
+    var _constraintsMain: DeclarativeConstraintsCollection = [:]
+    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     public init () {
         super.init(frame: .zero)
