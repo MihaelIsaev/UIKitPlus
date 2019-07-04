@@ -29,7 +29,7 @@ Support this lib by giving a ⭐️!
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 0.5.0'
+pod 'UIKit-Plus', '~> 0.6.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
@@ -467,7 +467,7 @@ View().size(100)
 or view's size can be equal to other view size so when you change size of one view other view will change its size as well
 ```swift
 let view1 = View().size(100, 200)
-let view2 = View().sameSize(as: view1)
+let view2 = View().equalSize(to: view1)
 ```
 Of course you can specify just width or just height or both but by separate methods
 ```swift
@@ -507,25 +507,45 @@ View()heightToSuperview()
 ##### Relative
 Any side of your view could also stick to any side of other view
 ```swift
-View().top(to: otherView, .bottom, 16) // stick view's top to anotherView`s bottom with 16pt (by default 0pt)
-View().leading(to: otherView, .trailing)
-View().trailing(to: otherView, .leading)
-View().bottom(to: otherView, .top)
-View().centerX(to: otherView, .centerX)
-View().centerY(to: otherView, .centerY)
-View().width(to: otherView, .width)
-View().height(to: otherView, .height)
+// Sides to superview
+View().top(to: someView, .bottom, 16) // stick view's top to someView`s bottom with 16pt (by default 0pt)
+View().leading(to: someView, .trailing)
+View().trailing(to: someView, .leading)
+View().bottom(to: someView, .top)
+// Center to superview
+View().centerX(to: someView, .centerX)
+View().centerY(to: someView, .centerY)
+// Dimension Superview
+View().width(to: someView, .width)
+View().height(to: someView, .height)
 ```
 or this way
 ```swift
-View().edge(.top, to: anotherView, .bottom)
-View().edge(.leading, to: anotherView, .trailing)
-View().edge(.trailing, to: anotherView, .leading)
-View().edge(.bottom, to: anotherView, .top)
-View().edge(.centerX, to: anotherView, .centerX)
-View().edge(.centerY, to: anotherView, .centerY)
-View().edge(.width, to: anotherView, .width)
-View().edge(.height, to: anotherView, .height)
+// Sides to superview
+View().edge(.top, toSuperview: someView, .bottom)
+View().edge(.leading, toSuperview: someView, .trailing)
+View().edge(.trailing, toSuperview: someView, .leading)
+View().edge(.bottom, toSuperview: someView, .top)
+// Center to superview
+View().edge(.centerX, toSuperview: someView, .centerX)
+View().edge(.centerY, toSuperview: someView, .centerY)
+// Dimension Superview
+View().edge(.width, toSuperview: someView, .width)
+View().edge(.height, toSuperview: someView, .height)
+```
+To build constraints between two relative views
+```swift
+// Sides to another views
+View().spacing(.leading, to: relativeView, toSide: .trailing, 16) // last parameter is optional, 0 by default
+View().spacing(.trailing, to: relativeView, toSide: .leading)
+View().spacing(.top, to: relativeView, toSide: .bottom)
+View().spacing(.bottom, to: relativeView, toSide: .top)
+// Center to another relative views
+View().center(.x, to: relativeView, toSide: .x)
+View().center(.y, to: relativeView, toSide: .y)
+// Dimension Relative
+View().dimension(.width, to: relativeView, toSide: .width)
+View().dimension(.height, to: relativeView, toSide: .height)
 ```
 ##### Center
 Your view could be in center of its superview
@@ -536,9 +556,9 @@ View().centerInSuperview(x: 5, y: 10) // exact center +5 by x-axis, and +10 by y
 ```
 also it may be in center of another view
 ```swift
-View().center(in: anotherView) // exact center
-View().center(in: anotherView, 10) // exact center +10 by x-axis, and +10 by y-axis
-View().center(in: anotherView, x: 5, y: 10) // exact center +5 by x-axis, and +10 by y-axis
+View().center(to: anotherView) // exact center
+View().center(to: anotherView, 10) // exact center +10 by x-axis, and +10 by y-axis
+View().center(to: anotherView, x: 5, y: 10) // exact center +5 by x-axis, and +10 by y-axis
 ```
 
 ##### Links to constraints
