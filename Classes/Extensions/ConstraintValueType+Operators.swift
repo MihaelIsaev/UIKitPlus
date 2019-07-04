@@ -1,12 +1,12 @@
 import Foundation
 
 prefix operator >=
-prefix func >=(rhs: CGFloat) -> ConstraintValueType {
+public prefix func >=(rhs: CGFloat) -> ConstraintValueType {
     return .init(.greaterThanOrEqual, rhs)
 }
 
 prefix operator <=
-prefix func <=(rhs: CGFloat) -> ConstraintValueType {
+public prefix func <=(rhs: CGFloat) -> ConstraintValueType {
     return .init(.lessThanOrEqual, rhs)
 }
 
@@ -16,7 +16,7 @@ prefix func <=(rhs: CGFloat) -> ConstraintValueType {
 ///view.left(to: view2, 350*1.5)
 ///```
 /// `350*1.5` above means: 350pt with 1.5 multiplier
-func *(lhs: ConstraintValue, rhs: CGFloat) -> ConstraintValue {
+public func *(lhs: ConstraintValue, rhs: CGFloat) -> ConstraintValue {
     return ConstraintValueType(lhs.constraintValue.relation, lhs.constraintValue.value, rhs, lhs.constraintValue.priority)
 }
 
@@ -28,10 +28,10 @@ func *(lhs: ConstraintValue, rhs: CGFloat) -> ConstraintValue {
 ///```
 /// `350|999` above means: 350pt with 999 priority
 infix operator |
-func |(lhs: ConstraintValue, rhs: UILayoutPriority) -> ConstraintValue {
+public func |(lhs: ConstraintValue, rhs: UILayoutPriority) -> ConstraintValue {
     return ConstraintValueType(lhs.constraintValue.relation, lhs.constraintValue.value, lhs.constraintValue.multiplier, rhs)
 }
 
-func |(lhs: ConstraintValue, rhs: Float) -> ConstraintValue {
+public func |(lhs: ConstraintValue, rhs: Float) -> ConstraintValue {
     return ConstraintValueType(lhs.constraintValue.relation, lhs.constraintValue.value, lhs.constraintValue.multiplier, .init(rhs))
 }
