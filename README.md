@@ -75,8 +75,7 @@ class LoginViewController: ViewController {
     override func loadView() {
         super.loadView()
         view.backgroundColor = .black
-        view.addSubview(titleLabel, contentView)
-        view.addSubview(backButton)
+        view.addSubview(backButton, titleLabel, contentView)
     }
 }
 ```
