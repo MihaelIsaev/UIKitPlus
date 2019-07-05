@@ -55,8 +55,8 @@ class LoginViewController: ViewController {
     }.padding(x: 10)
 
     lazy var signInButton = WrapperView {
-        Button.bigBottomGreen.title("Sign In")
-    }.padding(top: 10, left: 16, right: 16).tapAction {}
+        Button.bigBottomGreen.title("Sign In").tapAction(signIn)
+    }.padding(top: 10, left: 16, right: 16)
 
     override func loadView() {
         super.loadView()
@@ -64,7 +64,7 @@ class LoginViewController: ViewController {
         view.addSubview(backButton, titleLabel, contentView)
     }
     
-    func signin() {
+    func signIn() {
         guard let email = emailField.innerView.text,
               let password = passwordField.innerView.text else { return }
         // do an API call to your server with CodyFire 😉
