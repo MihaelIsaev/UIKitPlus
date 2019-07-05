@@ -23,6 +23,84 @@ Build UI in SwiftUI-like way right now in Xcode10+ and for iOS9 and higher! 😺
 
 Support this lib by giving a ⭐️!
 
+## Really short intro
+
+```swift
+import UIKit
+import UIKitPlus
+
+// Just feel how easy you could build & declare your views
+// with all needed constraints, properties and actions
+// even before adding them to superview!
+class LoginViewController: ViewController {
+    lazy var backButton = Button("backIcon").topToSuperview(64).leadingToSuperview(24).tapAction {}
+
+    lazy var titleLabel = Label("Welcome").centerXInSuperview().topToSuperview(62)
+
+    lazy var contentView = View().subviews { [fieldsView] }
+                                 .edgesToSuperview(top: 120, leading: 16, trailing: 16, bottom: 0)
+                                 .background(.white)
+                                 .corners(20, .topLeft, .topRight)
+    lazy var fieldsView = VStackView { [emailField, passwordField, signInButton] }.edgesToSuperview(top: 10, leading: 8, trailing: -8)
+
+    // WrapperView needed just to add padding since we're using these views inside VStackView
+    lazy var emailField = WrapperView {
+      TextField().placeholder("Email") // or .placeholder(AttributedString("Email").foreground(.gray).font(.sfProRegular, 16))
+                 .height(40)
+                 .background(.clear)
+                 .color(.black)
+                 .tint(.green)
+                 .border(.bottom, 1, .gray)
+                 .font(.sfProRegular, 16)
+                 .keyboard(.emailAddress)
+                 .content(.emailAddress)
+    }.padding(x: 10)
+
+    lazy var passwordField = WrapperView {
+      TextField().placeholder("Password") // or .placeholder(AttributedString("Password").foreground(.gray).font(.sfProRegular, 16))
+                 .height(40)
+                 .background(.clear)
+                 .color(.black)
+                 .tint(.mainGreen).border(.bottom, 1, .gray)
+                 .font(.sfProRegular, 16)
+                 .content(.password)
+                 .secure()
+    }.padding(x: 10)
+
+    lazy var signInButton = WrapperView {
+      Button("Sign In").height(50)
+                       .shadow(.gray, opacity: 1, offset: .init(width: 0, height: -1), radius: 10)
+    }.padding(top: 10, left: 16, right: 16).tapAction {}
+
+    override func loadView() {
+        super.loadView()
+        view.backgroundColor = .black
+        view.addSubview(titleLabel, contentView)
+        view.addSubview(backButton)
+    }
+}
+```
+Try it yourself! Now! 😃
+
+```swift
+// NOTE:
+// To avoid mess declare reusable views in extensions like this
+extension Label {
+  static var something: Label { return .init().color(.white).font(.sfProBold, 18) }
+}
+// and then just use them like This
+Label.something.text("Something").centerInSuperview()
+// I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
+```
+Btw, you could play with it in Example project!
+```
+0) you need CocoaPods installed on your Mac
+1) clone or download this repo
+2) go to Example folder in terminal and execute `pod install`
+3) go to Example folder in Finder and open Example.xcworkspace
+4) Find Example playground at the left top corner in Xcode and start playing
+```
+
 ## Installation
 
 #### With [CocoaPods](https://cocoapods.org)
