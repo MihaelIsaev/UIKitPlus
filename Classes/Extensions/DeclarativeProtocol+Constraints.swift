@@ -141,12 +141,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func topToSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
-        let preConstraint = PreConstraint(attribute1: .top, attribute2: .top, value: value.constraintValue)
-        _declarativeView._preConstraints.super[.top] = preConstraint
-        if let superview = declarativeView.superview {
-            activateRelative(.top, to: superview, side: .top, preConstraint: preConstraint)
-        }
-        return self
+        return _edgeSuperview(anySide: .y(.top), to: declarativeView.superview, toAnySide: .y(.top), value)
     }
     
     @discardableResult
@@ -346,8 +341,8 @@ extension DeclarativeProtocol {
                                             constant: constant)
         _declarativeView._constraintsMain.setValue(constraint.update(preConstraint.value), for: side)
         if let dest = to as? DeclarativeProtocolInternal {
-            dest._preConstraints.super[toSide] = preConstraint
-            dest._constraintsMain.setValue(constraint.update(preConstraint.value), for: toSide)
+            dest._preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: declarativeView)
+            dest._constraintsOuter.setValue(constraint, forKey: toSide, andView: declarativeView)
         }
         if declarativeView.superview != nil && to.superview != nil || declarativeView.superview == to || to.superview == declarativeView {
             constraint.isActive = true
