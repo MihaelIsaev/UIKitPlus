@@ -253,8 +253,8 @@ extension DeclarativeProtocol {
     
     // MARK: - Links to constraints
     
-    public var constrains: DeclarativeViewConstraints {
-        return .init(_declarativeView)
+    public var declarativeConstraints: DeclarativeViewConstraints {
+        return .init(_declarativeView, declarativeView)
     }
     
     public var height: CGFloat? {
@@ -297,11 +297,7 @@ extension DeclarativeProtocol {
         set { _declarativeView._constraintsMain.setValue(newValue, for: .centerY) }
     }
     
-    public func outer(_ attribute: NSLayoutConstraint.Attribute, with view: UIView) -> NSLayoutConstraint? {
-        guard let dest = view as? DeclarativeProtocolInternal else { return nil }
-        guard let inactiveConstraint = _declarativeView._constraintsOuter[attribute]?[view]  else { return nil }
-        return dest._constraintsOuter[inactiveConstraint.firstAttribute]?[declarativeView]
-    }
+    public var outer: OuterConstraintValues { return .init(declarativeView, _declarativeView._constraintsOuter) }
     
     // MARK: - Activation
     

@@ -561,7 +561,7 @@ View().center(to: anotherView, 10) // exact center +10 by x-axis, and +10 by y-a
 View().center(to: anotherView, x: 5, y: 10) // exact center +5 by x-axis, and +10 by y-axis
 ```
 
-##### Links to constraints
+##### Constraints direct access
 Ok, let's imagine that you have a view which is sticked to its superview
 ```swift
 let view = View().edgesToSuperview()
@@ -572,7 +572,7 @@ view.top = 16
 ```
 or
 ```swift
-view.constraints.top?.constant = 16
+view.declarativeConstraints.top?.constant = 16
 ```
 the same way works with all view's constraints, so you can change them or even delete them just by setting them `nil`.
 
@@ -583,7 +583,10 @@ let secondView = View().background(.green).size(100).centerXInSuperview().top(to
 ```
 and for example you want to reach bottom constraint of `centerView` related to `secondView`, do it like this
 ```swift
-centerView.outer(.bottom, with: secondView)?.constant = 32 // change their vertical spacing from 16 to 32
+// short way
+centerView.outer[.bottom, secondView] = 32 // changes their vertical spacing from 16 to 32
+// long way
+centerView.declarativeConstraints.outer[.bottom, secondView]?.constant = 32 // changes their vertical spacing from 16 to 32
 ```
 
 ##### Layout Margin
