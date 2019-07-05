@@ -94,10 +94,7 @@ extension Button {
                        .shadow(.gray, opacity: 1, offset: .init(width: 0, height: -1), radius: 10)
     }
 }
-```
-Wondered?❤️ Try it yourself!😃 Now!🚀
 
-```swift
 // PRO-TIP2: I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
 Btw, play with it in `Playground` with our `Example` project 🕹
@@ -108,6 +105,7 @@ Btw, play with it in `Playground` with our `Example` project 🕹
 // - go to Example folder in Finder and open Example.xcworkspace
 // - Find Example playground at the left top corner in Xcode and start playing
 ```
+Wondered?❤️ Try it yourself!😃 Now!🚀
 
 ## Installation
 
