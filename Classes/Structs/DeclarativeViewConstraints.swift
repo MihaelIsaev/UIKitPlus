@@ -1,6 +1,6 @@
 import UIKit
 
-public struct DeclarativeViewConstraints {
+public class DeclarativeViewConstraints {
     var _declarativeView: DeclarativeProtocolInternal
     var declarativeView: UIView
     
