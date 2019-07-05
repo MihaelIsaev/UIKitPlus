@@ -63,6 +63,12 @@ class LoginViewController: ViewController {
         view.backgroundColor = .black
         view.addSubview(backButton, titleLabel, contentView)
     }
+    
+    func signin() {
+        guard let email = emailField.innerView.text,
+              let password = passwordField.innerView.text else { return }
+        // do an API call to your server with CodyFire 😉
+    }
 }
 ```
 And that's it! Yeah! You just need few extensions to make it work 😍
