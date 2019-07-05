@@ -95,7 +95,7 @@ extension Button {
     }
 }
 ```
-Wondered?❤️ Try it yourself!🚀 Now!😃
+Wondered?❤️ Try it yourself!😃 Now!🚀
 
 ```swift
 // PRO-TIP2: I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
