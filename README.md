@@ -79,10 +79,10 @@ class LoginViewController: ViewController {
     }
 }
 ```
-Try it yourself! Now! 😃
+Try it yourself!🚀 Now!😃
 
 ```swift
-// PRO-NOTE:
+// PRO-TIP:
 // To avoid mess declare reusable views in extensions like this
 extension Label {
   static var something: Label { return .init().color(.white).font(.sfProBold, 18) }
@@ -91,13 +91,13 @@ extension Label {
 Label.something.text("Something").centerInSuperview()
 // I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
-Btw, you could play with it in Example project!
+Btw, play with it in `Playground` with our `Example` project 🕹
 ```swift
-0) you need CocoaPods installed on your Mac
-1) clone or download this repo
-2) go to Example folder in terminal and execute `pod install`
-3) go to Example folder in Finder and open Example.xcworkspace
-4) Find Example playground at the left top corner in Xcode and start playing
+// - you need CocoaPods installed on your Mac
+// - clone or download this repo
+// - go to Example folder in terminal and execute `pod install`
+// - go to Example folder in Finder and open Example.xcworkspace
+// - Find Example playground at the left top corner in Xcode and start playing
 ```
 
 ## Installation
