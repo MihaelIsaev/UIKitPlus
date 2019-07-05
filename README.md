@@ -82,7 +82,7 @@ class LoginViewController: ViewController {
 Try it yourself! Now! 😃
 
 ```swift
-// NOTE:
+// PRO-NOTE:
 // To avoid mess declare reusable views in extensions like this
 extension Label {
   static var something: Label { return .init().color(.white).font(.sfProBold, 18) }
@@ -92,7 +92,7 @@ Label.something.text("Something").centerInSuperview()
 // I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
 Btw, you could play with it in Example project!
-```
+```swift
 0) you need CocoaPods installed on your Mac
 1) clone or download this repo
 2) go to Example folder in terminal and execute `pod install`
