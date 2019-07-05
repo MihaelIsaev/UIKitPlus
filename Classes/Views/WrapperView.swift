@@ -1,15 +1,7 @@
 import UIKit
 
-open class WrapperView<V>: UIView, DeclarativeProtocol, DeclarativeProtocolInternal where V: UIView, V: DeclarativeProtocol {
-    public var declarativeView: WrapperView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
+    public override var declarativeView: WrapperView { return self }
     
     public let innerView: V
     
@@ -42,21 +34,50 @@ open class WrapperView<V>: UIView, DeclarativeProtocol, DeclarativeProtocolInter
     @discardableResult
     public func padding(top: CGFloat? = nil, left: CGFloat? = nil, right: CGFloat? = nil, bottom: CGFloat? = nil) -> WrapperView {
         guard top != nil || left != nil || right != nil || bottom != nil else {
-            innerView.edgesToSuperview(10)
-            return self
+            return padding(10)
         }
         if let top = top {
-            innerView.topToSuperview(top)
+            innerView.top = top
         }
         if let left = left {
-            innerView.leadingToSuperview(left)
+            innerView.leading = left
         }
         if let right = right {
-            innerView.trailingToSuperview(right * (-1))
+            innerView.trailing = right * (-1)
         }
         if let bottom = bottom {
-            innerView.bottomToSuperview(bottom * (-1))
+            innerView.bottom = bottom * (-1)
         }
+        return self
+    }
+    
+    @discardableResult
+    public func padding(x: CGFloat, y: CGFloat) -> WrapperView {
+        padding(x: x)
+        padding(y: y)
+        return self
+    }
+    
+    @discardableResult
+    public func padding(x: CGFloat) -> WrapperView {
+        innerView.leading = x
+        innerView.trailing = x * (-1)
+        return self
+    }
+    
+    @discardableResult
+    public func padding(y: CGFloat) -> WrapperView {
+        innerView.top = y
+        innerView.bottom = y * (-1)
+        return self
+    }
+    
+    @discardableResult
+    public func padding(_ value: CGFloat) -> WrapperView {
+        innerView.top = value
+        innerView.leading = value
+        innerView.trailing = value * (-1)
+        innerView.bottom = value * (-1)
         return self
     }
 }
