@@ -39,7 +39,6 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     private func setup() {
-        NSLayoutConstraint.activate([heightAnchor.constraint(equalToConstant: 30)])
         translatesAutoresizingMaskIntoConstraints = false
         delegate = self
         addTarget(self, action: #selector(__editingDidBegin), for: .editingDidBegin)
