@@ -18,7 +18,7 @@ Build UI in SwiftUI-like way right now in Xcode10+ and for iOS9 and higher! 😺
 // NOTE:
 // For now it's written for Swift 4.2-5.0
 // but closer to 5.1 release it will support 5.1 features like `@State` and `@Binding`
-// and became look more like SwiftUI cause `functionBuilder became available.
+// and became look more like SwiftUI cause `functionBuilder` became available.
 ```
 
 Support this lib by giving a ⭐️!
