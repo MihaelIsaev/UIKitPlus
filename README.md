@@ -64,6 +64,9 @@ class LoginViewController: ViewController {
         view.addSubview(backButton, titleLabel, contentView)
     }
 }
+```
+And that's it! Yeah! You just need few extensions to make it work 😍
+```swift
 // PRO-TIP:
 // To avoid mess declare reusable views in extensions like this
 extension FontIdentifier {
