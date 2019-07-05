@@ -37,10 +37,10 @@ class LoginViewController: ViewController {
 
     lazy var titleLabel = Label.welcome.text("Welcome").centerXInSuperview().topToSuperview(62)
 
-    lazy var contentView = View().subviews { [fieldsView] }
-                                 .edgesToSuperview(top: 120, leading: 16, trailing: 16, bottom: 0)
-                                 .background(.white)
-                                 .corners(20, .topLeft, .topRight)
+    lazy var contentView = View.subviews { [fieldsView] }
+                               .edgesToSuperview(top: 120, leading: 16, trailing: 16, bottom: 0)
+                               .background(.white)
+                               .corners(20, .topLeft, .topRight)
     
     lazy var fieldsView = VStackView { [emailField, passwordField, signInButton] }
                               .edgesToSuperview(top: 10, leading: 8, trailing: -8)
