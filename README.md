@@ -33,43 +33,29 @@ import UIKitPlus
 // with all needed constraints, properties and actions
 // even before adding them to superview!
 class LoginViewController: ViewController {
-    lazy var backButton = Button("backIcon").topToSuperview(64).leadingToSuperview(24).tapAction {}
+    lazy var backButton = Button.back.tapAction {}
 
-    lazy var titleLabel = Label("Welcome").centerXInSuperview().topToSuperview(62)
+    lazy var titleLabel = Label.welcome.text("Welcome").centerXInSuperview().topToSuperview(62)
 
     lazy var contentView = View().subviews { [fieldsView] }
                                  .edgesToSuperview(top: 120, leading: 16, trailing: 16, bottom: 0)
                                  .background(.white)
                                  .corners(20, .topLeft, .topRight)
-    lazy var fieldsView = VStackView { [emailField, passwordField, signInButton] }.edgesToSuperview(top: 10, leading: 8, trailing: -8)
+    
+    lazy var fieldsView = VStackView { [emailField, passwordField, signInButton] }
+                              .edgesToSuperview(top: 10, leading: 8, trailing: -8)
 
-    // WrapperView needed just to add padding since we're using these views inside VStackView
+    // NOTE: WrapperView needed just to add padding since we're using these views inside VStackView
     lazy var emailField = WrapperView {
-      TextField().placeholder("Email") // or .placeholder(AttributedString("Email").foreground(.gray).font(.sfProRegular, 16))
-                 .height(40)
-                 .background(.clear)
-                 .color(.black)
-                 .tint(.green)
-                 .border(.bottom, 1, .gray)
-                 .font(.sfProRegular, 16)
-                 .keyboard(.emailAddress)
-                 .content(.emailAddress)
+        TextField().welcome.placeholder("Email").keyboard(.emailAddress).content(.emailAddress)
     }.padding(x: 10)
 
     lazy var passwordField = WrapperView {
-      TextField().placeholder("Password") // or .placeholder(AttributedString("Password").foreground(.gray).font(.sfProRegular, 16))
-                 .height(40)
-                 .background(.clear)
-                 .color(.black)
-                 .tint(.mainGreen).border(.bottom, 1, .gray)
-                 .font(.sfProRegular, 16)
-                 .content(.password)
-                 .secure()
+        TextField.welcome.placeholder("Password").content(.password).secure()
     }.padding(x: 10)
 
     lazy var signInButton = WrapperView {
-      Button("Sign In").height(50)
-                       .shadow(.gray, opacity: 1, offset: .init(width: 0, height: -1), radius: 10)
+        Button.bigBottomGreen.title("Sign In")
     }.padding(top: 10, left: 16, right: 16).tapAction {}
 
     override func loadView() {
@@ -78,18 +64,41 @@ class LoginViewController: ViewController {
         view.addSubview(backButton, titleLabel, contentView)
     }
 }
-```
-Try it yourself!🚀 Now!😃
-
-```swift
 // PRO-TIP:
 // To avoid mess declare reusable views in extensions like this
-extension Label {
-  static var something: Label { return .init().color(.white).font(.sfProBold, 18) }
+extension FontIdentifier {
+    static var sfProRegular = FontIdentifier("SFProDisplay-Regular")
+    static var sfProMedium = FontIdentifier("SFProDisplay-Medium")
 }
-// and then just use them like This
-Label.something.text("Something").centerInSuperview()
-// I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
+extension Label {
+    static var title: Label { return .init().color(.white).font(.sfProMedium, 18) }
+}
+extension TextField {
+    static var welcome: TextField {
+        return .init().height(40)
+                      .background(.clear)
+                      .color(.black)
+                      .tint(.mainGreen)
+                      .border(.bottom, 1, .gray)
+                      .font(.sfProRegular, 16)
+    }
+}
+extension Button {
+    static var back: Button { .init("backIcon").topToSuperview(64).leadingToSuperview(24) }
+    static var bigBottomGreen: Button {
+        return Button().color(.white)
+                       .font(.sfProMedium, 15)
+                       .background(.green)
+                       .height(50)
+                       .circle()
+                       .shadow(.gray, opacity: 1, offset: .init(width: 0, height: -1), radius: 10)
+    }
+}
+```
+Wondered?❤️ Try it yourself!🚀 Now!😃
+
+```swift
+// PRO-TIP2: I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
 Btw, play with it in `Playground` with our `Example` project 🕹
 ```swift
