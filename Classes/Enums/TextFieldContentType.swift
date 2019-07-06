@@ -55,17 +55,9 @@ public enum TextFieldContentType {
         case .emailAddress:
             return .emailAddress
         case .URL:
-            if #available(iOS 10.0, *) {
-                return .URL
-            } else {
-                return nil
-            }
+            return .URL
         case .creditCardNumber:
-            if #available(iOS 10.0, *) {
-                return .creditCardNumber
-            } else {
-                return nil
-            }
+            return .creditCardNumber
         case .username:
             if #available(iOS 11.0, *) {
                 return .username
