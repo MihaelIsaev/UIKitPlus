@@ -182,33 +182,43 @@ extension DeclarativeProtocol {
     // MARK: - Relative
     
     @discardableResult
-    public func top(to side: DeclarativeConstraintYSide = .bottom, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func top(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         return spacing(.top, to: view, side, value)
     }
     
     @discardableResult
-    public func leading(to side: DeclarativeConstraintXSide = .trailing, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func leading(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         return spacing(.leading, to: view, side, value)
     }
     
     @discardableResult
-    public func trailing(to side: DeclarativeConstraintXSide = .leading, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func trailing(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         return spacing(.trailing, to: view, side, value)
     }
     
     @discardableResult
-    public func bottom(to side: DeclarativeConstraintYSide = .top, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func bottom(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         return spacing(.bottom, to: view, side, value)
     }
     
     @discardableResult
-    public func centerX(to side: DeclarativeConstraintCSide = .x, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func centerX(to side: DeclarativeConstraintCSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         return center(.x, to: view, side, value)
     }
     
     @discardableResult
-    public func centerY(to side: DeclarativeConstraintCSide = .y, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func centerX(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        return center(.x, to: view, .x, value)
+    }
+    
+    @discardableResult
+    public func centerY(to side: DeclarativeConstraintCSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         return center(.y, to: view, side, value)
+    }
+    
+    @discardableResult
+    public func centerY(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        return center(.y, to: view, .y, value)
     }
     
     @discardableResult
