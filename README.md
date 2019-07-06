@@ -33,13 +33,13 @@ lazy var view2 = View().background(.red)
                        .centerXInSuperview()
 //                      yes! you can declare constraints before adding to superivew 🤯
                        .top(to: .bottom, of: view1, 16)
-// view with view1 and view2 as subviews in that view
+// view with view1 and view2 as subviews
 let awesomeView = View.subviews { [view1, view2] }
 
 func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(awesomeView)
-    // and yes! you can reach declared constraints easily! 🤯🤯🤯
+    // and yes! you can reach and change declared constraints easily! 🤯🤯🤯
     UIView.animate(duration: 0.5) {
         view2.centerX = 30
         view2.outer[.top, view1] = 16
