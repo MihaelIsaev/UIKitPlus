@@ -25,13 +25,15 @@ Support this lib by giving a ⭐️!
 
 ## Really short intro
 ```swift
+// black 100x100 view in center of future superview
 lazy var view1 = View().background(.black).size(100).centerInSuperview()
+// red 30x20 view in horizontal center of future superview and with vertical spacing to view1
 lazy var view2 = View().background(.red)
                        .size(30, 20)
                        .centerXInSuperview()
 //                      yes! you can declare constraints before adding to superivew 🤯
                        .top(to: view1, .bottom, 16)
-
+// view with view1 and view2 as subviews in that view
 let awesomeView = View.subviews { [view1, view2] }
 
 func viewDidLoad() {
@@ -54,7 +56,7 @@ import UIKitPlus
 // with all needed constraints, properties and actions
 // even before adding them to superview!
 class LoginViewController: ViewController {
-    lazy var backButton = Button.back.tapAction {}
+    lazy var backButton = Button.back.tapAction { print("back tapped") }
 
     lazy var titleLabel = Label.welcome.text("Welcome").centerXInSuperview().topToSuperview(62)
 
