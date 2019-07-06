@@ -32,7 +32,7 @@ lazy var view2 = View().background(.red)
                        .size(30, 20)
                        .centerXInSuperview()
 //                      yes! you can declare constraints before adding to superivew 🤯
-                       .top(to: view1, .bottom, 16)
+                       .top(to: .bottom, of: view1, 16)
 // view with view1 and view2 as subviews in that view
 let awesomeView = View.subviews { [view1, view2] }
 
@@ -64,7 +64,7 @@ class LoginViewController: ViewController {
                                .edgesToSuperview(top: 120, leading: 16, trailing: -16, bottom: 0)
                                .background(.white)
                                .corners(20, .topLeft, .topRight)
-    
+
     lazy var fieldsView = VStackView { [emailField, passwordField, signInButton] }
                               .edgesToSuperview(top: 10, leading: 8, trailing: -8)
 
@@ -86,7 +86,7 @@ class LoginViewController: ViewController {
         view.backgroundColor = .black
         view.addSubview(backButton, titleLabel, contentView)
     }
-    
+
     func signIn() {
         guard let email = emailField.innerView.text,
               let password = passwordField.innerView.text else { return }
@@ -127,7 +127,7 @@ extension Button {
     }
 }
 
-// PRO-TIP2: 
+// PRO-TIP2:
 // I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
 Btw, play with it in `Playground` with our `Example` project 🎮
@@ -146,7 +146,7 @@ Wondered?❤️ Try it yourself!😃 Now!🚀
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 0.8.0'
+pod 'UIKit-Plus', '~> 0.9.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
@@ -179,8 +179,9 @@ import UIKitPlus
 | Button | UIButton |
 | Label | UILabel |
 | TextField | UITextField |
-| StackView | UIStackView |
+| SegmentedControl | UISegmentedControl |
 | VisualEffectView | UIVisualEffectView |
+| StackView | UIStackView |
 | HStackView |  |
 | VStackView |  |
 | VerificationCodeView |  |
@@ -194,9 +195,13 @@ Also you can initialize it with predefined subviews
 ```swift
 View.subviews {
     let avatar = Image("some").size(100)
-                              .edgesToSuperview(top: 0, leading: 0, trailing: 0) // stick to top, left and right
-    let name = Label("John Smith").top(to: avatar, .bottom, 8) // stick top to avatar's bottom with 16pt
-                                  .edgesToSuperview(leading: 0, trailing: 0, bottom: 0) // stick to left, right and bottom
+//                             stick to top, leading and trailing of superview
+                              .edgesToSuperview(top: 0, leading: 0, trailing: 0)
+
+//                                 stick top to bottom of avatar view with 16pt
+    let name = Label("John Smith").top(to: .bottom, of: avatar, 8)
+//                                 stick to leading, trailing and bottom of superview
+                                  .edgesToSuperview(leading: 0, trailing: 0, bottom: 0)
     return [avatar, name]
 }
 ```
@@ -375,6 +380,11 @@ TextField().shouldBeginEditing { tf in return true }
            .editingDidBegin { tf in }
            .editingChanged { tf in }
            .editingDidEnd { tf in }
+```
+
+### SegmentedControl
+```swift
+SegmentedControl("One", "Two").select(1).changed { print("segment changed to \($0)") }
 ```
 
 ### VisualEffectView
@@ -625,16 +635,16 @@ View()heightToSuperview()
 Any side of your view could also stick to any side of other view
 ```swift
 // Sides to superview
-View().top(to: someView, .bottom, 16) // stick view's top to someView`s bottom with 16pt (by default 0pt)
-View().leading(to: someView, .trailing)
-View().trailing(to: someView, .leading)
-View().bottom(to: someView, .top)
+View().top(to: .bottom, of: someView, 16) // stick view's top to someView`s bottom with 16pt (by default 0pt)
+View().leading(to: .trailing, of: someView)
+View().trailing(to: .leading, of: someView)
+View().bottom(to: .top, of: someView)
 // Center to superview
-View().centerX(to: someView, .centerX)
-View().centerY(to: someView, .centerY)
+View().centerX(to: .centerX, of: someView)
+View().centerY(to: .centerY, of: someView)
 // Dimension Superview
-View().width(to: someView, .width)
-View().height(to: someView, .height)
+View().width(to: .width, of: someView)
+View().height(to: .height, of: someView)
 ```
 or this way
 ```swift
@@ -696,7 +706,7 @@ the same way works with all view's constraints, so you can change them or even d
 Another situation if you have a view which have a constrain to another relative view
 ```swift
 let centerView = View().background(.black).size(100).centerInSuperview()
-let secondView = View().background(.green).size(100).centerXInSuperview().top(to: centerView, .bottom, 16)
+let secondView = View().background(.green).size(100).centerXInSuperview().top(to: .bottom, of: centerView, 16)
 ```
 and for example you want to reach bottom constraint of `centerView` related to `secondView`, do it like this
 ```swift
@@ -727,15 +737,28 @@ someView.safeArea.topAnchor
 ```
 
 ##### Constraint values
-Any constraint value may be set as just `CGFloat` or with `Relation` and even `Multiplier`
+Any constraint value may be set as `CGFloat` or with `Relation` and even `Multiplier`
 ```swift
-View().leading(to: anotherView, 10) // just equal to 10
-View().leading(to: anotherView, >=10) // greaterThanOrEqual to 10
-View().leading(to: anotherView, <=10) // lessThanOrEqual to 10
-View().leading(to: anotherView, 10 * 1.5) // equal to 10 with 1.5 multiplier
-View().leading(to: anotherView, 10 * 1.5 | 999) // equal to 10 with 1.5 multiplier and 999 priority
-View().leading(to: anotherView, 10 * 1.5 | .defaultLow) // equal to 10 with 1.5 multiplier and `.defaultLow` priority
-View().leading(to: anotherView, 10 | 999) // equal to 10 with 999 priority
+// just equal to 10
+View().leading(to: .trailing, of: anotherView, 10)
+
+// greaterThanOrEqual to 10
+View().leading(to: .trailing, of: anotherView, >=10)
+
+// lessThanOrEqual to 10
+View().leading(to: .trailing, of: anotherView, <=10)
+
+// equal to 10 with 1.5 multiplier
+View().leading(to: .trailing, of: anotherView, 10 * 1.5)
+
+// equal to 10 with 1.5 multiplier and 999 priority
+View().leading(to: .trailing, of: anotherView, 10 * 1.5 | 999)
+
+// equal to 10 with 1.5 multiplier and `.defaultLow` priority
+View().leading(to: .trailing, of: anotherView, 10 * 1.5 | .defaultLow)
+
+// equal to 10 with 999 priority
+View().leading(to: .trailing, of: anotherView, 10 | 999)
 ```
 
 ### Colors
