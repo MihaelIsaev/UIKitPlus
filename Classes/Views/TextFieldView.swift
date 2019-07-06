@@ -119,10 +119,37 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
         return self
     }
     
-    @available(iOS 10.0, *)
     @discardableResult
-    public func content(_ content: UITextContentType) -> TextField {
-        textContentType = content
+    public func autocapitalization(_ type: UITextAutocapitalizationType) -> TextField {
+        autocapitalizationType = type
+        return self
+    }
+    
+    @discardableResult
+    public func autocorrection(_ type: UITextAutocorrectionType) -> TextField {
+        autocorrectionType = type
+        return self
+    }
+    
+    @discardableResult
+    public func returnKeyType(_ type: UIReturnKeyType) -> TextField {
+        returnKeyType = type
+        return self
+    }
+    
+    @discardableResult
+    public func keyboardAppearance(_ appearance: UIKeyboardAppearance) -> TextField {
+        keyboardAppearance = appearance
+        return self
+    }
+    
+    @discardableResult
+    public func content(_ content: TextFieldContentType) -> TextField {
+        if #available(iOS 10.0, *) {
+            if let type = content.type {
+                textContentType = type
+            }
+        }
         return self
     }
     
