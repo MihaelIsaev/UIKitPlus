@@ -38,7 +38,6 @@ func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(awesomeView)
     // and yes! you can reach declared constraints easily! 🤯🤯🤯
-    view.addSubview(awesomeView)
     UIView.animate(duration: 0.5) {
         view2.centerX = 30
         view2.outer[.top, view1] = 16
