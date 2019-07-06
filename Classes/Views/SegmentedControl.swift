@@ -37,7 +37,7 @@ open class SegmentedControl: UISegmentedControl, DeclarativeProtocol, Declarativ
         return SegmentedControl(items)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
