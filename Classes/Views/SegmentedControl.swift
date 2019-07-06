@@ -11,16 +11,43 @@ open class SegmentedControl: UISegmentedControl, DeclarativeProtocol, Declarativ
     var _constraintsMain: DeclarativeConstraintsCollection = [:]
     var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
-    override init(items: [Any]?) {
-        super.init(items: items)
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
     }
     
-    public init(_ items: Any...) {
-        super.init(items: items)
+    init(_ items: [SegmentControlable]) {
+        super.init(items: [])
+        items.enumerated().forEach { offset, item in
+            switch item.item {
+            case .title(let title): insertSegment(withTitle: title, at: offset, animated: false)
+            case .image(let image): insertSegment(with: image, at: offset, animated: false)
+            }
+        }
+    }
+    
+    public convenience init(_ items: SegmentControlable...) {
+        self.init(items)
     }
     
     private func setup() {
+        translatesAutoresizingMaskIntoConstraints = false
         addTarget(self, action: #selector(valueChanged), for: .valueChanged)
+    }
+    
+    @discardableResult
+    public static func items(_ items: SegmentControlable...) -> SegmentedControl {
+        return SegmentedControl(items)
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        onLayoutSubviews()
+    }
+    
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        movedToSuperview()
     }
     
     @objc
@@ -31,11 +58,6 @@ open class SegmentedControl: UISegmentedControl, DeclarativeProtocol, Declarativ
     public typealias ChangedClosure = (Int) -> Void
     
     private var _valueChanged: ChangedClosure?
-    
-    @discardableResult
-    public static func items(_ items: Any...) -> SegmentedControl {
-        return SegmentedControl(items)
-    }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
