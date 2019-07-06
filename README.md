@@ -182,8 +182,8 @@ import UIKitPlus
 | ✅ | SegmentedControl | UISegmentedControl |
 | ✅ | VisualEffectView | UIVisualEffectView |
 | ✅ | StackView | UIStackView |
-| ✅ | HStackView |  |
-| ✅ | VStackView |  |
+| ✅ | HStackView | UIStackView |
+| ✅ | VStackView | UIStackView |
 | ✅ | VerificationCodeView |  |
 | ✅ | AttributedString (aka AttrStr) | NSAttributedString |
 | ✅ | ViewController | UIViewController |
