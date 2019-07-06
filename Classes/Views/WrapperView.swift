@@ -32,6 +32,18 @@ open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
     }
     
     @discardableResult
+    open override func becomeFirstResponder() -> Bool {
+        super.becomeFirstResponder()
+        return innerView.becomeFirstResponder()
+    }
+    
+    @discardableResult
+    open override func resignFirstResponder() -> Bool {
+        super.resignFirstResponder()
+        return innerView.resignFirstResponder()
+    }
+    
+    @discardableResult
     public func padding(top: CGFloat? = nil, left: CGFloat? = nil, right: CGFloat? = nil, bottom: CGFloat? = nil) -> WrapperView {
         guard top != nil || left != nil || right != nil || bottom != nil else {
             return padding(10)
