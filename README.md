@@ -23,6 +23,10 @@ Build UI in SwiftUI-like way right now in Xcode10+ and for iOS9 and higher! 😺
 
 Support this lib by giving a ⭐️!
 
+## The Main Feature
+
+You can build your view anywhere with all the constraints (even to other views), and then once you add it into a superview all the constraints will be activated.
+
 ## Really short intro
 ```swift
 // black 100x100 view in center of future superview
