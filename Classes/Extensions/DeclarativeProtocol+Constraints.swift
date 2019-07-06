@@ -212,13 +212,13 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func width(to: UIView, _ side: DeclarativeConstraintDSide = .width) -> Self {
-        return dimension(.width, to: to, side)
+    public func width(to side: DeclarativeConstraintDSide = .width, of view: UIView) -> Self {
+        return dimension(.width, to: view, side)
     }
     
     @discardableResult
-    public func height(to: UIView, _ side: DeclarativeConstraintDSide = .height) -> Self {
-        return dimension(.height, to: to, side)
+    public func height(to side: DeclarativeConstraintDSide = .height, of view: UIView) -> Self {
+        return dimension(.height, to: view, side)
     }
     
     // MARK: - Center
