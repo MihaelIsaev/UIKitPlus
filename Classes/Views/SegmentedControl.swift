@@ -19,6 +19,19 @@ class SegmentedControl: UISegmentedControl, DeclarativeProtocol, DeclarativeProt
         super.init(items: items)
     }
     
+    private func setup() {
+        addTarget(self, action: #selector(valueChanged), for: .valueChanged)
+    }
+    
+    @objc
+    private func valueChanged() {
+        _valueChanged?(selectedSegmentIndex)
+    }
+    
+    public typealias ChangedClosure = (Int) -> Void
+    
+    private var _valueChanged: ChangedClosure?
+    
     @discardableResult
     public static func items(_ items: Any...) -> SegmentedControl {
         return SegmentedControl(items)
@@ -41,8 +54,14 @@ class SegmentedControl: UISegmentedControl, DeclarativeProtocol, DeclarativeProt
     }
     
     @discardableResult
-    public func select(index: Int) -> SegmentedControl {
+    public func select(_ index: Int) -> SegmentedControl {
         selectedSegmentIndex = index
+        return self
+    }
+    
+    @discardableResult
+    public func changed(_ callback: @escaping ChangedClosure) -> SegmentedControl {
+        _valueChanged = callback
         return self
     }
 }
