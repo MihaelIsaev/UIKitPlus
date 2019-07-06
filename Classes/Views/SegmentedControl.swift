@@ -1,6 +1,6 @@
 import UIKit
 
-class SegmentedControl: UISegmentedControl, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class SegmentedControl: UISegmentedControl, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: SegmentedControl { return self }
     
     var _circleCorners: Bool = false
