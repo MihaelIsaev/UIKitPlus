@@ -1,29 +1,13 @@
 import UIKit
 
 open class FormViewController: ViewController {
-    public lazy var scrollView = ScrollView()
-    public lazy var stackView = VStackView()
-    
-    private var topConstraint: NSLayoutConstraint?
-    private var bottomConstraint: NSLayoutConstraint?
+    public lazy var scrollView = ScrollView().edgesToSuperview()
+    public lazy var stackView = VStackView().edgesToSuperview().width(to: .width, of: scrollView)
     
     open override func buildUI() {
         super.buildUI()
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
-        topConstraint = scrollView.topAnchor.constraint(equalTo: view.safeArea.topAnchor, constant: 0)
-        bottomConstraint = scrollView.bottomAnchor.constraint(equalTo: view.safeArea.bottomAnchor, constant: 0)
-        NSLayoutConstraint.activate([
-            topConstraint!,
-            scrollView.leadingAnchor.constraint(equalTo: self.view.safeArea.leadingAnchor, constant: 0),
-            scrollView.trailingAnchor.constraint(equalTo: self.view.safeArea.trailingAnchor, constant: 0),
-            bottomConstraint!,
-            stackView.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 0),
-            stackView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor, constant: 0),
-            stackView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor, constant: 0),
-            stackView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor, constant: 0),
-            stackView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, constant: 0)
-            ])
     }
     
     public override init() {
@@ -53,13 +37,13 @@ open class FormViewController: ViewController {
     
     func keyboardAppeared(_ height: CGFloat, _ animationDuration: TimeInterval) {
         keyboardWasShowedAtLeastOnce = true
-        bottomConstraint?.constant = height
+        scrollView.bottom = height * (-1)
         view.layoutIfNeeded()
     }
     
     func keyboardDisappeared(_ animationDuration: TimeInterval) -> Bool {
         guard keyboardWasShowedAtLeastOnce else { return false }
-        bottomConstraint?.constant = 0
+        scrollView.bottom = 0
         view.layoutIfNeeded()
         return true
     }
