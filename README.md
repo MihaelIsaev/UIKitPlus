@@ -29,7 +29,8 @@ lazy var view1 = View().background(.black).size(100).centerInSuperview()
 lazy var view2 = View().background(.red)
                        .size(30, 20)
                        .centerXInSuperview()
-                       .top(to: view1, .bottom, 16) // yes! you can declare constraints before adding to superivew 🤯
+                       // yes! you can declare constraints before adding to superivew 🤯
+                       .top(to: view1, .bottom, 16)
 
 let awesomeView = View.subviews { [view1, view2] }
 
