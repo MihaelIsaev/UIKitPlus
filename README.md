@@ -80,20 +80,20 @@ extension FontIdentifier {
     static var sfProMedium = FontIdentifier("SFProDisplay-Medium")
 }
 extension Label {
-    static var title: Label { return .init().color(.white).font(.sfProMedium, 18) }
+    static var title: Label { return Label().color(.white).font(.sfProMedium, 18) }
 }
 extension TextField {
     static var welcome: TextField {
-        return .init().height(40)
-                      .background(.clear)
-                      .color(.black)
-                      .tint(.mainGreen)
-                      .border(.bottom, 1, .gray)
-                      .font(.sfProRegular, 16)
+        return TextField().height(40)
+                          .background(.clear)
+                          .color(.black)
+                          .tint(.mainGreen)
+                          .border(.bottom, 1, .gray)
+                          .font(.sfProRegular, 16)
     }
 }
 extension Button {
-    static var back: Button { .init("backIcon").topToSuperview(64).leadingToSuperview(24) }
+    static var back: Button { return Button("backIcon").topToSuperview(64).leadingToSuperview(24) }
     static var bigBottomGreen: Button {
         return Button().color(.white)
                        .font(.sfProMedium, 15)
