@@ -168,23 +168,32 @@ import UIKitPlus
 ```
 
 ### Cheatsheet
-| UIKitPlus  | UIKit |
-| ------- | -------------- |
-| View | UIView |
-| WrapperView | UIView |
-| ScrollView | UIScrollView |
-| CollectionView | UICollectionView |
-| TableView | UITableView |
-| Image | UIImageView |
-| Button | UIButton |
-| Label | UILabel |
-| TextField | UITextField |
-| SegmentedControl | UISegmentedControl |
-| VisualEffectView | UIVisualEffectView |
-| StackView | UIStackView |
-| HStackView |  |
-| VStackView |  |
-| VerificationCodeView |  |
+| | UIKitPlus | UIKit |
+| - | ------- | -------------- |
+| ✅ | View | UIView |
+| ✅ | WrapperView | UIView |
+| ✅ | ScrollView | UIScrollView |
+| ✅ | CollectionView | UICollectionView |
+| ✅ | TableView | UITableView |
+| ✅ | Image | UIImageView |
+| ✅ | Button | UIButton |
+| ✅ | Label | UILabel |
+| ✅ | TextField | UITextField |
+| ✅ | SegmentedControl | UISegmentedControl |
+| ✅ | VisualEffectView | UIVisualEffectView |
+| ✅ | StackView | UIStackView |
+| ✅ | HStackView |  |
+| ✅ | VStackView |  |
+| ✅ | VerificationCodeView |  |
+| ✅ | AttributedString (aka AttrStr) | NSAttributedString |
+| ✅ | ViewController | UIViewController |
+| ✅ | NavigationController | UINavigationController |
+| ✅ | FormController | |
+
+| 🛠 | DatePicker | UIDatePicker |
+| 🛠 | Stepper | UIStepper |
+| 🛠 | Slider | UISlider |
+| 🛠 | Toggle | UISwitch |
 
 ### View
 It is just a simple view with ability to customize it declarative way
