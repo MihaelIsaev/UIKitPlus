@@ -24,7 +24,28 @@ Build UI in SwiftUI-like way right now in Xcode10+ and for iOS9 and higher! 😺
 Support this lib by giving a ⭐️!
 
 ## Really short intro
+```swift
+lazy var view1 = View().background(.black).size(100).centerInSuperview()
+lazy var view2 = View().background(.red)
+                       .size(30, 20)
+                       .centerXInSuperview()
+                       .top(to: view1, .bottom, 16) // yes! you can declare constraints before adding to superivew 🤯
 
+let awesomeView = View.subviews { [view1, view2] }
+
+func viewDidLoad() {
+    super.viewDidLoad()
+    view.addSubview(awesomeView)
+    // and yes! you can reach declared constraints easily! 🤯🤯🤯
+    view.addSubview(awesomeView)
+    UIView.animate(duration: 0.5) {
+        view2.centerX = 30
+        view2.outer[.top, view1] = 16
+        awesomeView.layoutIfNeeded()
+    }
+}
+```
+## Long intro
 ```swift
 import UIKit
 import UIKitPlus
