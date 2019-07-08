@@ -18,6 +18,13 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
         translatesAutoresizingMaskIntoConstraints = false
     }
     
+    public init (_ image: UIImage?) {
+        super.init(frame: .zero)
+        self.image = image
+        clipsToBounds = true
+        translatesAutoresizingMaskIntoConstraints = false
+    }
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
