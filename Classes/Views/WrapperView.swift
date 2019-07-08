@@ -11,10 +11,8 @@ open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
         addSubview(innerView)
     }
     
-    public init (_ innerView: () -> (V)) {
-        self.innerView = innerView().edgesToSuperview()
-        super.init(frame: .zero)
-        addSubview(self.innerView)
+    public convenience init (_ innerView: () -> (V)) {
+        self.init(innerView())
     }
     
     required public init?(coder aDecoder: NSCoder) {
