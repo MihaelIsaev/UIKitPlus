@@ -1,5 +1,5 @@
 PODS:
-  - UIKit-Plus (0.3.0)
+  - UIKit-Plus (0.9.2)
 
 DEPENDENCIES:
   - UIKit-Plus (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  UIKit-Plus: ae7d6bb10b577339d7f1c7f2e80189eeaa85d45d
+  UIKit-Plus: 24cdb3962fa6283036ec4b252b91fca1bb32d05c
 
 PODFILE CHECKSUM: 8aba0289cb40c401f1333e0b3d2944537d7bbbf9
 

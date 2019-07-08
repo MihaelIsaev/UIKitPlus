@@ -36,7 +36,7 @@ class MyViewController : UIViewController {
                                                 }
                                                 
                 }
-            ).top(to: avatar, .bottom, 16)
+            ).top(to: .bottom, of: avatar, 16)
              .centerXInSuperview()
              .spacing(10)
              .background(.green)
