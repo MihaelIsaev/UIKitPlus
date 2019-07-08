@@ -16,6 +16,7 @@ open class ViewController: UIViewController {
     }
     
     open func buildUI() {
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
     }
     
