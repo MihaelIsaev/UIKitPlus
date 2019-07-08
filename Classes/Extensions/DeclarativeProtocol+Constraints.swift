@@ -39,6 +39,11 @@ extension DeclarativeProtocol {
         return self
     }
     
+    @discardableResult
+    public func aspectRatio(_ value: ConstraintValue = 1) -> Self {
+        return dimension(.width, to: declarativeView, .height, value)
+    }
+    
     // MARK: - Edges
     
     private func _edgeSuperview(anySide: DeclarativeConstraintAnySide, to view: UIView?, toAnySide: DeclarativeConstraintAnySide, _ value: ConstraintValue = CGFloat(0)) -> Self {
