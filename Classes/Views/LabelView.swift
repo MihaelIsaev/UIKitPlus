@@ -74,6 +74,24 @@ open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     }
     
     @discardableResult
+    public func minimumScaleFactor(_ value: CGFloat) -> Label {
+        self.minimumScaleFactor = value
+        return self
+    }
+    
+    @discardableResult
+    public func lineBreakMode(_ mode: NSLineBreakMode) -> Label {
+        self.lineBreakMode = mode
+        return self
+    }
+    
+    @discardableResult
+    public func adjustsFontSizeToFitWidth(_ value: Bool = true) -> Label {
+        self.adjustsFontSizeToFitWidth = value
+        return self
+    }
+    
+    @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Label {
         return font(v: UIFont(name: identifier.fontName, size: size))
     }
