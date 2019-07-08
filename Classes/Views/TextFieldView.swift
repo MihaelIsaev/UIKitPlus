@@ -178,61 +178,61 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     private var _editingDidEnd: VoidClosure = { _ in }
     
     @discardableResult
-    public func shouldBeginEditing(_ closure: @escaping BoolClosure) -> TextField {
+    public func shouldBeginEditing(_ closure: @escaping BoolClosure) -> Self {
         _shouldBeginEditing = closure
         return self
     }
     
     @discardableResult
-    public func didBeginEditing(_ closure: @escaping VoidClosure) -> TextField {
+    public func didBeginEditing(_ closure: @escaping VoidClosure) -> Self {
         _didBeginEditing = closure
         return self
     }
     
     @discardableResult
-    public func shouldEndEditing(_ closure: @escaping BoolClosure) -> TextField {
+    public func shouldEndEditing(_ closure: @escaping BoolClosure) -> Self {
         _shouldEndEditing = closure
         return self
     }
     
     @discardableResult
-    public func didEndEditing(_ closure: @escaping VoidClosure) -> TextField {
+    public func didEndEditing(_ closure: @escaping VoidClosure) -> Self {
         _didEndEditing = closure
         return self
     }
     
     @discardableResult
-    public func shouldChangeCharacters(_ closure: @escaping ChangeCharactersClosure) -> TextField {
+    public func shouldChangeCharacters(_ closure: @escaping ChangeCharactersClosure) -> Self {
         _shouldChangeCharacters = closure
         return self
     }
     
     @discardableResult
-    public func shouldClear(_ closure: @escaping BoolClosure) -> TextField {
+    public func shouldClear(_ closure: @escaping BoolClosure) -> Self {
         _shouldClear = closure
         return self
     }
     
     @discardableResult
-    public func shouldReturn(_ closure: @escaping BoolClosure) -> TextField {
+    public func shouldReturn(_ closure: @escaping BoolClosure) -> Self {
         _shouldReturn = closure
         return self
     }
     
     @discardableResult
-    public func editingDidBegin(_ closure: @escaping VoidClosure) -> TextField {
+    public func editingDidBegin(_ closure: @escaping VoidClosure) -> Self {
         _editingDidBegin = closure
         return self
     }
     
     @discardableResult
-    public func editingChanged(_ closure: @escaping VoidClosure) -> TextField {
+    public func editingChanged(_ closure: @escaping VoidClosure) -> Self {
         _editingChanged = closure
         return self
     }
     
     @discardableResult
-    public func editingDidEnd(_ closure: @escaping VoidClosure) -> TextField {
+    public func editingDidEnd(_ closure: @escaping VoidClosure) -> Self {
         _editingDidEnd = closure
         return self
     }

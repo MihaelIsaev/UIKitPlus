@@ -73,13 +73,13 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     var spaceConstraints: [NSLayoutConstraint] = []
     
     @discardableResult
-    public func digitWidth(_ value: CGFloat) -> VerificationCodeView {
+    public func digitWidth(_ value: CGFloat) -> Self {
         widthOfDigitView = value
         return self
     }
     
     @discardableResult
-    public func digitsMargin(_ margin: CGFloat) -> VerificationCodeView {
+    public func digitsMargin(_ margin: CGFloat) -> Self {
         spaceBetweenDigitViews = margin
         return self
     }
@@ -87,68 +87,68 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     private var digitColor: UIColor = .black
     
     @discardableResult
-    public func digitColor(_ color: UIColor) -> VerificationCodeView {
+    public func digitColor(_ color: UIColor) -> Self {
         digitColor = color
         digitViews.forEach { $0.labelColor = color }
         return self
     }
     
     @discardableResult
-    public func digitColor(_ number: Int) -> VerificationCodeView {
+    public func digitColor(_ number: Int) -> Self {
         return digitColor(number.color)
     }
     
     var digitBackground: UIColor = .clear
     
     @discardableResult
-    public func digitBackground(_ color: UIColor) -> VerificationCodeView {
+    public func digitBackground(_ color: UIColor) -> Self {
         digitBackground = color
         digitViews.forEach { $0.labelBackground = color }
         return self
     }
     
     @discardableResult
-    public func digitBackground(_ number: Int) -> VerificationCodeView {
+    public func digitBackground(_ number: Int) -> Self {
         return digitBackground(number.color)
     }
     
     @discardableResult
-    public func font(v: UIFont?) -> VerificationCodeView {
+    public func font(v: UIFont?) -> Self {
         digitViews.forEach { $0.labelFont = v }
         return self
     }
     
     @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> VerificationCodeView {
+    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
         return font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
-    public func digitBorder(_ width: CGFloat, _ color: UIColor) -> VerificationCodeView {
+    public func digitBorder(_ width: CGFloat, _ color: UIColor) -> Self {
         digitViews.forEach { $0.label.border(width, color) }
         return self
     }
     
     @discardableResult
-    public func digitBorder(_ width: CGFloat, _ number: Int) -> VerificationCodeView {
+    public func digitBorder(_ width: CGFloat, _ number: Int) -> Self {
         digitBorder(width, number.color)
         return self
     }
     
     @discardableResult
-    public func digitBorder(_ side: Borders.Side, _ width: CGFloat, _ color: UIColor) -> VerificationCodeView {
+    public func digitBorder(_ side: Borders.Side, _ width: CGFloat, _ color: UIColor) -> Self {
         digitViews.forEach { $0.label.border(side, width, color) }
         return self
     }
     
     @discardableResult
-    public func digitBorder(_ side: Borders.Side, _ width: CGFloat, _ number: Int) -> VerificationCodeView {
+    public func digitBorder(_ side: Borders.Side, _ width: CGFloat, _ number: Int) -> Self {
         digitBorder(side, width, number.color)
         return self
     }
     
     @discardableResult
-    public func removeDigitBorder(_ side: Borders.Side) -> VerificationCodeView {
+    public func removeDigitBorder(_ side: Borders.Side) -> Self {
         digitViews.forEach { $0.label.removeBorder(side) }
         return self
     }
@@ -219,7 +219,7 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     }
     
     @discardableResult
-    public func entered(_ closure: @escaping EnteredClosure) -> VerificationCodeView {
+    public func entered(_ closure: @escaping EnteredClosure) -> Self {
         enteredClosure = closure
         return self
     }

@@ -50,66 +50,66 @@ open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     }
     
     @discardableResult
-    public func text(_ text: String) -> Label {
+    public func text(_ text: String) -> Self {
         self.text = text
         return self
     }
     
     @discardableResult
-    public func color(_ color: UIColor) -> Label {
+    public func color(_ color: UIColor) -> Self {
         textColor = color
         return self
     }
     
     @discardableResult
-    public func color(_ number: Int) -> Label {
+    public func color(_ number: Int) -> Self {
         textColor = number.color
         return self
     }
     
     @discardableResult
-    public func font(v: UIFont?) -> Label {
+    public func font(v: UIFont?) -> Self {
         self.font = v
         return self
     }
     
     @discardableResult
-    public func minimumScaleFactor(_ value: CGFloat) -> Label {
+    public func minimumScaleFactor(_ value: CGFloat) -> Self {
         self.minimumScaleFactor = value
         return self
     }
     
     @discardableResult
-    public func lineBreakMode(_ mode: NSLineBreakMode) -> Label {
+    public func lineBreakMode(_ mode: NSLineBreakMode) -> Self {
         self.lineBreakMode = mode
         return self
     }
     
     @discardableResult
-    public func adjustsFontSizeToFitWidth(_ value: Bool = true) -> Label {
+    public func adjustsFontSizeToFitWidth(_ value: Bool = true) -> Self {
         self.adjustsFontSizeToFitWidth = value
         return self
     }
     
     @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Label {
+    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
         return font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
-    public func alignment(_ alignment: NSTextAlignment) -> Label {
+    public func alignment(_ alignment: NSTextAlignment) -> Self {
         textAlignment = alignment
         return self
     }
     
     @discardableResult
-    public func lines(_ number: Int) -> Label {
+    public func lines(_ number: Int) -> Self {
         numberOfLines = number
         return self
     }
     
     @discardableResult
-    public func multiline() -> Label {
+    public func multiline() -> Self {
         numberOfLines = 0
         return self
     }

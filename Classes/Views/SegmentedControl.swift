@@ -64,25 +64,25 @@ open class SegmentedControl: UISegmentedControl, DeclarativeProtocol, Declarativ
     }
     
     @discardableResult
-    public func momentary(_ value: Bool = true) -> SegmentedControl {
+    public func momentary(_ value: Bool = true) -> Self {
         isMomentary = value
         return self
     }
     
     @discardableResult
-    public func apportionsSegmentWidthsByContent(_ value: Bool = true) -> SegmentedControl {
+    public func apportionsSegmentWidthsByContent(_ value: Bool = true) -> Self {
         apportionsSegmentWidthsByContent = value
         return self
     }
     
     @discardableResult
-    public func select(_ index: Int) -> SegmentedControl {
+    public func select(_ index: Int) -> Self {
         selectedSegmentIndex = index
         return self
     }
     
     @discardableResult
-    public func changed(_ callback: @escaping ChangedClosure) -> SegmentedControl {
+    public func changed(_ callback: @escaping ChangedClosure) -> Self {
         _valueChanged = callback
         return self
     }

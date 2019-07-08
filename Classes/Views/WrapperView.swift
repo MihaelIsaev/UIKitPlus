@@ -42,7 +42,7 @@ open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
     }
     
     @discardableResult
-    public func padding(top: CGFloat? = nil, left: CGFloat? = nil, right: CGFloat? = nil, bottom: CGFloat? = nil) -> WrapperView {
+    public func padding(top: CGFloat? = nil, left: CGFloat? = nil, right: CGFloat? = nil, bottom: CGFloat? = nil) -> Self {
         guard top != nil || left != nil || right != nil || bottom != nil else {
             return padding(10)
         }
@@ -62,28 +62,28 @@ open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
     }
     
     @discardableResult
-    public func padding(x: CGFloat, y: CGFloat) -> WrapperView {
+    public func padding(x: CGFloat, y: CGFloat) -> Self {
         padding(x: x)
         padding(y: y)
         return self
     }
     
     @discardableResult
-    public func padding(x: CGFloat) -> WrapperView {
+    public func padding(x: CGFloat) -> Self {
         innerView.leading = x
         innerView.trailing = x * (-1)
         return self
     }
     
     @discardableResult
-    public func padding(y: CGFloat) -> WrapperView {
+    public func padding(y: CGFloat) -> Self {
         innerView.top = y
         innerView.bottom = y * (-1)
         return self
     }
     
     @discardableResult
-    public func padding(_ value: CGFloat) -> WrapperView {
+    public func padding(_ value: CGFloat) -> Self {
         innerView.top = value
         innerView.leading = value
         innerView.trailing = value * (-1)

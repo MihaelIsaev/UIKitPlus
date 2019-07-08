@@ -55,13 +55,13 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     var backgroundHighlighted: UIColor?
     
     @discardableResult
-    public func backgroundHighlighted(_ color: UIColor, _ state: UIControl.State = .normal) -> Button {
+    public func backgroundHighlighted(_ color: UIColor, _ state: UIControl.State = .normal) -> Self {
         backgroundHighlighted = color
         return self
     }
     
     @discardableResult
-    public func backgroundHighlighted(_ number: Int, _ state: UIControl.State = .normal) -> Button {
+    public func backgroundHighlighted(_ number: Int, _ state: UIControl.State = .normal) -> Self {
         backgroundHighlighted = number.color
         return self
     }
@@ -69,7 +69,7 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     // MARK: Title
     
     @discardableResult
-    public func title(_ title: String, _ state: UIControl.State = .normal) -> Button {
+    public func title(_ title: String, _ state: UIControl.State = .normal) -> Self {
         setTitle(title, for: state)
         return self
     }
@@ -77,13 +77,13 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     // MARK: Title Color
     
     @discardableResult
-    public func color(_ color: UIColor, _ state: UIControl.State = .normal) -> Button {
+    public func color(_ color: UIColor, _ state: UIControl.State = .normal) -> Self {
         setTitleColor(color, for: state)
         return self
     }
     
     @discardableResult
-    public func color(_ number: Int, _ state: UIControl.State = .normal) -> Button {
+    public func color(_ number: Int, _ state: UIControl.State = .normal) -> Self {
         setTitleColor(number.color, for: state)
         return self
     }
@@ -91,26 +91,26 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     // MARK: Title Font
     
     @discardableResult
-    public func font(v: UIFont?) -> Button {
+    public func font(v: UIFont?) -> Self {
         titleLabel?.font = v
         return self
     }
     
     @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Button {
+    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
         return font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     // MARK: Image
     
     @discardableResult
-    public func image(_ image: UIImage?, _ state: UIControl.State = .normal) -> Button {
+    public func image(_ image: UIImage?, _ state: UIControl.State = .normal) -> Self {
         setImage(image, for: state)
         return self
     }
     
     @discardableResult
-    public func image(_ imageName: String, _ state: UIControl.State = .normal) -> Button {
+    public func image(_ imageName: String, _ state: UIControl.State = .normal) -> Self {
         setImage(UIImage(named: imageName), for: state)
         return self
     }
@@ -124,14 +124,14 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     private var tapWithButtonCallback: TapActionWithButton?
     
     @discardableResult
-    public func tapAction(_ callback: @escaping TapAction) -> Button {
+    public func tapAction(_ callback: @escaping TapAction) -> Self {
         tapCallback = callback
         addTarget(self, action: #selector(tapEvent), for: .touchUpInside)
         return self
     }
     
     @discardableResult
-    public func tapAction(_ callback: @escaping TapActionWithButton) -> Button {
+    public func tapAction(_ callback: @escaping TapActionWithButton) -> Self {
         tapWithButtonCallback = callback
         addTarget(self, action: #selector(tapEvenWithbuttont(_:)), for: .touchUpInside)
         return self

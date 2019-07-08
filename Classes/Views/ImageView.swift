@@ -45,13 +45,13 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
     }
     
     @discardableResult
-    public func mode(_ mode: UIView.ContentMode) -> Image {
+    public func mode(_ mode: UIView.ContentMode) -> Self {
         contentMode = mode
         return self
     }
     
     @discardableResult
-    public func clipsToBounds(_ value: Bool) -> Image {
+    public func clipsToBounds(_ value: Bool) -> Self {
         clipsToBounds = value
         return self
     }

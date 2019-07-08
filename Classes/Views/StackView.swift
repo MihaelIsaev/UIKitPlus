@@ -48,7 +48,7 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
     // Mask: Alignment
     
     @discardableResult
-    public func alignment(_ alignment: UIStackView.Alignment) -> _StackView {
+    public func alignment(_ alignment: UIStackView.Alignment) -> Self {
         self.alignment = alignment
         return self
     }
@@ -56,7 +56,7 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
     // Mask: Distribution
     
     @discardableResult
-    public func distribution(_ distribution: UIStackView.Distribution) -> _StackView {
+    public func distribution(_ distribution: UIStackView.Distribution) -> Self {
         self.distribution = distribution
         return self
     }
@@ -64,7 +64,7 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
     // Mask: Spacing
     
     @discardableResult
-    public func spacing(_ spacing: CGFloat) -> _StackView {
+    public func spacing(_ spacing: CGFloat) -> Self {
         self.spacing = spacing
         return self
     }

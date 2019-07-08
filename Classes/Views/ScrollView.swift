@@ -38,7 +38,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     // MARK: Paging
     
     @discardableResult
-    public func paging(_ enabled: Bool) -> ScrollView {
+    public func paging(_ enabled: Bool) -> Self {
         isPagingEnabled = enabled
         return self
     }
@@ -46,7 +46,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     // MARK: Scrolling
     
     @discardableResult
-    public func scrolling(_ enabled: Bool) -> ScrollView {
+    public func scrolling(_ enabled: Bool) -> Self {
         isScrollEnabled = enabled
         return self
     }
@@ -54,7 +54,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     // MARK: Indicators
     
     @discardableResult
-    public func hideIndicator(_ indicators: NSLayoutConstraint.Axis...) -> ScrollView {
+    public func hideIndicator(_ indicators: NSLayoutConstraint.Axis...) -> Self {
         if indicators.contains(.horizontal) {
             showsHorizontalScrollIndicator = false
         }
@@ -67,7 +67,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     // MARK: Indicators
     
     @discardableResult
-    public func hideAllIndicators() -> ScrollView {
+    public func hideAllIndicators() -> Self {
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
         return self
@@ -76,26 +76,26 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     // MARK: Content Inset
     
     @discardableResult
-    public func contentInset(_ insets: UIEdgeInsets) -> ScrollView {
+    public func contentInset(_ insets: UIEdgeInsets) -> Self {
         contentInset = insets
         return self
     }
     
     @discardableResult
-    public func contentInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> ScrollView {
+    public func contentInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
         return contentInset(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Scroll Indicator Inset
     
     @discardableResult
-    public func scrollIndicatorInsets(_ insets: UIEdgeInsets) -> ScrollView {
+    public func scrollIndicatorInsets(_ insets: UIEdgeInsets) -> Self {
         scrollIndicatorInsets = insets
         return self
     }
     
     @discardableResult
-    public func scrollIndicatorInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> ScrollView {
+    public func scrollIndicatorInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
         return scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
 }

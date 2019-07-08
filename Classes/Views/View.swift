@@ -120,7 +120,7 @@ extension View {
         addSubview(innerView().declarativeView)
     }
     
-    public func subviews(_ subviews: () -> [UIView]) -> View {
+    public func subviews(_ subviews: () -> [UIView]) -> Self {
         subviews().forEach { addSubview($0) }
         return self
     }

@@ -41,7 +41,7 @@ open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, Declarativ
     }
     
     @discardableResult
-    public func effect(_ effect: UIVisualEffect?) -> VisualEffectView {
+    public func effect(_ effect: UIVisualEffect?) -> Self {
         self.effect = effect
         return self
     }
