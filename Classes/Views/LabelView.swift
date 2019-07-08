@@ -14,12 +14,14 @@ open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     public init (_ text: String = "") {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
         self.text = text
     }
     
     public init (_ attributedStrings: AttributedString...) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
         let attrStr = NSMutableAttributedString(string: "")
         attributedStrings.forEach {
             attrStr.append($0.attributedString)
@@ -30,6 +32,7 @@ open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
     }
     
     required public init?(coder aDecoder: NSCoder) {
