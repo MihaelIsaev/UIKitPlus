@@ -1,6 +1,23 @@
 import UIKit
 
 extension UIView {
+    public var safeInsets: UIEdgeInsets {
+        var insets = UIEdgeInsets()
+        if #available(iOS 11.0, *) {
+            insets.top = safeAreaInsets.top
+        }
+        if #available(iOS 11.0, *) {
+            insets.left = safeAreaInsets.left
+        }
+        if #available(iOS 11.0, *) {
+            insets.right = safeAreaInsets.right
+        }
+        if #available(iOS 11.0, *) {
+            insets.bottom = safeAreaInsets.bottom
+        }
+        return insets
+    }
+    
     public class SafeAnchors {
         let view: UIView
         
