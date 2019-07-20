@@ -47,54 +47,54 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     @discardableResult
-    public func color(_ color: UIColor) -> TextField {
+    public func color(_ color: UIColor) -> Self {
         textColor = color
         return self
     }
     
     @discardableResult
-    public func color(_ number: Int) -> TextField {
+    public func color(_ number: Int) -> Self {
         textColor = number.color
         return self
     }
     
     @discardableResult
-    public func font(v: UIFont?) -> TextField {
+    public func font(v: UIFont?) -> Self {
         self.font = v
         return self
     }
     
     @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> TextField {
+    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
         return font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
-    public func alignment(_ alignment: NSTextAlignment) -> TextField {
+    public func alignment(_ alignment: NSTextAlignment) -> Self {
         textAlignment = alignment
         return self
     }
     
     @discardableResult
-    public func secure() -> TextField {
+    public func secure() -> Self {
         isSecureTextEntry = true
         return self
     }
     
     @discardableResult
-    public func text(_ text: String?) -> TextField {
+    public func text(_ text: String?) -> Self {
         self.text = text
         return self
     }
     
     @discardableResult
-    public func placeholder(_ text: String?) -> TextField {
+    public func placeholder(_ text: String?) -> Self {
         placeholder = text
         return self
     }
     
     @discardableResult
-    public func placeholder(_ attributedStrings: AttributedString...) -> TextField {
+    public func placeholder(_ attributedStrings: AttributedString...) -> Self {
         guard !attributedStrings.isEmpty else {
             attributedPlaceholder = nil
             return self
@@ -108,43 +108,43 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     @discardableResult
-    public func delegate(_ delegate: TextFieldDelegate?) -> TextField {
+    public func delegate(_ delegate: TextFieldDelegate?) -> Self {
         self.outsideDelegate = delegate
         return self
     }
     
     @discardableResult
-    public func keyboard(_ keyboard: UIKeyboardType) -> TextField {
+    public func keyboard(_ keyboard: UIKeyboardType) -> Self {
         keyboardType = keyboard
         return self
     }
     
     @discardableResult
-    public func autocapitalization(_ type: UITextAutocapitalizationType) -> TextField {
+    public func autocapitalization(_ type: UITextAutocapitalizationType) -> Self {
         autocapitalizationType = type
         return self
     }
     
     @discardableResult
-    public func autocorrection(_ type: UITextAutocorrectionType) -> TextField {
+    public func autocorrection(_ type: UITextAutocorrectionType) -> Self {
         autocorrectionType = type
         return self
     }
     
     @discardableResult
-    public func returnKeyType(_ type: UIReturnKeyType) -> TextField {
+    public func returnKeyType(_ type: UIReturnKeyType) -> Self {
         returnKeyType = type
         return self
     }
     
     @discardableResult
-    public func keyboardAppearance(_ appearance: UIKeyboardAppearance) -> TextField {
+    public func keyboardAppearance(_ appearance: UIKeyboardAppearance) -> Self {
         keyboardAppearance = appearance
         return self
     }
     
     @discardableResult
-    public func content(_ content: TextFieldContentType) -> TextField {
+    public func content(_ content: TextFieldContentType) -> Self {
         if #available(iOS 10.0, *) {
             if let type = content.type {
                 textContentType = type
@@ -154,7 +154,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     @discardableResult
-    public func cleanup() -> TextField {
+    public func cleanup() -> Self {
         text = ""
         __editingChanged()
         return self
