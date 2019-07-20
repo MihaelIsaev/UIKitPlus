@@ -15,4 +15,8 @@ open class VStackView: _StackView {
     required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public static func subviews(_ subviews: () -> [UIView]) -> VStackView {
+        return VStackView(subviews)
+    }
 }

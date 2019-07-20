@@ -16,4 +16,8 @@ open class HStackView: _StackView {
     required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    public static func subviews(_ subviews: () -> [UIView]) -> HStackView {
+        return HStackView(subviews)
+    }
 }
