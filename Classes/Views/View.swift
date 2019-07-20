@@ -93,6 +93,7 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
     // MARK: Single Tap
     
     private var _tapAction: ()->Void = {}
+    private var _tapActionWithView: (View)->Void = { _ in }
     
     @discardableResult
     public func tapAction(_ action: @escaping ()->Void) -> Self {
@@ -101,9 +102,21 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
         return self
     }
     
+    @discardableResult
+    public func tapAction(_ action: @escaping (View)->Void) -> Self {
+        _tapActionWithView = action
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapWithView)))
+        return self
+    }
+    
     @objc
     private func tap() {
         _tapAction()
+    }
+    
+    @objc
+    private func tapWithView() {
+        _tapActionWithView(self)
     }
 }
 
