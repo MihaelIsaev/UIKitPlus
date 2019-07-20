@@ -160,6 +160,30 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
         return self
     }
     
+    @discardableResult
+    public func leftView(_ view: UIView, mode: UITextField.ViewMode = .always) -> Self {
+        leftView = view
+        leftViewMode = mode
+        return self
+    }
+    
+    @discardableResult
+    public func leftView(mode: UITextField.ViewMode = .always, _ view: (TextField) -> UIView) -> Self {
+        return leftView(view(self), mode: mode)
+    }
+    
+    @discardableResult
+    public func rightView(_ view: UIView, mode: UITextField.ViewMode = .always) -> Self {
+        rightView = view
+        rightViewMode = mode
+        return self
+    }
+    
+    @discardableResult
+    public func rightView(mode: UITextField.ViewMode = .always, _ view: (TextField) -> UIView) -> Self {
+        return rightView(view(self), mode: mode)
+    }
+    
     // MARK: Delegate Closures
     
     public typealias ChangeCharactersClosure = (_ textField: TextField, _ range: NSRange, _ replacement: String) -> Bool
