@@ -104,6 +104,15 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
 //        return self
     }
     
+    // MARK: Tint Color
+    
+    @discardableResult
+    public func tint(_ color: UIColor) -> Self {
+        tintColor = color
+        setupAppearance()
+        return self
+    }
+    
     // MARK: Font
     
     @discardableResult
