@@ -763,16 +763,16 @@ View().leading(to: .trailing, of: anotherView, >=10)
 View().leading(to: .trailing, of: anotherView, <=10)
 
 // equal to 10 with 1.5 multiplier
-View().leading(to: .trailing, of: anotherView, 10 * 1.5)
+View().leading(to: .trailing, of: anotherView, 10 ~ 1.5)
 
 // equal to 10 with 1.5 multiplier and 999 priority
-View().leading(to: .trailing, of: anotherView, 10 * 1.5 | 999)
+View().leading(to: .trailing, of: anotherView, 10 ~ 1.5 ! 999)
 
 // equal to 10 with 1.5 multiplier and `.defaultLow` priority
-View().leading(to: .trailing, of: anotherView, 10 * 1.5 | .defaultLow)
+View().leading(to: .trailing, of: anotherView, 10 ~ 1.5 ! .defaultLow)
 
 // equal to 10 with 999 priority
-View().leading(to: .trailing, of: anotherView, 10 | 999)
+View().leading(to: .trailing, of: anotherView, 10 ! 999)
 ```
 
 ### Colors

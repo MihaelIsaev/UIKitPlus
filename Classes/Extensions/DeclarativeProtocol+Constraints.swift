@@ -175,13 +175,13 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func widthToSuperview() -> Self {
-        return _edgeSuperview(anySide: .d(.width), to: nil, toAnySide: .d(.width))
+    public func widthToSuperview(multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
+        return _edgeSuperview(anySide: .d(.width), to: nil, toAnySide: .d(.width), 0 ~ multipliedBy ! priority)
     }
     
     @discardableResult
-    public func heightToSuperview() -> Self {
-        return _edgeSuperview(anySide: .d(.height), to: nil, toAnySide: .d(.height))
+    public func heightToSuperview(multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
+        return _edgeSuperview(anySide: .d(.height), to: nil, toAnySide: .d(.height), 0 ~ multipliedBy ! priority)
     }
     
     // MARK: - Relative
@@ -227,13 +227,13 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func width(to side: DeclarativeConstraintDSide = .width, of view: UIView) -> Self {
-        return dimension(.width, to: view, side)
+    public func width(to side: DeclarativeConstraintDSide = .width, of view: UIView, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
+        return dimension(.width, to: view, side, 0 ~ multipliedBy ! priority)
     }
     
     @discardableResult
-    public func height(to side: DeclarativeConstraintDSide = .height, of view: UIView) -> Self {
-        return dimension(.height, to: view, side)
+    public func height(to side: DeclarativeConstraintDSide = .height, of view: UIView, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
+        return dimension(.height, to: view, side, 0 ~ multipliedBy ! priority)
     }
     
     // MARK: - Center
