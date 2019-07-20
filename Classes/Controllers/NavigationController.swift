@@ -128,6 +128,12 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
     }
     
     @discardableResult
+    public func hideNavigationBar(_ value: Bool = true) -> Self {
+        isNavigationBarHidden = value
+        return self
+    }
+    
+    @discardableResult
     public func enableSwipeBack(_ value: Bool = true) -> Self {
         isSwipeBackEnabled = value
         return self
