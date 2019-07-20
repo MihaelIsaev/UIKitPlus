@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'UIKit-Plus'
   s.module_name      = 'UIKitPlus'
-  s.version          = '0.10.0'
+  s.version          = '0.11.0'
   s.summary          = '🏰 Declarative UIKit wrapper inspired by SwiftUI'
 
   s.swift_version    = '4.2'
@@ -27,7 +27,7 @@ Pod::Spec.new do |s|
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'MihaelIsaev' => 'isaev.mihael@gmail.com' }
   s.source           = { :git => 'https://github.com/MihaelIsaev/UIKitPlus.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.social_media_url = 'https://twitter.com/MihaelIsaev'
 
   s.ios.deployment_target = '9.0'
 
