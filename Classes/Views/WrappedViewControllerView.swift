@@ -13,14 +13,26 @@ open class WrappedViewControllerView<V, P>: View, WrappedViewControllerable wher
         parent.addChild(inner)
         super.init(frame: .zero)
         inner.didMove(toParent: parent)
+        inner.view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(inner.view)
-        top(to: .top, of: inner.view)
-        leading(to: .leading, of: inner.view)
-        trailing(to: .trailing, of: inner.view)
-        bottom(to: .bottom, of: inner.view)
+        inner.view.topAnchor.constraint(equalTo: topAnchor).activated()
+        inner.view.leftAnchor.constraint(equalTo: leftAnchor).activated()
+        inner.view.rightAnchor.constraint(equalTo: rightAnchor).activated()
+        inner.view.bottomAnchor.constraint(equalTo: bottomAnchor).activated()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        inner.view.layer.masksToBounds = true
+        guard let customCorners = _declarativeView._customCorners else {
+            inner.view.layer.cornerRadius = layer.cornerRadius
+            return
+        }
+        inner.view.layer.cornerRadius = 0
+        inner.view.layer.mask = layer.sublayers?.first
     }
 }
