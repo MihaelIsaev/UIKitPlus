@@ -133,6 +133,7 @@ extension View {
         addSubview(innerView().declarativeView)
     }
     
+    @discardableResult
     public func subviews(_ subviews: () -> [UIView]) -> Self {
         subviews().forEach { addSubview($0) }
         return self
