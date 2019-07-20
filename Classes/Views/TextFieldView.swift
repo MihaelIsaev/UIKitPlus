@@ -196,6 +196,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     private var _didEndEditing: VoidClosure = { _ in }
     private var _shouldChangeCharacters: ChangeCharactersClosure = { _,_,_  in return true }
     private var _shouldClear: BoolClosure = { _ in return true }
+    private var _shouldReturnVoid: () -> Void = {}
     private var _shouldReturn: BoolClosure = { _ in return true }
     private var _editingDidBegin: VoidClosure = { _ in }
     private var _editingChanged: VoidClosure = { _ in }
@@ -234,6 +235,12 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     @discardableResult
     public func shouldClear(_ closure: @escaping BoolClosure) -> Self {
         _shouldClear = closure
+        return self
+    }
+    
+    @discardableResult
+    public func shouldReturn(_ closure: @escaping () -> Void) -> Self {
+        _shouldReturnVoid = closure
         return self
     }
     
@@ -303,6 +310,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        _shouldReturnVoid()
         return outsideDelegate?.textFieldShouldReturn?(self) ?? _shouldReturn(self)
     }
 }
