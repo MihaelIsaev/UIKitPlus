@@ -115,6 +115,12 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         return self
     }
     
+    @discardableResult
+    public func mode(_ mode: UIView.ContentMode) -> Self {
+        contentMode = mode
+        return self
+    }
+    
     // MARK: TouchUpInside
     
     public typealias TapAction = ()->Void
