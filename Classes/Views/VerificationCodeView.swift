@@ -72,6 +72,10 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     var widthConstraints: [NSLayoutConstraint] = []
     var spaceConstraints: [NSLayoutConstraint] = []
     
+    public var code: String {
+        return hiddenTextField.text ?? ""
+    }
+    
     @discardableResult
     public func digitWidth(_ value: CGFloat) -> Self {
         widthOfDigitView = value
@@ -121,6 +125,12 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
         return font(v: UIFont(name: identifier.fontName, size: size))
+    }
+    
+    @discardableResult
+    public func digitCorners(_ radius: CGFloat, _ corners: UIRectCorner...) -> Self {
+        digitViews.forEach { $0.label.corners(radius, corners) }
+        return self
     }
     
     @discardableResult
@@ -221,6 +231,12 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     @discardableResult
     public func entered(_ closure: @escaping EnteredClosure) -> Self {
         enteredClosure = closure
+        return self
+    }
+    
+    @discardableResult
+    public func keyboardAppearance(_ appearance: UIKeyboardAppearance) -> Self {
+        hiddenTextField.keyboardAppearance = appearance
         return self
     }
     
