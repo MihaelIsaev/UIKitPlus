@@ -42,12 +42,22 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
         movedToSuperview()
     }
     
+    // MARK: ContentInsetAdjustment
+    
+    @discardableResult
+    public func contentInsetAdjustment(_ mode: ContentInsetAdjustment) -> Self {
+        if #available(iOS 11.0, *) {
+            guard let mode = ContentInsetAdjustmentBehavior(rawValue: mode.rawValue) else { return self }
+            contentInsetAdjustmentBehavior = mode
+        }
+        return self
+    }
+    
     // MARK: Paging
     
     @discardableResult
     public func paging(_ enabled: Bool) -> Self {
         isPagingEnabled = enabled
-        
         return self
     }
     
