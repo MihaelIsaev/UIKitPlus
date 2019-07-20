@@ -9,6 +9,8 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
     
     private var viewController: T? { return viewControllers.first as? T }
     
+    public var isSwipeBackEnabled = true
+    
     open override var preferredStatusBarStyle: UIStatusBarStyle {
         if let vc = viewControllers.last {
 //            if let vc = vc as? NavControllerStyleable {
@@ -77,7 +79,7 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
     // MARK: UIGestureRecognizerDelegate
     
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
+        return viewControllers.count > 1 && isSwipeBackEnabled
     }
     
     override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -122,6 +124,12 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
     public func statusBarStyle(_ style: UIStatusBarStyle) -> NavigationController {
         statusBarStyle = style
         setNeedsStatusBarAppearanceUpdate()
+        return self
+    }
+    
+    @discardableResult
+    public func enableSwipeBack(_ value: Bool = true) -> Self {
+        isSwipeBackEnabled = value
         return self
     }
     
