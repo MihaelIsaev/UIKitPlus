@@ -22,6 +22,13 @@ open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
+        innerView.layer.masksToBounds = true
+        guard let customCorners = _declarativeView._customCorners else {
+            innerView.layer.cornerRadius = layer.cornerRadius
+            return
+        }
+        innerView.layer.cornerRadius = 0
+        innerView.layer.mask = layer.sublayers?.first
     }
     
     open override func didMoveToSuperview() {
