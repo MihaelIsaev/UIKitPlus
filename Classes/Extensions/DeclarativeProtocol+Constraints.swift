@@ -385,7 +385,7 @@ extension UIView {
                                             multiplier: preConstraint.value.multiplier,
                                             constant: constant)
         s._constraintsOuter.setValue(constraint, forKey: side, andView: to)
-        if !second, to.superview == nil, var dest = to as? DeclarativeProtocolInternal {
+        if !second, to.superview == nil, let _ = to as? DeclarativeProtocolInternal { // rethink this tricky logic
             to.activateRelative(toSide, to: self, side: side, preConstraint: preConstraint, second: true)
         }
         let isDescant = isDescendant(of: to.superview ?? UIView()) || to.isDescendant(of: superview ?? UIView())

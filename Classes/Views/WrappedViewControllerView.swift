@@ -28,7 +28,7 @@ open class WrappedViewControllerView<V>: View, WrappedViewControllerable where V
     open override func layoutSubviews() {
         super.layoutSubviews()
         inner.view.layer.masksToBounds = true
-        guard let customCorners = _declarativeView._customCorners else {
+        guard let _ = _declarativeView._customCorners else {
             inner.view.layer.cornerRadius = layer.cornerRadius
             return
         }

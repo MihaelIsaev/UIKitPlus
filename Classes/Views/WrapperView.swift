@@ -23,7 +23,7 @@ open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
         super.layoutSubviews()
         onLayoutSubviews()
         innerView.layer.masksToBounds = true
-        guard let customCorners = _declarativeView._customCorners else {
+        guard let _ = _declarativeView._customCorners else {
             innerView.layer.cornerRadius = layer.cornerRadius
             return
         }
