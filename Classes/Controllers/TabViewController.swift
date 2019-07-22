@@ -1,6 +1,6 @@
 import UIKit
 
-class TabViewController: ViewController {
+open class TabViewController: UITabBarController {
     @discardableResult
     public func title(_ title: String) -> TabViewController {
         navigationItem.title = title
