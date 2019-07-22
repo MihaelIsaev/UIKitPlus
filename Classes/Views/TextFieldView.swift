@@ -191,16 +191,16 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     public typealias VoidClosure = (TextField) -> Void
     
     private var _shouldBeginEditing: BoolClosure = { _ in return true }
-    private var _didBeginEditing: VoidClosure = { _ in }
+    private var _didBeginEditing: [VoidClosure] = []
     private var _shouldEndEditing: BoolClosure = { _ in return true }
-    private var _didEndEditing: VoidClosure = { _ in }
+    private var _didEndEditing: [VoidClosure] = []
     private var _shouldChangeCharacters: ChangeCharactersClosure = { _,_,_  in return true }
     private var _shouldClear: BoolClosure = { _ in return true }
     private var _shouldReturnVoid: () -> Void = {}
     private var _shouldReturn: BoolClosure = { _ in return true }
-    private var _editingDidBegin: VoidClosure = { _ in }
-    private var _editingChanged: VoidClosure = { _ in }
-    private var _editingDidEnd: VoidClosure = { _ in }
+    private var _editingDidBegin: [VoidClosure] = []
+    private var _editingChanged: [VoidClosure] = []
+    private var _editingDidEnd: [VoidClosure] = []
     
     @discardableResult
     public func shouldBeginEditing(_ closure: @escaping BoolClosure) -> Self {
@@ -210,7 +210,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func didBeginEditing(_ closure: @escaping VoidClosure) -> Self {
-        _didBeginEditing = closure
+        _didBeginEditing.append(closure)
         return self
     }
     
@@ -222,7 +222,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func didEndEditing(_ closure: @escaping VoidClosure) -> Self {
-        _didEndEditing = closure
+        _didEndEditing.append(closure)
         return self
     }
     
@@ -252,32 +252,32 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func editingDidBegin(_ closure: @escaping VoidClosure) -> Self {
-        _editingDidBegin = closure
+        _editingDidBegin.append(closure)
         return self
     }
     
     @discardableResult
     public func editingChanged(_ closure: @escaping VoidClosure) -> Self {
-        _editingChanged = closure
+        _editingChanged.append(closure)
         return self
     }
     
     @discardableResult
     public func editingDidEnd(_ closure: @escaping VoidClosure) -> Self {
-        _editingDidEnd = closure
+        _editingDidEnd.append(closure)
         return self
     }
     
     @objc func __editingDidBegin() {
-        _editingDidBegin(self)
+        _editingDidBegin.forEach { $0(self) }
     }
     
     @objc func __editingChanged() {
-        _editingChanged(self)
+        _editingChanged.forEach { $0(self) }
     }
     
     @objc func __editingDidEnd() {
-        _editingDidEnd(self)
+        _editingDidEnd.forEach { $0(self) }
     }
     
     // MARK: UITextFieldDelegate
@@ -288,7 +288,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         outsideDelegate?.textFieldDidBeginEditing?(self)
-        _didBeginEditing(self)
+        _didBeginEditing.forEach { $0(self) }
     }
     
     public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
@@ -297,7 +297,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
         outsideDelegate?.textFieldDidEndEditing?(self)
-        _didEndEditing(self)
+        _didEndEditing.forEach { $0(self) }
     }
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
