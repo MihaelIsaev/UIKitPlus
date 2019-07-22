@@ -107,3 +107,26 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
         return self
     }
 }
+
+// MARK: Convenience Initializers
+
+extension ScrollView {
+    public convenience init (_ innerView: UIView) {
+        self.init()
+        addSubview(innerView)
+    }
+    
+    public convenience init <V>(_ innerView: () -> V) where V: DeclarativeProtocol {
+        self.init()
+        addSubview(innerView().declarativeView)
+    }
+    
+    public func subviews(_ subviews: () -> [UIView]) -> Self {
+        subviews().forEach { addSubview($0) }
+        return self
+    }
+    
+    public static func subviews(_ subviews: () -> [UIView]) -> View {
+        return View().subviews(subviews)
+    }
+}
