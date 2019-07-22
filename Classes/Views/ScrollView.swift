@@ -98,4 +98,12 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     public func scrollIndicatorInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
         return scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
+    
+    // MARK: Delegate
+    
+    @discardableResult
+    public func delegate(_ delegate: UIScrollViewDelegate) -> Self {
+        self.delegate = delegate
+        return self
+    }
 }
