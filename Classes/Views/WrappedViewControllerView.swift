@@ -1,13 +1,13 @@
 import UIKit
 
-open class WrappedViewControllerView<V, P>: View, WrappedViewControllerable where V: UIViewController, P: UIViewController {
+open class WrappedViewControllerView<V>: View, WrappedViewControllerable where V: UIViewController {
     public let inner: V
-    public let parent: P
+    public let parent: UIViewController
     
     public var protocolView: View { return self }
     public var protocolController: UIViewController { return inner }
     
-    public init (_ inner: V, parent: P) {
+    public init (_ inner: V, parent: UIViewController) {
         self.inner = inner
         self.parent = parent
         parent.addChild(inner)
