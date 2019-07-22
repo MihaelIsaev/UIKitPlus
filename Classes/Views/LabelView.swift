@@ -56,6 +56,16 @@ open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     }
     
     @discardableResult
+    public func text(_ attributedStrings: AttributedString...) -> Self {
+        let attrStr = NSMutableAttributedString(string: "")
+        attributedStrings.forEach {
+            attrStr.append($0.attributedString)
+        }
+        attributedText = attrStr
+        return self
+    }
+    
+    @discardableResult
     public func color(_ color: UIColor) -> Self {
         textColor = color
         return self
