@@ -13,11 +13,15 @@ open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInter
     
     public init (_ style: UITableView.Style = .plain) {
         super.init(frame: .zero, style: style)
-        translatesAutoresizingMaskIntoConstraints = false
+        buildView()
     }
     
     public override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
+        buildView()
+    }
+    
+    func buildView() {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
