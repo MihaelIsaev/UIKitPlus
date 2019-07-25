@@ -20,6 +20,9 @@ public enum iPhoneNumeric {
     case iPhone6Plus(Any)
     case iPhoneX(Any)
     case iPhoneXMax(Any)
+    case iPad(Any)
+    case iPad10(Any)
+    case iPad12(Any)
     var isActual: Bool {
         switch self {
         case .iPhone4: return UIDevice.isPhone4
@@ -28,6 +31,9 @@ public enum iPhoneNumeric {
         case .iPhone6Plus: return UIDevice.isPhone6Plus
         case .iPhoneX: return UIDevice.isPhoneX
         case .iPhoneXMax: return UIDevice.isPhoneXMax
+        case .iPad: return UIDevice.isPad
+        case .iPad10: return UIDevice.isPad10
+        case .iPad12: return UIDevice.isPad12
         }
     }
 }
@@ -53,6 +59,15 @@ extension BinaryInteger {
         case .iPhoneXMax(let v):
             guard UIDevice.isPhoneXMax else { return self }
             return Self(Double(String(describing: v)) ?? Double(self))
+        case .iPad(let v):
+            guard UIDevice.isPad else { return self }
+            return Self(Double(String(describing: v)) ?? Double(self))
+        case .iPad10(let v):
+            guard UIDevice.isPad10 else { return self }
+            return Self(Double(String(describing: v)) ?? Double(self))
+        case .iPad12(let v):
+            guard UIDevice.isPad12 else { return self }
+            return Self(Double(String(describing: v)) ?? Double(self))
         }
     }
 }
@@ -77,6 +92,15 @@ extension BinaryFloatingPoint {
             return Self(Double(String(describing: v)) ?? Double(self))
         case .iPhoneXMax(let v):
             guard UIDevice.isPhoneXMax else { return self }
+            return Self(Double(String(describing: v)) ?? Double(self))
+        case .iPad(let v):
+            guard UIDevice.isPad else { return self }
+            return Self(Double(String(describing: v)) ?? Double(self))
+        case .iPad10(let v):
+            guard UIDevice.isPad10 else { return self }
+            return Self(Double(String(describing: v)) ?? Double(self))
+        case .iPad12(let v):
+            guard UIDevice.isPad12 else { return self }
             return Self(Double(String(describing: v)) ?? Double(self))
         }
     }
