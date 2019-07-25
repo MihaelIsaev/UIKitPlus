@@ -1,5 +1,7 @@
 import UIKit
 
+public typealias CollectionCell = CollectionViewCell
+
 open class CollectionViewCell: UICollectionViewCell, DeclarativeProtocol, DeclarativeProtocolInternal, Cellable {
     public var declarativeView: CollectionViewCell { return self }
     
@@ -22,9 +24,7 @@ open class CollectionViewCell: UICollectionViewCell, DeclarativeProtocol, Declar
     }
     
     open func buildView() {
-        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
-        contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.backgroundColor = .clear
     }
     
