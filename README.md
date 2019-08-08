@@ -10,7 +10,7 @@
     </a>
 </p>
 
-**This project is in active development state and anything may be changed till 1.0.0**
+**This project is in active development state till 1.0.0**
 
 Build UI in SwiftUI-like way right now in Xcode10+ and for iOS9 and higher! 😺
 
@@ -37,7 +37,7 @@ lazy var view1 = View().background(.black).size(100).centerInSuperview()
 lazy var view2 = View().background(.red)
                        .size(30, 20)
                        .centerXInSuperview()
-//                      yes! you can declare constraints before adding to superivew 🤯
+//                      yes! you can declare constraints before adding to superivew
                        .top(to: .bottom, of: view1, 16)
 // view with view1 and view2 as subviews
 let awesomeView = View.subviews { [view1, view2] }
@@ -45,7 +45,7 @@ let awesomeView = View.subviews { [view1, view2] }
 func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(awesomeView)
-    // and yes! you can reach and change declared constraints easily! 🤯🤯🤯
+    // and yes! you can reach and change declared constraints easily!
     UIView.animate(duration: 0.5) {
         view2.centerX = 30
         view2.outer[.top, view1] = 16
@@ -152,7 +152,7 @@ Wondered?❤️ Try it yourself!😃 Now!🚀
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 0.12.2'
+pod 'UIKit-Plus', '~> 0.13.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
