@@ -234,13 +234,13 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func width(to side: DeclarativeConstraintDSide = .width, of view: UIView, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        return dimension(.width, to: view, side, 0 ~ multipliedBy ! priority)
+    public func width(to side: DeclarativeConstraintDSide = .width, of view: UIView, _ relation: NSLayoutConstraint.Relation = .equal, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
+        return dimension(.width, to: view, side, ConstraintValueType(relation, 0, multipliedBy, priority))
     }
     
     @discardableResult
-    public func height(to side: DeclarativeConstraintDSide = .height, of view: UIView, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        return dimension(.height, to: view, side, 0 ~ multipliedBy ! priority)
+    public func height(to side: DeclarativeConstraintDSide = .height, of view: UIView, _ relation: NSLayoutConstraint.Relation = .equal, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
+        return dimension(.height, to: view, side, ConstraintValueType(relation, 0, multipliedBy, priority))
     }
     
     // MARK: - Center
