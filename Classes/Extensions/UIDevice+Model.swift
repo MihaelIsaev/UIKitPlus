@@ -104,11 +104,6 @@ extension UIDevice {
     }
     
     public class var isPhoneXMax: Bool {
-        print("======")
-        print("ScreenNativeHeight.iPhoneXr.rawValue: \(ScreenNativeHeight.iPhoneXr.rawValue)")
-        print("ScreenNativeHeight.iPhoneXMax.rawValue: \(ScreenNativeHeight.iPhoneXMax.rawValue)")
-        print("maxHeight: \(maxHeight)")
-        print("======")
         return isPhoneIdiom && [ScreenNativeHeight.iPhoneXr.rawValue, ScreenNativeHeight.iPhoneXMax.rawValue].contains(maxHeight)
     }
     
