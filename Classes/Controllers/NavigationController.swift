@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-open class NavigationController<T: UIViewController>: UINavigationController, UIGestureRecognizerDelegate {
+open class NavigationController<T: UIViewController>: UINavigationController, UIGestureRecognizerDelegate, NavigationControllerable {
     private lazy var font: UIFont = .systemFont(ofSize: 17)
     private lazy var style: NavigationControllerStyle = .default
     private lazy var statusBarStyle: UIStatusBarStyle = .default
