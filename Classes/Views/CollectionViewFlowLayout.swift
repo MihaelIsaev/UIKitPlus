@@ -63,4 +63,25 @@ public class CollectionViewFlowLayout: UICollectionViewFlowLayout {
         scrollDirection = direction
         return self
     }
+    
+    @discardableResult
+    public func sectionInset(_ sectionInset: UIEdgeInsets) -> Self {
+        self.sectionInset = sectionInset
+        return self
+    }
+    
+    @discardableResult
+    public func sectionInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        return sectionInset(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+    
+    @discardableResult
+    public func sectionInset(x: CGFloat, y: CGFloat) -> Self {
+        return sectionInset(.init(top: y, left: x, bottom: y, right: x))
+    }
+    
+    @discardableResult
+    public func sectionInset(_ value: CGFloat) -> Self {
+        return sectionInset(.init(top: value, left: value, bottom: value, right: value))
+    }
 }
