@@ -320,6 +320,29 @@ extension DeclarativeProtocol {
     }
     
     public var outer: OuterConstraintValues { return .init(declarativeView, _declarativeView._constraintsOuter) }
+    
+    // MARK: - Cleanup
+    
+    /// Allows to rebuild all constraints from scratch
+    /// by deactivating all existing constraints
+    /// and removing them from `preConstraints` dictionary
+    @discardableResult
+    public func deactivateAndRemoveAllConstraints() -> Self {
+        _declarativeView._constraintsMain.forEach { key, value in
+            value.isActive = false
+        }
+        _declarativeView._constraintsMain.removeAll()
+        _declarativeView._constraintsOuter.forEach { obj in
+            obj.value.forEach { key, value in
+                value.isActive = false
+            }
+        }
+        _declarativeView._constraintsOuter.removeAll()
+        _declarativeView._preConstraints.relative.removeAll()
+        _declarativeView._preConstraints.solo.removeAll()
+        _declarativeView._preConstraints.super.removeAll()
+        return self
+    }
 }
 
 extension UIView {
