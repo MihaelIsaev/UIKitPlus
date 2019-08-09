@@ -2,6 +2,10 @@ import Foundation
 
 extension String {
     public init (_ ls: LocalizedString...) {
+        self.init(ls)
+    }
+    
+    public init (_ ls: [LocalizedString]) {
         guard ls.count > 0 else {
             self.init("")
             print("⚠️ Localization: ❌ EMPTY STRING")
