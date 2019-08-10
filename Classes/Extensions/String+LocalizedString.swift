@@ -15,7 +15,7 @@ extension String {
         for ls in ls {
             switch ls.type {
             case .short:
-                if Localization.current.rawValue.starts(with: ls.value) {
+                if Localization.current.rawValue.starts(with: ls.language.rawValue) {
                     self.init(ls.value)
                     return
                 }
@@ -33,12 +33,12 @@ extension String {
             return
         }
         if let ls = ls.first(where: {
-            $0.value.contains(Localization.default.rawValue)
+            $0.language.rawValue.contains(Localization.default.rawValue)
                 || $0.prefix == Localization.default.prefix }) {
             self.init(ls.value)
             return
         }
         self.init("❔❔❔")
-        print("⚠️ Localization: ❌ UNABLE TO DETECT LOCALE 🤬 set breakpoint here to find that string")
+        print("⚠️ Localization: ❌ UNABLE TO DETECT LOCALE 🤬 set breakpoint here to find that string (current locale: \(Localization.current)")
     }
 }

@@ -1316,7 +1316,7 @@ public enum LocalizedString {
     }
     
     public var prefix: String {
-        return value.components(separatedBy: "_").first ?? value
+        return language.prefix
     }
     
     public enum ValueType {
