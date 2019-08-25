@@ -152,7 +152,7 @@ Wondered?❤️ Try it yourself!😃 Now!🚀
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 0.14.1'
+pod 'UIKit-Plus', '~> 0.15.2'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
