@@ -1,11 +1,11 @@
 import UIKit
 
-public class CollectionViewFlowLayout: UICollectionViewFlowLayout {
+open class CollectionViewFlowLayout: UICollectionViewFlowLayout {
     public override init () {
         super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
