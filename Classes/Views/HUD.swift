@@ -16,6 +16,7 @@ open class HUD: View {
         .color(.white)
         .alignment(.center)
     lazy var subTitleLabel = Label()
+        .multiline()
         .font(v: .systemFont(ofSize: 16))
         .color(.white)
         .alignment(.center)
