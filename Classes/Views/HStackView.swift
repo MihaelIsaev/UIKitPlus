@@ -1,6 +1,9 @@
 import UIKit
 
-open class HStackView: _StackView {
+@available(*, deprecated, renamed: "HStack")
+public typealias HStackView = HStack
+
+open class HStack: _StackView {
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
         axis = .horizontal
