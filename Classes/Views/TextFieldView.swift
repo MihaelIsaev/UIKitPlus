@@ -216,7 +216,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     private var _didBeginEditing: [VoidClosure] = []
     private var _shouldEndEditing: BoolClosure = { _ in return true }
     private var _didEndEditing: [VoidClosure] = []
-    private var _shouldChangeCharacters: ChangeCharactersClosure = { _,_,_  in return true }
+    private var _shouldChangeCharacters: ChangeCharactersClosure?
     private var _shouldClear: BoolClosure = { _ in return true }
     private var _shouldReturnVoid: () -> Void = {}
     private var _shouldReturn: BoolClosure = { _ in return true }
@@ -323,8 +323,13 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return outsideDelegate?.textField?(self, shouldChangeCharactersIn: range, replacementString: string)
-            ?? _shouldChangeCharacters(self, range, string)
+        if let result = outsideDelegate?.textField?(self, shouldChangeCharactersIn: range, replacementString: string) {
+            return result
+        }
+        if let handler = _shouldChangeCharacters {
+            return handler(self, range, string)
+        }
+        return true
     }
     
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
