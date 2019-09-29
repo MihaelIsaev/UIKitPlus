@@ -135,4 +135,22 @@ open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInter
         separatorColor = value
         return self
     }
+    
+    @discardableResult
+    public func separatorStyle(_ value: UITableViewCell.SeparatorStyle) -> Self {
+        separatorStyle = value
+        return self
+    }
+    
+    @discardableResult
+    public func separatorInset(_ value: UIEdgeInsets) -> Self {
+        separatorInset = value
+        return self
+    }
+    
+    @discardableResult
+    public func separatorInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        separatorInset = .init(top: top, left: left, bottom: bottom, right: right)
+        return self
+    }
 }
