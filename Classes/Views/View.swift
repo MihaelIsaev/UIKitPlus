@@ -11,14 +11,24 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
     var _constraintsMain: DeclarativeConstraintsCollection = [:]
     var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
+    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+        super.init(frame: .zero)
+        _setup()
+        addSubview(block().viewBuilderItems)
+    }
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        translatesAutoresizingMaskIntoConstraints = false
-        buildView()
+        _setup()
     }
     
     public convenience init () {
         self.init(frame: .zero)
+    }
+    
+    private func _setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        buildView()
     }
     
     required public init?(coder aDecoder: NSCoder) {

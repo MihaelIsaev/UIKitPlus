@@ -11,13 +11,23 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     var _constraintsMain: DeclarativeConstraintsCollection = [:]
     var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
+    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+        super.init(frame: .zero)
+        _setup()
+        addSubview(block().viewBuilderItems)
+    }
+    
     public init () {
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
+        _setup()
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        _setup()
+    }
+    
+    private func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
     }
     

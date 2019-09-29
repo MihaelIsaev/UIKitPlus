@@ -1,22 +1,25 @@
 import UIKit
 
-open class VStackView: _StackView {
-    public init (_ subviews: UIView...)  {
+@available(*, deprecated, renamed: "VStack")
+public typealias VStackView = VStack
+
+open class VStack: _StackView {
+    public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
         axis = .vertical
-        subviews.forEach { self.addArrangedSubview($0) }
+        block().viewBuilderItems.forEach { addArrangedSubview($0) }
     }
-    public init (_ subviews: () -> [UIView])  {
+    
+    public override init () {
         super.init(frame: .zero)
         axis = .vertical
-        subviews().forEach { self.addArrangedSubview($0) }
     }
     
     required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public static func subviews(_ subviews: () -> [UIView]) -> VStackView {
-        return VStackView(subviews)
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> VStackView {
+        return VStackView(block: block)
     }
 }
