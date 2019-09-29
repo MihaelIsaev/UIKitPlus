@@ -51,6 +51,17 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     
     var digitViews: [DigitView] = []
     
+    var isSecureField = false {
+        didSet {
+            edited(hiddenTextField)
+        }
+    }
+    var secureSymbol = "∙" {
+        didSet {
+            edited(hiddenTextField)
+        }
+    }
+    
     var widthOfDigitView: CGFloat = 24 {
         didSet {
             widthConstraints.forEach { constraint in
@@ -74,6 +85,18 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     
     public var code: String {
         return hiddenTextField.text ?? ""
+    }
+    
+    @discardableResult
+    public func secured(_ value: Bool = true) -> Self {
+        isSecureField = value
+        return self
+    }
+    
+    @discardableResult
+    public func secureSymbol(_ value: String) -> Self {
+        secureSymbol = value
+        return self
     }
     
     @discardableResult
@@ -207,7 +230,7 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
             guard let index = labels.firstIndex(of: label) else { continue }
             let letters = text.map { String($0) }
             if letters.count >= index + 1 {
-                label.text = String(letters[index])
+                label.text = isSecureField ? secureSymbol : String(letters[index])
                 label.alpha = 1
             } else {
                 label.text = ""
