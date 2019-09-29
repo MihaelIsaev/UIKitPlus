@@ -18,6 +18,14 @@ open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         self.text = text
     }
     
+    public init (_ text: State<String>) {
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
+        self.text = text.wrappedValue
+        text.listen { self.text = $0 }
+    }
+    
     public init (_ attributedStrings: AttributedString...) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -27,6 +35,16 @@ open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
             attrStr.append($0.attributedString)
         }
         attributedText = attrStr
+    }
+    
+    var stateString: StateStringBuilder.Handler?
+    
+    public init (@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) {
+        self.stateString = stateString
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
+        self.text = stateString()
     }
     
     public override init(frame: CGRect) {
@@ -47,6 +65,13 @@ open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         movedToSuperview()
+    }
+    
+    /// Refreshes using `RefreshHandler`
+    public func refresh() {
+        if let stateString = stateString {
+            text = stateString()
+        }
     }
     
     @discardableResult
@@ -121,6 +146,48 @@ open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     @discardableResult
     public func multiline() -> Self {
         numberOfLines = 0
+        return self
+    }
+    
+    // MARK: Reaction on @State
+    
+    @discardableResult
+    public func react<A>(to a: State<A>) -> Self {
+        a.listen { _ in self.refresh() }
+        return self
+    }
+    
+    @discardableResult
+    public func react<A, B>(to a: State<A>, _ b: State<B>) -> Self {
+        a.listen { _ in self.refresh() }
+        b.listen { _ in self.refresh() }
+        return self
+    }
+    
+    @discardableResult
+    public func react<A, B, C>(to a: State<A>, _ b: State<B>, _ c: State<C>) -> Self {
+        a.listen { _ in self.refresh() }
+        b.listen { _ in self.refresh() }
+        c.listen { _ in self.refresh() }
+        return self
+    }
+    
+    @discardableResult
+    public func react<A, B, C, D>(to a: State<A>, _ b: State<B>, _ c: State<C>, _ d: State<D>) -> Self {
+        a.listen { _ in self.refresh() }
+        b.listen { _ in self.refresh() }
+        c.listen { _ in self.refresh() }
+        d.listen { _ in self.refresh() }
+        return self
+    }
+    
+    @discardableResult
+    public func react<A, B, C, D, E>(to a: State<A>, _ b: State<B>, _ c: State<C>, _ d: State<D>, _ e: State<E>) -> Self {
+        a.listen { _ in self.refresh() }
+        b.listen { _ in self.refresh() }
+        c.listen { _ in self.refresh() }
+        d.listen { _ in self.refresh() }
+        e.listen { _ in self.refresh() }
         return self
     }
 }
