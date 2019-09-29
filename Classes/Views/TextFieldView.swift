@@ -16,12 +16,27 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     public init (_ text: String? = nil) {
         super.init(frame: .zero)
         self.text = text
-        setup()
+        _setup()
+    }
+    
+    private var binding: UIKitPlus.State<String>?
+    
+    public init (_ text: UIKitPlus.State<String>) {
+        self.binding = text
+        super.init(frame: .zero)
+        self.text = text.wrappedValue
+        _setup()
+    }
+    
+    @discardableResult
+    public func bind(_ to: UIKitPlus.State<String>) -> Self {
+        self.binding = to
+        return self
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        _setup()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -38,7 +53,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
         movedToSuperview()
     }
     
-    private func setup() {
+    private func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
         delegate = self
         addTarget(self, action: #selector(__editingDidBegin), for: .editingDidBegin)
@@ -296,6 +311,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @objc func __editingChanged() {
         _editingChanged.forEach { $0(self) }
+        binding?.wrappedValue = self.text ?? ""
     }
     
     @objc func __editingDidEnd() {
