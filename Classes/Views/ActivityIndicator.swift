@@ -34,5 +34,35 @@ open class ActivityIndicator: UIActivityIndicatorView, DeclarativeProtocol, Decl
         super.didMoveToSuperview()
         movedToSuperview()
     }
+    
+    @discardableResult
+    public func color(_ color: UIColor) -> Self {
+        self.color = color
+        return self
+    }
+    
+    @discardableResult
+    public func color(_ number: Int) -> Self {
+        self.color = number.color
+        return self
+    }
+    
+    @discardableResult
+    public func hidesWhenStopped() -> Self {
+        self.hidesWhenStopped = true
+        return self
+    }
+    
+    @discardableResult
+    public func hidesWhenStopped(_ value: Bool = true) -> Self {
+        self.hidesWhenStopped = value
+        return self
+    }
+    
+    @discardableResult
+    public func animate() -> Self {
+        startAnimating()
+        return self
+    }
 }
 
