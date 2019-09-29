@@ -195,6 +195,17 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
         return inputView(view(self))
     }
     
+    @discardableResult
+    public func inputAccessoryView(_ view: UIView) -> Self {
+        inputAccessoryView = view
+        return self
+    }
+    
+    @discardableResult
+    public func inputAccessoryView(_ view: (TextField) -> UIView) -> Self {
+        return inputAccessoryView(view(self))
+    }
+    
     // MARK: Delegate Closures
     
     public typealias ChangeCharactersClosure = (_ textField: TextField, _ range: NSRange, _ replacement: String) -> Bool
