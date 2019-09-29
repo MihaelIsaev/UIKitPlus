@@ -3,19 +3,24 @@ import Foundation
 private var localization = Localization()
 
 public class Localization {
-    let currentLocale = Locale.current
+    let currentLocaleIdentifier = Locale.preferredLanguages.first ?? Locale.current.identifier
     
     var defaultLanguage: Language = .en
     
     lazy var currentLanguage: Language = detectCurrentLanguage()
     
     func detectCurrentLanguage() -> Language {
-        if let language = Language(rawValue: currentLocale.identifier) {
+        if let language = Language(rawValue: currentLocaleIdentifier) {
             return language
         }
-        if let locale = currentLocale.identifier.components(separatedBy: "_").first, let language = Language(rawValue: locale) {
-            return language
+        if let locale = currentLocaleIdentifier.components(separatedBy: "_").first {
+            if let language = Language(rawValue: locale) {
+                return language
+            } else if let locale = locale.components(separatedBy: "-").first, let language = Language(rawValue: locale) {
+                return language
+            }
         }
+        
         return defaultLanguage
     }
     
