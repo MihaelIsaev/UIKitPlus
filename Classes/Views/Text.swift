@@ -1,6 +1,11 @@
 import UIKit
 
-open class Label: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
+/// aka `UILabel`
+@available(*, deprecated, renamed: "Text")
+public typealias Label = Text
+
+/// aka `UILabel`
+open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Label { return self }
     
     var _circleCorners: Bool = false
