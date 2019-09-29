@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 prefix operator >=
 public prefix func >=(rhs: CGFloat) -> ConstraintValueType {

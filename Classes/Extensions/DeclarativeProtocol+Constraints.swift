@@ -183,12 +183,12 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func widthToSuperview(multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        return _edgeSuperview(anySide: .d(.width), to: nil, toAnySide: .d(.width), 0 ~ multipliedBy ! priority)
+        return _edgeSuperview(anySide: .d(.width), to: nil, toAnySide: .d(.width), 0 ~ multipliedBy ! priority.rawValue)
     }
     
     @discardableResult
     public func heightToSuperview(multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        return _edgeSuperview(anySide: .d(.height), to: nil, toAnySide: .d(.height), 0 ~ multipliedBy ! priority)
+        return _edgeSuperview(anySide: .d(.height), to: nil, toAnySide: .d(.height), 0 ~ multipliedBy ! priority.rawValue)
     }
     
     // MARK: - Relative
