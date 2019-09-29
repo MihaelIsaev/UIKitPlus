@@ -13,6 +13,5 @@ let package = Package(
     targets: [
         .target(name: "UIKitPlus", dependencies: [], path: "Classes"),
 //        .testTarget(name: "UIKitPlusTests", dependencies: ["UIKitPlus"]),
-        ],
-    swiftLanguageVersions: [.v5_1]
+        ]
 )
