@@ -2,8 +2,10 @@ import Foundation
 import UIKit
 
 extension UICollectionView {
-    public func register(_ cellClass: Cellable.Type...) {
+    @discardableResult
+    public func register(_ cellClass: Cellable.Type...) -> Self {
         cellClass.forEach { register($0, forCellWithReuseIdentifier: $0.reuseIdentifier) }
+        return self
     }
     
     public func dequeueReusableCell<T: Cellable>(with class: T.Type, for indexPath: IndexPath) -> T {
