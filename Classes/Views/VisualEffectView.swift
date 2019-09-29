@@ -45,6 +45,22 @@ open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, Declarativ
         self.effect = effect
         return self
     }
+    
+    // MARK: Single Tap
+    
+    private var _tapAction: ()->Void = {}
+    
+    @discardableResult
+    public func tapAction(_ action: @escaping ()->Void) -> Self {
+        _tapAction = action
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
+        return self
+    }
+    
+    @objc
+    private func tap() {
+        _tapAction()
+    }
 }
 
 // MARK: Convenience Initializers
