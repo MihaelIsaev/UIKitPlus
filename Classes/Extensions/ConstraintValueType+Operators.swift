@@ -6,9 +6,19 @@ public prefix func >=(rhs: CGFloat) -> ConstraintValueType {
     return .init(.greaterThanOrEqual, rhs)
 }
 
+prefix operator >=-
+public prefix func >=-(rhs: CGFloat) -> ConstraintValueType {
+    return .init(.greaterThanOrEqual, -1 * rhs)
+}
+
 prefix operator <=
 public prefix func <=(rhs: CGFloat) -> ConstraintValueType {
     return .init(.lessThanOrEqual, rhs)
+}
+
+prefix operator <=-
+public prefix func <=-(rhs: CGFloat) -> ConstraintValueType {
+    return .init(.lessThanOrEqual, -1 * rhs)
 }
 
 /// Operator for constraint + multiplier
