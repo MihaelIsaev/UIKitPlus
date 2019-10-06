@@ -250,5 +250,17 @@ open class HUD: View {
         contentView.background(number)
         return self
     }
+    
+    @discardableResult
+    public func dimColor(_ color: UIColor) -> Self {
+        backgroundOverlay.background(color)
+        return self
+    }
+    
+    @discardableResult
+    public func dimColor(_ number: Int) -> Self {
+        backgroundOverlay.background(number)
+        return self
+    }
 }
 
