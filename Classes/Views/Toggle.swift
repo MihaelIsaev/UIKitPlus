@@ -22,6 +22,10 @@ open class Toggle: UISwitch, DeclarativeProtocol, DeclarativeProtocolInternal {
         binding = state
         super.init(frame: .zero)
         setup()
+        isOn = state.wrappedValue
+        binding?.listen { _, new in
+            self.setOn(new, animated: true)
+        }
     }
     
     required public init?(coder aDecoder: NSCoder) {
