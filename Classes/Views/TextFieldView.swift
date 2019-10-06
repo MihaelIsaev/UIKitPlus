@@ -13,25 +13,35 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     private weak var outsideDelegate: TextFieldDelegate?
     
+    fileprivate var stateString: StateStringBuilder.Handler?
+    private var binding: UIKitPlus.State<String>?
+    
     public init (_ text: String? = nil) {
         super.init(frame: .zero)
         self.text = text
         _setup()
     }
     
-    private var binding: UIKitPlus.State<String>?
-    
-    public init (_ text: UIKitPlus.State<String>) {
-        self.binding = text
+    public init (_ state: UIKitPlus.State<String>) {
+        self.binding = state
         super.init(frame: .zero)
-        self.text = text.wrappedValue
+        self.text = state.wrappedValue
         _setup()
     }
     
-    @discardableResult
-    public func bind(_ to: UIKitPlus.State<String>) -> Self {
-        self.binding = to
-        return self
+    public init <V>(_ expressable: ExpressableState<V, String>) {
+        super.init(frame: .zero)
+        self.stateString = expressable.value
+        text = expressable.value()
+        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
+        _setup()
+    }
+    
+    public init (@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) {
+        super.init(frame: .zero)
+        self.stateString = stateString
+        text = stateString()
+        _setup()
     }
     
     public override init(frame: CGRect) {
