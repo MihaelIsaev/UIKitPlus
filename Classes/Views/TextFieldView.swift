@@ -72,6 +72,12 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     @discardableResult
+    public func bind(_ to: UIKitPlus.State<String>) -> Self {
+        self.binding = to
+        return self
+    }
+    
+    @discardableResult
     public func color(_ color: UIColor) -> Self {
         textColor = color
         return self
@@ -109,6 +115,40 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     @discardableResult
     public func text(_ text: String?) -> Self {
         self.text = text
+        binding?.wrappedValue = text ?? ""
+        return self
+    }
+    
+    @discardableResult
+    public func text(_ attributedStrings: AttributedString...) -> Self {
+        let attrStr = NSMutableAttributedString(string: "")
+        attributedStrings.forEach {
+            attrStr.append($0.attributedString)
+        }
+        attributedText = attrStr
+        binding?.wrappedValue = attrStr.string
+        return self
+    }
+    
+    @discardableResult
+    public func text(_ state: UIKitPlus.State<String>) -> Self {
+        text = state.wrappedValue
+        state.listen { _,n in self.text = n }
+        return self
+    }
+    
+    @discardableResult
+    public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
+        self.stateString = expressable.value
+        text = expressable.value()
+        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
+        return self
+    }
+    
+    @discardableResult
+    public func text(@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) -> Self {
+        self.stateString = stateString
+        text = stateString()
         return self
     }
     
@@ -393,4 +433,13 @@ public protocol TextFieldDelegate: NSObjectProtocol {
     
     @objc @available(iOS 2.0, *)
     optional func textFieldShouldReturn(_ textField: TextField) -> Bool
+}
+
+extension TextField: Refreshable {
+    /// Refreshes using `RefreshHandler`
+    public func refresh() {
+        if let stateString = stateString {
+            text = stateString()
+        }
+    }
 }
