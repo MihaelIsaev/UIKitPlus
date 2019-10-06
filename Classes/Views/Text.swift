@@ -83,13 +83,6 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         movedToSuperview()
     }
     
-    /// Refreshes using `RefreshHandler`
-    public func refresh() {
-        if let stateString = stateString {
-            text = stateString()
-        }
-    }
-    
     @discardableResult
     public func text(_ text: String) -> Self {
         self.text = text
@@ -186,46 +179,13 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         numberOfLines = 0
         return self
     }
-    
-    // MARK: Reaction on @State
-    
-    @discardableResult
-    public func react<A>(to a: State<A>) -> Self {
-        a.listen { _ in self.refresh() }
-        return self
-    }
-    
-    @discardableResult
-    public func react<A, B>(to a: State<A>, _ b: State<B>) -> Self {
-        a.listen { _ in self.refresh() }
-        b.listen { _ in self.refresh() }
-        return self
-    }
-    
-    @discardableResult
-    public func react<A, B, C>(to a: State<A>, _ b: State<B>, _ c: State<C>) -> Self {
-        a.listen { _ in self.refresh() }
-        b.listen { _ in self.refresh() }
-        c.listen { _ in self.refresh() }
-        return self
-    }
-    
-    @discardableResult
-    public func react<A, B, C, D>(to a: State<A>, _ b: State<B>, _ c: State<C>, _ d: State<D>) -> Self {
-        a.listen { _ in self.refresh() }
-        b.listen { _ in self.refresh() }
-        c.listen { _ in self.refresh() }
-        d.listen { _ in self.refresh() }
-        return self
-    }
-    
-    @discardableResult
-    public func react<A, B, C, D, E>(to a: State<A>, _ b: State<B>, _ c: State<C>, _ d: State<D>, _ e: State<E>) -> Self {
-        a.listen { _ in self.refresh() }
-        b.listen { _ in self.refresh() }
-        c.listen { _ in self.refresh() }
-        d.listen { _ in self.refresh() }
-        e.listen { _ in self.refresh() }
-        return self
+}
+
+extension Text: Refreshable {
+    /// Refreshes using `RefreshHandler`
+    public func refresh() {
+        if let stateString = stateString {
+            text = stateString()
+        }
     }
 }
