@@ -1,7 +1,9 @@
 import UIKit
 
 extension UIView {
-    open func body(@ViewBuilder block: ViewBuilder.SingleView) {
+    @discardableResult
+    open func body(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
         addSubview(block().viewBuilderItems)
+        return self
     }
 }
