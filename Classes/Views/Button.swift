@@ -163,15 +163,15 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     @discardableResult
     public func tapAction(_ callback: @escaping TapActionWithButton) -> Self {
         tapWithButtonCallback = callback
-        addTarget(self, action: #selector(tapEvenWithbuttont(_:)), for: .touchUpInside)
+        addTarget(self, action: #selector(tapEvenWithButton(_:)), for: .touchUpInside)
         return self
     }
     
-    @objc private func tapEvent() {
+    @objc func tapEvent() {
         tapCallback?()
     }
     
-    @objc private func tapEvenWithbuttont(_ button: Button) {
+    @objc func tapEvenWithButton(_ button: Button) {
         tapWithButtonCallback?(button)
     }
 }
