@@ -121,6 +121,30 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         return self
     }
     
+    // MARK: Insets
+    
+    @discardableResult
+    public func titleInsets(_ insets: UIEdgeInsets) -> Self {
+        titleEdgeInsets = insets
+        return self
+    }
+    
+    @discardableResult
+    public func titleInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        return titleInsets(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+    
+    @discardableResult
+    public func imageInsets(_ insets: UIEdgeInsets) -> Self {
+        imageEdgeInsets = insets
+        return self
+    }
+    
+    @discardableResult
+    public func imageInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        return imageInsets(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+    
     // MARK: TouchUpInside
     
     public typealias TapAction = ()->Void
