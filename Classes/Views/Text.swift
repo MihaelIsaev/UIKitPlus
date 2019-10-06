@@ -16,6 +16,9 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     var _constraintsMain: DeclarativeConstraintsCollection = [:]
     var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
+    fileprivate var stateString: StateStringBuilder.Handler?
+    private var binding: UIKitPlus.State<String>?
+    
     public init (_ text: String = "") {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -23,12 +26,13 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         self.text = text
     }
     
-    public init (_ text: State<String>) {
+    public init (_ state: State<String>) {
+        self.binding = state
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
-        self.text = text.wrappedValue
-        text.listen { self.text = $0 }
+        text = state.wrappedValue
+        state.listen { _,n in self.text = n }
     }
     
     public init (_ attributedStrings: AttributedString...) {
@@ -42,7 +46,14 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         attributedText = attrStr
     }
     
-    var stateString: StateStringBuilder.Handler?
+    public init<V>(_ expressable: ExpressableState<V, String>) {
+        stateString = expressable.value
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
+        text = expressable.value()
+        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
+    }
     
     public init (@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) {
         self.stateString = stateString
@@ -92,6 +103,28 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
             attrStr.append($0.attributedString)
         }
         attributedText = attrStr
+        return self
+    }
+    
+    @discardableResult
+    public func text(_ state: State<String>) -> Self {
+        text = state.wrappedValue
+        state.listen { _,n in self.text = n }
+        return self
+    }
+    
+    @discardableResult
+    public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
+        self.stateString = expressable.value
+        text = expressable.value()
+        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
+        return self
+    }
+    
+    @discardableResult
+    public func text(@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) -> Self {
+        self.stateString = stateString
+        text = stateString()
         return self
     }
     
