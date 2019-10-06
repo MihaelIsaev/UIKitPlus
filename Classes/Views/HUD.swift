@@ -26,16 +26,19 @@ open class HUD: View {
         .background(.init(red: 0, green: 0, blue: 0, alpha: 0.7))
         .centerInSuperview()
         .topToSuperview(>=20)
-        .leadingToSuperview(>=20 ! 999)
-        .trailingToSuperview(<=(-20) ! 999)
-        .bottomToSuperview(<=(-20))
-    lazy var backgroundOverlay = View().background(.init(red: 0, green: 0, blue: 0, alpha: 0.2)).edgesToSuperview()
+        .leadingToSuperview(>=20 ! 998)
+        .trailingToSuperview(<=-20 ! 998)
+        .bottomToSuperview(<=-20)
+    lazy var backgroundOverlay = View().background(.init(red: 0, green: 0, blue: 0, alpha: 0.2)).edgesToSuperview().masksToBounds()
     
     open override func buildView() {
         super.buildView()
         hidden()
         edgesToSuperview()
-        addSubview(backgroundOverlay, contentView)
+        body {
+            backgroundOverlay
+            contentView
+        }
     }
     
     // MARK: - Setup
