@@ -2,6 +2,10 @@ import Foundation
 import UIKit
 
 open class ViewController: UIViewController {
+    open override var preferredStatusBarStyle: UIStatusBarStyle { statusBarStyle.rawValue }
+    /// UIKitPlus reimplementation of `preferredStatusBarStyle`
+    open var statusBarStyle: StatusBarStyle { .default }
+    
     public init () {
         super.init(nibName: nil, bundle: nil)
         subscribeToKeyboardNotifications()

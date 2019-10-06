@@ -2,25 +2,26 @@ import Foundation
 import UIKit
 
 open class NavigationController<T: UIViewController>: UINavigationController, UIGestureRecognizerDelegate, NavigationControllerable {
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        if let last = viewControllers.last {
+            if let last = last as? ViewController {
+                return last.statusBarStyle.rawValue
+            }
+            return last.preferredStatusBarStyle
+        }
+        return statusBarStyle.rawValue
+    }
+    /// UIKitPlus reimplementation of `preferredStatusBarStyle`
+    open var statusBarStyle: StatusBarStyle { _statusBarStyle ?? .default }
+    private var _statusBarStyle: StatusBarStyle?
+    
     private lazy var font: UIFont = .systemFont(ofSize: 17)
     private lazy var style: NavigationControllerStyle = .default
-    private lazy var statusBarStyle: UIStatusBarStyle = .default
     private lazy var tintColor: UIColor = .white
     
     private var viewController: T? { return viewControllers.first as? T }
     
     public var isSwipeBackEnabled = true
-    
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
-        if let vc = viewControllers.last {
-//            if let vc = vc as? NavControllerStyleable {
-//                return vc.navStatusBarStyle
-//            } else {
-                return vc.preferredStatusBarStyle
-//            }
-        }
-        return statusBarStyle
-    }
     
     public init() {
         let viewController = T(nibName: nil, bundle: nil)
@@ -130,8 +131,8 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
     }
     
     @discardableResult
-    public func statusBarStyle(_ style: UIStatusBarStyle) -> NavigationController {
-        statusBarStyle = style
+    public func statusBarStyle(_ style: StatusBarStyle) -> NavigationController {
+        _statusBarStyle = style
         setNeedsStatusBarAppearanceUpdate()
         return self
     }
