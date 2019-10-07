@@ -1,15 +1,9 @@
 import UIKit
 
 open class ActivityIndicator: UIActivityIndicatorView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: ActivityIndicator { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: ActivityIndicator { self }
+    public lazy var properties = Properties<ActivityIndicator>()
+    lazy var _properties = PropertiesInternal()
     
     public override init(style: UIActivityIndicatorView.Style) {
         super.init(style: style)

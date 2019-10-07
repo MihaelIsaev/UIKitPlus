@@ -1,15 +1,9 @@
 import UIKit
 
 open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: TextField { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: TextField { self }
+    public lazy var properties = Properties<TextField>()
+    lazy var _properties = PropertiesInternal()
     
     private weak var outsideDelegate: TextFieldDelegate?
     

@@ -3,8 +3,8 @@ import UIKit
 extension DeclarativeProtocol {
     @discardableResult
     public func border(_ width: CGFloat, _ color: CGColor) -> Self {
-        _declarativeView._borders.views.forEach { $0.value.removeFromSuperview() }
-        _declarativeView._borders.views.removeAll()
+        _declarativeView._properties.borders.views.forEach { $0.value.removeFromSuperview() }
+        _declarativeView._properties.borders.views.removeAll()
         declarativeView.layer.borderWidth = width
         declarativeView.layer.borderColor = color
         return self
@@ -54,8 +54,8 @@ extension DeclarativeProtocol {
                 border.heightAnchor.constraint(equalToConstant: width)
                 ])
         }
-        _declarativeView._borders.views[side]?.removeFromSuperview()
-        _declarativeView._borders.views.removeValue(forKey: side)
+        _declarativeView._properties.borders.views[side]?.removeFromSuperview()
+        _declarativeView._properties.borders.views.removeValue(forKey: side)
         return self
     }
     
@@ -66,8 +66,8 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func removeBorder(_ side: Borders.Side) -> Self {
-        _declarativeView._borders.views[side]?.removeFromSuperview()
-        _declarativeView._borders.views.removeValue(forKey: side)
+        _declarativeView._properties.borders.views[side]?.removeFromSuperview()
+        _declarativeView._properties.borders.views.removeValue(forKey: side)
         return self
     }
 }

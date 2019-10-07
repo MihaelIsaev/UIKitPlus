@@ -1,15 +1,9 @@
 import UIKit
 
 open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: CollectionView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: CollectionView { self }
+    public lazy var properties = Properties<CollectionView>()
+    lazy var _properties = PropertiesInternal()
     
     static var defaultLayout: UICollectionViewFlowLayout {
         return CollectionViewFlowLayout().itemSize(50).minimumInteritemSpacing(5).minimumLineSpacing(5)

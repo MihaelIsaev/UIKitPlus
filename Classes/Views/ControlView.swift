@@ -1,15 +1,9 @@
 import UIKit
 
 open class ControlView: UIControl, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: ControlView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: ControlView { self }
+    public lazy var properties = Properties<ControlView>()
+    lazy var _properties = PropertiesInternal()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)

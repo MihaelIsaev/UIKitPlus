@@ -1,15 +1,10 @@
 import UIKit
 
 open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: TableView { return self }
+    public var declarativeView: TableView { self }
+    public lazy var properties = Properties<TableView>()
+    lazy var _properties = PropertiesInternal()
     
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     public init (_ style: UITableView.Style = .plain) {
         super.init(frame: .zero, style: style)

@@ -1,15 +1,9 @@
 import UIKit
 
 open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: View { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: View { self }
+    public lazy var properties = Properties<View>()
+    lazy var _properties = PropertiesInternal()
     
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
@@ -98,35 +92,6 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesCancelled(touches, with: event)
         _touchesCancelled?(touches, event)
-    }
-    
-    // MARK: Single Tap
-    
-    private var _tapAction: ()->Void = {}
-    private var _tapActionWithView: (View)->Void = { _ in }
-    
-    @discardableResult
-    public func tapAction(_ action: @escaping ()->Void) -> Self {
-        _tapAction = action
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
-        return self
-    }
-    
-    @discardableResult
-    public func tapAction(_ action: @escaping (View)->Void) -> Self {
-        _tapActionWithView = action
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapWithView)))
-        return self
-    }
-    
-    @objc
-    private func tap() {
-        _tapAction()
-    }
-    
-    @objc
-    private func tapWithView() {
-        _tapActionWithView(self)
     }
 }
 

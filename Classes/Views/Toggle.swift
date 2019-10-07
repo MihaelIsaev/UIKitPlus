@@ -1,15 +1,9 @@
 import UIKit
 
 open class Toggle: UISwitch, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Toggle { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: Toggle { self }
+    public lazy var properties = Properties<Toggle>()
+    lazy var _properties = PropertiesInternal()
     
     var binding: UIKitPlus.State<Bool>?
     

@@ -1,15 +1,9 @@
 import UIKit
 
 open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Image { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: Image { self }
+    public lazy var properties = Properties<Image>()
+    lazy var _properties = PropertiesInternal()
     
     var _imageLoader: ImageLoader = .defaultRelease
     

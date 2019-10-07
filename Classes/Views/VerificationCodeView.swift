@@ -1,15 +1,9 @@
 import UIKit
 
 open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: VerificationCodeView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: VerificationCodeView { self }
+    public lazy var properties = Properties<VerificationCodeView>()
+    lazy var _properties = PropertiesInternal()
     
     private let quantity: Int
     
@@ -275,15 +269,9 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
 
 extension VerificationCodeView {
     class DigitView: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
-        public var declarativeView: DigitView { return self }
-        
-        var _circleCorners: Bool = false
-        var _customCorners: CustomCorners?
-        lazy var _borders = Borders()
-        
-        var _preConstraints = DeclarativePreConstraints()
-        var _constraintsMain: DeclarativeConstraintsCollection = [:]
-        var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+        public var declarativeView: DigitView { self }
+        public lazy var properties = Properties<DigitView>()
+        lazy var _properties = PropertiesInternal()
         
         public init () {
             super.init(frame: .zero)

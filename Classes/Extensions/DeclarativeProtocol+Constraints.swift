@@ -27,7 +27,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func width(_ value: ConstraintValue) -> Self {
         let preConstraint = PreConstraint(attribute1: .width, attribute2: nil, value: value.constraintValue)
-        _declarativeView._preConstraints.solo[.width] = preConstraint
+        _declarativeView._properties.preConstraints.solo[.width] = preConstraint
         declarativeView.activateSolo(preConstraint: preConstraint, side: .width)
         return self
     }
@@ -35,7 +35,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func height(_ value: ConstraintValue) -> Self {
         let preConstraint = PreConstraint(attribute1: .height, attribute2: nil, value: value.constraintValue)
-        _declarativeView._preConstraints.solo[.height] = preConstraint
+        _declarativeView._properties.preConstraints.solo[.height] = preConstraint
         declarativeView.activateSolo(preConstraint: preConstraint, side: .height)
         return self
     }
@@ -62,7 +62,7 @@ extension DeclarativeProtocol {
                 declarativeView.activateSuper(anySide.attribute, to: view, side: toAnySide.attribute, preConstraint: preConstraint)
             }
         }
-        _declarativeView._preConstraints.super[anySide.attribute] = preConstraint
+        _declarativeView._properties.preConstraints.super[anySide.attribute] = preConstraint
         return self
     }
     
@@ -280,46 +280,46 @@ extension DeclarativeProtocol {
     }
     
     public var height: CGFloat? {
-        get { return _declarativeView._constraintsMain[.height]?.constant }
-        set { _declarativeView._constraintsMain.setValue(newValue, for: .height) }
+        get { return _declarativeView._properties.constraintsMain[.height]?.constant }
+        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .height) }
     }
     
     public var width: CGFloat? {
-        get { return _declarativeView._constraintsMain[.width]?.constant }
-        set { _declarativeView._constraintsMain.setValue(newValue, for: .width) }
+        get { return _declarativeView._properties.constraintsMain[.width]?.constant }
+        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .width) }
     }
     
     public var top: CGFloat? {
-        get { return _declarativeView._constraintsMain[.top]?.constant }
-        set { _declarativeView._constraintsMain.setValue(newValue, for: .top) }
+        get { return _declarativeView._properties.constraintsMain[.top]?.constant }
+        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .top) }
     }
     
     public var leading: CGFloat? {
-        get { return _declarativeView._constraintsMain[.leading]?.constant }
-        set { _declarativeView._constraintsMain.setValue(newValue, for: .leading) }
+        get { return _declarativeView._properties.constraintsMain[.leading]?.constant }
+        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .leading) }
     }
     
     public var trailing: CGFloat? {
-        get { return _declarativeView._constraintsMain[.trailing]?.constant }
-        set { _declarativeView._constraintsMain.setValue(newValue, for: .trailing) }
+        get { return _declarativeView._properties.constraintsMain[.trailing]?.constant }
+        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .trailing) }
     }
     
     public var bottom: CGFloat? {
-        get { return _declarativeView._constraintsMain[.bottom]?.constant }
-        set { _declarativeView._constraintsMain.setValue(newValue, for: .bottom) }
+        get { return _declarativeView._properties.constraintsMain[.bottom]?.constant }
+        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .bottom) }
     }
     
     public var centerX: CGFloat? {
-        get { return _declarativeView._constraintsMain[.centerX]?.constant }
-        set { _declarativeView._constraintsMain.setValue(newValue, for: .centerX) }
+        get { return _declarativeView._properties.constraintsMain[.centerX]?.constant }
+        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .centerX) }
     }
     
     public var centerY: CGFloat? {
-        get { return _declarativeView._constraintsMain[.centerY]?.constant }
-        set { _declarativeView._constraintsMain.setValue(newValue, for: .centerY) }
+        get { return _declarativeView._properties.constraintsMain[.centerY]?.constant }
+        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .centerY) }
     }
     
-    public var outer: OuterConstraintValues { return .init(declarativeView, _declarativeView._constraintsOuter) }
+    public var outer: OuterConstraintValues { return .init(declarativeView, _declarativeView._properties.constraintsOuter) }
     
     // MARK: - Cleanup
     
@@ -328,19 +328,19 @@ extension DeclarativeProtocol {
     /// and removing them from `preConstraints` dictionary
     @discardableResult
     public func deactivateAndRemoveAllConstraints() -> Self {
-        _declarativeView._constraintsMain.forEach { key, value in
+        _declarativeView._properties.constraintsMain.forEach { key, value in
             value.isActive = false
         }
-        _declarativeView._constraintsMain.removeAll()
-        _declarativeView._constraintsOuter.forEach { obj in
+        _declarativeView._properties.constraintsMain.removeAll()
+        _declarativeView._properties.constraintsOuter.forEach { obj in
             obj.value.forEach { key, value in
                 value.isActive = false
             }
         }
-        _declarativeView._constraintsOuter.removeAll()
-        _declarativeView._preConstraints.relative.removeAll()
-        _declarativeView._preConstraints.solo.removeAll()
-        _declarativeView._preConstraints.super.removeAll()
+        _declarativeView._properties.constraintsOuter.removeAll()
+        _declarativeView._properties.preConstraints.relative.removeAll()
+        _declarativeView._properties.preConstraints.solo.removeAll()
+        _declarativeView._properties.preConstraints.super.removeAll()
         return self
     }
 }
@@ -364,18 +364,18 @@ extension UIView {
         default: return
         }
         if let constraint = constraint {
-            if let _ = self._constraintsMain[side] {
-                self._constraintsMain.setValue(constraint.constant, for: side)
+            if let _ = self._properties.constraintsMain[side] {
+                self._properties.constraintsMain.setValue(constraint.constant, for: side)
             } else {
-                self._constraintsMain[side] = constraint.update(preConstraint.value).activated()
+                self._properties.constraintsMain[side] = constraint.update(preConstraint.value).activated()
             }
         }
     }
     
     func activateSuper(_ side: NSLayoutConstraint.Attribute, to: UIView, side toSide: NSLayoutConstraint.Attribute, preConstraint: PreConstraint) {
         guard let s = self as? DeclarativeProtocolInternal else { return }
-        s._constraintsMain.removeValue(for: side)
-        s._preConstraints.super[side] = preConstraint
+        s._properties.constraintsMain.removeValue(for: side)
+        s._properties.preConstraints.super[side] = preConstraint
         let constant = preConstraint.value.value
         let constraint = NSLayoutConstraint(item: self,
                                             attribute: side,
@@ -384,10 +384,10 @@ extension UIView {
                                             attribute: toSide,
                                             multiplier: preConstraint.value.multiplier,
                                             constant: constant)
-        s._constraintsMain.setValue(constraint.update(preConstraint.value), for: side)
+        s._properties.constraintsMain.setValue(constraint.update(preConstraint.value), for: side)
         if let dest = to as? DeclarativeProtocolInternal {
-            dest._preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: self)
-            dest._constraintsOuter.setValue(constraint, forKey: toSide, andView: self)
+            dest._properties.preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: self)
+            dest._properties.constraintsOuter.setValue(constraint, forKey: toSide, andView: self)
         }
         if superview != nil && to.superview != nil || superview == to || to.superview == self {
             constraint.isActive = true
@@ -397,8 +397,8 @@ extension UIView {
     @discardableResult
     func activateRelative(_ side: NSLayoutConstraint.Attribute, to: UIView, side toSide: NSLayoutConstraint.Attribute, preConstraint: PreConstraint, second: Bool = false) -> Self {
         guard let s = self as? DeclarativeProtocolInternal else { return self }
-        s._constraintsOuter.removeValue(forKey: side, andView: to)
-        s._preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: to)
+        s._properties.constraintsOuter.removeValue(forKey: side, andView: to)
+        s._properties.preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: to)
         let constant = preConstraint.value.value
         let constraint = NSLayoutConstraint(item: self,
                                             attribute: side,
@@ -407,7 +407,7 @@ extension UIView {
                                             attribute: toSide,
                                             multiplier: preConstraint.value.multiplier,
                                             constant: constant)
-        s._constraintsOuter.setValue(constraint, forKey: side, andView: to)
+        s._properties.constraintsOuter.setValue(constraint, forKey: side, andView: to)
         if !second, to.superview == nil, let _ = to as? DeclarativeProtocolInternal { // rethink this tricky logic
             to.activateRelative(toSide, to: self, side: side, preConstraint: preConstraint, second: true)
         }

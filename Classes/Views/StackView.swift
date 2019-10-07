@@ -31,15 +31,9 @@ open class StackView: _StackView {
 }
 
 open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: _StackView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: _StackView { self }
+    public lazy var properties = Properties<_StackView>()
+    lazy var _properties = PropertiesInternal()
     
     public init () {
         super.init(frame: .zero)

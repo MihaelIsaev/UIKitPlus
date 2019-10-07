@@ -1,15 +1,9 @@
 import UIKit
 
 open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: ScrollView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: ScrollView { self }
+    public lazy var properties = Properties<ScrollView>()
+    lazy var _properties = PropertiesInternal()
     
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)

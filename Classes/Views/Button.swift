@@ -1,15 +1,9 @@
 import UIKit
 
 open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Button { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: Button { self }
+    public lazy var properties = Properties<Button>()
+    lazy var _properties = PropertiesInternal()
     
     public init (_ title: String = "") {
         super.init(frame: .zero)
@@ -143,35 +137,5 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     @discardableResult
     public func imageInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
         return imageInsets(.init(top: top, left: left, bottom: bottom, right: right))
-    }
-    
-    // MARK: TouchUpInside
-    
-    public typealias TapAction = ()->Void
-    public typealias TapActionWithButton = (Button)->Void
-    
-    private var tapCallback: TapAction?
-    private var tapWithButtonCallback: TapActionWithButton?
-    
-    @discardableResult
-    public func tapAction(_ callback: @escaping TapAction) -> Self {
-        tapCallback = callback
-        addTarget(self, action: #selector(tapEvent), for: .touchUpInside)
-        return self
-    }
-    
-    @discardableResult
-    public func tapAction(_ callback: @escaping TapActionWithButton) -> Self {
-        tapWithButtonCallback = callback
-        addTarget(self, action: #selector(tapEvenWithButton(_:)), for: .touchUpInside)
-        return self
-    }
-    
-    @objc func tapEvent() {
-        tapCallback?()
-    }
-    
-    @objc func tapEvenWithButton(_ button: Button) {
-        tapWithButtonCallback?(button)
     }
 }

@@ -6,15 +6,9 @@ public typealias Label = Text
 
 /// aka `UILabel`
 open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Label { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: Label { self }
+    public lazy var properties = Properties<Label>()
+    lazy var _properties = PropertiesInternal()
     
     fileprivate var stateString: StateStringBuilder.Handler?
     private var binding: UIKitPlus.State<String>?

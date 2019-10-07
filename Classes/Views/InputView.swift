@@ -3,15 +3,9 @@ import UIKit
 open class InputView: UIInputView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public static var defaultKeyboardHeight: CGFloat = 216
     
-    public var declarativeView: InputView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: InputView { self }
+    public lazy var properties = Properties<InputView>()
+    lazy var _properties = PropertiesInternal()
     
     public override init(frame: CGRect, inputViewStyle: UIInputView.Style) {
         super.init(frame: frame, inputViewStyle: inputViewStyle)

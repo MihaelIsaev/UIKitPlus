@@ -1,15 +1,9 @@
 import UIKit
 
 open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: VisualEffectView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: VisualEffectView { self }
+    public lazy var properties = Properties<VisualEffectView>()
+    lazy var _properties = PropertiesInternal()
     
     public override init(effect: UIVisualEffect?) {
         super.init(effect: effect)
@@ -44,22 +38,6 @@ open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, Declarativ
     public func effect(_ effect: UIVisualEffect?) -> Self {
         self.effect = effect
         return self
-    }
-    
-    // MARK: Single Tap
-    
-    private var _tapAction: ()->Void = {}
-    
-    @discardableResult
-    public func tapAction(_ action: @escaping ()->Void) -> Self {
-        _tapAction = action
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
-        return self
-    }
-    
-    @objc
-    private func tap() {
-        _tapAction()
     }
 }
 
