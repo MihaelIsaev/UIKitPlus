@@ -96,10 +96,9 @@ extension StaticList: UITableViewDataSource {
 extension StaticList: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let view = views[indexPath.row] as? View {
-            view._tap()
+            view.gestureRecognizers?.forEach { ($0 as? TapGestureRecognizer)?.action() }
         } else if let view = views[indexPath.row] as? Button {
-            view.tapEvent()
-            view.tapEvenWithButton(view)
+            view.triggerActionHandler()
         }
     }
     
