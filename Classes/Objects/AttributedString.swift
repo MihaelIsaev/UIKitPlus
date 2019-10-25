@@ -4,7 +4,7 @@ import UIKit
 public typealias AttrStr = AttributedString
 
 open class AttributedString {
-    var attributedString: NSMutableAttributedString
+    public var attributedString: NSMutableAttributedString
     
     public init (_ string: String) {
         attributedString = .init(string: string)
