@@ -26,6 +26,17 @@ open class DatePicker: UIDatePicker, DeclarativeProtocol, DeclarativeProtocolInt
     }
     
     @discardableResult
+    public func textColor(_ color: UIColor) -> Self {
+        setValue(color, forKey: "textColor")
+        return self
+    }
+    
+    @discardableResult
+    public func textColor(_ hex: Int) -> Self {
+        return textColor(hex.color)
+    }
+    
+    @discardableResult
     public func mode(_ value: UIDatePicker.Mode) -> Self {
         datePickerMode = value
         return self
