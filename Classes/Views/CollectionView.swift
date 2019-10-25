@@ -5,7 +5,7 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
     public lazy var properties = Properties<CollectionView>()
     lazy var _properties = PropertiesInternal()
     
-    static var defaultLayout: UICollectionViewFlowLayout {
+    public static var defaultLayout: UICollectionViewFlowLayout {
         return CollectionViewFlowLayout().itemSize(50).minimumInteritemSpacing(5).minimumLineSpacing(5)
     }
     
