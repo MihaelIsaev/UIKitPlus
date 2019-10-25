@@ -19,18 +19,27 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
         _setup()
     }
     
-    public init (_ url: State<URL>, _ defaultImage: UIImage? = nil) {
+    public init (_ image: State<UIImage?>) {
         super.init(frame: .zero)
+        self.image = image.wrappedValue
         _setup()
-        self.image = defaultImage
-        self._imageLoader.load(url.wrappedValue, imageView: self)
-        url.listen { [weak self] old, new in
+        image.listen { [weak self] old, new in
             guard let self = self else { return }
-            self._imageLoader.load(new, imageView: self)
+            self.image = new
         }
     }
     
-    public init (_ url: State<String>, _ defaultImage: UIImage? = nil, _ loader: ImageLoader = .defaultRelease) {
+    public init <V>(_ expressable: ExpressableState<V, UIImage?>) {
+        super.init(frame: .zero)
+        self.image = expressable.value()
+        _setup()
+        expressable.state.listen { [weak self] old, new in
+            guard let self = self else { return }
+            self.image = expressable.value()
+        }
+    }
+    
+    public init (_ url: State<URL>, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
         super.init(frame: .zero)
         _setup()
         self.image = defaultImage
@@ -40,6 +49,34 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
             guard let self = self else { return }
             self._imageLoader.load(new, imageView: self)
         }
+    }
+    
+    public init (_ url: State<String>, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
+        super.init(frame: .zero)
+        _setup()
+        self.image = defaultImage
+        self._imageLoader = loader
+        self._imageLoader.load(url.wrappedValue, imageView: self)
+        url.listen { [weak self] old, new in
+            guard let self = self else { return }
+            self._imageLoader.load(new, imageView: self)
+        }
+    }
+    
+    public init (url: URL, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
+        super.init(frame: .zero)
+        _setup()
+        self.image = defaultImage
+        self._imageLoader = loader
+        self._imageLoader.load(url, imageView: self)
+    }
+    
+    public init (url: String, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
+        super.init(frame: .zero)
+        _setup()
+        self.image = defaultImage
+        self._imageLoader = loader
+        self._imageLoader.load(url, imageView: self)
     }
     
     public override init(frame: CGRect) {
@@ -78,12 +115,6 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
     @discardableResult
     public func clipsToBounds(_ value: Bool) -> Self {
         clipsToBounds = value
-        return self
-    }
-    
-    @discardableResult
-    public func loader(_ loader: ImageLoader) -> Self {
-        _imageLoader = loader
         return self
     }
 }
