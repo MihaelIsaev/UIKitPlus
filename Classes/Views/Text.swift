@@ -127,6 +127,30 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         return self
     }
     
+    public var colorState: State<UIColor> { properties.$background }
+    
+    @discardableResult
+    public func color(_ color: State<UIColor>) -> Self {
+        declarativeView.textColor = color.wrappedValue
+        properties.textColor = color.wrappedValue
+        color.listen { [weak self] old, new in
+            self?.declarativeView.textColor = new
+            self?.properties.textColor = new
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func color<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
+        declarativeView.textColor = expressable.value()
+        properties.textColor = expressable.value()
+        expressable.state.listen { [weak self] old, new in
+            self?.declarativeView.textColor = expressable.value()
+            self?.properties.textColor = expressable.value()
+        }
+        return self
+    }
+    
     @discardableResult
     public func font(v: UIFont?) -> Self {
         self.font = v
