@@ -6,10 +6,16 @@ open class StaticList: View {
     public override init (@ViewBuilder block: ViewBuilder.SingleView) {
         views = block().viewBuilderItems
         super.init(frame: .zero)
+        setup()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    /// Applies some defaults to the list
+    public func setup() {
+        tableView.separatorStyle(.none)
     }
     
     lazy var tableView = TableView()
@@ -27,10 +33,11 @@ open class StaticList: View {
             let diff = old.difference(new)
             let deletions = diff.removed.compactMap { $0.index }
             let insertions = diff.inserted.compactMap { $0.index }
+            let modifications = diff.modified.compactMap { $0.index }
             self?.tableView.beginUpdates()
             self?.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0)}), with: .automatic)
             self?.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
-//            tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
+            self?.tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
             self?.tableView.endUpdates()
         }
         tableView.reloadData()
@@ -104,22 +111,5 @@ extension StaticList: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return false
-    }
-}
-
-class StaticListCell: TableViewCell {
-    init (_ rootView: UIView) {
-        super.init(style: .default, reuseIdentifier: nil)
-        addSubview(rootView)
-        NSLayoutConstraint.activate([
-            leadingAnchor.constraint(equalTo: rootView.leadingAnchor),
-            trailingAnchor.constraint(equalTo: rootView.trailingAnchor),
-            topAnchor.constraint(equalTo: rootView.topAnchor),
-            bottomAnchor.constraint(equalTo: rootView.bottomAnchor)
-        ])
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
