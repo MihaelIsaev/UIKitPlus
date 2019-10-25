@@ -103,6 +103,18 @@ extension View {
         addSubview(innerView)
     }
     
+    public convenience init (inline inlineView: UIView) {
+        self.init()
+        inlineView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(inlineView)
+        NSLayoutConstraint.activate([
+            leadingAnchor.constraint(equalTo: inlineView.leadingAnchor),
+            trailingAnchor.constraint(equalTo: inlineView.trailingAnchor),
+            topAnchor.constraint(equalTo: inlineView.topAnchor),
+            bottomAnchor.constraint(equalTo: inlineView.bottomAnchor)
+        ])
+    }
+    
     public convenience init <V>(_ innerView: () -> V) where V: DeclarativeProtocol {
         self.init()
         addSubview(innerView().declarativeView)
