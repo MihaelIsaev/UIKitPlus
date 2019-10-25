@@ -1,3 +1,4 @@
+import Foundation
 import UIKit
 
 open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, DeclarativeProtocolInternal {
@@ -263,6 +264,48 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     @discardableResult
     public func inputAccessoryView(_ view: (TextField) -> UIView) -> Self {
         return inputAccessoryView(view(self))
+    }
+    
+    var textRect: CGRect?
+    
+    open override func textRect(forBounds bounds: CGRect) -> CGRect {
+        if let textRect = textRect {
+            return textRect
+        }
+        return super.textRect(forBounds: bounds)
+    }
+        
+    @discardableResult
+    public func textInsets(_ insets: UIEdgeInsets) -> Self {
+        textRect = bounds.inset(by: insets)
+//        layoutIfNeeded()
+        return self
+    }
+    
+    @discardableResult
+    public func textInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        return textInsets(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+    
+    var editingRect: CGRect?
+    
+    open override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        if let editingRect = editingRect {
+            return editingRect
+        }
+        return super.editingRect(forBounds: bounds)
+    }
+    
+    @discardableResult
+    public func editingInsets(_ insets: UIEdgeInsets) -> Self {
+        editingRect = bounds.inset(by: insets)
+//        layoutIfNeeded()
+        return self
+    }
+    
+    @discardableResult
+    public func editingInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        return editingInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Delegate Closures
