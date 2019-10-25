@@ -1,14 +1,22 @@
 import UIKit
 
-open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
+open class WrapperView<V>: View where V: UIView {
     public override var declarativeView: WrapperView { return self }
     
     public let innerView: V
     
+    var topConstraint, leadingConstraint, trailingConstraint, bottomConstraint: NSLayoutConstraint!
+    
     public init (_ innerView: V) {
-        self.innerView = innerView.edgesToSuperview()
+        self.innerView = innerView
         super.init(frame: .zero)
+        innerView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(innerView)
+        topConstraint = innerView.topAnchor.constraint(equalTo: topAnchor, constant: 0)
+        leadingConstraint = innerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0)
+        trailingConstraint = innerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
+        bottomConstraint = innerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
+        NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, bottomConstraint])
     }
     
     public convenience init (_ innerView: () -> (V)) {
@@ -22,13 +30,13 @@ open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
-        innerView.layer.masksToBounds = true
-        guard let _ = _declarativeView._properties.customCorners else {
-            innerView.layer.cornerRadius = layer.cornerRadius
-            return
-        }
-        innerView.layer.cornerRadius = 0
-        innerView.layer.mask = layer.sublayers?.first
+//        innerView.layer.masksToBounds = true
+//        guard let _ = _declarativeView._properties.customCorners else {
+//            innerView.layer.cornerRadius = layer.cornerRadius
+//            return
+//        }
+//        innerView.layer.cornerRadius = 0
+//        innerView.layer.mask = layer.sublayers?.first
     }
     
     open override func didMoveToSuperview() {
@@ -54,16 +62,16 @@ open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
             return padding(10)
         }
         if let top = top {
-            innerView.top = top
+            topConstraint.constant = top
         }
         if let left = left {
-            innerView.leading = left
+            leadingConstraint.constant = left
         }
         if let right = right {
-            innerView.trailing = right * (-1)
+            trailingConstraint.constant = right * (-1)
         }
         if let bottom = bottom {
-            innerView.bottom = bottom * (-1)
+            bottomConstraint.constant = bottom * (-1)
         }
         return self
     }
@@ -77,24 +85,24 @@ open class WrapperView<V>: View where V: UIView, V: DeclarativeProtocol {
     
     @discardableResult
     public func padding(x: CGFloat) -> Self {
-        innerView.leading = x
-        innerView.trailing = x * (-1)
+        leadingConstraint.constant = x
+        trailingConstraint.constant = x * (-1)
         return self
     }
     
     @discardableResult
     public func padding(y: CGFloat) -> Self {
-        innerView.top = y
-        innerView.bottom = y * (-1)
+        topConstraint.constant = y
+        bottomConstraint.constant = y * (-1)
         return self
     }
     
     @discardableResult
     public func padding(_ value: CGFloat) -> Self {
-        innerView.top = value
-        innerView.leading = value
-        innerView.trailing = value * (-1)
-        innerView.bottom = value * (-1)
+        topConstraint.constant = value
+        leadingConstraint.constant = value
+        trailingConstraint.constant = value * (-1)
+        bottomConstraint.constant = value * (-1)
         return self
     }
 }
