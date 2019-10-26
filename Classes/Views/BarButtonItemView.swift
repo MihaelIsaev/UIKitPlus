@@ -21,6 +21,13 @@ open class BarButtonItem: UIBarButtonItem {
         setup()
     }
     
+    public init(_ image: State<UIImage>) {
+        super.init()
+        self.image = image.wrappedValue
+        setup()
+        image.listen { self.image = $0 }
+    }
+    
     public init(image imageName: String) {
         super.init()
         self.image = UIImage(named: imageName)
@@ -73,6 +80,8 @@ open class BarButtonItem: UIBarButtonItem {
         return self
     }
     
+    // MARK: tint
+    
     @discardableResult
     public func tint(_ color: UIColor) -> Self {
         self.tintColor = color
@@ -82,5 +91,29 @@ open class BarButtonItem: UIBarButtonItem {
     @discardableResult
     public func tint(_ color: Int) -> Self {
         tint(color.color)
+    }
+    
+    @discardableResult
+    public func tint(_ binding: State<UIColor>) -> Self {
+        binding.listen { self.tint($0) }
+        return tint(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func tint<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
+        expressable.state.listen { _ in self.tint(expressable.value()) }
+        return tint(expressable.value())
+    }
+    
+    @discardableResult
+    public func tint(_ binding: State<Int>) -> Self {
+        binding.listen { self.tint($0) }
+        return tint(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func tint<V>(_ expressable: ExpressableState<V, Int>) -> Self {
+        expressable.state.listen { _ in self.tint(expressable.value()) }
+        return tint(expressable.value())
     }
 }

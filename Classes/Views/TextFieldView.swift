@@ -124,9 +124,21 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     @discardableResult
-    public func secure() -> Self {
-        isSecureTextEntry = true
+    public func secure(_ value: Bool = true) -> Self {
+        isSecureTextEntry = value
         return self
+    }
+    
+    @discardableResult
+    public func secure(_ binding: UIKitPlus.State<Bool>) -> Self {
+        binding.listen { self.secure($0) }
+        return secure(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func secure<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
+        expressable.state.listen { _ in self.secure(expressable.value()) }
+        return secure(expressable.value())
     }
     
     @discardableResult
@@ -173,6 +185,18 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     public func placeholder(_ text: String?) -> Self {
         placeholder = text
         return self
+    }
+    
+    @discardableResult
+    public func placeholder(_ binding: UIKitPlus.State<String>) -> Self {
+        binding.listen { self.placeholder($0) }
+        return placeholder(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func placeholder<V>(_ expressable: ExpressableState<V, String>) -> Self {
+        expressable.state.listen { _ in self.placeholder(expressable.value()) }
+        return placeholder(expressable.value())
     }
     
     @discardableResult

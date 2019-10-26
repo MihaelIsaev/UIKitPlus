@@ -51,6 +51,8 @@ open class ActivityIndicator: UIActivityIndicatorView, DeclarativeProtocol, Decl
         movedToSuperview()
     }
     
+    // MARK: - color
+    
     @discardableResult
     public func color(_ color: UIColor) -> Self {
         self.color = color
@@ -60,6 +62,30 @@ open class ActivityIndicator: UIActivityIndicatorView, DeclarativeProtocol, Decl
     @discardableResult
     public func color(_ number: Int) -> Self {
         color(number.color)
+    }
+    
+    @discardableResult
+    public func color(_ binding: State<UIColor>) -> Self {
+        binding.listen { self.color($0) }
+        return color(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func color<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
+        expressable.state.listen { _ in self.color(expressable.value()) }
+        return color(expressable.value())
+    }
+    
+    @discardableResult
+    public func color(_ binding: State<Int>) -> Self {
+        binding.listen { self.color($0) }
+        return color(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func color<V>(_ expressable: ExpressableState<V, Int>) -> Self {
+        expressable.state.listen { _ in self.color(expressable.value()) }
+        return color(expressable.value())
     }
     
     @discardableResult

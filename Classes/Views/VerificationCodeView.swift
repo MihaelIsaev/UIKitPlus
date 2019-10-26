@@ -32,9 +32,20 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     public typealias EnteredClosure = (String) -> Void
     private var enteredClosure: EnteredClosure  = { _ in }
     
-    public init (_ quantity: Int = 4) {
+    var bindCode: State<String>?
+    
+    public init (_ quantity: Int = 4, _ state: State<String>) {
         self.quantity = quantity
         super.init(frame: .zero)
+        bindCode = state
+        translatesAutoresizingMaskIntoConstraints = false
+        setupView()
+    }
+    
+    public init<V>(_ quantity: Int = 4, _ expressable: ExpressableState<V, String>) {
+        self.quantity = quantity
+        super.init(frame: .zero)
+        bindCode = expressable.unwrap()
         translatesAutoresizingMaskIntoConstraints = false
         setupView()
     }
@@ -254,6 +265,7 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
                 label.text = ""
             }
         }
+        bindCode?.wrappedValue = hiddenTextField.text ?? ""
         if hiddenTextField.text?.count == digitViews.count {
             enteredClosure(hiddenTextField.text ?? "")
         }

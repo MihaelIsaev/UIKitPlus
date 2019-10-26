@@ -69,6 +69,29 @@ open class SegmentedControl: UISegmentedControl, DeclarativeProtocol, Declarativ
     @objc
     private func valueChanged() {
         _valueChanged?(selectedSegmentIndex)
+        selectBinding?.wrappedValue = selectedSegmentIndex
+    }
+    
+    @discardableResult
+    public func select(_ index: Int) -> Self {
+        self.selectedSegmentIndex = index
+        return self
+    }
+    
+    var selectBinding: UIKitPlus.State<Int>?
+    
+    @discardableResult
+    public func select(_ binding: UIKitPlus.State<Int>) -> Self {
+        selectBinding = binding
+        binding.listen { self.select($0) }
+        return select(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func select<V>(_ expressable: ExpressableState<V, Int>) -> Self {
+        selectBinding = expressable.unwrap()
+        expressable.state.listen { _,_ in self.select(expressable.value()) }
+        return select(expressable.value())
     }
     
     public typealias ChangedClosure = (Int) -> Void
@@ -88,12 +111,6 @@ open class SegmentedControl: UISegmentedControl, DeclarativeProtocol, Declarativ
     @discardableResult
     public func apportionsSegmentWidthsByContent(_ value: Bool = true) -> Self {
         apportionsSegmentWidthsByContent = value
-        return self
-    }
-    
-    @discardableResult
-    public func select(_ index: Int) -> Self {
-        selectedSegmentIndex = index
         return self
     }
     

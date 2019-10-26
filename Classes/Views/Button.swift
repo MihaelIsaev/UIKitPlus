@@ -102,6 +102,30 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         color(number.color, state)
     }
     
+    @discardableResult
+    public func color(_ binding: UIKitPlus.State<UIColor>, _ state: UIControl.State = .normal) -> Self {
+        binding.listen { self.color($0, state) }
+        return color(binding.wrappedValue, state)
+    }
+    
+    @discardableResult
+    public func color<V>(_ expressable: ExpressableState<V, UIColor>, _ state: UIControl.State = .normal) -> Self {
+        expressable.state.listen { _,_ in self.color(expressable.value(), state) }
+        return color(expressable.value(), state)
+    }
+    
+    @discardableResult
+    public func color(_ binding: UIKitPlus.State<Int>, _ state: UIControl.State = .normal) -> Self {
+        binding.listen { self.color($0, state) }
+        return color(binding.wrappedValue, state)
+    }
+    
+    @discardableResult
+    public func color<V>(_ expressable: ExpressableState<V, Int>, _ state: UIControl.State = .normal) -> Self {
+        expressable.state.listen { _,_ in self.color(expressable.value(), state) }
+        return color(expressable.value(), state)
+    }
+    
     // MARK: Title Font
     
     @discardableResult
@@ -113,6 +137,18 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
         font(v: UIFont(name: identifier.fontName, size: size))
+    }
+    
+    @discardableResult
+    public func font(_ binding: UIKitPlus.State<UIFont>) -> Self {
+        binding.listen { self.font(v: $0) }
+        return font(v: binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func font<V>(_ expressable: ExpressableState<V, UIFont>) -> Self {
+        expressable.state.listen { _ in self.font(v: expressable.value()) }
+        return font(v: expressable.value())
     }
     
     // MARK: Image
@@ -127,6 +163,20 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     public func image(_ imageName: String, _ state: UIControl.State = .normal) -> Self {
         image(UIImage(named: imageName), state)
     }
+    
+    @discardableResult
+    public func image(_ binding: UIKitPlus.State<UIImage>, _ state: UIControl.State = .normal) -> Self {
+        binding.listen { self.image($0, state) }
+        return image(binding.wrappedValue, state)
+    }
+    
+    @discardableResult
+    public func image<V>(_ expressable: ExpressableState<V, UIImage>, _ state: UIControl.State = .normal) -> Self {
+        expressable.state.listen { _,_ in self.image(expressable.value(), state) }
+        return image(expressable.value(), state)
+    }
+    
+    // MARK: Mode
     
     @discardableResult
     public func mode(_ mode: UIView.ContentMode) -> Self {
