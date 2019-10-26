@@ -158,14 +158,14 @@ extension DeclarativeProtocol {
     }
         
     @discardableResult
-    public func leadingToSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func leadingToSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         _edgeSuperviewNew(value: State<CGFloat>(initialValue: value.constraintValue.value),
                                         relation: value.constraintValue.relation,
                                         multiplier: value.constraintValue.multiplier,
                                         priority: value.constraintValue.priority,
                                         attribute1: .leading,
                                         attribute2: .leading,
-                                        toSafe: false,
+                                        toSafe: safeArea,
                                         destinationView: declarativeView.superview)
     }
     
@@ -204,14 +204,14 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func trailingToSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func trailingToSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         _edgeSuperviewNew(value: State<CGFloat>(initialValue: value.constraintValue.value),
                                         relation: value.constraintValue.relation,
                                         multiplier: value.constraintValue.multiplier,
                                         priority: value.constraintValue.priority,
                                         attribute1: .trailing,
                                         attribute2: .trailing,
-                                        toSafe: false,
+                                        toSafe: safeArea,
                                         destinationView: declarativeView.superview)
     }
     
@@ -250,14 +250,14 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func bottomToSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func bottomToSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         _edgeSuperviewNew(value: State<CGFloat>(initialValue: value.constraintValue.value),
                                         relation: value.constraintValue.relation,
                                         multiplier: value.constraintValue.multiplier,
                                         priority: value.constraintValue.priority,
                                         attribute1: .bottom,
                                         attribute2: .bottom,
-                                        toSafe: false,
+                                        toSafe: safeArea,
                                         destinationView: declarativeView.superview)
     }
     
@@ -296,14 +296,14 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func centerXInSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func centerXInSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         _edgeSuperviewNew(value: State<CGFloat>(initialValue: value.constraintValue.value),
                                         relation: value.constraintValue.relation,
                                         multiplier: value.constraintValue.multiplier,
                                         priority: value.constraintValue.priority,
                                         attribute1: .centerX,
                                         attribute2: .centerX,
-                                        toSafe: false,
+                                        toSafe: safeArea,
                                         destinationView: declarativeView.superview)
     }
     
@@ -342,14 +342,14 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func centerYInSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func centerYInSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         _edgeSuperviewNew(value: State<CGFloat>(initialValue: value.constraintValue.value),
                                         relation: value.constraintValue.relation,
                                         multiplier: value.constraintValue.multiplier,
                                         priority: value.constraintValue.priority,
                                         attribute1: .centerY,
                                         attribute2: .centerY,
-                                        toSafe: false,
+                                        toSafe: safeArea,
                                         destinationView: declarativeView.superview)
     }
     
@@ -388,7 +388,6 @@ extension DeclarativeProtocol {
         guard let _self = self as? DeclarativeProtocolInternal else { return }
         _self._properties.notAppliedPreConstraintsSuper.removeAll(where: { $0 === pc })
         _self._properties.appliedPreConstraintsSuper.append(pc)
-//        debugPrint("NSLayoutConstraint(item: \(self), attribute: \(pc.attribute1), relatedBy: \(pc.relation), toItem: \(pc.destinationView), attribute: \(pc.attribute2 ?? .notAnAttribute), multiplier: \(pc.multiplier), constant: \(pc.value.wrappedValue)")
         pc.destinationView = superview
         var constraint: NSLayoutConstraint?
         if pc.toSafe {
