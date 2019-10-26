@@ -19,6 +19,11 @@ open class VStack: _StackView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> VStackView {
+        block().viewBuilderItems.forEach { addArrangedSubview($0) }
+        return self
+    }
+    
     public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> VStackView {
         return VStackView(block: block)
     }

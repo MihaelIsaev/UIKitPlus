@@ -121,12 +121,12 @@ extension View {
     }
     
     @discardableResult
-    public func subviews(_ subviews: () -> [UIView]) -> Self {
-        subviews().forEach { addSubview($0) }
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+        block().viewBuilderItems.forEach { addSubview($0) }
         return self
     }
     
-    public static func subviews(_ subviews: () -> [UIView]) -> View {
-        return View().subviews(subviews)
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> View {
+        return View(block: block)
     }
 }

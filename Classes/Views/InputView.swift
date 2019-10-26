@@ -9,18 +9,29 @@ open class InputView: UIInputView, DeclarativeProtocol, DeclarativeProtocolInter
     
     public override init(frame: CGRect, inputViewStyle: UIInputView.Style) {
         super.init(frame: frame, inputViewStyle: inputViewStyle)
-        translatesAutoresizingMaskIntoConstraints = false
+        _setup()
         buildView()
     }
     
     public init (_ inputViewStyle: UIInputView.Style = .default) {
         super.init(frame: .zero, inputViewStyle: inputViewStyle)
-        translatesAutoresizingMaskIntoConstraints = false
+        _setup()
+        buildView()
+    }
+    
+    public init (_ inputViewStyle: UIInputView.Style = .default, @ViewBuilder block: ViewBuilder.SingleView) {
+        super.init(frame: .zero, inputViewStyle: inputViewStyle)
+        _setup()
+        addSubview(block().viewBuilderItems)
         buildView()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func _setup() {
+        translatesAutoresizingMaskIntoConstraints = false
     }
     
     open func buildView() {}
@@ -89,12 +100,12 @@ extension InputView {
     }
     
     @discardableResult
-    public func subviews(_ subviews: () -> [UIView]) -> Self {
-        subviews().forEach { addSubview($0) }
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+        block().viewBuilderItems.forEach { addSubview($0) }
         return self
     }
     
-    public static func subviews(_ subviews: () -> [UIView]) -> View {
-        return View().subviews(subviews)
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> InputView {
+        return InputView(block: block)
     }
 }

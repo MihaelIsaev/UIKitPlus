@@ -125,12 +125,13 @@ extension ScrollView {
         addSubview(innerView().declarativeView)
     }
     
-    public func subviews(_ subviews: () -> [UIView]) -> Self {
-        subviews().forEach { addSubview($0) }
+    @discardableResult
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+        block().viewBuilderItems.forEach { addSubview($0) }
         return self
     }
     
-    public static func subviews(_ subviews: () -> [UIView]) -> View {
-        return View().subviews(subviews)
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> ScrollView {
+        return ScrollView(block: block)
     }
 }
