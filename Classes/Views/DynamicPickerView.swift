@@ -76,7 +76,9 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
         background(.init(red: 0, green: 0, blue: 0, alpha: 0.3))
         hidden()
         alpha(0)
-        addSubview(containerView)
+        body {
+            containerView
+        }
         pickerView.leftAnchor.constraint(equalTo: containerView.leftAnchor).activated()
         pickerView.rightAnchor.constraint(equalTo: containerView.rightAnchor).activated()
         pickerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).activated()
@@ -138,27 +140,27 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     
     @discardableResult
     public func cancelFont(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        return cancelFont(v: UIFont(name: identifier.fontName, size: size))
+        cancelFont(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
     public func doneFont(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        return doneFont(v: UIFont(name: identifier.fontName, size: size))
+        doneFont(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
     public func titleFont(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        return titleFont(v: UIFont(name: identifier.fontName, size: size))
+        titleFont(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
     public func buttonsFont(v: UIFont?) -> Self {
-        return cancelFont(v: v).doneFont(v: v)
+        cancelFont(v: v).doneFont(v: v)
     }
     
     @discardableResult
     public func buttonsFont(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        return buttonsFont(v: UIFont(name: identifier.fontName, size: size))
+        buttonsFont(v: UIFont(name: identifier.fontName, size: size))
     }
     
     // MARK: Colors
@@ -171,7 +173,7 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     
     @discardableResult
     public func titleColor(_ number: Int) -> Self {
-        return titleColor(number.color)
+        titleColor(number.color)
     }
     
     @discardableResult
@@ -182,7 +184,7 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     
     @discardableResult
     public func cancelColor(_ number: Int) -> Self {
-        return cancelColor(number.color)
+        cancelColor(number.color)
     }
     
     @discardableResult
@@ -193,17 +195,17 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     
     @discardableResult
     public func doneColor(_ number: Int) -> Self {
-        return doneColor(number.color)
+        doneColor(number.color)
     }
     
     @discardableResult
     public func buttonsColor(_ color: UIColor) -> Self {
-        return cancelColor(color).doneColor(color)
+        cancelColor(color).doneColor(color)
     }
     
     @discardableResult
     public func buttonsColor(_ number: Int) -> Self {
-        return buttonsColor(number.color)
+        buttonsColor(number.color)
     }
     
     @discardableResult
@@ -214,7 +216,7 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     
     @discardableResult
     public func cancelHighlightedColor(_ number: Int) -> Self {
-        return cancelHighlightedColor(number.color)
+        cancelHighlightedColor(number.color)
     }
     
     @discardableResult
@@ -225,22 +227,22 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     
     @discardableResult
     public func doneHighlightedColor(_ number: Int) -> Self {
-        return doneHighlightedColor(number.color)
+        doneHighlightedColor(number.color)
     }
     
     @discardableResult
     public func buttonsHighlightedColor(_ color: UIColor) -> Self {
-        return cancelHighlightedColor(color).doneHighlightedColor(color)
+        cancelHighlightedColor(color).doneHighlightedColor(color)
     }
     
     @discardableResult
     public func buttonsHighlightedColor(_ number: Int) -> Self {
-        return buttonsHighlightedColor(number.color)
+        buttonsHighlightedColor(number.color)
     }
     
     
     public func _show(in view: UIView) {
-        view.addSubview(self)
+        view.body { self }
         layoutIfNeeded()
         UIView.animate(withDuration: 0.5) {
             self.alpha = 1

@@ -81,7 +81,6 @@ open class BarButtonItem: UIBarButtonItem {
     
     @discardableResult
     public func tint(_ color: Int) -> Self {
-        self.tintColor = color.color
-        return self
+        tint(color.color)
     }
 }

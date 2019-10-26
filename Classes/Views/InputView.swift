@@ -3,30 +3,35 @@ import UIKit
 open class InputView: UIInputView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public static var defaultKeyboardHeight: CGFloat = 216
     
-    public var declarativeView: InputView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: InputView { self }
+    public lazy var properties = Properties<InputView>()
+    lazy var _properties = PropertiesInternal()
     
     public override init(frame: CGRect, inputViewStyle: UIInputView.Style) {
         super.init(frame: frame, inputViewStyle: inputViewStyle)
-        translatesAutoresizingMaskIntoConstraints = false
+        _setup()
         buildView()
     }
     
     public init (_ inputViewStyle: UIInputView.Style = .default) {
         super.init(frame: .zero, inputViewStyle: inputViewStyle)
-        translatesAutoresizingMaskIntoConstraints = false
+        _setup()
+        buildView()
+    }
+    
+    public init (_ inputViewStyle: UIInputView.Style = .default, @ViewBuilder block: ViewBuilder.SingleView) {
+        super.init(frame: .zero, inputViewStyle: inputViewStyle)
+        _setup()
+        body { block().viewBuilderItems }
         buildView()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func _setup() {
+        translatesAutoresizingMaskIntoConstraints = false
     }
     
     open func buildView() {}
@@ -59,19 +64,19 @@ open class InputView: UIInputView, DeclarativeProtocol, DeclarativeProtocolInter
     
     @discardableResult
     public func intrinsicContentSize(_ value: CGFloat) -> Self {
-        return intrinsicContentSize(w: value, h: value)
+        intrinsicContentSize(w: value, h: value)
     }
     
     /// Width for `intrinsicContentSize`
     @discardableResult
     public func contentWidth(_ value: CGFloat) -> Self {
-        return intrinsicContentSize(w: value)
+        intrinsicContentSize(w: value)
     }
     
     /// Height for `intrinsicContentSize`
     @discardableResult
     public func contentHeight(_ value: CGFloat) -> Self {
-        return intrinsicContentSize(h: value)
+        intrinsicContentSize(h: value)
     }
     
     @discardableResult
@@ -86,21 +91,20 @@ open class InputView: UIInputView, DeclarativeProtocol, DeclarativeProtocolInter
 extension InputView {
     public convenience init (_ innerView: UIView) {
         self.init()
-        addSubview(innerView)
+        body { innerView }
     }
     
     public convenience init <V>(_ innerView: () -> V) where V: DeclarativeProtocol {
         self.init()
-        addSubview(innerView().declarativeView)
+        body { innerView().declarativeView }
     }
     
     @discardableResult
-    public func subviews(_ subviews: () -> [UIView]) -> Self {
-        subviews().forEach { addSubview($0) }
-        return self
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+        body { block().viewBuilderItems }
     }
     
-    public static func subviews(_ subviews: () -> [UIView]) -> View {
-        return View().subviews(subviews)
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> InputView {
+        InputView(block: block)
     }
 }

@@ -23,7 +23,9 @@ extension String {
                 if ls.language == Localization.current {
                     self.init(ls.value)
                     return
-                } else if ls.prefix == Localization.current.prefix {
+                } else if Localization.current.prefix.starts(with: ls.prefix) {
+                    lsByPrefix = ls
+                } else if ls.prefix.starts(with: Localization.current.prefix) {
                     lsByPrefix = ls
                 }
             }

@@ -96,5 +96,5 @@ extension UIView {
         }
     }
     
-    public var safeArea: SafeAnchors { return .init(self) }
+    public var safeArea: SafeAnchors { .init(self) }
 }

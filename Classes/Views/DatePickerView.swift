@@ -1,15 +1,9 @@
 import UIKit
 
 open class DatePicker: UIDatePicker, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: DatePicker { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: DatePicker { self }
+    public lazy var properties = Properties<DatePicker>()
+    lazy var _properties = PropertiesInternal()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,6 +23,17 @@ open class DatePicker: UIDatePicker, DeclarativeProtocol, DeclarativeProtocolInt
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         movedToSuperview()
+    }
+    
+    @discardableResult
+    public func textColor(_ color: UIColor) -> Self {
+        setValue(color, forKey: "textColor")
+        return self
+    }
+    
+    @discardableResult
+    public func textColor(_ hex: Int) -> Self {
+        textColor(hex.color)
     }
     
     @discardableResult

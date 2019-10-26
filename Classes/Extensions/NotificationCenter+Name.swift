@@ -5,7 +5,7 @@ public protocol CustomNotification {
 }
 
 extension String: CustomNotification {
-    public var notificationType: NotificationCenter.NotificationType { return .init(self) }
+    public var notificationType: NotificationCenter.NotificationType { .init(self) }
 }
 
 extension Notification.Name: RawRepresentable {}
@@ -25,7 +25,7 @@ extension NotificationCenter {
         }
         
         func with(postfix: String) -> Notification.Name {
-            return .init(name.rawValue + " " + postfix)
+            .init(name.rawValue + " " + postfix)
         }
     }
     

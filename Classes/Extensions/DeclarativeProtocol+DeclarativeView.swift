@@ -1,3 +1,3 @@
 extension DeclarativeProtocol {
-    internal var _declarativeView: DeclarativeProtocolInternal { return self as! DeclarativeProtocolInternal }
+    internal var _declarativeView: DeclarativeProtocolInternal { self as! DeclarativeProtocolInternal }
 }

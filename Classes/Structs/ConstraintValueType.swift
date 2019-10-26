@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 public struct ConstraintValueType: ConstraintValue {
-    public var constraintValue: ConstraintValueType { return self }
+    public var constraintValue: ConstraintValueType { self }
     
     let relation: NSLayoutConstraint.Relation
     let value, multiplier: CGFloat

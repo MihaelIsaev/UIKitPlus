@@ -1,15 +1,10 @@
 import UIKit
 
 open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: TableView { return self }
+    public var declarativeView: TableView { self }
+    public lazy var properties = Properties<TableView>()
+    lazy var _properties = PropertiesInternal()
     
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
     
     public init (_ style: UITableView.Style = .plain) {
         super.init(frame: .zero, style: style)
@@ -71,17 +66,17 @@ open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInter
     
     @discardableResult
     public func contentInset(x: CGFloat) -> Self {
-        return contentInset(top: 0, left: x, right: x, bottom: 0)
+        contentInset(top: 0, left: x, right: x, bottom: 0)
     }
     
     @discardableResult
     public func contentInset(y: CGFloat) -> Self {
-        return contentInset(top: y, left: 0, right: 0, bottom: y)
+        contentInset(top: y, left: 0, right: 0, bottom: y)
     }
     
     @discardableResult
     public func contentInset( _ value: CGFloat) -> Self {
-        return contentInset(top: value, left: value, right: value, bottom: value)
+        contentInset(top: value, left: value, right: value, bottom: value)
     }
     
     @discardableResult
@@ -92,17 +87,17 @@ open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInter
     
     @discardableResult
     public func scrollIndicatorInsets(x: CGFloat) -> Self {
-        return scrollIndicatorInsets(top: 0, left: x, right: x, bottom: 0)
+        scrollIndicatorInsets(top: 0, left: x, right: x, bottom: 0)
     }
     
     @discardableResult
     public func scrollIndicatorInsets(y: CGFloat) -> Self {
-        return scrollIndicatorInsets(top: y, left: 0, right: 0, bottom: y)
+        scrollIndicatorInsets(top: y, left: 0, right: 0, bottom: y)
     }
     
     @discardableResult
     public func scrollIndicatorInsets( _ value: CGFloat) -> Self {
-        return scrollIndicatorInsets(top: value, left: value, right: value, bottom: value)
+        scrollIndicatorInsets(top: value, left: value, right: value, bottom: value)
     }
     
     @discardableResult
@@ -133,6 +128,24 @@ open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInter
     @discardableResult
     public func separatorColor(_ value: UIColor) -> Self {
         separatorColor = value
+        return self
+    }
+    
+    @discardableResult
+    public func separatorStyle(_ value: UITableViewCell.SeparatorStyle) -> Self {
+        separatorStyle = value
+        return self
+    }
+    
+    @discardableResult
+    public func separatorInset(_ value: UIEdgeInsets) -> Self {
+        separatorInset = value
+        return self
+    }
+    
+    @discardableResult
+    public func separatorInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        separatorInset = .init(top: top, left: left, bottom: bottom, right: right)
         return self
     }
 }

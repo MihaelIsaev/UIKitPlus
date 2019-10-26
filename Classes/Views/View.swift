@@ -1,24 +1,28 @@
 import UIKit
 
 open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: View { return self }
+    public var declarativeView: View { self }
+    public lazy var properties = Properties<View>()
+    lazy var _properties = PropertiesInternal()
     
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+        super.init(frame: .zero)
+        _setup()
+        body { block().viewBuilderItems }
+    }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        translatesAutoresizingMaskIntoConstraints = false
-        buildView()
+        _setup()
     }
     
     public convenience init () {
         self.init(frame: .zero)
+    }
+    
+    private func _setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        buildView()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -89,35 +93,6 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
         super.touchesCancelled(touches, with: event)
         _touchesCancelled?(touches, event)
     }
-    
-    // MARK: Single Tap
-    
-    private var _tapAction: ()->Void = {}
-    private var _tapActionWithView: (View)->Void = { _ in }
-    
-    @discardableResult
-    public func tapAction(_ action: @escaping ()->Void) -> Self {
-        _tapAction = action
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
-        return self
-    }
-    
-    @discardableResult
-    public func tapAction(_ action: @escaping (View)->Void) -> Self {
-        _tapActionWithView = action
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapWithView)))
-        return self
-    }
-    
-    @objc
-    private func tap() {
-        _tapAction()
-    }
-    
-    @objc
-    private func tapWithView() {
-        _tapActionWithView(self)
-    }
 }
 
 // MARK: Convenience Initializers
@@ -125,21 +100,34 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
 extension View {
     public convenience init (_ innerView: UIView) {
         self.init()
-        addSubview(innerView)
+        body { innerView }
+    }
+    
+    public convenience init (inline inlineView: UIView) {
+        self.init()
+        inlineView.translatesAutoresizingMaskIntoConstraints = false
+        body { inlineView }
+        NSLayoutConstraint.activate([
+            leadingAnchor.constraint(equalTo: inlineView.leadingAnchor),
+            trailingAnchor.constraint(equalTo: inlineView.trailingAnchor),
+            topAnchor.constraint(equalTo: inlineView.topAnchor),
+            bottomAnchor.constraint(equalTo: inlineView.bottomAnchor)
+        ])
     }
     
     public convenience init <V>(_ innerView: () -> V) where V: DeclarativeProtocol {
         self.init()
-        addSubview(innerView().declarativeView)
+        body { innerView().declarativeView }
     }
     
     @discardableResult
-    public func subviews(_ subviews: () -> [UIView]) -> Self {
-        subviews().forEach { addSubview($0) }
-        return self
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+        body {
+            block().viewBuilderItems
+        }
     }
     
-    public static func subviews(_ subviews: () -> [UIView]) -> View {
-        return View().subviews(subviews)
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> View {
+        View(block: block)
     }
 }

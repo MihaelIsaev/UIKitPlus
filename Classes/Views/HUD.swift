@@ -16,6 +16,7 @@ open class HUD: View {
         .color(.white)
         .alignment(.center)
     lazy var subTitleLabel = Label()
+        .multiline()
         .font(v: .systemFont(ofSize: 16))
         .color(.white)
         .alignment(.center)
@@ -25,16 +26,19 @@ open class HUD: View {
         .background(.init(red: 0, green: 0, blue: 0, alpha: 0.7))
         .centerInSuperview()
         .topToSuperview(>=20)
-        .leadingToSuperview(>=20 ! 999)
-        .trailingToSuperview(<=(-20) ! 999)
-        .bottomToSuperview(<=(-20))
-    lazy var backgroundOverlay = View().background(.init(red: 0, green: 0, blue: 0, alpha: 0.2)).edgesToSuperview()
+        .leadingToSuperview(>=20 ! 998)
+        .trailingToSuperview(<=-20 ! 998)
+        .bottomToSuperview(<=-20)
+    lazy var backgroundOverlay = View().background(.init(red: 0, green: 0, blue: 0, alpha: 0.2)).edgesToSuperview().masksToBounds()
     
     open override func buildView() {
         super.buildView()
         hidden()
         edgesToSuperview()
-        addSubview(backgroundOverlay, contentView)
+        body {
+            backgroundOverlay
+            contentView
+        }
     }
     
     // MARK: - Setup
@@ -161,7 +165,7 @@ open class HUD: View {
                     imageView.bottomToSuperview(-20)
                 }
                 imageView.height(imageHeight).edgesToSuperview(leading: 20, trailing: -20)
-                contentView.addSubview(imageView)
+                contentView.body { imageView }
                 topView = imageView
             case .symbol:
                 symbolLabel.deactivateAndRemoveAllConstraints()
@@ -175,7 +179,7 @@ open class HUD: View {
                     symbolLabel.bottomToSuperview(-20)
                 }
                 symbolLabel.edgesToSuperview(leading: 20, trailing: -20)
-                contentView.addSubview(symbolLabel)
+                contentView.body { symbolLabel }
                 topView = symbolLabel
             case .activityIndicator:
                 activityIndicator.deactivateAndRemoveAllConstraints()
@@ -189,7 +193,7 @@ open class HUD: View {
                     activityIndicator.bottomToSuperview(-20)
                 }
                 activityIndicator.centerXInSuperview()
-                contentView.addSubview(activityIndicator)
+                contentView.body { activityIndicator }
                 topView = activityIndicator
             case .title:
                 titleLabel.deactivateAndRemoveAllConstraints()
@@ -203,7 +207,7 @@ open class HUD: View {
                     titleLabel.bottomToSuperview(-20)
                 }
                 titleLabel.edgesToSuperview(leading: 20, trailing: -20)
-                contentView.addSubview(titleLabel)
+                contentView.body { titleLabel }
                 topView = titleLabel
             case .subTitle:
                 subTitleLabel.deactivateAndRemoveAllConstraints()
@@ -217,7 +221,7 @@ open class HUD: View {
                     subTitleLabel.bottomToSuperview(-20)
                 }
                 subTitleLabel.edgesToSuperview(leading: 20, trailing: -20)
-                contentView.addSubview(subTitleLabel)
+                contentView.body { subTitleLabel }
                 topView = subTitleLabel
             }
         }
@@ -247,6 +251,18 @@ open class HUD: View {
     @discardableResult
     public func contentViewColor(_ number: Int) -> Self {
         contentView.background(number)
+        return self
+    }
+    
+    @discardableResult
+    public func dimColor(_ color: UIColor) -> Self {
+        backgroundOverlay.background(color)
+        return self
+    }
+    
+    @discardableResult
+    public func dimColor(_ number: Int) -> Self {
+        backgroundOverlay.background(number)
         return self
     }
 }

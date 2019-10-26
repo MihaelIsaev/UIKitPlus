@@ -1,17 +1,11 @@
 import UIKit
 
 open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: CollectionView { return self }
+    public var declarativeView: CollectionView { self }
+    public lazy var properties = Properties<CollectionView>()
+    lazy var _properties = PropertiesInternal()
     
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
-    
-    static var defaultLayout: UICollectionViewFlowLayout {
+    public static var defaultLayout: UICollectionViewFlowLayout {
         return CollectionViewFlowLayout().itemSize(50).minimumInteritemSpacing(5).minimumLineSpacing(5)
     }
     
@@ -101,7 +95,7 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
     
     @discardableResult
     public func contentInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
-        return contentInset(.init(top: top, left: left, bottom: bottom, right: right))
+        contentInset(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Scroll Indicator Inset
@@ -114,7 +108,7 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
     
     @discardableResult
     public func scrollIndicatorInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
-        return scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
+        scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Delegate

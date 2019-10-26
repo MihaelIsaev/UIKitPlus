@@ -1,24 +1,22 @@
 import UIKit
 
 open class StackView: _StackView {
-    public init (_ subviews: UIView...)  {
+    public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
-        axis = .horizontal
-        subviews.forEach { self.addArrangedSubview($0) }
-    }
-    
-    public init (_ subviews: () -> [UIView])  {
-        super.init(frame: .zero)
-        axis = .horizontal
-        subviews().forEach { self.addArrangedSubview($0) }
+        block().viewBuilderItems.forEach { addArrangedSubview($0) }
     }
     
     required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public static func subviews(_ subviews: () -> [UIView]) -> StackView {
-        return StackView(subviews)
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> StackView {
+        block().viewBuilderItems.forEach { addArrangedSubview($0) }
+        return self
+    }
+    
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> StackView {
+        StackView(block: block)
     }
     
     // Mask: Axis
@@ -31,15 +29,9 @@ open class StackView: _StackView {
 }
 
 open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: _StackView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: _StackView { self }
+    public lazy var properties = Properties<_StackView>()
+    lazy var _properties = PropertiesInternal()
     
     public init () {
         super.init(frame: .zero)

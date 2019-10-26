@@ -12,6 +12,6 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func shadow(_ colorNumber: Int, opacity: Float = 1, x: CGFloat = 0, y: CGFloat = 0, radius: CGFloat = 10) -> Self {
-        return shadow(colorNumber.color, opacity: opacity, x: x, y: y, radius: radius)
+        shadow(colorNumber.color, opacity: opacity, x: x, y: y, radius: radius)
     }
 }

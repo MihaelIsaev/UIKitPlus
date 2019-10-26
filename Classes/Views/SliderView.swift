@@ -1,15 +1,9 @@
 import UIKit
 
 open class SliderView: UISlider, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: SliderView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: SliderView { self }
+    public lazy var properties = Properties<SliderView>()
+    lazy var _properties = PropertiesInternal()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)

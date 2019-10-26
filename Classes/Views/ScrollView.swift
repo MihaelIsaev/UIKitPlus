@@ -1,23 +1,27 @@
 import UIKit
 
 open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: ScrollView { return self }
+    public var declarativeView: ScrollView { self }
+    public lazy var properties = Properties<ScrollView>()
+    lazy var _properties = PropertiesInternal()
     
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+        super.init(frame: .zero)
+        _setup()
+        body { block().viewBuilderItems }
+    }
     
     public init () {
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
+        _setup()
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        _setup()
+    }
+    
+    private func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -83,7 +87,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     
     @discardableResult
     public func contentInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
-        return contentInset(.init(top: top, left: left, bottom: bottom, right: right))
+        contentInset(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Scroll Indicator Inset
@@ -96,7 +100,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     
     @discardableResult
     public func scrollIndicatorInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
-        return scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
+        scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Delegate
@@ -113,20 +117,22 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
 extension ScrollView {
     public convenience init (_ innerView: UIView) {
         self.init()
-        addSubview(innerView)
+        body { innerView }
     }
     
     public convenience init <V>(_ innerView: () -> V) where V: DeclarativeProtocol {
         self.init()
-        addSubview(innerView().declarativeView)
+        body { innerView().declarativeView }
     }
     
-    public func subviews(_ subviews: () -> [UIView]) -> Self {
-        subviews().forEach { addSubview($0) }
-        return self
+    @discardableResult
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+        body {
+            block().viewBuilderItems
+        }
     }
     
-    public static func subviews(_ subviews: () -> [UIView]) -> View {
-        return View().subviews(subviews)
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> ScrollView {
+        ScrollView(block: block)
     }
 }

@@ -1,15 +1,9 @@
 import UIKit
 
 open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Button { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: Button { self }
+    public lazy var properties = Properties<Button>()
+    lazy var _properties = PropertiesInternal()
     
     public init (_ title: String = "") {
         super.init(frame: .zero)
@@ -62,8 +56,7 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func backgroundHighlighted(_ number: Int, _ state: UIControl.State = .normal) -> Self {
-        backgroundHighlighted = number.color
-        return self
+        backgroundHighlighted(number.color)
     }
     
     // MARK: Title
@@ -84,8 +77,7 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func color(_ number: Int, _ state: UIControl.State = .normal) -> Self {
-        setTitleColor(number.color, for: state)
-        return self
+        color(number.color, state)
     }
     
     // MARK: Title Font
@@ -98,7 +90,7 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        return font(v: UIFont(name: identifier.fontName, size: size))
+        font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     // MARK: Image
@@ -111,8 +103,7 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func image(_ imageName: String, _ state: UIControl.State = .normal) -> Self {
-        setImage(UIImage(named: imageName), for: state)
-        return self
+        image(UIImage(named: imageName), state)
     }
     
     @discardableResult
@@ -121,33 +112,27 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         return self
     }
     
-    // MARK: TouchUpInside
-    
-    public typealias TapAction = ()->Void
-    public typealias TapActionWithButton = (Button)->Void
-    
-    private var tapCallback: TapAction?
-    private var tapWithButtonCallback: TapActionWithButton?
+    // MARK: Insets
     
     @discardableResult
-    public func tapAction(_ callback: @escaping TapAction) -> Self {
-        tapCallback = callback
-        addTarget(self, action: #selector(tapEvent), for: .touchUpInside)
+    public func titleInsets(_ insets: UIEdgeInsets) -> Self {
+        titleEdgeInsets = insets
         return self
     }
     
     @discardableResult
-    public func tapAction(_ callback: @escaping TapActionWithButton) -> Self {
-        tapWithButtonCallback = callback
-        addTarget(self, action: #selector(tapEvenWithbuttont(_:)), for: .touchUpInside)
+    public func titleInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        titleInsets(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+    
+    @discardableResult
+    public func imageInsets(_ insets: UIEdgeInsets) -> Self {
+        imageEdgeInsets = insets
         return self
     }
     
-    @objc private func tapEvent() {
-        tapCallback?()
-    }
-    
-    @objc private func tapEvenWithbuttont(_ button: Button) {
-        tapWithButtonCallback?(button)
+    @discardableResult
+    public func imageInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        imageInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
 }

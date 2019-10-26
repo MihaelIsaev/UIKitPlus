@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 precedencegroup NumberByModelPrecedence {
     higherThan: MultiplicationPrecedence
@@ -7,10 +8,10 @@ precedencegroup NumberByModelPrecedence {
 
 infix operator !! : NumberByModelPrecedence
 public func !! <T>(lhs: T, rhs: iPhoneNumeric) -> T where T: BinaryInteger {
-    return lhs.dev(rhs)
+    lhs.dev(rhs)
 }
 public func !! <T>(lhs: T, rhs: iPhoneNumeric) -> T where T: BinaryFloatingPoint {
-    return lhs.dev(rhs)
+    lhs.dev(rhs)
 }
 
 public enum iPhoneNumeric {

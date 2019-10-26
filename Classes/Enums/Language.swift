@@ -71,10 +71,12 @@ public enum Language: RawRepresentable, CustomStringConvertible {
     case zh_Hans_HK
     case zh_Hans_MO
     case zh_Hans_SG
-    case zh_Hant
-    case zh_Hant_HK
+    case zh_Hant_CN
+    case zh_HK_CN
     case zh_Hant_MO
     case zh_Hant_TW
+    case zh_Hant_HK
+    case zh_Hant
     case zh
     case kw_GB
     case kw
@@ -117,6 +119,7 @@ public enum Language: RawRepresentable, CustomStringConvertible {
     case en_GB
     case en_US
     case en_ZW
+    case en_CN
     case en
     case eo
     case et_EE
@@ -510,10 +513,12 @@ public enum Language: RawRepresentable, CustomStringConvertible {
         case "zh_Hans_HK": self = .zh_Hans_HK
         case "zh_Hans_MO": self = .zh_Hans_MO
         case "zh_Hans_SG": self = .zh_Hans_SG
-        case "zh_Hant": self = .zh_Hant
-        case "zh_Hant_HK": self = .zh_Hant_HK
+        case "zh-Hant_CN": self = .zh_Hant_CN
+        case "zh-HK_CN": self = .zh_HK_CN
         case "zh_Hant_MO": self = .zh_Hant_MO
         case "zh_Hant_TW": self = .zh_Hant_TW
+        case "zh_Hant_HK": self = .zh_Hant_HK
+        case "zh_Hant": self = .zh_Hant
         case "zh": self = .zh
         case "kw_GB": self = .kw_GB
         case "kw": self = .kw
@@ -556,6 +561,7 @@ public enum Language: RawRepresentable, CustomStringConvertible {
         case "en_GB": self = .en_GB
         case "en_US": self = .en_US
         case "en_ZW": self = .en_ZW
+        case "en_CN": self = .en_CN
         case "en": self = .en
         case "eo": self = .eo
         case "et_EE": self = .et_EE
@@ -952,10 +958,12 @@ public enum Language: RawRepresentable, CustomStringConvertible {
         case .zh_Hans_HK: return "zh_Hans_HK"
         case .zh_Hans_MO: return "zh_Hans_MO"
         case .zh_Hans_SG: return "zh_Hans_SG"
-        case .zh_Hant: return "zh_Hant"
-        case .zh_Hant_HK: return "zh_Hant_HK"
+        case .zh_Hant_CN: return "zh-Hant_CN"
+        case .zh_HK_CN: return "zh-HK_CN"
         case .zh_Hant_MO: return "zh_Hant_MO"
         case .zh_Hant_TW: return "zh_Hant_TW"
+        case .zh_Hant_HK: return "zh_Hant_HK"
+        case .zh_Hant: return "zh_Hant"
         case .zh: return "zh"
         case .kw_GB: return "kw_GB"
         case .kw: return "kw"
@@ -998,6 +1006,7 @@ public enum Language: RawRepresentable, CustomStringConvertible {
         case .en_GB: return "en_GB"
         case .en_US: return "en_US"
         case .en_ZW: return "en_ZW"
+        case .en_CN: return "en_CN"
         case .en: return "en"
         case .eo: return "eo"
         case .et_EE: return "et_EE"
@@ -1397,8 +1406,8 @@ public enum Language: RawRepresentable, CustomStringConvertible {
         case .zh_Hans_HK: return "Chinese (Simplified Han, Hong Kong SAR China)"
         case .zh_Hans_MO: return "Chinese (Simplified Han, Macau SAR China)"
         case .zh_Hans_SG: return "Chinese (Simplified Han, Singapore)"
-        case .zh_Hant: return "Chinese (Traditional Han)"
-        case .zh_Hant_HK: return "Chinese (Traditional Han, Hong Kong SAR China)"
+        case .zh_Hant, .zh_Hant_CN: return "Chinese (Traditional Han)"
+        case .zh_Hant_HK, .zh_HK_CN: return "Chinese (Traditional Han, Hong Kong SAR China)"
         case .zh_Hant_MO: return "Chinese (Traditional Han, Macau SAR China)"
         case .zh_Hant_TW: return "Chinese (Traditional Han, Taiwan)"
         case .zh: return "Chinese"
@@ -1443,6 +1452,7 @@ public enum Language: RawRepresentable, CustomStringConvertible {
         case .en_GB: return "English (United Kingdom)"
         case .en_US: return "English (United States)"
         case .en_ZW: return "English (Zimbabwe)"
+        case .en_CN: return "English (China)"
         case .en: return "English"
         case .eo: return "Esperanto"
         case .et_EE: return "Estonian (Estonia)"

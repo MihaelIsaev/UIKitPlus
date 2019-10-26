@@ -147,8 +147,12 @@ public enum LocalizedString {
     case zh_Hans_SG(String)
     /// Chinese (Traditional Han)
     case zh_Hant(String)
+    /// Chinese (Traditional Han)
+    case zh_Hant_CN(String)
     /// Chinese (Traditional Han, Hong Kong SAR China)
     case zh_Hant_HK(String)
+    /// Chinese (Traditional Han, Hong Kong SAR China)
+    case zh_HK_CN(String)
     /// Chinese (Traditional Han, Macau SAR China)
     case zh_Hant_MO(String)
     /// Chinese (Traditional Han, Taiwan)
@@ -237,6 +241,8 @@ public enum LocalizedString {
     case en_US(String)
     /// English (Zimbabwe)
     case en_ZW(String)
+    /// English (China)
+    case en_CN(String)
     /// English
     case en(String)
     /// Esperanto
@@ -949,7 +955,9 @@ public enum LocalizedString {
         case .zh_Hans_MO(let v): return v
         case .zh_Hans_SG(let v): return v
         case .zh_Hant(let v): return v
+        case .zh_Hant_CN(let v): return v
         case .zh_Hant_HK(let v): return v
+        case .zh_HK_CN(let v): return v
         case .zh_Hant_MO(let v): return v
         case .zh_Hant_TW(let v): return v
         case .zh(let v): return v
@@ -994,6 +1002,7 @@ public enum LocalizedString {
         case .en_GB(let v): return v
         case .en_US(let v): return v
         case .en_ZW(let v): return v
+        case .en_CN(let v): return v
         case .en(let v): return v
         case .eo(let v): return v
         case .et_EE(let v): return v
@@ -1402,7 +1411,9 @@ public enum LocalizedString {
         case .zh_Hans_MO: return .zh_Hans_MO
         case .zh_Hans_SG: return .zh_Hans_SG
         case .zh_Hant: return .zh_Hant
+        case .zh_Hant_CN: return .zh_Hant_CN
         case .zh_Hant_HK: return .zh_Hant_HK
+        case .zh_HK_CN: return .zh_HK_CN
         case .zh_Hant_MO: return .zh_Hant_MO
         case .zh_Hant_TW: return .zh_Hant_TW
         case .zh: return .zh
@@ -1447,6 +1458,7 @@ public enum LocalizedString {
         case .en_GB: return .en_GB
         case .en_US: return .en_US
         case .en_ZW: return .en_ZW
+        case .en_CN: return .en_CN
         case .en: return .en
         case .eo: return .eo
         case .et_EE: return .et_EE

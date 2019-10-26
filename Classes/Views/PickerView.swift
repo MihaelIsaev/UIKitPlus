@@ -1,19 +1,14 @@
 import UIKit
 
 open class PickerView: UIPickerView, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: PickerView { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: PickerView { self }
+    public lazy var properties = Properties<PickerView>()
+    lazy var _properties = PropertiesInternal()
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
+        delegate = self
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -40,5 +35,21 @@ open class PickerView: UIPickerView, DeclarativeProtocol, DeclarativeProtocolInt
     public func dataSource(_ value: UIPickerViewDataSource) -> Self {
         dataSource = value
         return self
+    }
+    
+    // MARK: Handler
+    
+    private var _changed: (Int, Int) -> Void = { _,_ in }
+    
+    @discardableResult
+    public func onChange(_ closure: @escaping (Int, Int) -> Void) -> Self {
+        _changed = closure
+        return self
+    }
+}
+
+extension PickerView: UIPickerViewDelegate {
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        _changed(row, component)
     }
 }

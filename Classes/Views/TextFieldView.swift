@@ -1,27 +1,47 @@
+import Foundation
 import UIKit
 
 open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: TextField { return self }
-    
-    var _circleCorners: Bool = false
-    var _customCorners: CustomCorners?
-    lazy var _borders = Borders()
-    
-    var _preConstraints = DeclarativePreConstraints()
-    var _constraintsMain: DeclarativeConstraintsCollection = [:]
-    var _constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    public var declarativeView: TextField { self }
+    public lazy var properties = Properties<TextField>()
+    lazy var _properties = PropertiesInternal()
     
     private weak var outsideDelegate: TextFieldDelegate?
+    
+    fileprivate var stateString: StateStringBuilder.Handler?
+    private var binding: UIKitPlus.State<String>?
     
     public init (_ text: String? = nil) {
         super.init(frame: .zero)
         self.text = text
-        setup()
+        _setup()
+    }
+    
+    public init (_ state: UIKitPlus.State<String>) {
+        self.binding = state
+        super.init(frame: .zero)
+        self.text = state.wrappedValue
+        _setup()
+    }
+    
+    public init <V>(_ expressable: ExpressableState<V, String>) {
+        super.init(frame: .zero)
+        self.stateString = expressable.value
+        text = expressable.value()
+        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
+        _setup()
+    }
+    
+    public init (@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) {
+        super.init(frame: .zero)
+        self.stateString = stateString
+        text = stateString()
+        _setup()
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        setup()
+        _setup()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -38,12 +58,18 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
         movedToSuperview()
     }
     
-    private func setup() {
+    private func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
         delegate = self
         addTarget(self, action: #selector(__editingDidBegin), for: .editingDidBegin)
         addTarget(self, action: #selector(__editingChanged), for: .editingChanged)
         addTarget(self, action: #selector(__editingDidEnd), for: .editingDidEnd)
+    }
+    
+    @discardableResult
+    public func bind(_ to: UIKitPlus.State<String>) -> Self {
+        self.binding = to
+        return self
     }
     
     @discardableResult
@@ -66,7 +92,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        return font(v: UIFont(name: identifier.fontName, size: size))
+        font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
@@ -84,6 +110,40 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     @discardableResult
     public func text(_ text: String?) -> Self {
         self.text = text
+        binding?.wrappedValue = text ?? ""
+        return self
+    }
+    
+    @discardableResult
+    public func text(_ attributedStrings: AttributedString...) -> Self {
+        let attrStr = NSMutableAttributedString(string: "")
+        attributedStrings.forEach {
+            attrStr.append($0.attributedString)
+        }
+        attributedText = attrStr
+        binding?.wrappedValue = attrStr.string
+        return self
+    }
+    
+    @discardableResult
+    public func text(_ state: UIKitPlus.State<String>) -> Self {
+        text = state.wrappedValue
+        state.listen { _,n in self.text = n }
+        return self
+    }
+    
+    @discardableResult
+    public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
+        self.stateString = expressable.value
+        text = expressable.value()
+        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
+        return self
+    }
+    
+    @discardableResult
+    public func text(@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) -> Self {
+        self.stateString = stateString
+        text = stateString()
         return self
     }
     
@@ -169,7 +229,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func leftView(mode: UITextField.ViewMode = .always, _ view: (TextField) -> UIView) -> Self {
-        return leftView(view(self), mode: mode)
+        leftView(view(self), mode: mode)
     }
     
     @discardableResult
@@ -181,7 +241,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func rightView(mode: UITextField.ViewMode = .always, _ view: (TextField) -> UIView) -> Self {
-        return rightView(view(self), mode: mode)
+        rightView(view(self), mode: mode)
     }
     
     @discardableResult
@@ -192,7 +252,58 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func inputView(_ view: (TextField) -> UIView) -> Self {
-        return inputView(view(self))
+        inputView(view(self))
+    }
+    
+    @discardableResult
+    public func inputAccessoryView(_ view: UIView) -> Self {
+        inputAccessoryView = view
+        return self
+    }
+    
+    @discardableResult
+    public func inputAccessoryView(_ view: (TextField) -> UIView) -> Self {
+        inputAccessoryView(view(self))
+    }
+    
+    var textRect: CGRect?
+    
+    open override func textRect(forBounds bounds: CGRect) -> CGRect {
+        if let textRect = textRect {
+            return textRect
+        }
+        return super.textRect(forBounds: bounds)
+    }
+        
+    @discardableResult
+    public func textInsets(_ insets: UIEdgeInsets) -> Self {
+        textRect = bounds.inset(by: insets)
+        return self
+    }
+    
+    @discardableResult
+    public func textInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        textInsets(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+    
+    var editingRect: CGRect?
+    
+    open override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        if let editingRect = editingRect {
+            return editingRect
+        }
+        return super.editingRect(forBounds: bounds)
+    }
+    
+    @discardableResult
+    public func editingInsets(_ insets: UIEdgeInsets) -> Self {
+        editingRect = bounds.inset(by: insets)
+        return self
+    }
+    
+    @discardableResult
+    public func editingInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        editingInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Delegate Closures
@@ -205,7 +316,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     private var _didBeginEditing: [VoidClosure] = []
     private var _shouldEndEditing: BoolClosure = { _ in return true }
     private var _didEndEditing: [VoidClosure] = []
-    private var _shouldChangeCharacters: ChangeCharactersClosure = { _,_,_  in return true }
+    private var _shouldChangeCharacters: ChangeCharactersClosure?
     private var _shouldClear: BoolClosure = { _ in return true }
     private var _shouldReturnVoid: () -> Void = {}
     private var _shouldReturn: BoolClosure = { _ in return true }
@@ -285,6 +396,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @objc func __editingChanged() {
         _editingChanged.forEach { $0(self) }
+        binding?.wrappedValue = self.text ?? ""
     }
     
     @objc func __editingDidEnd() {
@@ -303,7 +415,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        return outsideDelegate?.textFieldShouldEndEditing?(self) ?? _shouldEndEditing(self)
+        outsideDelegate?.textFieldShouldEndEditing?(self) ?? _shouldEndEditing(self)
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
@@ -312,12 +424,17 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return outsideDelegate?.textField?(self, shouldChangeCharactersIn: range, replacementString: string)
-            ?? _shouldChangeCharacters(self, range, string)
+        if let result = outsideDelegate?.textField?(self, shouldChangeCharactersIn: range, replacementString: string) {
+            return result
+        }
+        if let handler = _shouldChangeCharacters {
+            return handler(self, range, string)
+        }
+        return true
     }
     
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        return outsideDelegate?.textFieldShouldClear?(self) ?? _shouldClear(self)
+        outsideDelegate?.textFieldShouldClear?(self) ?? _shouldClear(self)
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -351,4 +468,13 @@ public protocol TextFieldDelegate: NSObjectProtocol {
     
     @objc @available(iOS 2.0, *)
     optional func textFieldShouldReturn(_ textField: TextField) -> Bool
+}
+
+extension TextField: Refreshable {
+    /// Refreshes using `RefreshHandler`
+    public func refresh() {
+        if let stateString = stateString {
+            text = stateString()
+        }
+    }
 }

@@ -14,7 +14,7 @@ open class WrappedViewControllerView<V>: View, WrappedViewControllerable where V
         super.init(frame: .zero)
         inner.didMove(toParent: parent)
         inner.view.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(inner.view)
+        body { inner.view }
         inner.view.topAnchor.constraint(equalTo: topAnchor).activated()
         inner.view.leftAnchor.constraint(equalTo: leftAnchor).activated()
         inner.view.rightAnchor.constraint(equalTo: rightAnchor).activated()
@@ -28,7 +28,7 @@ open class WrappedViewControllerView<V>: View, WrappedViewControllerable where V
     open override func layoutSubviews() {
         super.layoutSubviews()
         inner.view.layer.masksToBounds = true
-        guard let _ = _declarativeView._customCorners else {
+        guard let _ = _declarativeView._properties.customCorners else {
             inner.view.layer.cornerRadius = layer.cornerRadius
             return
         }

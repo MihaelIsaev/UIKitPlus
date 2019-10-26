@@ -12,12 +12,10 @@ public class OuterConstraints {
     func constraint(_ attribute: NSLayoutConstraint.Attribute, with view: UIView) -> NSLayoutConstraint? {
         guard let dest = view as? DeclarativeProtocolInternal else { return nil }
         guard let inactiveConstraint = collection[attribute]?[view]  else { return nil }
-        return dest._constraintsOuter[inactiveConstraint.firstAttribute]?[declarativeView]
+        return dest._properties.constraintsOuter[inactiveConstraint.firstAttribute]?[declarativeView]
     }
     
     public subscript(_ attribute: NSLayoutConstraint.Attribute, _ view: UIView) -> NSLayoutConstraint? {
-        get {
-            return constraint(attribute, with: view)
-        }
+        constraint(attribute, with: view)
     }
 }

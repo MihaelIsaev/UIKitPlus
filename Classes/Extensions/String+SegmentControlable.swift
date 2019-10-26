@@ -1,3 +1,3 @@
 extension String: SegmentControlable {
-    public var item: SegmentControlableItem { return .title(self) }
+    public var item: SegmentControlableItem { .title(self) }
 }

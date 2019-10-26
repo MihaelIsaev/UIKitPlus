@@ -76,46 +76,46 @@ extension UIDevice {
     }
     
     public class var isPhoneIdiom: Bool {
-        return UIDevice.current.userInterfaceIdiom == .phone
+        UIDevice.current.userInterfaceIdiom == .phone
     }
     
     public class var isPadIdiom: Bool {
-        return UIDevice.current.userInterfaceIdiom == .pad
+        UIDevice.current.userInterfaceIdiom == .pad
     }
     
     public class var isPhone4: Bool {
-        return isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhone4.rawValue
+        isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhone4.rawValue
     }
     
     public class var isPhone5: Bool {
-        return isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhone5.rawValue
+        isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhone5.rawValue
     }
     
     public class var isPhone6: Bool {
-        return isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhone6.rawValue
+        isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhone6.rawValue
     }
     
     public class var isPhone6Plus: Bool {
-        return isPhoneIdiom && [ScreenNativeHeight.iPhone6PlusReal.rawValue, ScreenNativeHeight.iPhone6PlusVirtual.rawValue].contains(maxHeight)
+        isPhoneIdiom && [ScreenNativeHeight.iPhone6PlusReal.rawValue, ScreenNativeHeight.iPhone6PlusVirtual.rawValue].contains(maxHeight)
     }
     
     public class var isPhoneX: Bool {
-        return isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhoneX.rawValue
+        isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhoneX.rawValue
     }
     
     public class var isPhoneXMax: Bool {
-        return isPhoneIdiom && [ScreenNativeHeight.iPhoneXr.rawValue, ScreenNativeHeight.iPhoneXMax.rawValue].contains(maxHeight)
+        isPhoneIdiom && [ScreenNativeHeight.iPhoneXr.rawValue, ScreenNativeHeight.iPhoneXMax.rawValue].contains(maxHeight)
     }
     
     public class var isPad: Bool {
-        return isPadIdiom && [ScreenNativeHeight.iPad1stGen.rawValue, ScreenNativeHeight.iPad6thGen.rawValue].contains(minHeight)
+        isPadIdiom && [ScreenNativeHeight.iPad1stGen.rawValue, ScreenNativeHeight.iPad6thGen.rawValue].contains(minHeight)
     }
     
     public class var isPad10: Bool {
-        return isPadIdiom && minHeight == ScreenNativeHeight.iPad10.rawValue
+        isPadIdiom && minHeight == ScreenNativeHeight.iPad10.rawValue
     }
     
     public class var isPad12: Bool {
-        return isPadIdiom && minHeight == ScreenNativeHeight.iPad12.rawValue
+        isPadIdiom && minHeight == ScreenNativeHeight.iPad12.rawValue
     }
 }

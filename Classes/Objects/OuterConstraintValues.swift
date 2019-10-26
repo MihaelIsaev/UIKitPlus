@@ -12,18 +12,13 @@ public class OuterConstraintValues {
     func constraint(_ attribute: NSLayoutConstraint.Attribute, with view: UIView) -> NSLayoutConstraint? {
         guard let dest = view as? DeclarativeProtocolInternal else { return nil }
         guard let inactiveConstraint = collection[attribute]?[view]  else { return nil }
-        return dest._constraintsOuter[inactiveConstraint.firstAttribute]?[declarativeView]
+        return dest._properties.constraintsOuter[inactiveConstraint.firstAttribute]?[declarativeView]
     }
     
     public subscript(_ attribute: NSLayoutConstraint.Attribute, _ view: UIView) -> CGFloat? {
-        get {
-            return constraint(attribute, with: view)?.constant
-        }
+        get { constraint(attribute, with: view)?.constant }
         set {
-            guard let newValue = newValue else {
-                
-                return
-            }
+            guard let newValue = newValue else { return }
             constraint(attribute, with: view)?.constant = newValue
         }
     }

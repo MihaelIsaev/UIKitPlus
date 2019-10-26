@@ -2,6 +2,13 @@ import Foundation
 import UIKit
 
 open class ViewController: UIViewController {
+    open override var preferredStatusBarStyle: UIStatusBarStyle { statusBarStyle.rawValue }
+    /// UIKitPlus reimplementation of `preferredStatusBarStyle`
+    open var statusBarStyle: StatusBarStyle { .default }
+    
+    @State
+    public var keyboardHeight: CGFloat = 0
+    
     public init () {
         super.init(nibName: nil, bundle: nil)
         subscribeToKeyboardNotifications()
@@ -55,14 +62,36 @@ open class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillDisappear(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    var keyboardWasShowedAtLeastOnce = false
+    var keyboardWasShownAtLeastOnce = false
     
     open func keyboardAppeared(_ height: CGFloat, _ animationDuration: TimeInterval, _ inThisController: Bool) {
-        keyboardWasShowedAtLeastOnce = true
+        keyboardWasShownAtLeastOnce = true
+        if inThisController {
+            if #available(iOS 10.0, *) {
+                UIViewPropertyAnimator(duration: animationDuration, curve: .linear) {
+                    self.keyboardHeight = height
+                    self.view.layoutIfNeeded()
+                }.startAnimation()
+            } else {
+                self.keyboardHeight = height
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     
     open func keyboardDisappeared(_ animationDuration: TimeInterval, _ inThisController: Bool) -> Bool {
-        guard keyboardWasShowedAtLeastOnce else { return false }
+        guard keyboardWasShownAtLeastOnce else { return false }
+        if inThisController {
+            if #available(iOS 10.0, *) {
+                UIViewPropertyAnimator(duration: animationDuration, curve: .linear) {
+                    self.keyboardHeight = 0
+                    self.view.layoutIfNeeded()
+                }.startAnimation()
+            } else {
+                self.keyboardHeight = 0
+                self.view.layoutIfNeeded()
+            }
+        }
         return true
     }
 }
