@@ -113,15 +113,7 @@ extension Button {
 // PRO-TIP2:
 // I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
-Btw, play with it in `Playground` with our `Example` project 🎮
-```swift
-// - you need CocoaPods installed on your Mac
-// - clone or download this repo
-// - go to Example folder in terminal and execute `pod install`
-// - go to Example folder in Finder and open Example.xcworkspace
-// - Find Example playground at the left top corner in Xcode and start playing
-```
-Wondered?❤️ Try it yourself!😃 Now!🚀
+Check it out with `Example` project 🎮 it works through Swift Package Maanger so no need to install CocoaPods 👍
 
 ## Installation
 
