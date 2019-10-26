@@ -121,7 +121,7 @@ Check it out with `Example` project 🎮 it works through Swift Package Manager 
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 1.0.0'
+pod 'UIKit-Plus', '~> 1.1.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
