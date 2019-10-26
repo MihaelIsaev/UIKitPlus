@@ -53,7 +53,7 @@ public class ForEach<Item>: Listable, ListableForEach, ListableBuilderItem, View
     public func item(at index: Int) -> VStack {
         guard index < items.wrappedValue.count else { return VStack() }
         let rawViews = block(index, items.wrappedValue[index]).viewBuilderItems
-        return VStack { rawViews.map { View(inlineView: $0) } }
+        return VStack { rawViews.map { View(inline: $0) } }
     }
     
     // MARK: ListableForEach

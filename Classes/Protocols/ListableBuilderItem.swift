@@ -8,7 +8,7 @@ struct EmptyListableBuilderItem: ListableBuilderItem {
 }
 extension UIView: Listable {
     public var count: Int { 1 }
-    public func item(at index: Int) -> VStack { VStack { View(inlineView: self) } }
+    public func item(at index: Int) -> VStack { VStack { View(inline: self) } }
 }
 extension UIView: ListableBuilderItem {
     public var listableBuilderItems: [Listable] {
