@@ -129,4 +129,30 @@ extension DeclarativeProtocol {
         center(.y, to: view, .y, y)
         return self
     }
+    
+    // MARK: - Activation
+    
+    @discardableResult
+    func activateRelative(_ side: NSLayoutConstraint.Attribute, to: UIView, side toSide: NSLayoutConstraint.Attribute, preConstraint: PreConstraint, second: Bool = false) -> Self {
+        guard let s = self as? DeclarativeProtocolInternal else { return self }
+        s._properties.constraintsOuter.removeValue(forKey: side, andView: to)
+        s._properties.preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: to)
+        let constant = preConstraint.value.value
+        let constraint = NSLayoutConstraint(item: self,
+                                            attribute: side,
+                                            relatedBy: preConstraint.value.relation,
+                                            toItem: to,
+                                            attribute: toSide,
+                                            multiplier: preConstraint.value.multiplier,
+                                            constant: constant)
+        s._properties.constraintsOuter.setValue(constraint, forKey: side, andView: to)
+        if !second, to.superview == nil, let _ = to as? DeclarativeProtocolInternal { // rethink this tricky logic
+            to.activateRelative(toSide, to: self, side: side, preConstraint: preConstraint, second: true)
+        }
+        let isDescant = isDescendant(of: to.superview ?? UIView()) || to.isDescendant(of: superview ?? UIView())
+        if (superview != nil && to.superview != nil && isDescant) || superview == to || to.superview == self {
+            constraint.isActive = true
+        }
+        return self
+    }
 }

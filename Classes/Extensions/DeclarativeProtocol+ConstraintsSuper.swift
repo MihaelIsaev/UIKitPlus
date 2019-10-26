@@ -489,10 +489,21 @@ extension DeclarativeProtocol {
     func activateSuperNew(_ pc: PropertiesInternal.PC) {
         guard let superview = declarativeView.superview else { return }
         guard let _self = self as? DeclarativeProtocolInternal else { return }
+        // Deactivate duplicate constraint and remove it from array
+        _self._properties.notAppliedPreConstraintsSuper.removeAll { $0 != pc && $0.attribute1 == pc.attribute1 }
+        if let index = _self._properties.appliedPreConstraintsSuper.firstIndex(where: { $0.attribute1 == pc.attribute1 }) {
+            _self._properties.appliedPreConstraintsSuper[index].constraint?.isActive = false
+            _self._properties.appliedPreConstraintsSuper[index].constraint?.shouldBeArchived = true
+            _self._properties.appliedPreConstraintsSuper.remove(at: index)
+        }
+        // Move pre constraint from not applied to applied
         _self._properties.notAppliedPreConstraintsSuper.removeAll(where: { $0 === pc })
         _self._properties.appliedPreConstraintsSuper.append(pc)
+        // Store destination view into pre constraint
         pc.destinationView = superview
+        // Create constraint
         var constraint: NSLayoutConstraint?
+        // If constraint for safeArea then create it through anchor
         if pc.toSafe {
             switch pc.attribute1 {
             case .top:
@@ -552,6 +563,7 @@ extension DeclarativeProtocol {
             default: break
             }
         }
+        // If constraint was not for safeArea then create it as usual
         if constraint == nil {
             constraint = NSLayoutConstraint(item: self,
                                                             attribute: pc.attribute1,
@@ -561,12 +573,17 @@ extension DeclarativeProtocol {
                                                             multiplier: pc.multiplier,
                                                             constant: pc.value.wrappedValue)
         }
+        // Store constraint into pre constraint
         pc.constraint = constraint
+        // Activate constraint
         constraint?.isActive = true
+        // Link internal state with external
         linkStates(pc.attribute1, _self, pc.value)
+        // Redraw itself
+        superview.layoutIfNeeded()
     }
     
-    private func linkStates(_ attr: NSLayoutConstraint.Attribute, _ _self: DeclarativeProtocolInternal, _ state: State<CGFloat>) {
+    func linkStates(_ attr: NSLayoutConstraint.Attribute, _ _self: DeclarativeProtocolInternal, _ state: State<CGFloat>) {
         let internalState: State<CGFloat>
         switch attr {
         case .top: internalState = _self.__top

@@ -35,8 +35,6 @@ extension DeclarativeProtocol {
         return preActivateRelative(preConstraint, side1: attribute1, side2: attribute2, view: view)
     }
     
-    
-    
     @discardableResult
     func preActivateRelative(_ preConstraint: PreConstraint, side1: NSLayoutConstraint.Attribute, side2: NSLayoutConstraint.Attribute, view: UIView) -> Self {
         declarativeView.activateRelative(side1, to: view, side: side2, preConstraint: preConstraint)
@@ -71,58 +69,6 @@ extension DeclarativeProtocol {
         _declarativeView._properties.preConstraints.relative.removeAll()
         _declarativeView._properties.preConstraints.solo.removeAll()
         _declarativeView._properties.preConstraints.super.removeAll()
-        return self
-    }
-}
-
-extension UIView {
-    // MARK: - Activation
-    
-    func activateSolo(preConstraint: PreConstraint, side: NSLayoutConstraint.Attribute) {
-        guard let self = self as? DeclarativeProtocolInternal else { return }
-        let constant = preConstraint.value.value
-        var constraint: NSLayoutConstraint?
-        switch side {
-        case .width, .height:
-            constraint = .init(item: self,
-                               attribute: side,
-                               relatedBy: preConstraint.value.relation,
-                               toItem: nil,
-                               attribute: side,
-                               multiplier: preConstraint.value.multiplier,
-                               constant: constant)
-        default: return
-        }
-        if let constraint = constraint {
-            if let _ = self._properties.constraintsMain[side] {
-                self._properties.constraintsMain.setValue(constraint.constant, for: side)
-            } else {
-                self._properties.constraintsMain[side] = constraint.update(preConstraint.value).activated()
-            }
-        }
-    }
-    
-    @discardableResult
-    func activateRelative(_ side: NSLayoutConstraint.Attribute, to: UIView, side toSide: NSLayoutConstraint.Attribute, preConstraint: PreConstraint, second: Bool = false) -> Self {
-        guard let s = self as? DeclarativeProtocolInternal else { return self }
-        s._properties.constraintsOuter.removeValue(forKey: side, andView: to)
-        s._properties.preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: to)
-        let constant = preConstraint.value.value
-        let constraint = NSLayoutConstraint(item: self,
-                                            attribute: side,
-                                            relatedBy: preConstraint.value.relation,
-                                            toItem: to,
-                                            attribute: toSide,
-                                            multiplier: preConstraint.value.multiplier,
-                                            constant: constant)
-        s._properties.constraintsOuter.setValue(constraint, forKey: side, andView: to)
-        if !second, to.superview == nil, let _ = to as? DeclarativeProtocolInternal { // rethink this tricky logic
-            to.activateRelative(toSide, to: self, side: side, preConstraint: preConstraint, second: true)
-        }
-        let isDescant = isDescendant(of: to.superview ?? UIView()) || to.isDescendant(of: superview ?? UIView())
-        if (superview != nil && to.superview != nil && isDescant) || superview == to || to.superview == self {
-            constraint.isActive = true
-        }
         return self
     }
 }
