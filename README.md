@@ -3,27 +3,26 @@
         <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT License">
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/swift-4.2-brightgreen.svg" alt="Swift 4.2">
+        <img src="https://img.shields.io/badge/swift-5.1-brightgreen.svg" alt="Swift 5.1">
     </a>
     <a href="https://cocoapods.org/pods/UIKit-Plus">
         <img src="https://img.shields.io/cocoapods/v/UIKit-Plus.svg" alt="Cocoapod">
     </a>
 </p>
 
-**This project is in active development state till 1.0.0**
+**This project is in active development state**
 
-Build UI in SwiftUI-like way right now in Xcode10+ and for iOS9 and higher! 😺
+With that lib you could build UI in SwiftUI-like way for iOS9 and higher! 😺
 
 ```swift
 // NOTE:
-// For now it's written for Swift 4.2-5.0
-// but closer to 5.1 release it will support 5.1 features like `@State` and `@Binding`
-// and became look more like SwiftUI cause `functionBuilder` became available.
+// It is written for Swift 5.1
+// stable code for Swift 4.2 is available in swift4 branch
 ```
 
 Support this lib by giving a ⭐️!
 
-## The Main Features
+## Main Features
 
 You can build your view anywhere with all the constraints (even to other views), and then once you add it into a superview all the constraints will be activated.
 
@@ -31,25 +30,16 @@ Reusing views is pretty easy. Just declare them in extensions!
 
 ## Really short intro
 ```swift
-// black 100x100 view in center of future superview
-lazy var view1 = View().background(.black).size(100).centerInSuperview()
-// red 30x20 view in horizontal center of future superview and with vertical spacing to view1
-lazy var view2 = View().background(.red)
-                       .size(30, 20)
-                       .centerXInSuperview()
-//                      yes! you can declare constraints before adding to superivew
-                       .top(to: .bottom, of: view1, 16)
-// view with view1 and view2 as subviews
-let awesomeView = View.subviews { [view1, view2] }
+class MyViewController: ViewController {
+    lazy var view1 = View()
+    lazy var view2 = View()
 
-func viewDidLoad() {
-    super.viewDidLoad()
-    view.addSubview(awesomeView)
-    // and yes! you can reach and change declared constraints easily!
-    UIView.animate(duration: 0.5) {
-        view2.centerX = 30
-        view2.outer[.top, view1] = 16
-        awesomeView.layoutIfNeeded()
+    override func buildUI() {
+        super.buildUI()
+        body {
+            view1.background(.black).size(100).centerInSuperview()
+            view2.background(.red).size(30, 20).centerXInSuperview().top(to: .bottom, of: view1, 16)
+        }
     }
 }
 ```
@@ -62,41 +52,26 @@ import UIKitPlus
 // with all needed constraints, properties and actions
 // even before adding them to superview!
 class LoginViewController: ViewController {
-    lazy var backButton = Button.back.tapAction { print("back tapped") }
-
-    lazy var titleLabel = Label.welcome.text("Welcome").centerXInSuperview().topToSuperview(62)
-
-    lazy var contentView = View.subviews { [fieldsView] }
-                               .edgesToSuperview(top: 120, leading: 16, trailing: -16, bottom: 0)
-                               .background(.white)
-                               .corners(20, .topLeft, .topRight)
-
-    lazy var fieldsView = VStackView { [emailField, passwordField, signInButton] }
-                              .edgesToSuperview(top: 10, leading: 8, trailing: -8)
-
-    // NOTE: WrapperView needed just to add padding since we're using these views inside VStackView
-    lazy var emailField = WrapperView {
-        TextField().welcome.placeholder("Email").keyboard(.emailAddress).content(.emailAddress)
-    }.padding(x: 10)
-
-    lazy var passwordField = WrapperView {
-        TextField.welcome.placeholder("Password").content(.password).secure()
-    }.padding(x: 10)
-
-    lazy var signInButton = WrapperView {
-        Button.bigBottomGreen.title("Sign In").tapAction(signIn)
-    }.padding(top: 10, left: 16, right: 16)
-
-    override func loadView() {
-        super.loadView()
+    @State var email = ""
+    @State var password = ""
+    
+    override func buildUI() {
+        super.buildUI()
         view.backgroundColor = .black
-        view.addSubview(backButton, titleLabel, contentView)
+        body {
+            Button.back.onTapGesture { print("back tapped") }
+            Label.welcome.text("Welcome").centerXInSuperview().topToSuperview(62)
+            VStack {
+                TextField.welcome.text($email).placeholder("Email").keyboard(.emailAddress).content(.emailAddress)
+                TextField.welcome.text($password).placeholder("Password").content(.password).secure()
+                View().height(10) // just to add extra space
+                Button.bigBottomGreen.title("Sign In").tapAction(signIn)
+            }.edgesToSuperview(top: 120, leading: 16, trailing: -16)
+        }
     }
 
     func signIn() {
-        guard let email = emailField.innerView.text,
-              let password = passwordField.innerView.text else { return }
-        // do an API call to your server with CodyFire 😉
+        // do an API call to your server with my awesome CodyFire lib 😉
     }
 }
 ```
@@ -108,28 +83,30 @@ extension FontIdentifier {
     static var sfProRegular = FontIdentifier("SFProDisplay-Regular")
     static var sfProMedium = FontIdentifier("SFProDisplay-Medium")
 }
-extension Label {
-    static var title: Label { return Label().color(.white).font(.sfProMedium, 18) }
+extension Text {
+    static var title: Text { Text().color(.white).font(.sfProMedium, 18) }
 }
 extension TextField {
     static var welcome: TextField {
-        return TextField().height(40)
-                          .background(.clear)
-                          .color(.black)
-                          .tint(.mainGreen)
-                          .border(.bottom, 1, .gray)
-                          .font(.sfProRegular, 16)
+        TextField()
+            .height(40)
+            .background(.clear)
+            .color(.black)
+            .tint(.mainGreen)
+            .border(.bottom, 1, .gray)
+            .font(.sfProRegular, 16)
     }
 }
 extension Button {
     static var back: Button { return Button("backIcon").topToSuperview(64).leadingToSuperview(24) }
     static var bigBottomGreen: Button {
-        return Button().color(.white)
-                       .font(.sfProMedium, 15)
-                       .background(.green)
-                       .height(50)
-                       .circle()
-                       .shadow(.gray, opacity: 1, offset: .init(width: 0, height: -1), radius: 10)
+        Button()
+            .color(.white)
+            .font(.sfProMedium, 15)
+            .background(.green)
+            .height(50)
+            .circle()
+            .shadow(.gray, opacity: 1, offset: .init(width: 0, height: -1), radius: 10)
     }
 }
 
