@@ -152,22 +152,22 @@ import UIKitPlus
 | ✅ | TableView | UITableView |
 | ✅ | Image | UIImageView |
 | ✅ | Button | UIButton |
-| ✅ | Label | UILabel |
+| ✅ | Text | UILabel |
 | ✅ | TextField | UITextField |
 | ✅ | SegmentedControl | UISegmentedControl |
 | ✅ | VisualEffectView | UIVisualEffectView |
 | ✅ | StackView | UIStackView |
-| ✅ | HStackView | UIStackView |
-| ✅ | VStackView | UIStackView |
+| ✅ | HStack | UIStackView |
+| ✅ | VStack | UIStackView |
 | ✅ | VerificationCodeView |  |
 | ✅ | AttributedString (aka AttrStr) | NSAttributedString |
 | ✅ | ViewController | UIViewController |
 | ✅ | NavigationController | UINavigationController |
 | ✅ | FormController | |
-| 🛠 | DatePicker | UIDatePicker |
+| ✅ | DatePicker | UIDatePicker |
 | 🛠 | Stepper | UIStepper |
-| 🛠 | Slider | UISlider |
-| 🛠 | Toggle | UISwitch |
+| ✅ | Slider | UISlider |
+| ✅ | Toggle | UISwitch |
 
 ### View
 It is just a simple view with ability to customize it declarative way
