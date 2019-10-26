@@ -17,14 +17,12 @@ open class CollectionViewFlowLayout: UICollectionViewFlowLayout {
     
     @discardableResult
     public func itemSize(_ width: CGFloat, _ height: CGFloat) -> Self {
-        itemSize = .init(width: width, height: height)
-        return self
+        itemSize(.init(width: width, height: height))
     }
     
     @discardableResult
     public func itemSize(_ size: CGFloat) -> Self {
-        itemSize = .init(width: size, height: size)
-        return self
+        itemSize(.init(width: size, height: size))
     }
     
     @discardableResult
@@ -35,20 +33,17 @@ open class CollectionViewFlowLayout: UICollectionViewFlowLayout {
     
     @discardableResult
     public func estimatedItemSize(_ width: CGFloat, _ height: CGFloat) -> Self {
-        estimatedItemSize = .init(width: width, height: height)
-        return self
+        estimatedItemSize(.init(width: width, height: height))
     }
     
     @discardableResult
     public func estimatedItemSize(_ size: CGFloat) -> Self {
-        estimatedItemSize = .init(width: size, height: size)
-        return self
+        estimatedItemSize(.init(width: size, height: size))
     }
     
     @discardableResult
     public func minimumInteritemSpacing(_ value: CGFloat) -> Self {
         minimumInteritemSpacing = value
-        
         return self
     }
     
@@ -72,16 +67,16 @@ open class CollectionViewFlowLayout: UICollectionViewFlowLayout {
     
     @discardableResult
     public func sectionInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
-        return sectionInset(.init(top: top, left: left, bottom: bottom, right: right))
+        sectionInset(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     @discardableResult
     public func sectionInset(x: CGFloat, y: CGFloat) -> Self {
-        return sectionInset(.init(top: y, left: x, bottom: y, right: x))
+        sectionInset(.init(top: y, left: x, bottom: y, right: x))
     }
     
     @discardableResult
     public func sectionInset(_ value: CGFloat) -> Self {
-        return sectionInset(.init(top: value, left: value, bottom: value, right: value))
+        sectionInset(.init(top: value, left: value, bottom: value, right: value))
     }
 }

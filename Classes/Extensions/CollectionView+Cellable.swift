@@ -9,6 +9,6 @@ extension UICollectionView {
     }
     
     public func dequeueReusableCell<T: Cellable>(with class: T.Type, for indexPath: IndexPath) -> T {
-        return dequeueReusableCell(withReuseIdentifier: `class`.reuseIdentifier, for: indexPath) as! T
+        dequeueReusableCell(withReuseIdentifier: `class`.reuseIdentifier, for: indexPath) as! T
     }
 }

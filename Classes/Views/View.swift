@@ -8,7 +8,7 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
         _setup()
-        addSubview(block().viewBuilderItems)
+        body { block().viewBuilderItems }
     }
     
     public override init(frame: CGRect) {
@@ -100,13 +100,13 @@ open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
 extension View {
     public convenience init (_ innerView: UIView) {
         self.init()
-        addSubview(innerView)
+        body { innerView }
     }
     
     public convenience init (inline inlineView: UIView) {
         self.init()
         inlineView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(inlineView)
+        body { inlineView }
         NSLayoutConstraint.activate([
             leadingAnchor.constraint(equalTo: inlineView.leadingAnchor),
             trailingAnchor.constraint(equalTo: inlineView.trailingAnchor),
@@ -117,16 +117,17 @@ extension View {
     
     public convenience init <V>(_ innerView: () -> V) where V: DeclarativeProtocol {
         self.init()
-        addSubview(innerView().declarativeView)
+        body { innerView().declarativeView }
     }
     
     @discardableResult
     public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
-        block().viewBuilderItems.forEach { addSubview($0) }
-        return self
+        body {
+            block().viewBuilderItems
+        }
     }
     
     public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> View {
-        return View(block: block)
+        View(block: block)
     }
 }

@@ -14,7 +14,7 @@ open class WrappedViewControllerView<V>: View, WrappedViewControllerable where V
         super.init(frame: .zero)
         inner.didMove(toParent: parent)
         inner.view.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(inner.view)
+        body { inner.view }
         inner.view.topAnchor.constraint(equalTo: topAnchor).activated()
         inner.view.leftAnchor.constraint(equalTo: leftAnchor).activated()
         inner.view.rightAnchor.constraint(equalTo: rightAnchor).activated()

@@ -12,18 +12,18 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func border(_ width: CGFloat, _ color: UIColor) -> Self {
-        return border(width, color.cgColor)
+        border(width, color.cgColor)
     }
     
     @discardableResult
     public func border(_ width: CGFloat, _ colorNumber: Int) -> Self {
-        return border(width, colorNumber.color.cgColor)
+        border(width, colorNumber.color.cgColor)
     }
     
     @discardableResult
     public func border(_ side: Borders.Side, _ width: CGFloat, _ color: UIColor) -> Self {
         let border = View().background(color)
-        declarativeView.addSubview(border)
+        declarativeView.body { border }
         switch side {
         case .top:
             NSLayoutConstraint.activate([
@@ -61,7 +61,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func border(_ side: Borders.Side, _ width: CGFloat, _ colorNumber: Int) -> Self {
-        return border(side, width, colorNumber.color)
+        border(side, width, colorNumber.color)
     }
     
     @discardableResult

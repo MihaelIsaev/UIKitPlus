@@ -29,20 +29,12 @@ public class Localization {
     }
     
     public static var current: Language {
-        get {
-            return shared.currentLanguage
-        }
-        set {
-            shared.currentLanguage = newValue
-        }
+        get { shared.currentLanguage }
+        set { shared.currentLanguage = newValue }
     }
     
     public static var `default`: Language {
-        get {
-            return shared.defaultLanguage
-        }
-        set {
-            shared.defaultLanguage = newValue
-        }
+        get { shared.defaultLanguage }
+        set { shared.defaultLanguage = newValue }
     }
 }

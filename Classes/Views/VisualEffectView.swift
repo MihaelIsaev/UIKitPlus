@@ -45,6 +45,6 @@ open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, Declarativ
 
 extension UIVisualEffect {
     static func effect(_ effect: UIVisualEffect?) -> VisualEffectView {
-        return VisualEffectView(effect)
+        VisualEffectView(effect)
     }
 }

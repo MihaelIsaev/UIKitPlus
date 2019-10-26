@@ -92,11 +92,11 @@ open class StaticList: View {
 
 extension StaticList: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return views.count
+        views.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return StaticListCell(views[indexPath.row])
+        StaticListCell(views[indexPath.row])
     }
 }
 
@@ -108,8 +108,5 @@ extension StaticList: UITableViewDelegate {
             view.triggerActionHandler()
         }
     }
-    
-    public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
+    public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool { false }
 }

@@ -11,10 +11,10 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func hidden(_ hidden: State<Bool>) -> Self {
-        declarativeView.isHidden = hidden.wrappedValue
-        properties.hidden = hidden.wrappedValue
-        hidden.listen { [weak self] old, new in
+    public func hidden(_ state: State<Bool>) -> Self {
+        declarativeView.isHidden = state.wrappedValue
+        properties.hidden = state.wrappedValue
+        state.listen { [weak self] old, new in
             self?.declarativeView.isHidden = new
             self?.properties.hidden = new
         }

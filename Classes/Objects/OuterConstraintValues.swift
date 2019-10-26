@@ -16,14 +16,9 @@ public class OuterConstraintValues {
     }
     
     public subscript(_ attribute: NSLayoutConstraint.Attribute, _ view: UIView) -> CGFloat? {
-        get {
-            return constraint(attribute, with: view)?.constant
-        }
+        get { constraint(attribute, with: view)?.constant }
         set {
-            guard let newValue = newValue else {
-                
-                return
-            }
+            guard let newValue = newValue else { return }
             constraint(attribute, with: view)?.constant = newValue
         }
     }

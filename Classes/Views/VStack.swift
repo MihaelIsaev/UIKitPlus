@@ -25,6 +25,6 @@ open class VStack: _StackView {
     }
     
     public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> VStackView {
-        return VStackView(block: block)
+        VStackView(block: block)
     }
 }

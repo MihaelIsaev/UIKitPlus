@@ -13,7 +13,7 @@ open class ImagesCache {
     }
     
     func get(_ key: String) -> Data? {
-        return cache.object(forKey: NSString(string: key)) as? Data
+        cache.object(forKey: NSString(string: key)) as? Data
     }
 }
 
@@ -32,25 +32,25 @@ open class ImageLoader {
     
     open func load(_ url: String, imageView: UIImageView, defaultImage: UIImage? = nil) {
         DispatchQueue.main.async { [weak self] in
-            print("image load 0")
+            debugPrint("image load 0")
             loaderQueue.async { [weak self] in
-                print("image load 1")
+                debugPrint("image load 1")
                 /// Checks if URL is valid, otherwise trying to set default image
                 guard let url = URL(string: url) else {
-                    print("image load 1.1")
+                    debugPrint("image load 1.1")
                     if let defaultImage = defaultImage {
-                        print("image load 1.2")
+                        debugPrint("image load 1.2")
                         DispatchQueue.main.async { [weak self] in
                             imageView.image = defaultImage
-                            print("image load 1.3")
+                            debugPrint("image load 1.3")
                         }
                     }
                     return
                 }
-                print("image load 2")
+                debugPrint("image load 2")
                 /// Builds path to image in cache
                 guard let localImagePath = self?.localImagePath(url).path else { return }
-                print("image load 3")
+                debugPrint("image load 3")
                 /// Tries to get image data from cache
                 var cachedImageData = cache.get(url.absoluteString)
                 var localImageData: Data?
@@ -58,37 +58,37 @@ open class ImageLoader {
                     localImageData = self?.fm.contents(atPath: localImagePath)
                 }
                 
-                print("image load 4")
+                debugPrint("image load 4")
                 /// Release `imageView.image` before downloading the new one
                 DispatchQueue.main.async { [weak self] in
                     self?.releaseBeforeDownloading(imageView, defaultImage)
                 }
-                print("image load 5")
+                debugPrint("image load 5")
                 /// Checking if image exists in cache
                 if let cachedImageData = cachedImageData, let image = UIImage(data: cachedImageData)?.forceLoad() {
-                    print("image load 5.1.1")
+                    debugPrint("image load 5.1.1")
                     /// Apply chached image to `imageView.image`
                     DispatchQueue.main.async { [weak self] in
                         self?.applyLocalImage(imageView, image)
-                        print("image load 5.1.2")
+                        debugPrint("image load 5.1.2")
                     }
                 } else if let localImageData = localImageData, let image = UIImage(data: localImageData)?.forceLoad() {
-                    print("image load 5.2.1")
+                    debugPrint("image load 5.2.1")
                     cache.save(url.absoluteString, localImageData)
                     /// Apply chached image to `imageView.image`
                     DispatchQueue.main.async { [weak self] in
                         self?.applyLocalImage(imageView, image)
-                        print("image load 5.2.2")
+                        debugPrint("image load 5.2.2")
                     }
                 }
-                print("image load 6")
+                debugPrint("image load 6")
                 /// Downloads image data from URL
                 self?.downloadImage(url) { [weak self] imageData in
-                    print("image load 7")
+                    debugPrint("image load 7")
                     if let cachedImageData = cachedImageData {
-                        print("image load 7.1")
+                        debugPrint("image load 7.1")
                         if imageData.hashValue != cachedImageData.hashValue {
-                            print("image load 7.1.1")
+                            debugPrint("image load 7.1.1")
                             if let image = UIImage(data: imageData)?.forceLoad() {
                                 DispatchQueue.main.async { [weak self] in
                                     self?.setImage(imageView, image)
@@ -97,7 +97,7 @@ open class ImageLoader {
                             cache.save(url.absoluteString, imageData)
                             self?.fm.createFile(atPath: localImagePath, contents: imageData, attributes: nil)
                         } else {
-                            print("image load 7.1.2")
+                            debugPrint("image load 7.1.2")
                             if let image = UIImage(data: cachedImageData)?.forceLoad() {
                                 DispatchQueue.main.async { [weak self] in
                                     self?.setImage(imageView, image)
@@ -105,9 +105,9 @@ open class ImageLoader {
                             }
                         }
                     } else if let localImageData = localImageData {
-                        print("image load 7.2")
+                        debugPrint("image load 7.2")
                         if imageData.hashValue != localImageData.hashValue {
-                            print("image load 7.2.1")
+                            debugPrint("image load 7.2.1")
                             if let image = UIImage(data: imageData)?.forceLoad() {
                                 DispatchQueue.main.async { [weak self] in
                                     self?.setImage(imageView, image)
@@ -116,7 +116,7 @@ open class ImageLoader {
                             cache.save(url.absoluteString, imageData)
                             self?.fm.createFile(atPath: localImagePath, contents: imageData, attributes: nil)
                         } else {
-                            print("image load 7.2.2")
+                            debugPrint("image load 7.2.2")
                             if let image = UIImage(data: localImageData)?.forceLoad() {
                                 DispatchQueue.main.async { [weak self] in
                                     self?.setImage(imageView, image)
@@ -124,7 +124,7 @@ open class ImageLoader {
                             }
                         }
                     } else if let image = UIImage(data: imageData)?.forceLoad() {
-                        print("image load 7.3")
+                        debugPrint("image load 7.3")
                         DispatchQueue.main.async { [weak self] in
                             self?.setImage(imageView, image)
                         }
@@ -173,7 +173,7 @@ open class ImageLoader {
         downloadTask?.cancel()
         downloadTask = nil
         downloadTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            print("image load 6 response.code: \((response as? HTTPURLResponse)?.statusCode) error: \(error)")
+            debugPrint("image load 6 response.code: \((response as? HTTPURLResponse)?.statusCode) error: \(error)")
             guard let data = data else { return }
             callback(data)
         }

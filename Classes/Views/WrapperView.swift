@@ -11,7 +11,8 @@ open class WrapperView<V>: View where V: UIView {
         self.innerView = innerView
         super.init(frame: .zero)
         innerView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(innerView)
+        body { innerView }
+        backgroundColor = .clear
         topConstraint = innerView.topAnchor.constraint(equalTo: topAnchor, constant: 0)
         leadingConstraint = innerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0)
         trailingConstraint = innerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
@@ -30,13 +31,6 @@ open class WrapperView<V>: View where V: UIView {
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
-//        innerView.layer.masksToBounds = true
-//        guard let _ = _declarativeView._properties.customCorners else {
-//            innerView.layer.cornerRadius = layer.cornerRadius
-//            return
-//        }
-//        innerView.layer.cornerRadius = 0
-//        innerView.layer.mask = layer.sublayers?.first
     }
     
     open override func didMoveToSuperview() {

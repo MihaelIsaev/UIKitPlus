@@ -177,7 +177,7 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        return font(v: UIFont(name: identifier.fontName, size: size))
+        font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult

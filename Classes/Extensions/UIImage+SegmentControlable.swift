@@ -1,5 +1,5 @@
 import UIKit
 
 extension UIImage: SegmentControlable {
-    public var item: SegmentControlableItem { return .image(self) }
+    public var item: SegmentControlableItem { .image(self) }
 }

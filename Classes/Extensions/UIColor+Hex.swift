@@ -16,6 +16,6 @@ extension UIColor {
 
 extension Int {
     public var color: UIColor {
-        return UIColor(netHex: self)
+        UIColor(netHex: self)
     }
 }

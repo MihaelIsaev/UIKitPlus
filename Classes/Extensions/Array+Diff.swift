@@ -42,6 +42,6 @@ extension Array {
 }
 extension Array where Element: Hashable {
     public func difference<T2: Hashable>(_ new: [T2]) -> DiffResult<Element, T2> {
-        return difference(self, new, with: ==)
+        difference(self, new, with: ==)
     }
 }

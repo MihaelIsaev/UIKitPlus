@@ -22,6 +22,6 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func corners(_ radius: CGFloat, _ corners: UIRectCorner...) -> Self {
-        return self.corners(radius, corners)
+        self.corners(radius, corners)
     }
 }

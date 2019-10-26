@@ -3,16 +3,14 @@ import Foundation
 @_functionBuilder public struct StateStringBuilder {
     public typealias Handler = () -> String
     
-    public static func buildBlock() -> String {
-        return ""
-    }
+    public static func buildBlock() -> String { "" }
     
     public static func buildBlock(_ string: String...) -> String {
-        return string.joined()
+        buildBlock(string)
     }
     
     public static func buildBlock(_ string: [String]) -> String {
-        return string.joined()
+        string.joined()
     }
     
     public static func buildIf(_ content: String?) -> String {
@@ -21,10 +19,10 @@ import Foundation
     }
     
     public static func buildEither(first: String) -> String {
-        return first
+        first
     }
 
     public static func buildEither(second: String) -> String {
-        return second
+        second
     }
 }

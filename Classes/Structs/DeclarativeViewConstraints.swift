@@ -10,44 +10,44 @@ public class DeclarativeViewConstraints {
     }
     
     public var width: NSLayoutConstraint? {
-        get { return _declarativeView._properties.constraintsMain[.width] }
+        get { _declarativeView._properties.constraintsMain[.width] }
         set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .width) }
     }
     
     public var height: NSLayoutConstraint? {
-        get { return _declarativeView._properties.constraintsMain[.height] }
+        get { _declarativeView._properties.constraintsMain[.height] }
         set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .height) }
     }
     
     public var top: NSLayoutConstraint? {
-        get { return _declarativeView._properties.constraintsMain[.top] }
+        get { _declarativeView._properties.constraintsMain[.top] }
         set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .top) }
     }
     
     public var leading: NSLayoutConstraint? {
-        get { return _declarativeView._properties.constraintsMain[.leading] }
+        get { _declarativeView._properties.constraintsMain[.leading] }
         set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .leading) }
     }
     
     public var trailing: NSLayoutConstraint? {
-        get { return _declarativeView._properties.constraintsMain[.trailing] }
+        get { _declarativeView._properties.constraintsMain[.trailing] }
         set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .trailing) }
     }
     
     public var bottom: NSLayoutConstraint? {
-        get { return _declarativeView._properties.constraintsMain[.bottom] }
+        get { _declarativeView._properties.constraintsMain[.bottom] }
         set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .bottom) }
     }
     
     public var centerX: NSLayoutConstraint? {
-        get { return _declarativeView._properties.constraintsMain[.centerX] }
+        get { _declarativeView._properties.constraintsMain[.centerX] }
         set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .centerX) }
     }
     
     public var centerY: NSLayoutConstraint? {
-        get { return _declarativeView._properties.constraintsMain[.centerY] }
+        get { _declarativeView._properties.constraintsMain[.centerY] }
         set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .centerY) }
     }
     
-    public var outer: OuterConstraints { return .init(declarativeView, _declarativeView._properties.constraintsOuter) }
+    public var outer: OuterConstraints { .init(declarativeView, _declarativeView._properties.constraintsOuter) }
 }

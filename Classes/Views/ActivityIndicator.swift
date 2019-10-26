@@ -37,8 +37,7 @@ open class ActivityIndicator: UIActivityIndicatorView, DeclarativeProtocol, Decl
     
     @discardableResult
     public func color(_ number: Int) -> Self {
-        self.color = number.color
-        return self
+        color(number.color)
     }
     
     @discardableResult

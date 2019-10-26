@@ -165,7 +165,7 @@ open class HUD: View {
                     imageView.bottomToSuperview(-20)
                 }
                 imageView.height(imageHeight).edgesToSuperview(leading: 20, trailing: -20)
-                contentView.addSubview(imageView)
+                contentView.body { imageView }
                 topView = imageView
             case .symbol:
                 symbolLabel.deactivateAndRemoveAllConstraints()
@@ -179,7 +179,7 @@ open class HUD: View {
                     symbolLabel.bottomToSuperview(-20)
                 }
                 symbolLabel.edgesToSuperview(leading: 20, trailing: -20)
-                contentView.addSubview(symbolLabel)
+                contentView.body { symbolLabel }
                 topView = symbolLabel
             case .activityIndicator:
                 activityIndicator.deactivateAndRemoveAllConstraints()
@@ -193,7 +193,7 @@ open class HUD: View {
                     activityIndicator.bottomToSuperview(-20)
                 }
                 activityIndicator.centerXInSuperview()
-                contentView.addSubview(activityIndicator)
+                contentView.body { activityIndicator }
                 topView = activityIndicator
             case .title:
                 titleLabel.deactivateAndRemoveAllConstraints()
@@ -207,7 +207,7 @@ open class HUD: View {
                     titleLabel.bottomToSuperview(-20)
                 }
                 titleLabel.edgesToSuperview(leading: 20, trailing: -20)
-                contentView.addSubview(titleLabel)
+                contentView.body { titleLabel }
                 topView = titleLabel
             case .subTitle:
                 subTitleLabel.deactivateAndRemoveAllConstraints()
@@ -221,7 +221,7 @@ open class HUD: View {
                     subTitleLabel.bottomToSuperview(-20)
                 }
                 subTitleLabel.edgesToSuperview(leading: 20, trailing: -20)
-                contentView.addSubview(subTitleLabel)
+                contentView.body { subTitleLabel }
                 topView = subTitleLabel
             }
         }

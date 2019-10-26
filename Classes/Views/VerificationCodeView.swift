@@ -116,7 +116,7 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     
     @discardableResult
     public func digitColor(_ number: Int) -> Self {
-        return digitColor(number.color)
+        digitColor(number.color)
     }
     
     var digitBackground: UIColor = .clear
@@ -130,7 +130,7 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     
     @discardableResult
     public func digitBackground(_ number: Int) -> Self {
-        return digitBackground(number.color)
+        digitBackground(number.color)
     }
     
     @discardableResult
@@ -141,7 +141,7 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     
     @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        return font(v: UIFont(name: identifier.fontName, size: size))
+        font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
@@ -184,7 +184,10 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
         if #available(iOS 12.0, *) {
             hiddenTextField.content(.oneTimeCode)
         }
-        addSubview(hiddenTextField)
+        body {
+            hiddenTextField
+            digitViews
+        }
         NSLayoutConstraint.activate([
             hiddenTextField.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
             hiddenTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
@@ -194,7 +197,6 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
         digitViews = (0...quantity - 1).map { _ in DigitView().background(digitBackground) }
         var constraints: [NSLayoutConstraint] = []
         digitViews.enumerated().forEach { offset, digitView in
-            self.addSubview(digitView)
             constraints.append(digitView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0))
             constraints.append(digitView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0))
             let width = digitView.widthAnchor.constraint(equalToConstant: widthOfDigitView)
@@ -259,7 +261,7 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     
     @discardableResult
     open override func becomeFirstResponder() -> Bool {
-        return hiddenTextField.becomeFirstResponder()
+        hiddenTextField.becomeFirstResponder()
     }
     
     public func cleanup() {
@@ -320,7 +322,7 @@ extension VerificationCodeView {
         lazy var label = Label().alignment(.center)
         
         func setupView() {
-            addSubview(label)
+            body { label }
             NSLayoutConstraint.activate([
                 label.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
                 label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),

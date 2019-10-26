@@ -95,7 +95,7 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
     
     @discardableResult
     public func contentInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
-        return contentInset(.init(top: top, left: left, bottom: bottom, right: right))
+        contentInset(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Scroll Indicator Inset
@@ -108,7 +108,7 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
     
     @discardableResult
     public func scrollIndicatorInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
-        return scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
+        scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Delegate

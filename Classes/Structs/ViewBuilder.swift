@@ -4,18 +4,16 @@ import UIKit
     public typealias SingleView = () -> ViewBuilderItem
     
     /// Builds an empty view from an block containing no statements, `{ }`.
-    public static func buildBlock() -> ViewBuilderItem {
-        return []
-    }
+    public static func buildBlock() -> ViewBuilderItem { [] }
     
     /// Passes a single view written as a child view (e..g, `{ Text("Hello") }`) through unmodified.
     public static func buildBlock(_ attrs: ViewBuilderItem...) -> ViewBuilderItem {
-        return ViewBuilderItems(items: attrs.flatMap { $0.viewBuilderItems })
+        buildBlock(attrs)
     }
     
     /// Passes a single view written as a child view (e..g, `{ Text("Hello") }`) through unmodified.
     public static func buildBlock(_ attrs: [ViewBuilderItem]) -> ViewBuilderItem {
-        return ViewBuilderItems(items: attrs.flatMap { $0.viewBuilderItems })
+        ViewBuilderItems(items: attrs.flatMap { $0.viewBuilderItems })
     }
     
     /// Provides support for "if" statements in multi-statement closures, producing an `Optional` view
@@ -28,12 +26,12 @@ import UIKit
     /// Provides support for "if" statements in multi-statement closures, producing
     /// ConditionalContent for the "then" branch.
     public static func buildEither(first: ViewBuilderItem) -> ViewBuilderItem {
-        return first
+        first
     }
 
     /// Provides support for "if-else" statements in multi-statement closures, producing
     /// ConditionalContent for the "else" branch.
     public static func buildEither(second: ViewBuilderItem) -> ViewBuilderItem {
-        return second
+        second
     }
 }

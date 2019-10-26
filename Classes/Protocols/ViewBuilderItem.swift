@@ -4,14 +4,10 @@ public protocol ViewBuilderItem {
     var viewBuilderItems: [UIView] { get }
 }
 extension UIView: ViewBuilderItem {
-    public var viewBuilderItems: [UIView] {
-        return [self]
-    }
+    public var viewBuilderItems: [UIView] { [self] }
 }
 extension Array: ViewBuilderItem where Element: UIView {
-    public var viewBuilderItems: [UIView] {
-        return self
-    }
+    public var viewBuilderItems: [UIView] { self }
 }
 extension Optional: ViewBuilderItem where Wrapped: UIView {
     public var viewBuilderItems: [UIView] {

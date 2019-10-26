@@ -6,8 +6,8 @@ open class FormViewController: ViewController {
     
     open override func buildUI() {
         super.buildUI()
-        view.addSubview(scrollView)
-        scrollView.addSubview(stackView)
+        view.body { scrollView }
+        scrollView.body { stackView }
     }
     
     override open func keyboardAppeared(_ height: CGFloat, _ animationDuration: TimeInterval, _ inThisController: Bool) {

@@ -50,7 +50,7 @@ extension Dictionary where Key == NSLayoutConstraint.Attribute, Value == Declara
 
 extension Dictionary where Key == NSLayoutConstraint.Attribute, Value == ViewConstraintDictionary {
     func isNotActive(_ key: Key, _ view: UIView) -> Bool {
-        return self[key]?[view] == nil || self[key]?[view]?.isActive == false
+        self[key]?[view] == nil || self[key]?[view]?.isActive == false
     }
     
     mutating func setValue(_ value: NSLayoutConstraint?, forKey key: Key, andView view: UIView) {

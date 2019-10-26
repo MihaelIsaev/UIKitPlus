@@ -16,10 +16,10 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func background(_ color: State<UIColor>) -> Self {
-        declarativeView.backgroundColor = color.wrappedValue
-        properties.background = color.wrappedValue
-        color.listen { [weak self] old, new in
+    public func background(_ state: State<UIColor>) -> Self {
+        declarativeView.backgroundColor = state.wrappedValue
+        properties.background = state.wrappedValue
+        state.listen { [weak self] old, new in
             self?.declarativeView.backgroundColor = new
             self?.properties.background = new
         }

@@ -8,7 +8,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
         _setup()
-        addSubview(block().viewBuilderItems)
+        body { block().viewBuilderItems }
     }
     
     public init () {
@@ -87,7 +87,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     
     @discardableResult
     public func contentInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
-        return contentInset(.init(top: top, left: left, bottom: bottom, right: right))
+        contentInset(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Scroll Indicator Inset
@@ -100,7 +100,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     
     @discardableResult
     public func scrollIndicatorInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
-        return scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
+        scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Delegate
@@ -117,21 +117,22 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
 extension ScrollView {
     public convenience init (_ innerView: UIView) {
         self.init()
-        addSubview(innerView)
+        body { innerView }
     }
     
     public convenience init <V>(_ innerView: () -> V) where V: DeclarativeProtocol {
         self.init()
-        addSubview(innerView().declarativeView)
+        body { innerView().declarativeView }
     }
     
     @discardableResult
     public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
-        block().viewBuilderItems.forEach { addSubview($0) }
-        return self
+        body {
+            block().viewBuilderItems
+        }
     }
     
     public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> ScrollView {
-        return ScrollView(block: block)
+        ScrollView(block: block)
     }
 }

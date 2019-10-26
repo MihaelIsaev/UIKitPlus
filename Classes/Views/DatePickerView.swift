@@ -33,7 +33,7 @@ open class DatePicker: UIDatePicker, DeclarativeProtocol, DeclarativeProtocolInt
     
     @discardableResult
     public func textColor(_ hex: Int) -> Self {
-        return textColor(hex.color)
+        textColor(hex.color)
     }
     
     @discardableResult

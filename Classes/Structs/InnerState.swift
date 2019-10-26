@@ -14,9 +14,7 @@ public class InnerState<Value, InnerValue> {
     @State
     var innerState: InnerValue
 
-    public var projectedValue: State<InnerValue> {
-        return $innerState
-    }
+    public var projectedValue: State<InnerValue> { $innerState }
 
     public init(_ value: State<Value>, _ keyPath: WritableKeyPath<Value, InnerValue>) {
         _wrappedValue = value

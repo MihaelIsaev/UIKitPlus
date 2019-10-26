@@ -16,8 +16,6 @@ public class OuterConstraints {
     }
     
     public subscript(_ attribute: NSLayoutConstraint.Attribute, _ view: UIView) -> NSLayoutConstraint? {
-        get {
-            return constraint(attribute, with: view)
-        }
+        constraint(attribute, with: view)
     }
 }

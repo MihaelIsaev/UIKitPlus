@@ -863,7 +863,11 @@ let backgroudImage = Image.welcomeBackground.edgesToSuperview()
 ```
 
 #### Subviews
-Add subviews in one line
+Add subviews easily
 ```swift
-view.addSubview(view1, view2, view3)
+view.body {
+    view1
+    view2
+    view3
+}
 ```

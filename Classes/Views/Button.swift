@@ -56,8 +56,7 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func backgroundHighlighted(_ number: Int, _ state: UIControl.State = .normal) -> Self {
-        backgroundHighlighted = number.color
-        return self
+        backgroundHighlighted(number.color)
     }
     
     // MARK: Title
@@ -78,8 +77,7 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func color(_ number: Int, _ state: UIControl.State = .normal) -> Self {
-        setTitleColor(number.color, for: state)
-        return self
+        color(number.color, state)
     }
     
     // MARK: Title Font
@@ -92,7 +90,7 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        return font(v: UIFont(name: identifier.fontName, size: size))
+        font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     // MARK: Image
@@ -105,8 +103,7 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func image(_ imageName: String, _ state: UIControl.State = .normal) -> Self {
-        setImage(UIImage(named: imageName), for: state)
-        return self
+        image(UIImage(named: imageName), state)
     }
     
     @discardableResult
@@ -125,7 +122,7 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func titleInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
-        return titleInsets(.init(top: top, left: left, bottom: bottom, right: right))
+        titleInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     @discardableResult
@@ -136,6 +133,6 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func imageInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
-        return imageInsets(.init(top: top, left: left, bottom: bottom, right: right))
+        imageInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
 }

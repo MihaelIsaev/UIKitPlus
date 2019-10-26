@@ -3,7 +3,7 @@ import UIKit
 class StaticListCell: TableViewCell {
     init (_ rootView: UIView) {
         super.init(style: .default, reuseIdentifier: nil)
-        contentView.addSubview(rootView)
+        contentView.body { rootView }
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: rootView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: rootView.trailingAnchor),

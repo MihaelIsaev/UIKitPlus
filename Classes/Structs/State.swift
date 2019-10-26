@@ -11,9 +11,7 @@ public class State<Value> {
         }
     }
     
-    public var projectedValue: State<Value> {
-        return self
-    }
+    public var projectedValue: State<Value> { self }
 
     public init(initialValue value: Value) {
         _originalValue = value

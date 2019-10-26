@@ -92,7 +92,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        return font(v: UIFont(name: identifier.fontName, size: size))
+        font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
@@ -229,7 +229,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func leftView(mode: UITextField.ViewMode = .always, _ view: (TextField) -> UIView) -> Self {
-        return leftView(view(self), mode: mode)
+        leftView(view(self), mode: mode)
     }
     
     @discardableResult
@@ -241,7 +241,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func rightView(mode: UITextField.ViewMode = .always, _ view: (TextField) -> UIView) -> Self {
-        return rightView(view(self), mode: mode)
+        rightView(view(self), mode: mode)
     }
     
     @discardableResult
@@ -252,7 +252,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func inputView(_ view: (TextField) -> UIView) -> Self {
-        return inputView(view(self))
+        inputView(view(self))
     }
     
     @discardableResult
@@ -263,7 +263,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func inputAccessoryView(_ view: (TextField) -> UIView) -> Self {
-        return inputAccessoryView(view(self))
+        inputAccessoryView(view(self))
     }
     
     var textRect: CGRect?
@@ -278,13 +278,12 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     @discardableResult
     public func textInsets(_ insets: UIEdgeInsets) -> Self {
         textRect = bounds.inset(by: insets)
-//        layoutIfNeeded()
         return self
     }
     
     @discardableResult
     public func textInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
-        return textInsets(.init(top: top, left: left, bottom: bottom, right: right))
+        textInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     var editingRect: CGRect?
@@ -299,13 +298,12 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     @discardableResult
     public func editingInsets(_ insets: UIEdgeInsets) -> Self {
         editingRect = bounds.inset(by: insets)
-//        layoutIfNeeded()
         return self
     }
     
     @discardableResult
     public func editingInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
-        return editingInsets(.init(top: top, left: left, bottom: bottom, right: right))
+        editingInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
     
     // MARK: Delegate Closures
@@ -417,7 +415,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        return outsideDelegate?.textFieldShouldEndEditing?(self) ?? _shouldEndEditing(self)
+        outsideDelegate?.textFieldShouldEndEditing?(self) ?? _shouldEndEditing(self)
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
@@ -436,7 +434,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        return outsideDelegate?.textFieldShouldClear?(self) ?? _shouldClear(self)
+        outsideDelegate?.textFieldShouldClear?(self) ?? _shouldClear(self)
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
