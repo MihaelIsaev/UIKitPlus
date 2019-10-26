@@ -59,14 +59,14 @@ open class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillDisappear(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    var keyboardWasShowedAtLeastOnce = false
+    var keyboardWasShownAtLeastOnce = false
     
     open func keyboardAppeared(_ height: CGFloat, _ animationDuration: TimeInterval, _ inThisController: Bool) {
-        keyboardWasShowedAtLeastOnce = true
+        keyboardWasShownAtLeastOnce = true
     }
     
     open func keyboardDisappeared(_ animationDuration: TimeInterval, _ inThisController: Bool) -> Bool {
-        guard keyboardWasShowedAtLeastOnce else { return false }
+        guard keyboardWasShownAtLeastOnce else { return false }
         return true
     }
 }
