@@ -165,14 +165,19 @@ open class ImageLoader {
         }
     }
     
+    public var downloadTask: URLSessionDataTask?
+    
     /// Downloads image data from URL
     /// Calls on background thread
     open func downloadImage(_ url: URL, callback: @escaping (Data) -> Void) {
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+        downloadTask?.cancel()
+        downloadTask = nil
+        downloadTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
             print("image load 6 response.code: \((response as? HTTPURLResponse)?.statusCode) error: \(error)")
             guard let data = data else { return }
             callback(data)
-        }.resume()
+        }
+        downloadTask?.resume()
     }
 }
 

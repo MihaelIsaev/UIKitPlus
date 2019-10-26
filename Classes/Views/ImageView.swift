@@ -94,6 +94,10 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
         buildView()
     }
     
+    deinit {
+        self._imageLoader.downloadTask?.cancel()
+    }
+    
     open func buildView() {}
     
     open override func layoutSubviews() {
