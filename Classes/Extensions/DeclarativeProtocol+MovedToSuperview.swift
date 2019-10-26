@@ -4,7 +4,7 @@ extension DeclarativeProtocol {
     func movedToSuperview() {
         guard let superview = declarativeView.superview else { return }
         debugPrint("movedToSuperview: supers: \(_declarativeView._properties.notAppliedPreConstraintsSuper.count)")
-        _declarativeView._properties.notAppliedPreConstraintsSuper.forEach(declarativeView.activateSuperNew)
+        _declarativeView._properties.notAppliedPreConstraintsSuper.forEach(declarativeView.activateSuper)
         _declarativeView._properties.notAppliedPreConstraintsSolo.forEach(declarativeView.activateSolo)
         NSLayoutConstraint.Attribute.all.forEach { side in
             if let solo = _declarativeView._properties.preConstraints.solo[side] {
