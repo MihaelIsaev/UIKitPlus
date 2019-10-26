@@ -1,158 +1,1082 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    @discardableResult
-    public func equalSize(to: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        dimension(.width, to: to, .width, value)
-        dimension(.height, to: to, .height, value)
+    private func _createRelative(value: State<CGFloat>,
+                                                    relation: NSLayoutConstraint.Relation,
+                                                    multiplier: CGFloat,
+                                                    priority: UILayoutPriority,
+                                                    attribute1: NSLayoutConstraint.Attribute,
+                                                    attribute2: NSLayoutConstraint.Attribute?,
+                                                    toSafe: Bool,
+                                                    destinationView: UIView?) -> Self {
+        let pc = PreConstraint(value: value,
+                                        relation: relation,
+                                        multiplier: multiplier,
+                                        priority: priority,
+                                        attribute1: attribute1,
+                                        attribute2: attribute2,
+                                        toSafe: toSafe,
+                                        fromView: declarativeView,
+                                        destinationView: destinationView)
+        if let _ = declarativeView.superview {
+            declarativeView.activateRelative(pc)
+        } else {
+            _declarativeView._properties.notAppliedPreConstraintsRelative.append(pc)
+        }
         return self
     }
     
-    @discardableResult
-    public func spacing(_ side: DeclarativeConstraintXSide, to view: UIView, _ toSide: DeclarativeConstraintXSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _relativePreActivate(anySide: .x(side), to: view, toAnySide: .x(toSide), value)
+    private func _createRelative<V>(expressable: ExpressableState<V, CGFloat>,
+                                                    relation: NSLayoutConstraint.Relation,
+                                                    multiplier: CGFloat,
+                                                    priority: UILayoutPriority,
+                                                    attribute1: NSLayoutConstraint.Attribute,
+                                                    attribute2: NSLayoutConstraint.Attribute?,
+                                                    toSafe: Bool,
+                                                    destinationView: UIView?) -> Self {
+        _createRelative(value: expressable.unwrap(),
+                                                relation: relation,
+                                                multiplier: multiplier,
+                                                priority: priority,
+                                                attribute1: attribute1,
+                                                attribute2: attribute2,
+                                                toSafe: toSafe,
+                                                destinationView: destinationView)
     }
     
-    @discardableResult
-    public func spacing(_ side: DeclarativeConstraintYSide, to view: UIView, _ toSide: DeclarativeConstraintYSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _relativePreActivate(anySide: .y(side), to: view, toAnySide: .y(toSide), value)
-    }
+    // MARK: - top
     
     @discardableResult
-    public func center(_ side: DeclarativeConstraintCSide, to view: UIView, _ toSide: DeclarativeConstraintCSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _relativePreActivate(anySide: .c(side), to: view, toAnySide: .c(toSide), value)
-    }
-    
-    @discardableResult
-    public func dimension(_ side: DeclarativeConstraintDSide, to view: UIView, _ toSide: DeclarativeConstraintDSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _relativePreActivate(anySide: .d(side), to: view, toAnySide: .d(toSide), value)
+    public func top(to side: DeclarativeConstraintYSide, of view: UIView,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh,
+                               safeArea: Bool = false) -> Self {
+        _createRelative(value: state,
+                        relation: relation,
+                        multiplier: multiplier,
+                        priority: priority,
+                        attribute1: .top,
+                        attribute2: side.side,
+                        toSafe: safeArea,
+                        destinationView: view)
     }
     
     /// By default to `bottom` of destination view
     @discardableResult
-    public func top(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.top, to: view, .bottom, value)
+    public func top(to view: UIView,
+                    _ state: State<CGFloat>,
+                    relation: NSLayoutConstraint.Relation = .equal,
+                    multiplier: CGFloat = 1,
+                    priority: UILayoutPriority = .defaultHigh,
+                    safeArea: Bool = false) -> Self {
+        top(to: .bottom, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func top(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.top, to: view, side, value)
+    public func top<V>(to side: DeclarativeConstraintYSide, of view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        top(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    /// By default to `bottom` of destination view
+    @discardableResult
+    public func top<V>(to view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        top(to: .bottom, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    @discardableResult
+    public func top(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        top(to: side, of: view,
+            .init(initialValue: value.constraintValue.value),
+            relation: value.constraintValue.relation,
+            multiplier: value.constraintValue.multiplier,
+            priority: value.constraintValue.priority,
+            safeArea: safeArea)
+    }
+    
+    /// By default to `bottom` of destination view
+    @discardableResult
+    public func top(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        top(to: .bottom, of: view, value, safeArea: safeArea)
+    }
+    
+    // MARK: - leading
+    
+    @discardableResult
+    public func leading(to side: DeclarativeConstraintXSide, of view: UIView,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh,
+                               safeArea: Bool = false) -> Self {
+        _createRelative(value: state,
+                        relation: relation,
+                        multiplier: multiplier,
+                        priority: priority,
+                        attribute1: .leading,
+                        attribute2: side.side,
+                        toSafe: safeArea,
+                        destinationView: view)
     }
     
     /// By default to `trailing` of destination view
     @discardableResult
-    public func leading(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.leading, to: view, .trailing, value)
+    public func leading(to view: UIView,
+                    _ state: State<CGFloat>,
+                    relation: NSLayoutConstraint.Relation = .equal,
+                    multiplier: CGFloat = 1,
+                    priority: UILayoutPriority = .defaultHigh,
+                    safeArea: Bool = false) -> Self {
+        leading(to: .trailing, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func leading(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.leading, to: view, side, value)
+    public func leading<V>(to side: DeclarativeConstraintXSide, of view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        leading(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    /// By default to `trailing` of destination view
+    @discardableResult
+    public func leading<V>(to view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        leading(to: .trailing, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    @discardableResult
+    public func leading(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        leading(to: side, of: view,
+            .init(initialValue: value.constraintValue.value),
+            relation: value.constraintValue.relation,
+            multiplier: value.constraintValue.multiplier,
+            priority: value.constraintValue.priority,
+            safeArea: safeArea)
+    }
+    
+    /// By default to `trailing` of destination view
+    @discardableResult
+    public func leading(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        leading(to: .trailing, of: view, value, safeArea: safeArea)
+    }
+    
+    // MARK: - left
+    
+    @discardableResult
+    public func left(to side: DeclarativeConstraintXSide, of view: UIView,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh,
+                               safeArea: Bool = false) -> Self {
+        _createRelative(value: state,
+                        relation: relation,
+                        multiplier: multiplier,
+                        priority: priority,
+                        attribute1: .left,
+                        attribute2: side.side,
+                        toSafe: safeArea,
+                        destinationView: view)
+    }
+    
+    /// By default to `right` of destination view
+    @discardableResult
+    public func left(to view: UIView,
+                    _ state: State<CGFloat>,
+                    relation: NSLayoutConstraint.Relation = .equal,
+                    multiplier: CGFloat = 1,
+                    priority: UILayoutPriority = .defaultHigh,
+                    safeArea: Bool = false) -> Self {
+        left(to: .right, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    @discardableResult
+    public func left<V>(to side: DeclarativeConstraintXSide, of view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        left(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    /// By default to `right` of destination view
+    @discardableResult
+    public func left<V>(to view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        left(to: .right, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    @discardableResult
+    public func left(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        left(to: side, of: view,
+            .init(initialValue: value.constraintValue.value),
+            relation: value.constraintValue.relation,
+            multiplier: value.constraintValue.multiplier,
+            priority: value.constraintValue.priority,
+            safeArea: safeArea)
+    }
+    
+    /// By default to `right` of destination view
+    @discardableResult
+    public func left(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        left(to: .right, of: view, value, safeArea: safeArea)
+    }
+    
+    // MARK: - trailing
+    
+    @discardableResult
+    public func trailing(to side: DeclarativeConstraintXSide, of view: UIView,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh,
+                               safeArea: Bool = false) -> Self {
+        _createRelative(value: state,
+                        relation: relation,
+                        multiplier: multiplier,
+                        priority: priority,
+                        attribute1: .trailing,
+                        attribute2: side.side,
+                        toSafe: safeArea,
+                        destinationView: view)
     }
     
     /// By default to `leading` of destination view
     @discardableResult
-    public func trailing(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.trailing, to: view, .leading, value)
+    public func trailing(to view: UIView,
+                    _ state: State<CGFloat>,
+                    relation: NSLayoutConstraint.Relation = .equal,
+                    multiplier: CGFloat = 1,
+                    priority: UILayoutPriority = .defaultHigh,
+                    safeArea: Bool = false) -> Self {
+        trailing(to: .leading, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func trailing(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.trailing, to: view, side, value)
+    public func trailing<V>(to side: DeclarativeConstraintXSide, of view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        trailing(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    /// By default to `leading` of destination view
+    @discardableResult
+    public func trailing<V>(to view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        trailing(to: .leading, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    @discardableResult
+    public func trailing(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        trailing(to: side, of: view,
+            .init(initialValue: value.constraintValue.value),
+            relation: value.constraintValue.relation,
+            multiplier: value.constraintValue.multiplier,
+            priority: value.constraintValue.priority,
+            safeArea: safeArea)
+    }
+    
+    /// By default to `leading` of destination view
+    @discardableResult
+    public func trailing(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        trailing(to: .leading, of: view, value, safeArea: safeArea)
+    }
+    
+    // MARK: - right
+    
+    @discardableResult
+    public func right(to side: DeclarativeConstraintXSide, of view: UIView,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh,
+                               safeArea: Bool = false) -> Self {
+        _createRelative(value: state,
+                        relation: relation,
+                        multiplier: multiplier,
+                        priority: priority,
+                        attribute1: .right,
+                        attribute2: side.side,
+                        toSafe: safeArea,
+                        destinationView: view)
+    }
+    
+    /// By default to `left` of destination view
+    @discardableResult
+    public func right(to view: UIView,
+                    _ state: State<CGFloat>,
+                    relation: NSLayoutConstraint.Relation = .equal,
+                    multiplier: CGFloat = 1,
+                    priority: UILayoutPriority = .defaultHigh,
+                    safeArea: Bool = false) -> Self {
+        right(to: .left, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    @discardableResult
+    public func right<V>(to side: DeclarativeConstraintXSide, of view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        right(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    /// By default to `left` of destination view
+    @discardableResult
+    public func right<V>(to view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        right(to: .left, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    @discardableResult
+    public func right(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        right(to: side, of: view,
+            .init(initialValue: value.constraintValue.value),
+            relation: value.constraintValue.relation,
+            multiplier: value.constraintValue.multiplier,
+            priority: value.constraintValue.priority,
+            safeArea: safeArea)
+    }
+    
+    /// By default to `left` of destination view
+    @discardableResult
+    public func right(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        right(to: .left, of: view, value, safeArea: safeArea)
+    }
+    
+    // MARK: - bottom
+    
+    @discardableResult
+    public func bottom(to side: DeclarativeConstraintYSide, of view: UIView,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh,
+                               safeArea: Bool = false) -> Self {
+        _createRelative(value: state,
+                        relation: relation,
+                        multiplier: multiplier,
+                        priority: priority,
+                        attribute1: .bottom,
+                        attribute2: side.side,
+                        toSafe: safeArea,
+                        destinationView: view)
     }
     
     /// By default to `top` of destination view
     @discardableResult
-    public func bottom(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.bottom, to: view, .top, value)
+    public func bottom(to view: UIView,
+                    _ state: State<CGFloat>,
+                    relation: NSLayoutConstraint.Relation = .equal,
+                    multiplier: CGFloat = 1,
+                    priority: UILayoutPriority = .defaultHigh,
+                    safeArea: Bool = false) -> Self {
+        bottom(to: .top, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func bottom(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.bottom, to: view, side, value)
+    public func bottom<V>(to side: DeclarativeConstraintYSide, of view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        bottom(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
+    }
+    
+    /// By default to `top` of destination view
+    @discardableResult
+    public func bottom<V>(to view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh,
+                                  safeArea: Bool = false) -> Self {
+        bottom(to: .top, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func centerX(to side: DeclarativeConstraintCSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        center(.x, to: view, side, value)
+    public func bottom(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        bottom(to: side, of: view,
+            .init(initialValue: value.constraintValue.value),
+            relation: value.constraintValue.relation,
+            multiplier: value.constraintValue.multiplier,
+            priority: value.constraintValue.priority,
+            safeArea: safeArea)
+    }
+    
+    /// By default to `top` of destination view
+    @discardableResult
+    public func bottom(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        bottom(to: .top, of: view, value, safeArea: safeArea)
+    }
+    
+    // MARK: - center x
+    
+    @discardableResult
+    public func centerX(to side: DeclarativeConstraintCXSide, of view: UIView,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh) -> Self {
+        _createRelative(value: state,
+                        relation: relation,
+                        multiplier: multiplier,
+                        priority: priority,
+                        attribute1: .centerX,
+                        attribute2: side.side,
+                        toSafe: false,
+                        destinationView: view)
+    }
+    
+    /// By default to `centerX` of destination view
+    @discardableResult
+    public func centerX(to view: UIView,
+                    _ state: State<CGFloat>,
+                    relation: NSLayoutConstraint.Relation = .equal,
+                    multiplier: CGFloat = 1,
+                    priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: .x, of: view, state, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func centerX<V>(to side: DeclarativeConstraintCXSide, of view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    /// By default to `centerX` of destination view
+    @discardableResult
+    public func centerX<V>(to view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: .x, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func centerX(to side: DeclarativeConstraintCXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        centerX(to: side, of: view,
+            .init(initialValue: value.constraintValue.value),
+            relation: value.constraintValue.relation,
+            multiplier: value.constraintValue.multiplier,
+            priority: value.constraintValue.priority)
     }
     
     /// By default to `centerX` of destination view
     @discardableResult
     public func centerX(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        center(.x, to: view, .x, value)
+        centerX(to: .x, of: view, value)
+    }
+    
+    // MARK: - center y
+    
+    @discardableResult
+    public func centerY(to side: DeclarativeConstraintCYSide, of view: UIView,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh) -> Self {
+        _createRelative(value: state,
+                        relation: relation,
+                        multiplier: multiplier,
+                        priority: priority,
+                        attribute1: .centerY,
+                        attribute2: side.side,
+                        toSafe: false,
+                        destinationView: view)
+    }
+    
+    /// By default to `centerY` of destination view
+    @discardableResult
+    public func centerY(to view: UIView,
+                    _ state: State<CGFloat>,
+                    relation: NSLayoutConstraint.Relation = .equal,
+                    multiplier: CGFloat = 1,
+                    priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerY(to: .y, of: view, state, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func centerY(to side: DeclarativeConstraintCSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        center(.y, to: view, side, value)
+    public func centerY<V>(to side: DeclarativeConstraintCYSide, of view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerY(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
     }
     
-    /// By default to `centerН` of destination view
+    /// By default to `centerY` of destination view
+    @discardableResult
+    public func centerY<V>(to view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerY(to: .y, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func centerY(to side: DeclarativeConstraintCYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        centerY(to: side, of: view,
+            .init(initialValue: value.constraintValue.value),
+            relation: value.constraintValue.relation,
+            multiplier: value.constraintValue.multiplier,
+            priority: value.constraintValue.priority)
+    }
+    
+    /// By default to `centerY` of destination view
     @discardableResult
     public func centerY(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        center(.y, to: view, .y, value)
+        centerY(to: .y, of: view, value)
     }
     
-    /// By default to `width` of destination view
-    @discardableResult
-    public func width(to view: UIView, _ relation: NSLayoutConstraint.Relation = .equal, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        dimension(.width, to: view, .width, ConstraintValueType(relation, 0, multipliedBy, priority))
-    }
+    // MARK: - center both
     
     @discardableResult
-    public func width(to side: DeclarativeConstraintDSide, of view: UIView, _ relation: NSLayoutConstraint.Relation = .equal, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        dimension(.width, to: view, side, ConstraintValueType(relation, 0, multipliedBy, priority))
-    }
-    
-    /// By default to `height` of destination view
-    @discardableResult
-    public func height(to view: UIView, _ relation: NSLayoutConstraint.Relation = .equal, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        dimension(.height, to: view, .height, ConstraintValueType(relation, 0, multipliedBy, priority))
+    public func center(to view: UIView,
+                       _ value: State<CGFloat>,
+                       relation: NSLayoutConstraint.Relation = .equal,
+                       multiplier: CGFloat = 1,
+                       priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, value, relation: relation, multiplier: multiplier, priority: priority)
+        .centerY(to: view, value, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func height(to side: DeclarativeConstraintDSide, of view: UIView, _ relation: NSLayoutConstraint.Relation = .equal, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        dimension(.height, to: view, side, ConstraintValueType(relation, 0, multipliedBy, priority))
+    public func center<V>(to view: UIView,
+                       _ value: ExpressableState<V, CGFloat>,
+                       relation: NSLayoutConstraint.Relation = .equal,
+                       multiplier: CGFloat = 1,
+                       priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, value, relation: relation, multiplier: multiplier, priority: priority)
+        .centerY(to: view, value, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func center(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        center(.x, to: view,  .x, value)
-        center(.y, to: view, .y, value)
-        return self
+    public func center(to view: UIView, _ value: ConstraintValue) -> Self {
+        centerX(to: view, value).centerY(to: view, value)
+    }
+    
+    @discardableResult
+    public func center(to view: UIView,
+                       x: State<CGFloat>,
+                       y: State<CGFloat>,
+                       relation: NSLayoutConstraint.Relation = .equal,
+                       multiplier: CGFloat = 1,
+                       priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
+        .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func center<V>(to view: UIView,
+                       x: State<CGFloat>,
+                       y: ExpressableState<V, CGFloat>,
+                       relation: NSLayoutConstraint.Relation = .equal,
+                       multiplier: CGFloat = 1,
+                       priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
+        .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func center<V>(to view: UIView,
+                       x: ExpressableState<V, CGFloat>,
+                       y: State<CGFloat>,
+                       relation: NSLayoutConstraint.Relation = .equal,
+                       multiplier: CGFloat = 1,
+                       priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
+        .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func center(to view: UIView,
+                       x: State<CGFloat>,
+                       y: ConstraintValue,
+                       relation: NSLayoutConstraint.Relation = .equal,
+                       multiplier: CGFloat = 1,
+                       priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
+        .centerY(to: view, y)
+    }
+    
+    @discardableResult
+    public func center(to view: UIView,
+                       x: ConstraintValue,
+                       y: State<CGFloat>,
+                       relation: NSLayoutConstraint.Relation = .equal,
+                       multiplier: CGFloat = 1,
+                       priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x)
+        .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func center<V>(to view: UIView,
+                       x: ConstraintValue,
+                       y: ExpressableState<V, CGFloat>,
+                       relation: NSLayoutConstraint.Relation = .equal,
+                       multiplier: CGFloat = 1,
+                       priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x)
+        .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func center<V>(to view: UIView,
+                       x: ExpressableState<V, CGFloat>,
+                       y: ConstraintValue,
+                       relation: NSLayoutConstraint.Relation = .equal,
+                       multiplier: CGFloat = 1,
+                       priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
+        .centerY(to: view, y)
+    }
+    
+    @discardableResult
+    public func center<A, B>(to view: UIView,
+                       x: ExpressableState<A, CGFloat>,
+                       y: ExpressableState<B, CGFloat>,
+                       relation: NSLayoutConstraint.Relation = .equal,
+                       multiplier: CGFloat = 1,
+                       priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
+        .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
     public func center(to view: UIView, x: ConstraintValue = CGFloat(0), y: ConstraintValue = CGFloat(0)) -> Self {
-        center(.x, to: view, .x, x)
-        center(.y, to: view, .y, y)
-        return self
+        centerX(to: view, x).centerY(to: view, y)
+    }
+    
+    // MARK: - width
+    
+    @discardableResult
+    public func width(to side: DeclarativeConstraintDSide, of view: UIView,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh) -> Self {
+        _createRelative(value: state,
+                        relation: relation,
+                        multiplier: multiplier,
+                        priority: priority,
+                        attribute1: .width,
+                        attribute2: side.side,
+                        toSafe: false,
+                        destinationView: view)
+    }
+    
+    /// By default to `width` of destination view
+    @discardableResult
+    public func width(to view: UIView,
+                    _ state: State<CGFloat>,
+                    relation: NSLayoutConstraint.Relation = .equal,
+                    multiplier: CGFloat = 1,
+                    priority: UILayoutPriority = .defaultHigh) -> Self {
+        width(to: .width, of: view, state, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func width<V>(to side: DeclarativeConstraintDSide, of view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+        width(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    /// By default to `width` of destination view
+    @discardableResult
+    public func width<V>(to view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+        width(to: .width, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func width(to side: DeclarativeConstraintDSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        width(to: side, of: view,
+            .init(initialValue: value.constraintValue.value),
+            relation: value.constraintValue.relation,
+            multiplier: value.constraintValue.multiplier,
+            priority: value.constraintValue.priority)
+    }
+    
+    /// By default to `width` of destination view
+    @discardableResult
+    public func width(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        width(to: .width, of: view, value)
+    }
+    
+    // MARK: - height
+    
+    @discardableResult
+    public func height(to side: DeclarativeConstraintDSide, of view: UIView,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh) -> Self {
+        _createRelative(value: state,
+                        relation: relation,
+                        multiplier: multiplier,
+                        priority: priority,
+                        attribute1: .height,
+                        attribute2: side.side,
+                        toSafe: false,
+                        destinationView: view)
+    }
+    
+    /// By default to `height` of destination view
+    @discardableResult
+    public func height(to view: UIView,
+                    _ state: State<CGFloat>,
+                    relation: NSLayoutConstraint.Relation = .equal,
+                    multiplier: CGFloat = 1,
+                    priority: UILayoutPriority = .defaultHigh) -> Self {
+        height(to: .height, of: view, state, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func height<V>(to side: DeclarativeConstraintDSide, of view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+        height(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    /// By default to `height` of destination view
+    @discardableResult
+    public func height<V>(to view: UIView,
+                                  _ expressable: ExpressableState<V, CGFloat>,
+                                  relation: NSLayoutConstraint.Relation = .equal,
+                                  multiplier: CGFloat = 1,
+                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+        height(to: .height, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func height(to side: DeclarativeConstraintDSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        height(to: side, of: view,
+            .init(initialValue: value.constraintValue.value),
+            relation: value.constraintValue.relation,
+            multiplier: value.constraintValue.multiplier,
+            priority: value.constraintValue.priority)
+    }
+    
+    /// By default to `height` of destination view
+    @discardableResult
+    public func height(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        width(to: .width, of: view, value)
+    }
+    
+    // MARK: - equal
+    
+    @discardableResult
+    public func equalSize(to: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        width(to: to, value)
+        .height(to: to, value)
+    }
+    
+    @discardableResult
+    public func equalSize(to: UIView,
+                          _ state: State<CGFloat>,
+                          relation: NSLayoutConstraint.Relation = .equal,
+                          multiplier: CGFloat = 1,
+                          priority: UILayoutPriority = .defaultHigh) -> Self {
+        width(to: to, state, relation: relation, multiplier: multiplier, priority: priority)
+        .height(to: to, state, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func equalSize<V>(to: UIView,
+                          _ state: ExpressableState<V, CGFloat>,
+                          relation: NSLayoutConstraint.Relation = .equal,
+                          multiplier: CGFloat = 1,
+                          priority: UILayoutPriority = .defaultHigh) -> Self {
+        width(to: to, state, relation: relation, multiplier: multiplier, priority: priority)
+        .height(to: to, state, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     // MARK: - Activation
     
-    @discardableResult
-    func activateRelative(_ side: NSLayoutConstraint.Attribute, to: UIView, side toSide: NSLayoutConstraint.Attribute, preConstraint: PreConstraint, second: Bool = false) -> Self {
-        guard let s = self as? DeclarativeProtocolInternal else { return self }
-        s._properties.constraintsOuter.removeValue(forKey: side, andView: to)
-        s._properties.preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: to)
-        let constant = preConstraint.value.value
-        let constraint = NSLayoutConstraint(item: self,
-                                            attribute: side,
-                                            relatedBy: preConstraint.value.relation,
-                                            toItem: to,
-                                            attribute: toSide,
-                                            multiplier: preConstraint.value.multiplier,
-                                            constant: constant)
-        s._properties.constraintsOuter.setValue(constraint, forKey: side, andView: to)
-        if !second, to.superview == nil, let _ = to as? DeclarativeProtocolInternal { // rethink this tricky logic
-            to.activateRelative(toSide, to: self, side: side, preConstraint: preConstraint, second: true)
+    func activateRelative(_ pc: PreConstraint) {
+        guard let superview = declarativeView.superview else { return }
+        guard let destinationView = pc.destinationView else { return }
+        guard let _self = self as? DeclarativeProtocolInternal else { return }
+        guard let _destinationView = pc.destinationView as? DeclarativeProtocolInternal else { return }
+        // Deactivate duplicate constraints and remove them from array
+        _self._properties.appliedPreConstraintsRelative.removeAll {
+            $0 != pc
+                && $0.attribute1 == pc.attribute1
+                &&  $0.attribute2 == pc.attribute2
+                && $0.fromView === pc.fromView
+                &&  $0.destinationView === pc.destinationView
         }
-        let isDescant = isDescendant(of: to.superview ?? UIView()) || to.isDescendant(of: superview ?? UIView())
-        if (superview != nil && to.superview != nil && isDescant) || superview == to || to.superview == self {
-            constraint.isActive = true
+        _destinationView._properties.appliedPreConstraintsRelative.removeAll {
+            $0 != pc
+                && $0.attribute1 == pc.attribute2
+                &&  $0.attribute2 == pc.attribute1
+                && $0.fromView === pc.destinationView
+                &&  $0.destinationView === pc.fromView
         }
-        return self
+        if let index = _self._properties.appliedPreConstraintsRelative.firstIndex(where: {
+            $0.attribute1 == pc.attribute1
+                &&  $0.attribute2 == pc.attribute2
+                && $0.fromView === pc.fromView
+                &&  $0.destinationView === pc.destinationView
+        }) {
+            _self._properties.appliedPreConstraintsRelative[index].constraint?.isActive = false
+            _self._properties.appliedPreConstraintsRelative[index].constraint?.shouldBeArchived = true
+            _self._properties.appliedPreConstraintsRelative.remove(at: index)
+        }
+        guard let _ = destinationView.superview else {
+            print("skip to next")
+            _self._properties.notAppliedPreConstraintsRelative.removeAll(where: { $0 === pc })
+            if let inverted = pc.inverted() {
+                print("skip to next success")
+                _destinationView._properties.notAppliedPreConstraintsRelative.append(inverted)
+            }
+            return
+        }
+        // Move pre constraint from not applied to applied
+        _self._properties.notAppliedPreConstraintsRelative.removeAll(where: { $0 === pc })
+        _self._properties.appliedPreConstraintsRelative.append(pc)
+        // Create constraint
+        var constraint: NSLayoutConstraint?
+        // If constraint for safeArea then create it through anchor
+        if pc.toSafe {
+            switch pc.attribute1 {
+            // MARK: top
+            case .top:
+                switch pc.relation {
+                case .equal:
+                    switch pc.attribute2 {
+                    case .top: constraint = declarativeView.topAnchor.constraint(equalTo: destinationView.safeArea.topAnchor, constant: pc.value.wrappedValue)
+                    case .bottom: constraint = declarativeView.topAnchor.constraint(equalTo: destinationView.safeArea.bottomAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .greaterThanOrEqual:
+                    switch pc.attribute2 {
+                    case .top: constraint = declarativeView.topAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.topAnchor, constant: pc.value.wrappedValue)
+                    case .bottom: constraint = declarativeView.topAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.bottomAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .lessThanOrEqual:
+                    switch pc.attribute2 {
+                    case .top: constraint = declarativeView.topAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.topAnchor, constant: pc.value.wrappedValue)
+                    case .bottom: constraint = declarativeView.topAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.bottomAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                }
+            // MARK: leading
+            case .leading:
+                switch pc.relation {
+                case .equal:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.leadingAnchor.constraint(equalTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.leadingAnchor.constraint(equalTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.leadingAnchor.constraint(equalTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.leadingAnchor.constraint(equalTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.leadingAnchor.constraint(equalTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .greaterThanOrEqual:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.leadingAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.leadingAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.leadingAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.leadingAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.leadingAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .lessThanOrEqual:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.leadingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.leadingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.leadingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.leadingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.leadingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                }
+            // MARK: left
+            case .left:
+                switch pc.relation {
+                case .equal:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.leftAnchor.constraint(equalTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.leftAnchor.constraint(equalTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.leftAnchor.constraint(equalTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.leftAnchor.constraint(equalTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.leftAnchor.constraint(equalTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .greaterThanOrEqual:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.leftAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.leftAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.leftAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.leftAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.leftAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .lessThanOrEqual:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.leftAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.leftAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.leftAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.leftAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.leftAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                }
+            // MARK: trailing
+            case .trailing:
+                switch pc.relation {
+                case .equal:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.trailingAnchor.constraint(equalTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.trailingAnchor.constraint(equalTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.trailingAnchor.constraint(equalTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.trailingAnchor.constraint(equalTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.trailingAnchor.constraint(equalTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .greaterThanOrEqual:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.trailingAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.trailingAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.trailingAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.trailingAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.trailingAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .lessThanOrEqual:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.trailingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.trailingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.trailingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.trailingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.trailingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                }
+            // MARK: right
+            case .right:
+                switch pc.relation {
+                case .equal:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.rightAnchor.constraint(equalTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.rightAnchor.constraint(equalTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.rightAnchor.constraint(equalTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.rightAnchor.constraint(equalTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.rightAnchor.constraint(equalTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .greaterThanOrEqual:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.rightAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.rightAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.rightAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.rightAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.rightAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .lessThanOrEqual:
+                    switch pc.attribute2 {
+                    case .leading: constraint = declarativeView.rightAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                    case .left: constraint = declarativeView.rightAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                    case .trailing: constraint = declarativeView.rightAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                    case .right: constraint = declarativeView.rightAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                    case .centerX: constraint = declarativeView.rightAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                }
+            // MARK: bottom
+            case .bottom:
+                switch pc.relation {
+                case .equal:
+                    switch pc.attribute2 {
+                    case .top: constraint = declarativeView.bottomAnchor.constraint(equalTo: destinationView.safeArea.topAnchor, constant: pc.value.wrappedValue)
+                    case .bottom: constraint = declarativeView.bottomAnchor.constraint(equalTo: destinationView.safeArea.bottomAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .greaterThanOrEqual:
+                    switch pc.attribute2 {
+                    case .top: constraint = declarativeView.bottomAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.topAnchor, constant: pc.value.wrappedValue)
+                    case .bottom: constraint = declarativeView.bottomAnchor.constraint(greaterThanOrEqualTo: destinationView.safeArea.bottomAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                case .lessThanOrEqual:
+                    switch pc.attribute2 {
+                    case .top: constraint = declarativeView.bottomAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.topAnchor, constant: pc.value.wrappedValue)
+                    case .bottom: constraint = declarativeView.bottomAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.bottomAnchor, constant: pc.value.wrappedValue)
+                    default: break
+                    }
+                }
+            default: break
+            }
+        }
+        // If constraint was not for safeArea then create it as usual
+        if constraint == nil {
+            constraint = NSLayoutConstraint(item: self,
+                                                            attribute: pc.attribute1,
+                                                            relatedBy: pc.relation,
+                                                            toItem: destinationView,
+                                                            attribute: pc.attribute2 ?? .notAnAttribute,
+                                                            multiplier: pc.multiplier,
+                                                            constant: pc.value.wrappedValue)
+        }
+        // Store constraint into pre constraint
+        pc.constraint = constraint
+        // Activate constraint
+        constraint?.isActive = true
+        // Redraw itself
+        superview.layoutIfNeeded()
     }
 }

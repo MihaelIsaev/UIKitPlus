@@ -9,15 +9,15 @@ extension DeclarativeProtocol {
                                                     attribute2: NSLayoutConstraint.Attribute?,
                                                     toSafe: Bool,
                                                     destinationView: UIView?) -> Self {
-        let pc = PropertiesInternal.PC(value: value,
-                                                    relation: relation,
-                                                    multiplier: multiplier,
-                                                    priority: priority,
-                                                    attribute1: attribute1,
-                                                    attribute2: attribute2,
-                                                    toSafe: toSafe,
-                                                    fromView: declarativeView,
-                                                    destinationView: destinationView)
+        let pc = PreConstraint(value: value,
+                                        relation: relation,
+                                        multiplier: multiplier,
+                                        priority: priority,
+                                        attribute1: attribute1,
+                                        attribute2: attribute2,
+                                        toSafe: toSafe,
+                                        fromView: declarativeView,
+                                        destinationView: destinationView)
         if let _ = declarativeView.superview {
             declarativeView.activateSuper(pc)
         } else {
@@ -486,7 +486,7 @@ extension DeclarativeProtocol {
     
     // MARK: - Activation
     
-    func activateSuper(_ pc: PropertiesInternal.PC) {
+    func activateSuper(_ pc: PreConstraint) {
         guard let superview = declarativeView.superview else { return }
         guard let _self = self as? DeclarativeProtocolInternal else { return }
         // Deactivate duplicate constraint and remove it from array

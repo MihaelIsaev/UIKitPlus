@@ -127,23 +127,23 @@ open class HUD: View {
             switch element {
             case .image:
                 guard let _ = imageView.superview else { continue }
-                imageView.deactivateAndRemoveAllConstraints()
+                imageView.deapplyAllConstraints()
                 imageView.removeFromSuperview()
             case .symbol:
                 guard let _ = symbolLabel.superview else { continue }
-                symbolLabel.deactivateAndRemoveAllConstraints()
+                symbolLabel.deapplyAllConstraints()
                 symbolLabel.removeFromSuperview()
             case .activityIndicator:
                 guard let _ = activityIndicator.superview else { continue }
-                activityIndicator.deactivateAndRemoveAllConstraints()
+                activityIndicator.deapplyAllConstraints()
                 activityIndicator.removeFromSuperview()
             case .title:
                 guard let _ = titleLabel.superview else { continue }
-                titleLabel.deactivateAndRemoveAllConstraints()
+                titleLabel.deapplyAllConstraints()
                 titleLabel.removeFromSuperview()
             case .subTitle:
                 guard let _ = subTitleLabel.superview else { continue }
-                subTitleLabel.deactivateAndRemoveAllConstraints()
+                subTitleLabel.deapplyAllConstraints()
                 subTitleLabel.removeFromSuperview()
             }
         }
@@ -154,7 +154,7 @@ open class HUD: View {
             let element = elements.removeFirst()
             switch element {
             case .image:
-                imageView.deactivateAndRemoveAllConstraints()
+                imageView.deapplyAllConstraints()
                 imageView.removeFromSuperview()
                 if let topView = topView {
                     imageView.top(to: .bottom, of: topView, 4)
@@ -168,7 +168,7 @@ open class HUD: View {
                 contentView.body { imageView }
                 topView = imageView
             case .symbol:
-                symbolLabel.deactivateAndRemoveAllConstraints()
+                symbolLabel.deapplyAllConstraints()
                 symbolLabel.removeFromSuperview()
                 if let topView = topView {
                     symbolLabel.top(to: .bottom, of: topView, 4)
@@ -182,7 +182,7 @@ open class HUD: View {
                 contentView.body { symbolLabel }
                 topView = symbolLabel
             case .activityIndicator:
-                activityIndicator.deactivateAndRemoveAllConstraints()
+                activityIndicator.deapplyAllConstraints()
                 activityIndicator.removeFromSuperview()
                 if let topView = topView {
                     activityIndicator.top(to: .bottom, of: topView, 4)
@@ -196,7 +196,7 @@ open class HUD: View {
                 contentView.body { activityIndicator }
                 topView = activityIndicator
             case .title:
-                titleLabel.deactivateAndRemoveAllConstraints()
+                titleLabel.deapplyAllConstraints()
                 titleLabel.removeFromSuperview()
                 if let topView = topView {
                     titleLabel.top(to: .bottom, of: topView, 4)
@@ -210,7 +210,7 @@ open class HUD: View {
                 contentView.body { titleLabel }
                 topView = titleLabel
             case .subTitle:
-                subTitleLabel.deactivateAndRemoveAllConstraints()
+                subTitleLabel.deapplyAllConstraints()
                 subTitleLabel.removeFromSuperview()
                 if let topView = topView {
                     subTitleLabel.top(to: .bottom, of: topView, 4)

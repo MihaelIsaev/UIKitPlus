@@ -3,15 +3,15 @@ import UIKit
 extension DeclarativeProtocol {
     @discardableResult
     private func _aspectRatio(multiplier: CGFloat, priority: UILayoutPriority) -> Self {
-        let pc = PropertiesInternal.PC(value: .init(initialValue: 0),
-                                                    relation: .equal,
-                                                    multiplier: multiplier,
-                                                    priority: priority,
-                                                    attribute1: .width,
-                                                    attribute2: .height,
-                                                    toSafe: false,
-                                                    fromView: declarativeView,
-                                                    destinationView: declarativeView)
+        let pc = PreConstraint(value: .init(initialValue: 0),
+                                        relation: .equal,
+                                        multiplier: multiplier,
+                                        priority: priority,
+                                        attribute1: .width,
+                                        attribute2: .height,
+                                        toSafe: false,
+                                        fromView: declarativeView,
+                                        destinationView: declarativeView)
         if let _ = declarativeView.superview {
             declarativeView.activateSolo(pc)
         } else {
@@ -25,15 +25,15 @@ extension DeclarativeProtocol {
                                         attribute: NSLayoutConstraint.Attribute,
                                         multiplier: CGFloat,
                                         priority: UILayoutPriority) -> Self {
-        let pc = PropertiesInternal.PC(value: value,
-                                                    relation: .equal,
-                                                    multiplier: multiplier,
-                                                    priority: priority,
-                                                    attribute1: attribute,
-                                                    attribute2: nil,
-                                                    toSafe: false,
-                                                    fromView: declarativeView,
-                                                    destinationView: nil)
+        let pc = PreConstraint(value: value,
+                                        relation: .equal,
+                                        multiplier: multiplier,
+                                        priority: priority,
+                                        attribute1: attribute,
+                                        attribute2: nil,
+                                        toSafe: false,
+                                        fromView: declarativeView,
+                                        destinationView: nil)
         
         if let _ = declarativeView.superview {
             declarativeView.activateSolo(pc)
@@ -140,7 +140,7 @@ extension DeclarativeProtocol {
     
     // MARK: - Activation
     
-    func activateSolo(_ pc: PropertiesInternal.PC) {
+    func activateSolo(_ pc: PreConstraint) {
         guard let superview = declarativeView.superview else { return }
         guard let _self = self as? DeclarativeProtocolInternal else { return }
         // Deactivate duplicate constraint and remove it from array
