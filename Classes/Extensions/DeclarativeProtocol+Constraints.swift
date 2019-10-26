@@ -52,39 +52,26 @@ extension DeclarativeProtocol {
     
     // MARK: - Edges
     
-    private func _edgeSuperview(anySide: DeclarativeConstraintAnySide, to view: UIView?, toAnySide: DeclarativeConstraintAnySide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        let preConstraint = PreConstraint(attribute1: anySide.attribute,
-                                                         attribute2: toAnySide.attribute,
-                                                         value: value.constraintValue)
-        if let view = view {
-            preConstraint.setSide(with: anySide, to: view, toAnySide: toAnySide)
-            if let _ = declarativeView.superview {
-                declarativeView.activateSuper(anySide.attribute, to: view, side: toAnySide.attribute, preConstraint: preConstraint)
-            }
-        }
-        _declarativeView._properties.preConstraints.super[anySide.attribute] = preConstraint
-        return self
-    }
-    
-    @discardableResult
-    public func edge(_ side: DeclarativeConstraintCSide, toSuperview: UIView, _ toSide: DeclarativeConstraintCSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _edgeSuperview(anySide: .c(side), to: toSuperview, toAnySide: .c(toSide), value)
-    }
-    
-    @discardableResult
-    public func edge(_ side: DeclarativeConstraintDSide, toSuperview: UIView, _ toSide: DeclarativeConstraintDSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _edgeSuperview(anySide: .d(side), to: toSuperview, toAnySide: .d(toSide), value)
-    }
-    
-    @discardableResult
-    public func edge(_ side: DeclarativeConstraintXSide, toSuperview: UIView, _ toSide: DeclarativeConstraintXSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _edgeSuperview(anySide: .x(side), to: toSuperview, toAnySide: .x(toSide), value)
-    }
-    
-    @discardableResult
-    public func edge(_ side: DeclarativeConstraintYSide, toSuperview: UIView, _ toSide: DeclarativeConstraintYSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _edgeSuperview(anySide: .y(side), to: toSuperview, toAnySide: .y(toSide), value)
-    }
+    // TODO: remove?
+//    @discardableResult
+//    public func edge(_ side: DeclarativeConstraintCSide, toSuperview: UIView, _ toSide: DeclarativeConstraintCSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+//        _edgeSuperview(anySide: .c(side), to: toSuperview, toAnySide: .c(toSide), value)
+//    }
+//
+//    @discardableResult
+//    public func edge(_ side: DeclarativeConstraintDSide, toSuperview: UIView, _ toSide: DeclarativeConstraintDSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+//        _edgeSuperview(anySide: .d(side), to: toSuperview, toAnySide: .d(toSide), value)
+//    }
+//
+//    @discardableResult
+//    public func edge(_ side: DeclarativeConstraintXSide, toSuperview: UIView, _ toSide: DeclarativeConstraintXSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+//        _edgeSuperview(anySide: .x(side), to: toSuperview, toAnySide: .x(toSide), value)
+//    }
+//
+//    @discardableResult
+//    public func edge(_ side: DeclarativeConstraintYSide, toSuperview: UIView, _ toSide: DeclarativeConstraintYSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+//        _edgeSuperview(anySide: .y(side), to: toSuperview, toAnySide: .y(toSide), value)
+//    }
     
     // MARK:
     
@@ -121,74 +108,6 @@ extension DeclarativeProtocol {
     private func preActivateRelative(_ preConstraint: PreConstraint, side1: NSLayoutConstraint.Attribute, side2: NSLayoutConstraint.Attribute, view: UIView) -> Self {
         declarativeView.activateRelative(side1, to: view, side: side2, preConstraint: preConstraint)
         return self
-    }
-    
-    // MARK: - Superview
-    
-    @discardableResult
-    public func edgesToSuperview(_ value: CGFloat = 0) -> Self {
-        topToSuperview(value)
-        leadingToSuperview(value)
-        trailingToSuperview(value * (-1))
-        bottomToSuperview(value * (-1))
-        return self
-    }
-    
-    @discardableResult
-    public func edgesToSuperview(top: CGFloat? = nil, leading: CGFloat? = nil, trailing: CGFloat? = nil, bottom: CGFloat? = nil) -> Self {
-        if let top = top {
-            topToSuperview(top)
-        }
-        if let leading = leading {
-            leadingToSuperview(leading)
-        }
-        if let trailing = trailing {
-            trailingToSuperview(trailing)
-        }
-        if let bottom = bottom {
-            bottomToSuperview(bottom)
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func topToSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
-        _edgeSuperview(anySide: .y(.top), to: declarativeView.superview, toAnySide: .y(.top), value)
-    }
-    
-    @discardableResult
-    public func leadingToSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
-        _edgeSuperview(anySide: .x(.leading), to: nil, toAnySide: .x(.leading), value)
-    }
-    
-    @discardableResult
-    public func trailingToSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
-        _edgeSuperview(anySide: .x(.trailing), to: nil, toAnySide: .x(.trailing), value)
-    }
-    
-    @discardableResult
-    public func bottomToSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
-        _edgeSuperview(anySide: .y(.bottom), to: nil, toAnySide: .y(.bottom), value)
-    }
-    
-    @discardableResult
-    public func centerXInSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
-        _edgeSuperview(anySide: .c(.x), to: nil, toAnySide: .c(.x), value)
-    }
-    
-    @discardableResult
-    public func centerYInSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
-        _edgeSuperview(anySide: .c(.y), to: nil, toAnySide: .c(.y), value)
-    }
-    
-    @discardableResult
-    public func widthToSuperview(multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        _edgeSuperview(anySide: .d(.width), to: nil, toAnySide: .d(.width), 0 ~ multipliedBy ! priority.rawValue)
-    }
-    
-    @discardableResult
-    public func heightToSuperview(multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        _edgeSuperview(anySide: .d(.height), to: nil, toAnySide: .d(.height), 0 ~ multipliedBy ! priority.rawValue)
     }
     
     // MARK: - Relative
@@ -407,28 +326,6 @@ extension UIView {
             } else {
                 self._properties.constraintsMain[side] = constraint.update(preConstraint.value).activated()
             }
-        }
-    }
-    
-    func activateSuper(_ side: NSLayoutConstraint.Attribute, to: UIView, side toSide: NSLayoutConstraint.Attribute, preConstraint: PreConstraint) {
-        guard let s = self as? DeclarativeProtocolInternal else { return }
-        s._properties.constraintsMain.removeValue(for: side)
-        s._properties.preConstraints.super[side] = preConstraint
-        let constant = preConstraint.value.value
-        let constraint = NSLayoutConstraint(item: self,
-                                            attribute: side,
-                                            relatedBy: preConstraint.value.relation,
-                                            toItem: to,
-                                            attribute: toSide,
-                                            multiplier: preConstraint.value.multiplier,
-                                            constant: constant)
-        s._properties.constraintsMain.setValue(constraint.update(preConstraint.value), for: side)
-        if let dest = to as? DeclarativeProtocolInternal {
-            dest._properties.preConstraints.relative.setValue(side: side, value: preConstraint.value, forKey: toSide, andView: self)
-            dest._properties.constraintsOuter.setValue(constraint, forKey: toSide, andView: self)
-        }
-        if superview != nil && to.superview != nil || superview == to || to.superview == self {
-            constraint.isActive = true
         }
     }
     
