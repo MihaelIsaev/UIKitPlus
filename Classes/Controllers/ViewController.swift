@@ -6,6 +6,9 @@ open class ViewController: UIViewController {
     /// UIKitPlus reimplementation of `preferredStatusBarStyle`
     open var statusBarStyle: StatusBarStyle { .default }
     
+    @State
+    public var keyboardHeight: CGFloat = 0
+    
     public init () {
         super.init(nibName: nil, bundle: nil)
         subscribeToKeyboardNotifications()
@@ -63,10 +66,32 @@ open class ViewController: UIViewController {
     
     open func keyboardAppeared(_ height: CGFloat, _ animationDuration: TimeInterval, _ inThisController: Bool) {
         keyboardWasShownAtLeastOnce = true
+        if inThisController {
+            if #available(iOS 10.0, *) {
+                UIViewPropertyAnimator(duration: animationDuration, curve: .linear) {
+                    self.keyboardHeight = height
+                    self.view.layoutIfNeeded()
+                }.startAnimation()
+            } else {
+                self.keyboardHeight = height
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     
     open func keyboardDisappeared(_ animationDuration: TimeInterval, _ inThisController: Bool) -> Bool {
         guard keyboardWasShownAtLeastOnce else { return false }
+        if inThisController {
+            if #available(iOS 10.0, *) {
+                UIViewPropertyAnimator(duration: animationDuration, curve: .linear) {
+                    self.keyboardHeight = 0
+                    self.view.layoutIfNeeded()
+                }.startAnimation()
+            } else {
+                self.keyboardHeight = 0
+                self.view.layoutIfNeeded()
+            }
+        }
         return true
     }
 }
