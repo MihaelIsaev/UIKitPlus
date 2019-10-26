@@ -1,55 +1,6 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    // MARK: - Size
-    
-    @discardableResult
-    public func size(_ w: ConstraintValue, _ h: ConstraintValue) -> Self {
-        width(w)
-        height(h)
-        return self
-    }
-    
-    @discardableResult
-    public func size(_ value: ConstraintValue) -> Self {
-        width(value)
-        height(value)
-        return self
-    }
-    
-    @discardableResult
-    public func equalSize(to: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        dimension(.width, to: to, .width, value)
-        dimension(.height, to: to, .height, value)
-        return self
-    }
-    
-    @discardableResult
-    public func width(_ value: ConstraintValue) -> Self {
-        let preConstraint = PreConstraint(attribute1: .width, attribute2: nil, value: value.constraintValue)
-        _declarativeView._properties.preConstraints.solo[.width] = preConstraint
-        declarativeView.activateSolo(preConstraint: preConstraint, side: .width)
-        return self
-    }
-    
-    @discardableResult
-    public func height(_ value: ConstraintValue) -> Self {
-        let preConstraint = PreConstraint(attribute1: .height, attribute2: nil, value: value.constraintValue)
-        _declarativeView._properties.preConstraints.solo[.height] = preConstraint
-        declarativeView.activateSolo(preConstraint: preConstraint, side: .height)
-        return self
-    }
-    
-    @discardableResult
-    public func aspectRatio(_ value: ConstraintValue = 1) -> Self {
-        dimension(.width, to: declarativeView, .height, value)
-    }
-    
-    @discardableResult
-    public func aspectRatio(value: CGFloat = 0, multiplier: CGFloat = 1, priority: UILayoutPriority = .defaultHigh) -> Self {
-        dimension(.width, to: declarativeView, .height, ConstraintValueType(.equal, value, multiplier, priority))
-    }
-    
     // MARK: - Edges
     
     // TODO: remove?
@@ -75,7 +26,7 @@ extension DeclarativeProtocol {
     
     // MARK:
     
-    private func _relativePreActivate(anySide: DeclarativeConstraintAnySide, to view: UIView, toAnySide: DeclarativeConstraintAnySide, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    func _relativePreActivate(anySide: DeclarativeConstraintAnySide, to view: UIView, toAnySide: DeclarativeConstraintAnySide, _ value: ConstraintValue = CGFloat(0)) -> Self {
         let attribute1 = anySide.attribute
         let attribute2 = toAnySide.attribute
         let preConstraint = PreConstraint(attribute1: attribute1,
@@ -84,149 +35,11 @@ extension DeclarativeProtocol {
         return preActivateRelative(preConstraint, side1: attribute1, side2: attribute2, view: view)
     }
     
-    @discardableResult
-    public func spacing(_ side: DeclarativeConstraintXSide, to view: UIView, _ toSide: DeclarativeConstraintXSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _relativePreActivate(anySide: .x(side), to: view, toAnySide: .x(toSide), value)
-    }
+    
     
     @discardableResult
-    public func spacing(_ side: DeclarativeConstraintYSide, to view: UIView, _ toSide: DeclarativeConstraintYSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _relativePreActivate(anySide: .y(side), to: view, toAnySide: .y(toSide), value)
-    }
-    
-    @discardableResult
-    public func center(_ side: DeclarativeConstraintCSide, to view: UIView, _ toSide: DeclarativeConstraintCSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _relativePreActivate(anySide: .c(side), to: view, toAnySide: .c(toSide), value)
-    }
-    
-    @discardableResult
-    public func dimension(_ side: DeclarativeConstraintDSide, to view: UIView, _ toSide: DeclarativeConstraintDSide, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        _relativePreActivate(anySide: .d(side), to: view, toAnySide: .d(toSide), value)
-    }
-    
-    @discardableResult
-    private func preActivateRelative(_ preConstraint: PreConstraint, side1: NSLayoutConstraint.Attribute, side2: NSLayoutConstraint.Attribute, view: UIView) -> Self {
+    func preActivateRelative(_ preConstraint: PreConstraint, side1: NSLayoutConstraint.Attribute, side2: NSLayoutConstraint.Attribute, view: UIView) -> Self {
         declarativeView.activateRelative(side1, to: view, side: side2, preConstraint: preConstraint)
-        return self
-    }
-    
-    // MARK: - Relative
-    
-    /// By default to `bottom` of destination view
-    @discardableResult
-    public func top(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.top, to: view, .bottom, value)
-    }
-    
-    @discardableResult
-    public func top(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.top, to: view, side, value)
-    }
-    
-    /// By default to `trailing` of destination view
-    @discardableResult
-    public func leading(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.leading, to: view, .trailing, value)
-    }
-    
-    @discardableResult
-    public func leading(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.leading, to: view, side, value)
-    }
-    
-    /// By default to `leading` of destination view
-    @discardableResult
-    public func trailing(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.trailing, to: view, .leading, value)
-    }
-    
-    @discardableResult
-    public func trailing(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.trailing, to: view, side, value)
-    }
-    
-    /// By default to `top` of destination view
-    @discardableResult
-    public func bottom(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.bottom, to: view, .top, value)
-    }
-    
-    @discardableResult
-    public func bottom(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        spacing(.bottom, to: view, side, value)
-    }
-    
-    @discardableResult
-    public func centerX(to side: DeclarativeConstraintCSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        center(.x, to: view, side, value)
-    }
-    
-    /// By default to `centerX` of destination view
-    @discardableResult
-    public func centerX(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        center(.x, to: view, .x, value)
-    }
-    
-    @discardableResult
-    public func centerY(to side: DeclarativeConstraintCSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        center(.y, to: view, side, value)
-    }
-    
-    /// By default to `centerН` of destination view
-    @discardableResult
-    public func centerY(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        center(.y, to: view, .y, value)
-    }
-    
-    /// By default to `width` of destination view
-    @discardableResult
-    public func width(to view: UIView, _ relation: NSLayoutConstraint.Relation = .equal, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        dimension(.width, to: view, .width, ConstraintValueType(relation, 0, multipliedBy, priority))
-    }
-    
-    @discardableResult
-    public func width(to side: DeclarativeConstraintDSide, of view: UIView, _ relation: NSLayoutConstraint.Relation = .equal, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        dimension(.width, to: view, side, ConstraintValueType(relation, 0, multipliedBy, priority))
-    }
-    
-    /// By default to `height` of destination view
-    @discardableResult
-    public func height(to view: UIView, _ relation: NSLayoutConstraint.Relation = .equal, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        dimension(.height, to: view, .height, ConstraintValueType(relation, 0, multipliedBy, priority))
-    }
-    
-    @discardableResult
-    public func height(to side: DeclarativeConstraintDSide, of view: UIView, _ relation: NSLayoutConstraint.Relation = .equal, multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        dimension(.height, to: view, side, ConstraintValueType(relation, 0, multipliedBy, priority))
-    }
-    
-    // MARK: - Center
-    
-    @discardableResult
-    public func centerInSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
-        centerXInSuperview(value)
-        centerYInSuperview(value)
-        return self
-    }
-    
-    @discardableResult
-    public func centerInSuperview(x: ConstraintValue = CGFloat(0), y: ConstraintValue = CGFloat(0)) -> Self {
-        centerXInSuperview(x)
-        centerYInSuperview(y)
-        return self
-    }
-    
-    @discardableResult
-    public func center(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        center(.x, to: view,  .x, value)
-        center(.y, to: view, .y, value)
-        return self
-    }
-    
-    @discardableResult
-    public func center(to view: UIView, x: ConstraintValue = CGFloat(0), y: ConstraintValue = CGFloat(0)) -> Self {
-        center(.x, to: view, .x, x)
-        center(.y, to: view, .y, y)
         return self
     }
     
@@ -234,46 +47,6 @@ extension DeclarativeProtocol {
     
     public var declarativeConstraints: DeclarativeViewConstraints {
         .init(_declarativeView, declarativeView)
-    }
-    
-    public var height: CGFloat? {
-        get { _declarativeView._properties.constraintsMain[.height]?.constant }
-        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .height) }
-    }
-    
-    public var width: CGFloat? {
-        get { _declarativeView._properties.constraintsMain[.width]?.constant }
-        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .width) }
-    }
-    
-    public var top: CGFloat? {
-        get { _declarativeView._properties.constraintsMain[.top]?.constant }
-        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .top) }
-    }
-    
-    public var leading: CGFloat? {
-        get { _declarativeView._properties.constraintsMain[.leading]?.constant }
-        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .leading) }
-    }
-    
-    public var trailing: CGFloat? {
-        get { _declarativeView._properties.constraintsMain[.trailing]?.constant }
-        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .trailing) }
-    }
-    
-    public var bottom: CGFloat? {
-        get { _declarativeView._properties.constraintsMain[.bottom]?.constant }
-        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .bottom) }
-    }
-    
-    public var centerX: CGFloat? {
-        get { _declarativeView._properties.constraintsMain[.centerX]?.constant }
-        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .centerX) }
-    }
-    
-    public var centerY: CGFloat? {
-        get { _declarativeView._properties.constraintsMain[.centerY]?.constant }
-        set { _declarativeView._properties.constraintsMain.setValue(newValue, for: .centerY) }
     }
     
     public var outer: OuterConstraintValues { .init(declarativeView, _declarativeView._properties.constraintsOuter) }

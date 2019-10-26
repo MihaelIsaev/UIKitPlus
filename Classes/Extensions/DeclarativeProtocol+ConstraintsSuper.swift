@@ -1,24 +1,6 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    func _edgeSuperviewNew<V>(expressable: ExpressableState<V, CGFloat>,
-                                                    relation: NSLayoutConstraint.Relation,
-                                                    multiplier: CGFloat,
-                                                    priority: UILayoutPriority,
-                                                    attribute1: NSLayoutConstraint.Attribute,
-                                                    attribute2: NSLayoutConstraint.Attribute?,
-                                                    toSafe: Bool,
-                                                    destinationView: UIView?) -> Self {
-        return _edgeSuperviewNew(value: expressable.unwrap(),
-                                                relation: relation,
-                                                multiplier: multiplier,
-                                                priority: priority,
-                                                attribute1: attribute1,
-                                                attribute2: attribute2,
-                                                toSafe: toSafe,
-                                                destinationView: destinationView)
-    }
-    
     func _edgeSuperviewNew(value: State<CGFloat>,
                                                     relation: NSLayoutConstraint.Relation,
                                                     multiplier: CGFloat,
@@ -44,6 +26,24 @@ extension DeclarativeProtocol {
         return self
     }
     
+    func _edgeSuperviewNew<V>(expressable: ExpressableState<V, CGFloat>,
+                                                    relation: NSLayoutConstraint.Relation,
+                                                    multiplier: CGFloat,
+                                                    priority: UILayoutPriority,
+                                                    attribute1: NSLayoutConstraint.Attribute,
+                                                    attribute2: NSLayoutConstraint.Attribute?,
+                                                    toSafe: Bool,
+                                                    destinationView: UIView?) -> Self {
+        _edgeSuperviewNew(value: expressable.unwrap(),
+                                                relation: relation,
+                                                multiplier: multiplier,
+                                                priority: priority,
+                                                attribute1: attribute1,
+                                                attribute2: attribute2,
+                                                toSafe: toSafe,
+                                                destinationView: destinationView)
+    }
+    
     // MARK: -
     
     @discardableResult
@@ -55,16 +55,33 @@ extension DeclarativeProtocol {
         return self
     }
     
-//    public func edgesToSuperview(_ value: State<CGFloat> = .init(initialValue: 0)) -> Self {
-//        topToSuperview(value)
-//        leadingToSuperview(value)
-//        trailingToSuperview(value * (-1))
-//        bottomToSuperview(value * (-1))
-//        return self
-//    }
+    public func edgesToSuperview(_ value: State<CGFloat>) -> Self {
+        topToSuperview(value)
+        leadingToSuperview(value)
+        trailingToSuperview(value.map { -1 * $0 })
+        bottomToSuperview(value.map { -1 * $0 })
+        return self
+    }
         
     @discardableResult
     public func edgesToSuperview(top: CGFloat? = nil, leading: CGFloat? = nil, trailing: CGFloat? = nil, bottom: CGFloat? = nil) -> Self {
+        if let top = top {
+            topToSuperview(top)
+        }
+        if let leading = leading {
+            leadingToSuperview(leading)
+        }
+        if let trailing = trailing {
+            trailingToSuperview(trailing)
+        }
+        if let bottom = bottom {
+            bottomToSuperview(bottom)
+        }
+        return self
+    }
+        
+    @discardableResult
+    public func edgesToSuperview(top: State<CGFloat>? = nil, leading: State<CGFloat>? = nil, trailing: State<CGFloat>? = nil, bottom: State<CGFloat>? = nil) -> Self {
         if let top = top {
             topToSuperview(top)
         }
@@ -353,6 +370,92 @@ extension DeclarativeProtocol {
                                         destinationView: declarativeView.superview)
     }
     
+    // MARK: center both
+    
+    @discardableResult
+    public func centerInSuperview(_ state: State<CGFloat>,
+                                                safeArea: Bool = false,
+                                                relation: NSLayoutConstraint.Relation = .equal,
+                                                multiplier: CGFloat = 1,
+                                                priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerXInSuperview(state, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        centerYInSuperview(state, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        return self
+    }
+    
+    @discardableResult
+    public func centerInSuperview<V>(_ expressable: ExpressableState<V, CGFloat>,
+                                                safeArea: Bool = false,
+                                                relation: NSLayoutConstraint.Relation = .equal,
+                                                multiplier: CGFloat = 1,
+                                                priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerXInSuperview(expressable, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        centerYInSuperview(expressable, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        return self
+    }
+    
+    @discardableResult
+    public func centerInSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
+        centerXInSuperview(value)
+        centerYInSuperview(value)
+        return self
+    }
+    
+    @discardableResult
+    public func centerInSuperview(x: ConstraintValue, y: ConstraintValue) -> Self {
+        centerXInSuperview(x)
+        centerYInSuperview(y)
+        return self
+    }
+    
+    @discardableResult
+    public func centerInSuperview(x: State<CGFloat>,
+                                                y: State<CGFloat>,
+                                                safeArea: Bool = false,
+                                                relation: NSLayoutConstraint.Relation = .equal,
+                                                multiplier: CGFloat = 1,
+                                                priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerXInSuperview(x, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        centerYInSuperview(y, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        return self
+    }
+    
+    @discardableResult
+    public func centerInSuperview<A, B>(x: ExpressableState<A, CGFloat>,
+                                                y: ExpressableState<B, CGFloat>,
+                                                safeArea: Bool = false,
+                                                relation: NSLayoutConstraint.Relation = .equal,
+                                                multiplier: CGFloat = 1,
+                                                priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerXInSuperview(x, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        centerYInSuperview(y, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        return self
+    }
+    
+    @discardableResult
+    public func centerInSuperview<V>(x: ExpressableState<V, CGFloat>,
+                                                    y: State<CGFloat>,
+                                                    safeArea: Bool = false,
+                                                    relation: NSLayoutConstraint.Relation = .equal,
+                                                    multiplier: CGFloat = 1,
+                                                    priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerXInSuperview(x, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        centerYInSuperview(y, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        return self
+    }
+    
+    @discardableResult
+    public func centerInSuperview<V>(x: State<CGFloat>,
+                                                    y: ExpressableState<V, CGFloat>,
+                                                    safeArea: Bool = false,
+                                                    relation: NSLayoutConstraint.Relation = .equal,
+                                                    multiplier: CGFloat = 1,
+                                                    priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerXInSuperview(x, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        centerYInSuperview(y, safeArea: safeArea, relation: relation, multiplier: multiplier, priority: priority)
+        return self
+    }
+    
     // MARK: - width
     
     @discardableResult
@@ -457,9 +560,40 @@ extension DeclarativeProtocol {
                                                             attribute: pc.attribute2 ?? .notAnAttribute,
                                                             multiplier: pc.multiplier,
                                                             constant: pc.value.wrappedValue)
-            
         }
         pc.constraint = constraint
         constraint?.isActive = true
+        linkStates(pc.attribute1, _self, pc.value)
+    }
+    
+    private func linkStates(_ attr: NSLayoutConstraint.Attribute, _ _self: DeclarativeProtocolInternal, _ state: State<CGFloat>) {
+        let internalState: State<CGFloat>
+        switch attr {
+        case .top: internalState = _self.__top
+        case .leading: internalState = _self.__leading
+        case .left: internalState = _self.__left
+        case .trailing: internalState = _self.__trailing
+        case .right: internalState = _self.__right
+        case .bottom: internalState = _self.__bottom
+        case .height: internalState = _self.__height
+        case .width: internalState = _self.__width
+        case .centerX: internalState = _self.__centerX
+        case .centerY: internalState = _self.__centerY
+        default: return
+        }
+        var justSetExternal = false
+        var justSetInternal = false
+        state.listen { new in
+            guard !justSetInternal else { return }
+            justSetExternal = true
+            internalState.wrappedValue = new
+            justSetExternal = false
+        }
+        internalState.listen { new in
+            guard !justSetExternal else { return }
+            justSetInternal = true
+            state.wrappedValue = new
+            justSetInternal = false
+        }
     }
 }
