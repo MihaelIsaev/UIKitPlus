@@ -5,7 +5,14 @@ public class PropertiesInternal {
     var customCorners: CustomCorners?
     lazy var borders = Borders()
     
-    var preConstraints = DeclarativePreConstraints()
-    var constraintsMain: DeclarativeConstraintsCollection = [:]
-    var constraintsOuter: DeclarativeConstraintsKeyValueCollection = [:]
+    // MARK: - Internal Constraints
+    
+    var notAppliedPreConstraintsSuper: [PreConstraint] = []
+    var appliedPreConstraintsSuper: [PreConstraint] = []
+    
+    var notAppliedPreConstraintsSolo: [PreConstraint] = []
+    var appliedPreConstraintsSolo: [PreConstraint] = []
+    
+    var notAppliedPreConstraintsRelative: [PreConstraint] = []
+    var appliedPreConstraintsRelative: [PreConstraint] = []
 }

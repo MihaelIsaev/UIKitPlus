@@ -23,7 +23,7 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     
     // Variables
     
-    var height: CGFloat = 238
+    var defaultHeight: CGFloat = 238
     var allowImpactFeedback = true
     var cancelTitle: String = "Cancel" { didSet { cancelButton.title(cancelTitle) }}
     var doneTitle: String = "Done" { didSet { doneButton.title(doneTitle) }}
@@ -44,8 +44,8 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     
     lazy var containerView = View.subviews {
         return [pickerView, cancelButton, titleLabel, doneButton]
-    }.edgesToSuperview(leading: 0, trailing: 0, bottom: height)
-      .height(height)
+    }.edgesToSuperview(leading: 0, trailing: 0, bottom: defaultHeight)
+      .height(defaultHeight)
       .background(.white)
     lazy var pickerView = V()
     lazy var cancelButton = Button(cancelTitle)
@@ -93,7 +93,7 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     
     @discardableResult
     public func height(_ value: CGFloat) -> Self {
-        height = value
+        defaultHeight = value
         return self
     }
     
@@ -258,7 +258,7 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     public func _hide() {
         UIView.animate(withDuration: 0.5, animations: {
             self.alpha = 0
-            self.containerView.bottom = self.height
+            self.containerView.bottom = self.defaultHeight
             self.layoutIfNeeded()
         }) { _ in
             self.removeFromSuperview()

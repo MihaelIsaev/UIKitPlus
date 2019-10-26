@@ -9,6 +9,14 @@ public class ExpressableState<Value, Result> {
         self.state = state
         _expression = expression
     }
+    
+    func unwrap() -> State<Result> {
+        var state: State<Result> = .init(initialValue: self.value())
+        self.state.listen { _ in
+            state.wrappedValue = self.value()
+        }
+        return state
+    }
 }
 
 extension State {
