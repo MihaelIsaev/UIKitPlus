@@ -89,26 +89,8 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
         }
     }
     
-    var widthOfDigitView: CGFloat = 24 {
-        didSet {
-            widthConstraints.forEach { constraint in
-                constraint.constant = widthOfDigitView
-            }
-            layoutIfNeeded()
-        }
-    }
-    
-    var spaceBetweenDigitViews: CGFloat = 10 {
-        didSet {
-            spaceConstraints.forEach { constraint in
-                constraint.constant = spaceBetweenDigitViews
-            }
-            layoutIfNeeded()
-        }
-    }
-    
-    var widthConstraints: [NSLayoutConstraint] = []
-    var spaceConstraints: [NSLayoutConstraint] = []
+    @State var widthOfDigitView: CGFloat = 24
+    @State var spaceBetweenDigitViews: CGFloat = 10
     
     public var code: String {
         return hiddenTextField.text ?? ""
@@ -214,41 +196,14 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     }
     
     func setupView() {
-        if #available(iOS 12.0, *) {
-            hiddenTextField.content(.oneTimeCode)
-        }
+        digitViews = (0...quantity - 1).map { _ in DigitView().background(digitBackground).width($widthOfDigitView) }
         body {
-            hiddenTextField
-            digitViews
+            hiddenTextField.edgesToSuperview(top: 0, leading: 0).size(1, 30).content(.oneTimeCode)
+            HStack {
+                digitViews
+            }.spacing($spaceBetweenDigitViews).edgesToSuperview()
         }
-        NSLayoutConstraint.activate([
-            hiddenTextField.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-            hiddenTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
-            hiddenTextField.widthAnchor.constraint(equalToConstant: 1),
-            hiddenTextField.heightAnchor.constraint(equalToConstant: 30)
-            ])
-        digitViews = (0...quantity - 1).map { _ in DigitView().background(digitBackground) }
-        var constraints: [NSLayoutConstraint] = []
-        digitViews.enumerated().forEach { offset, digitView in
-            constraints.append(digitView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0))
-            constraints.append(digitView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0))
-            let width = digitView.widthAnchor.constraint(equalToConstant: widthOfDigitView)
-            widthConstraints.append(width)
-            constraints.append(width)
-            if offset == 0 {
-                constraints.append(digitView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0))
-            } else if offset > 0 {
-                let prevDigit = digitViews[offset - 1]
-                let space = digitView.leadingAnchor.constraint(equalTo: prevDigit.trailingAnchor, constant: self.spaceBetweenDigitViews)
-                spaceConstraints.append(space)
-                constraints.append(space)
-            }
-            if offset == digitViews.count - 1 {
-                constraints.append(digitView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0))
-            }
-        }
-        NSLayoutConstraint.activate(constraints)
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(becomeFirstResponder)))
+        onTapGesture { self.becomeFirstResponder() }
     }
     
     open func edited(_ textField: TextField) {
@@ -357,17 +312,8 @@ extension VerificationCodeView {
             movedToSuperview()
         }
         
-        var labelBackground: UIColor = .clear {
-            didSet {
-                label.backgroundColor = labelBackground
-            }
-        }
-        
-        var labelColor: UIColor = .black {
-            didSet {
-                label.color(labelColor)
-            }
-        }
+        @State var labelBackground: UIColor = .clear
+        @State var labelColor: UIColor = .black
         
         var labelFont: UIFont? = .systemFont(ofSize: 30) {
             didSet {
@@ -375,16 +321,12 @@ extension VerificationCodeView {
             }
         }
         
-        lazy var label = Label().alignment(.center)
+        lazy var label = Text()
         
         func setupView() {
-            body { label }
-            NSLayoutConstraint.activate([
-                label.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-                label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
-                label.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-                label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
-            ])
+            body {
+                label.alignment(.center).edgesToSuperview().color($labelColor).font(v: labelFont).background($labelBackground)
+            }
         }
     }
 }
