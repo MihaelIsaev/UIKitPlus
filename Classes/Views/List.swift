@@ -1,8 +1,9 @@
 import UIKit
 
 public class List: View, UITableViewDataSource {
-    @State
-    var reversed = false
+    @State var reversed = false
+    
+    var scrollPosition: State<CGPoint>?
     
     var listables: [Listable] = []
     
@@ -136,6 +137,30 @@ public class List: View, UITableViewDataSource {
         tableView.beginUpdates()
         tableView.endUpdates()
         return self
+    }
+}
+
+extension List: UIScrollViewDelegate {
+    @discardableResult
+    public func contentOffset(_ position: CGPoint, animated: Bool = true) -> Self {
+        tableView.setContentOffset(position, animated: animated)
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+        scrollPosition = binding
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition<V>(_ expressable: ExpressableState<V, CGPoint>) -> Self {
+        scrollPosition = expressable.unwrap()
+        return self
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollPosition?.wrappedValue = scrollView.contentOffset
     }
 }
 

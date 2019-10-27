@@ -8,6 +8,8 @@ public class Collection: View, UICollectionViewDataSource {
     
     let layout: UICollectionViewLayout
     
+    var scrollPosition: State<CGPoint>?
+    
     public init (_ layout: UICollectionViewLayout = CollectionView.defaultLayout, @ListableBuilder block: ListableBuilder.SingleView) {
         self.layout = layout
         self.listables = block().listableBuilderItems
@@ -102,4 +104,28 @@ public class Collection: View, UICollectionViewDataSource {
 extension Collection: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {}
     public func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool { false }
+}
+
+extension Collection: UIScrollViewDelegate {
+    @discardableResult
+    public func contentOffset(_ position: CGPoint, animated: Bool = true) -> Self {
+        collectionView.setContentOffset(position, animated: animated)
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+        scrollPosition = binding
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition<V>(_ expressable: ExpressableState<V, CGPoint>) -> Self {
+        scrollPosition = expressable.unwrap()
+        return self
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollPosition?.wrappedValue = scrollView.contentOffset
+    }
 }

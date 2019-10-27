@@ -3,6 +3,8 @@ import UIKit
 open class StaticList: View {
     @State var views: [UIView] = []
     
+    var scrollPosition: State<CGPoint>?
+    
     public override init (@ViewBuilder block: ViewBuilder.SingleView) {
         views = block().viewBuilderItems
         super.init(frame: .zero)
@@ -109,4 +111,28 @@ extension StaticList: UITableViewDelegate {
         }
     }
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool { false }
+}
+
+extension StaticList: UIScrollViewDelegate {
+    @discardableResult
+    public func contentOffset(_ position: CGPoint, animated: Bool = true) -> Self {
+        tableView.setContentOffset(position, animated: animated)
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+        scrollPosition = binding
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition<V>(_ expressable: ExpressableState<V, CGPoint>) -> Self {
+        scrollPosition = expressable.unwrap()
+        return self
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollPosition?.wrappedValue = scrollView.contentOffset
+    }
 }

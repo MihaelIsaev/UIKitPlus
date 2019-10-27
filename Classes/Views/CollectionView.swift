@@ -27,6 +27,8 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
     var __centerX: State<CGFloat> { $centerX }
     var __centerY: State<CGFloat> { $centerY }
     
+    var scrollPosition: State<CGPoint>?
+    
     public static var defaultLayout: UICollectionViewFlowLayout {
         return CollectionViewFlowLayout().itemSize(50).minimumInteritemSpacing(5).minimumLineSpacing(5)
     }
@@ -147,5 +149,29 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
     public func dataSource(_ dataSource: UICollectionViewDataSource) -> Self {
         self.dataSource = dataSource
         return self
+    }
+}
+
+extension CollectionView: UIScrollViewDelegate {
+    @discardableResult
+    public func contentOffset(_ position: CGPoint, animated: Bool = true) -> Self {
+        setContentOffset(position, animated: animated)
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+        scrollPosition = binding
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition<V>(_ expressable: ExpressableState<V, CGPoint>) -> Self {
+        scrollPosition = expressable.unwrap()
+        return self
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollPosition?.wrappedValue = scrollView.contentOffset
     }
 }

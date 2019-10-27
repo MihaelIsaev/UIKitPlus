@@ -27,6 +27,8 @@ open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInter
     var __centerX: State<CGFloat> { $centerX }
     var __centerY: State<CGFloat> { $centerY }
     
+    var scrollPosition: State<CGPoint>?
+    
     public init (_ style: UITableView.Style = .plain) {
         super.init(frame: .zero, style: style)
         buildView()
@@ -168,5 +170,29 @@ open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInter
     public func separatorInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
         separatorInset = .init(top: top, left: left, bottom: bottom, right: right)
         return self
+    }
+}
+
+extension TableView: UIScrollViewDelegate {
+    @discardableResult
+    public func contentOffset(_ position: CGPoint, animated: Bool = true) -> Self {
+        setContentOffset(position, animated: animated)
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+        scrollPosition = binding
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition<V>(_ expressable: ExpressableState<V, CGPoint>) -> Self {
+        scrollPosition = expressable.unwrap()
+        return self
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollPosition?.wrappedValue = scrollView.contentOffset
     }
 }

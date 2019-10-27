@@ -27,6 +27,8 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     var __centerX: State<CGFloat> { $centerX }
     var __centerY: State<CGFloat> { $centerY }
     
+    var scrollPosition: State<CGPoint>?
+    
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
         _setup()
@@ -45,6 +47,7 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     
     private func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
+        delegate = self
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -156,5 +159,29 @@ extension ScrollView {
     
     public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> ScrollView {
         ScrollView(block: block)
+    }
+}
+
+extension ScrollView: UIScrollViewDelegate {
+    @discardableResult
+    public func contentOffset(_ position: CGPoint, animated: Bool = true) -> Self {
+        setContentOffset(position, animated: animated)
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+        scrollPosition = binding
+        return self
+    }
+    
+    @discardableResult
+    public func scrollPosition<V>(_ expressable: ExpressableState<V, CGPoint>) -> Self {
+        scrollPosition = expressable.unwrap()
+        return self
+    }
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollPosition?.wrappedValue = scrollView.contentOffset
     }
 }
