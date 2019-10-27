@@ -165,7 +165,7 @@ import UIKitPlus
 | ✅ | NavigationController | UINavigationController |
 | ✅ | FormController | |
 | ✅ | DatePicker | UIDatePicker |
-| 🛠 | Stepper | UIStepper |
+| ✅ | Stepper | UIStepper |
 | ✅ | Slider | UISlider |
 | ✅ | Toggle | UISwitch |
 
