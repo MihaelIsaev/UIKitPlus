@@ -148,8 +148,8 @@ import UIKitPlus
 | ✅ | View | UIView |
 | ✅ | WrapperView | UIView |
 | ✅ | ScrollView | UIScrollView |
-| ✅ | CollectionView | UICollectionView |
-| ✅ | TableView | UITableView |
+| ✅ | CollectionView, Collection | UICollectionView |
+| ✅ | TableView, List, StaticList | UITableView |
 | ✅ | Image | UIImageView |
 | ✅ | Button | UIButton |
 | ✅ | Text | UILabel |
