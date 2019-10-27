@@ -43,6 +43,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
         self.binding = state
         super.init(frame: .zero)
         self.text = state.wrappedValue
+        state.listen { [weak self] new in self?.text = new }
         _setup()
     }
     
@@ -161,8 +162,9 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     @discardableResult
     public func text(_ state: UIKitPlus.State<String>) -> Self {
+        binding = state
         text = state.wrappedValue
-        state.listen { _,n in self.text = n }
+        state.listen { [weak self] new in self?.text = new }
         return self
     }
     
@@ -354,6 +356,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     // MARK: Delegate Closures
     
+    public typealias FormatCharactersClosure = (_ textField: TextField, _ range: NSRange, _ replacement: String) -> Void
     public typealias ChangeCharactersClosure = (_ textField: TextField, _ range: NSRange, _ replacement: String) -> Bool
     public typealias BoolClosure = (TextField) -> Bool
     public typealias VoidClosure = (TextField) -> Void
@@ -362,6 +365,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     private var _didBeginEditing: [VoidClosure] = []
     private var _shouldEndEditing: BoolClosure = { _ in return true }
     private var _didEndEditing: [VoidClosure] = []
+    private var _shouldFormatCharacters: FormatCharactersClosure?
     private var _shouldChangeCharacters: ChangeCharactersClosure?
     private var _shouldClear: BoolClosure = { _ in return true }
     private var _shouldReturnVoid: () -> Void = {}
@@ -391,6 +395,40 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     @discardableResult
     public func didEndEditing(_ closure: @escaping VoidClosure) -> Self {
         _didEndEditing.append(closure)
+        return self
+    }
+    
+    /// An alternative to `shouldChangeCharacters`
+    /// It will disable `shouldChangeCharacters`
+    ///
+    /// Use this handler with formatters like `AnyFormatKit`
+    ///
+    /// ```swift
+    /// import AnyFormatKit
+    ///
+    /// fileprivate let phoneFormatter = DefaultTextInputFormatter(textPattern: "(###) ###-####")
+    ///
+    /// extension TextField {
+    ///     static var phone: TextField {
+    ///         return TextField()
+    ///             .content(.telephoneNumber)
+    ///             .autocapitalization(.none)
+    ///             .autocorrection(.no)
+    ///             .keyboard(.phonePad)
+    ///             .font(.articoRegular, 15)
+    ///             .placeholder(AttrStr("(555) 123-4567").foreground(.darkGrey).font(.articoRegular, 15))
+    ///             .color(.blackHole)
+    ///             .height(18)
+    ///             .formatCharacters { textView, range, text in
+    ///                 let result = phoneFormatter.formatInput(currentText: textView.text ?? "", range: range, replacementString: text)
+    ///                 textView.text = result.formattedText
+    ///             }
+    ///     }
+    /// }
+    /// ```
+    @discardableResult
+    public func formatCharacters(_ closure: @escaping FormatCharactersClosure) -> Self {
+        _shouldFormatCharacters = closure
         return self
     }
     
@@ -472,6 +510,11 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if let result = outsideDelegate?.textField?(self, shouldChangeCharactersIn: range, replacementString: string) {
             return result
+        }
+        if let handler = _shouldFormatCharacters {
+            handler(self, range, string)
+            __editingChanged()
+            return false
         }
         if let handler = _shouldChangeCharacters {
             return handler(self, range, string)
