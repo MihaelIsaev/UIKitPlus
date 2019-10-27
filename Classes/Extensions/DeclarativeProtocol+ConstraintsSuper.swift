@@ -490,8 +490,8 @@ extension DeclarativeProtocol {
         guard let superview = declarativeView.superview else { return }
         guard let _self = self as? DeclarativeProtocolInternal else { return }
         // Deactivate duplicate constraint and remove it from array
-        _self._properties.notAppliedPreConstraintsSuper.removeAll { $0 != pc && $0.attribute1 == pc.attribute1 }
-        if let index = _self._properties.appliedPreConstraintsSuper.firstIndex(where: { $0.attribute1 == pc.attribute1 }) {
+        _self._properties.notAppliedPreConstraintsSuper.removeAll { $0 != pc && $0.attribute1 == pc.attribute1 && $0.relation == pc.relation }
+        if let index = _self._properties.appliedPreConstraintsSuper.firstIndex(where: { $0.attribute1 == pc.attribute1 && $0.relation == pc.relation }) {
             _self._properties.appliedPreConstraintsSuper[index].constraint?.isActive = false
             _self._properties.appliedPreConstraintsSuper[index].constraint?.shouldBeArchived = true
             _self._properties.appliedPreConstraintsSuper.remove(at: index)

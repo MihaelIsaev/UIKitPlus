@@ -854,6 +854,7 @@ extension DeclarativeProtocol {
             $0 != pc
                 && $0.attribute1 == pc.attribute1
                 &&  $0.attribute2 == pc.attribute2
+                && $0.relation == pc.relation
                 && $0.fromView === pc.fromView
                 &&  $0.destinationView === pc.destinationView
         }
@@ -861,12 +862,14 @@ extension DeclarativeProtocol {
             $0 != pc
                 && $0.attribute1 == pc.attribute2
                 &&  $0.attribute2 == pc.attribute1
+                && $0.relation == pc.relation
                 && $0.fromView === pc.destinationView
                 &&  $0.destinationView === pc.fromView
         }
         if let index = _self._properties.appliedPreConstraintsRelative.firstIndex(where: {
             $0.attribute1 == pc.attribute1
                 &&  $0.attribute2 == pc.attribute2
+                && $0.relation == pc.relation
                 && $0.fromView === pc.fromView
                 &&  $0.destinationView === pc.destinationView
         }) {
@@ -875,10 +878,8 @@ extension DeclarativeProtocol {
             _self._properties.appliedPreConstraintsRelative.remove(at: index)
         }
         guard let _ = destinationView.superview else {
-            print("skip to next")
             _self._properties.notAppliedPreConstraintsRelative.removeAll(where: { $0 === pc })
             if let inverted = pc.inverted() {
-                print("skip to next success")
                 _destinationView._properties.notAppliedPreConstraintsRelative.append(inverted)
             }
             return
