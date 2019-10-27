@@ -102,4 +102,22 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
         self.spacing = spacing
         return self
     }
+    
+    @discardableResult
+    public func spacing(_ state: State<CGFloat>) -> Self {
+        state.listen { [weak self] new in
+            self?.spacing = new
+        }
+        self.spacing = state.wrappedValue
+        return self
+    }
+    
+    @discardableResult
+    public func spacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        expressable.state.listen { [weak self] _,_ in
+            self?.spacing = expressable.value()
+        }
+        self.spacing = expressable.value()
+        return self
+    }
 }
