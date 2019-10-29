@@ -169,6 +169,8 @@ import UIKitPlus
 | ✅ | Slider | UISlider |
 | ✅ | Toggle | UISwitch |
 
+### ✋ Readme below should be updated, cause there are a lot of new features in v1.0.0 and higher
+
 ### View
 It is just a simple view with ability to customize it declarative way
 ```swift
