@@ -27,19 +27,91 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
     
+    // MARK: States
+    
+    var titleNormal: UIKitPlus.State<String>? {
+        didSet {
+             titleNormal?.listen { [weak self] in
+                 self?.setTitle($0, for: .normal)
+             }
+        }
+    }
+    var titleHighlighted: UIKitPlus.State<String>? {
+        didSet {
+            titleNormal?.listen { [weak self] in
+                self?.setTitle($0, for: .highlighted)
+            }
+        }
+    }
+    var titleDisabled: UIKitPlus.State<String>? {
+        didSet {
+            titleNormal?.listen { [weak self] in
+                self?.setTitle($0, for: .disabled)
+            }
+        }
+    }
+    var titleSelected: UIKitPlus.State<String>? {
+        didSet {
+            titleNormal?.listen { [weak self] in
+                self?.setTitle($0, for: .selected)
+            }
+        }
+    }
+    var titleFocused: UIKitPlus.State<String>? {
+        didSet {
+            titleNormal?.listen { [weak self] in
+                self?.setTitle($0, for: .focused)
+            }
+        }
+    }
+    var titleApplication: UIKitPlus.State<String>? {
+        didSet {
+            titleNormal?.listen { [weak self] in
+                self?.setTitle($0, for: .application)
+            }
+        }
+    }
+    var titleReserved: UIKitPlus.State<String>? {
+        didSet {
+            titleNormal?.listen { [weak self] in
+                self?.setTitle($0, for: .reserved)
+            }
+        }
+    }
+    
+    // MARK: Initialization
+    
     public init (_ title: String = "") {
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
+        _setup()
         setTitle(title, for: .normal)
+    }
+    
+    public init (_ state: UIKitPlus.State<String>) {
+        super.init(frame: .zero)
+        _setup()
+        setTitle(state.wrappedValue, for: .normal)
+        titleNormal = state
+    }
+    
+    public init <V>(_ expressable: ExpressableState<V, String>) {
+        super.init(frame: .zero)
+        _setup()
+        setTitle(expressable.value(), for: .normal)
+        titleNormal = expressable.unwrap()
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        translatesAutoresizingMaskIntoConstraints = false
+        _setup()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func _setup() {
+        translatesAutoresizingMaskIntoConstraints = false
     }
     
     open override func layoutSubviews() {
@@ -86,6 +158,38 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     @discardableResult
     public func title(_ title: String, _ state: UIControl.State = .normal) -> Self {
         setTitle(title, for: state)
+        return self
+    }
+    
+    @discardableResult
+    public func title(_ bind: UIKitPlus.State<String>, state: UIControl.State = .normal) -> Self  {
+        setTitle(bind.wrappedValue, for: state)
+        switch state {
+        case .application: titleApplication = bind
+        case .disabled: titleDisabled = bind
+        case .focused: titleFocused = bind
+        case .highlighted: titleHighlighted = bind
+        case .normal: titleNormal = bind
+        case .reserved: titleReserved = bind
+        case .selected: titleSelected = bind
+        default: break
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func title<V>(_ expressable: ExpressableState<V, String>, state: UIControl.State = .normal) -> Self {
+        setTitle(expressable.value(), for: .normal)
+        switch state {
+        case .application: titleApplication = expressable.unwrap()
+        case .disabled: titleDisabled = expressable.unwrap()
+        case .focused: titleFocused = expressable.unwrap()
+        case .highlighted: titleHighlighted = expressable.unwrap()
+        case .normal: titleNormal = expressable.unwrap()
+        case .reserved: titleReserved = expressable.unwrap()
+        case .selected: titleSelected = expressable.unwrap()
+        default: break
+        }
         return self
     }
     
