@@ -598,6 +598,7 @@ extension DeclarativeProtocol {
         case .centerY: internalState = _self.__centerY
         default: return
         }
+        internalState.wrappedValue = state.wrappedValue
         var justSetExternal = false
         var justSetInternal = false
         state.listen { new in
