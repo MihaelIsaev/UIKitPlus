@@ -77,28 +77,6 @@ public class Collection: View, UICollectionViewDataSource {
         reversed = value
         return self
     }
-    
-    // MARK: Indicators
-    
-    @discardableResult
-    public func hideIndicator(_ indicators: NSLayoutConstraint.Axis...) -> Self {
-        if indicators.contains(.horizontal) {
-            collectionView.showsHorizontalScrollIndicator = false
-        }
-        if indicators.contains(.vertical) {
-            collectionView.showsVerticalScrollIndicator = false
-        }
-        return self
-    }
-    
-    // MARK: Indicators
-    
-    @discardableResult
-    public func hideAllIndicators() -> Self {
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.showsVerticalScrollIndicator = false
-        return self
-    }
 }
 
 extension Collection: UICollectionViewDelegate {
@@ -129,3 +107,54 @@ extension Collection: UIScrollViewDelegate {
         scrollPosition?.wrappedValue = scrollView.contentOffset
     }
 }
+
+extension Collection {
+    // MARK: Indicators
+    
+    @discardableResult
+    public func hideIndicator(_ indicators: NSLayoutConstraint.Axis...) -> Self {
+        if indicators.contains(.horizontal) {
+            collectionView.showsHorizontalScrollIndicator = false
+        }
+        if indicators.contains(.vertical) {
+            collectionView.showsVerticalScrollIndicator = false
+        }
+        return self
+    }
+    
+    // MARK: Indicators
+    
+    @discardableResult
+    public func hideAllIndicators() -> Self {
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        return self
+    }
+    
+    // MARK: Content Inset
+    
+    @discardableResult
+    public func contentInset(_ insets: UIEdgeInsets) -> Self {
+        collectionView.contentInset = insets
+        return self
+    }
+    
+    @discardableResult
+    public func contentInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        contentInset(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+    
+    // MARK: Scroll Indicator Inset
+    
+    @discardableResult
+    public func scrollIndicatorInsets(_ insets: UIEdgeInsets) -> Self {
+        collectionView.scrollIndicatorInsets = insets
+        return self
+    }
+    
+    @discardableResult
+    public func scrollIndicatorInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
+        scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+}
+

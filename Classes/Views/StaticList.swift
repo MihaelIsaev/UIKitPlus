@@ -136,3 +136,53 @@ extension StaticList: UIScrollViewDelegate {
         scrollPosition?.wrappedValue = scrollView.contentOffset
     }
 }
+
+extension StaticList {
+    // MARK: Indicators
+    
+    @discardableResult
+    public func hideIndicator(_ indicators: NSLayoutConstraint.Axis...) -> Self {
+        if indicators.contains(.horizontal) {
+            tableView.showsHorizontalScrollIndicator = false
+        }
+        if indicators.contains(.vertical) {
+            tableView.showsVerticalScrollIndicator = false
+        }
+        return self
+    }
+    
+    // MARK: Indicators
+    
+    @discardableResult
+    public func hideAllIndicators() -> Self {
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = false
+        return self
+    }
+    
+    // MARK: Content Inset
+    
+    @discardableResult
+    public func contentInset(_ insets: UIEdgeInsets) -> Self {
+        tableView.contentInset = insets
+        return self
+    }
+    
+    @discardableResult
+    public func contentInset(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        contentInset(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+    
+    // MARK: Scroll Indicator Inset
+    
+    @discardableResult
+    public func scrollIndicatorInsets(_ insets: UIEdgeInsets) -> Self {
+        tableView.scrollIndicatorInsets = insets
+        return self
+    }
+    
+    @discardableResult
+    public func scrollIndicatorInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
+        scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+}
