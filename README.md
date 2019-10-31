@@ -113,7 +113,7 @@ extension Button {
 // PRO-TIP2:
 // I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
-Check it out with `Example` project 🎮 it works through Swift Package Manager so no need to install CocoaPods 👍
+#### Check it out with [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
 
 ## Installation
 
