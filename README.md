@@ -16,14 +16,14 @@ With that lib you could build UI in SwiftUI-like way for iOS9 and higher! 😺
 
 ```swift
 // NOTE:
-// It is written for Swift 5.1
+// Now it is written for Swift 5.1 and Xcode 11
 // stable code for Swift 4.2 is available in swift4 branch
 ```
 
 Support this lib by giving a ⭐️!
 
 #### Learn how to use through the [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
-Please feel free to request for specific examples in example project issues I'll try to cover as much as I can 🚀
+Please feel free to request for specific examples in [example project issues](https://github.com/MihaelIsaev/UIKitPlusExample/issues) I'll try to cover as much as I can 🚀
 
 ## Main Features
 
