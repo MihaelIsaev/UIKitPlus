@@ -114,6 +114,7 @@ extension Button {
 // I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
 #### Check it out with [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
+btw it works through the Swift Package Manager so no need to install CocoaPods 👍
 
 ## Installation
 
@@ -121,7 +122,7 @@ extension Button {
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 1.5.0'
+pod 'UIKit-Plus', '~> 1.6.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
