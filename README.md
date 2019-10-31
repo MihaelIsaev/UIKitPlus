@@ -22,6 +22,8 @@ With that lib you could build UI in SwiftUI-like way for iOS9 and higher! 😺
 
 Support this lib by giving a ⭐️!
 
+#### Check the [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
+
 ## Main Features
 
 You can build your view anywhere with all the constraints (even to other views), and then once you add it into a superview all the constraints will be activated.
@@ -113,8 +115,6 @@ extension Button {
 // PRO-TIP2:
 // I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
-#### Check it out with [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
-btw it works through the Swift Package Manager so no need to install CocoaPods 👍
 
 ## Installation
 
