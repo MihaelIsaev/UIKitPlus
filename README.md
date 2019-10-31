@@ -22,7 +22,8 @@ With that lib you could build UI in SwiftUI-like way for iOS9 and higher! 😺
 
 Support this lib by giving a ⭐️!
 
-#### Check the [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
+#### Learn how to use through the [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
+Please feel free to request for specific examples in example project issues I'll try to cover as much as I can 🚀
 
 ## Main Features
 
