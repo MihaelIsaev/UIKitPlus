@@ -5,7 +5,7 @@ public typealias RootBeforeTransition = (UIViewController) -> Void
 
 public typealias SimpleRootController = RootController<Never>
 
-open class RootController<DeeplinkType>: UIViewController, RootControllerable {
+open class RootController<DeeplinkType>: ViewController, RootControllerable {
     open override var preferredStatusBarStyle: UIStatusBarStyle { current.preferredStatusBarStyle }
     
     public internal(set) var current: UIViewController = .init()
@@ -31,7 +31,7 @@ open class RootController<DeeplinkType>: UIViewController, RootControllerable {
     
     open var shouldShowOnboardingBeforeMainScreen: Bool { return true }
     
-    required public init() {
+    required public override init() {
         super.init(nibName:  nil, bundle: nil)
         current = initialScreen
         initialize()
@@ -171,5 +171,15 @@ open class RootController<DeeplinkType>: UIViewController, RootControllerable {
     public func attach(to window: UIWindow?) {
         window?.rootViewController = self
         window?.makeKeyAndVisible()
+    }
+    
+    @available(iOS 13.0, *)
+    @discardableResult
+    public func attach(to scene: UIScene) -> UIWindow? {
+        guard let windowScene = scene as? UIWindowScene else { return nil }
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = self
+        window.makeKeyAndVisible()
+        return window
     }
 }
