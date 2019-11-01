@@ -6,8 +6,8 @@ public typealias Label = Text
 
 /// aka `UILabel`
 open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Label { self }
-    public lazy var properties = Properties<Label>()
+    public var declarativeView: Text { self }
+    public lazy var properties = Properties<Text>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0

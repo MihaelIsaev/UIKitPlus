@@ -13,7 +13,7 @@ open class ImagesCache {
     }
     
     func get(_ key: String) -> Data? {
-        cache.object(forKey: NSString(string: key)) as? Data
+        cache.object(forKey: NSString(string: key)) as Data?
     }
 }
 
@@ -40,7 +40,7 @@ open class ImageLoader {
 //                    debugPrint("image load 1.1")
                     if let defaultImage = defaultImage {
 //                        debugPrint("image load 1.2")
-                        DispatchQueue.main.async { [weak self] in
+                        DispatchQueue.main.async {
                             imageView.image = defaultImage
 //                            debugPrint("image load 1.3")
                         }
@@ -52,7 +52,7 @@ open class ImageLoader {
                 guard let localImagePath = self?.localImagePath(url).path else { return }
 //                debugPrint("image load 3")
                 /// Tries to get image data from cache
-                var cachedImageData = cache.get(url.absoluteString)
+                let cachedImageData = cache.get(url.absoluteString)
                 var localImageData: Data?
                 if cachedImageData == nil {
                     localImageData = self?.fm.contents(atPath: localImagePath)
@@ -178,6 +178,11 @@ open class ImageLoader {
             callback(data)
         }
         downloadTask?.resume()
+    }
+    
+    /// Cancels download task
+    open func cancel() {
+        downloadTask?.cancel()
     }
 }
 

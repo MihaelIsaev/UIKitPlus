@@ -2,7 +2,6 @@ import UIKit
 
 extension DeclarativeProtocol {
     func movedToSuperview() {
-        guard let superview = declarativeView.superview else { return }
         _declarativeView._properties.notAppliedPreConstraintsSolo.forEach(declarativeView.activateSolo)
         _declarativeView._properties.notAppliedPreConstraintsSuper.forEach(declarativeView.activateSuper)
         _declarativeView._properties.notAppliedPreConstraintsRelative.forEach(declarativeView.activateRelative)

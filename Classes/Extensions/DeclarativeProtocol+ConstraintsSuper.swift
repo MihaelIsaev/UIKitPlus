@@ -133,7 +133,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func topToSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        topToSuperview(State<CGFloat>(initialValue: value.constraintValue.value),
+        topToSuperview(State<CGFloat>(wrappedValue: value.constraintValue.value),
                                 relation: value.constraintValue.relation,
                                 multiplier: value.constraintValue.multiplier,
                                 priority: value.constraintValue.priority,
@@ -176,7 +176,7 @@ extension DeclarativeProtocol {
         
     @discardableResult
     public func leadingToSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        _createSuper(value: State<CGFloat>(initialValue: value.constraintValue.value),
+        _createSuper(value: State<CGFloat>(wrappedValue: value.constraintValue.value),
                      relation: value.constraintValue.relation,
                      multiplier: value.constraintValue.multiplier,
                      priority: value.constraintValue.priority,
@@ -222,7 +222,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func trailingToSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        _createSuper(value: State<CGFloat>(initialValue: value.constraintValue.value),
+        _createSuper(value: State<CGFloat>(wrappedValue: value.constraintValue.value),
                      relation: value.constraintValue.relation,
                      multiplier: value.constraintValue.multiplier,
                      priority: value.constraintValue.priority,
@@ -268,7 +268,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func bottomToSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        _createSuper(value: State<CGFloat>(initialValue: value.constraintValue.value),
+        _createSuper(value: State<CGFloat>(wrappedValue: value.constraintValue.value),
                      relation: value.constraintValue.relation,
                      multiplier: value.constraintValue.multiplier,
                      priority: value.constraintValue.priority,
@@ -314,7 +314,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func centerXInSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        _createSuper(value: State<CGFloat>(initialValue: value.constraintValue.value),
+        _createSuper(value: State<CGFloat>(wrappedValue: value.constraintValue.value),
                      relation: value.constraintValue.relation,
                      multiplier: value.constraintValue.multiplier,
                      priority: value.constraintValue.priority,
@@ -360,7 +360,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func centerYInSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        _createSuper(value: State<CGFloat>(initialValue: value.constraintValue.value),
+        _createSuper(value: State<CGFloat>(wrappedValue: value.constraintValue.value),
                                         relation: value.constraintValue.relation,
                                         multiplier: value.constraintValue.multiplier,
                                         priority: value.constraintValue.priority,
@@ -460,7 +460,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func widthToSuperview(multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        _createSuper(value: State<CGFloat>(initialValue: 0),
+        _createSuper(value: State<CGFloat>(wrappedValue: 0),
                                         relation: .equal,
                                         multiplier: multipliedBy,
                                         priority: priority,
@@ -474,7 +474,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func heightToSuperview(multipliedBy: CGFloat = 1, priority: UILayoutPriority = .init(1000)) -> Self {
-        _createSuper(value: State<CGFloat>(initialValue: 0),
+        _createSuper(value: State<CGFloat>(wrappedValue: 0),
                                         relation: .equal,
                                         multiplier: multipliedBy,
                                         priority: priority,
@@ -514,6 +514,7 @@ extension DeclarativeProtocol {
                      constraint = declarativeView.topAnchor.constraint(greaterThanOrEqualTo: superview.safeArea.topAnchor, constant: pc.value.wrappedValue)
                 case .lessThanOrEqual:
                     constraint = declarativeView.topAnchor.constraint(lessThanOrEqualTo: superview.safeArea.topAnchor, constant: pc.value.wrappedValue)
+                @unknown default: break
                 }
             case .leading:
                 switch pc.relation {
@@ -523,6 +524,7 @@ extension DeclarativeProtocol {
                     constraint = declarativeView.leadingAnchor.constraint(greaterThanOrEqualTo: superview.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
                 case .lessThanOrEqual:
                     constraint = declarativeView.leadingAnchor.constraint(lessThanOrEqualTo: superview.safeArea.leadingAnchor, constant: pc.value.wrappedValue)
+                @unknown default: break
                 }
             case .left:
                 switch pc.relation {
@@ -532,6 +534,7 @@ extension DeclarativeProtocol {
                     constraint = declarativeView.leftAnchor.constraint(greaterThanOrEqualTo: superview.safeArea.leftAnchor, constant: pc.value.wrappedValue)
                 case .lessThanOrEqual:
                     constraint = declarativeView.leftAnchor.constraint(lessThanOrEqualTo: superview.safeArea.leftAnchor, constant: pc.value.wrappedValue)
+                @unknown default: break
                 }
             case .trailing:
                 switch pc.relation {
@@ -541,6 +544,7 @@ extension DeclarativeProtocol {
                     constraint = declarativeView.trailingAnchor.constraint(greaterThanOrEqualTo: superview.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
                 case .lessThanOrEqual:
                     constraint = declarativeView.trailingAnchor.constraint(lessThanOrEqualTo: superview.safeArea.trailingAnchor, constant: pc.value.wrappedValue)
+                @unknown default: break
                 }
             case .right:
                 switch pc.relation {
@@ -550,6 +554,7 @@ extension DeclarativeProtocol {
                     constraint = declarativeView.rightAnchor.constraint(greaterThanOrEqualTo: superview.safeArea.rightAnchor, constant: pc.value.wrappedValue)
                 case .lessThanOrEqual:
                     constraint = declarativeView.rightAnchor.constraint(lessThanOrEqualTo: superview.safeArea.rightAnchor, constant: pc.value.wrappedValue)
+                @unknown default: break
                 }
             case .bottom:
                 switch pc.relation {
@@ -559,6 +564,7 @@ extension DeclarativeProtocol {
                     constraint = declarativeView.bottomAnchor.constraint(greaterThanOrEqualTo: superview.safeArea.bottomAnchor, constant: pc.value.wrappedValue)
                 case .lessThanOrEqual:
                     constraint = declarativeView.bottomAnchor.constraint(lessThanOrEqualTo: superview.safeArea.bottomAnchor, constant: pc.value.wrappedValue)
+                @unknown default: break
                 }
             default: break
             }

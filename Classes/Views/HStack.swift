@@ -19,12 +19,12 @@ open class HStack: _StackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> HStackView {
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
         block().viewBuilderItems.forEach { addArrangedSubview($0) }
         return self
     }
     
-    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> HStackView {
-        HStackView(block: block)
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> HStack {
+        .init(block: block)
     }
 }

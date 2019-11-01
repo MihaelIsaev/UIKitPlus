@@ -3,7 +3,7 @@ import UIKit
 extension DeclarativeProtocol {
     @discardableResult
     private func _aspectRatio(multiplier: CGFloat, priority: UILayoutPriority) -> Self {
-        let pc = PreConstraint(value: .init(initialValue: 0),
+        let pc = PreConstraint(value: .init(wrappedValue: 0),
                                         relation: .equal,
                                         multiplier: multiplier,
                                         priority: priority,
@@ -76,7 +76,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func width(_ value: ConstraintValue) -> Self {
-        width(State<CGFloat>(initialValue: value.constraintValue.value),
+        width(State<CGFloat>(wrappedValue: value.constraintValue.value),
               relation: value.constraintValue.relation,
               multiplier: value.constraintValue.multiplier,
               priority: value.constraintValue.priority)
@@ -100,7 +100,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func height(_ value: ConstraintValue) -> Self {
-        height(State<CGFloat>(initialValue: value.constraintValue.value),
+        height(State<CGFloat>(wrappedValue: value.constraintValue.value),
                relation: value.constraintValue.relation,
                multiplier: value.constraintValue.multiplier,
                priority: value.constraintValue.priority)
@@ -180,7 +180,7 @@ extension DeclarativeProtocol {
         _self._properties.notAppliedPreConstraintsSolo.removeAll(where: { $0 === pc })
         _self._properties.appliedPreConstraintsSolo.append(pc)
         // Create constraint
-        var constraint = NSLayoutConstraint(item: self,
+        let constraint = NSLayoutConstraint(item: self,
                                                               attribute: pc.attribute1,
                                                               relatedBy: pc.relation,
                                                               toItem: pc.destinationView,

@@ -98,7 +98,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func top(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         top(to: side, of: view,
-            .init(initialValue: value.constraintValue.value),
+            .init(wrappedValue: value.constraintValue.value),
             relation: value.constraintValue.relation,
             multiplier: value.constraintValue.multiplier,
             priority: value.constraintValue.priority,
@@ -165,7 +165,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func leading(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         leading(to: side, of: view,
-            .init(initialValue: value.constraintValue.value),
+            .init(wrappedValue: value.constraintValue.value),
             relation: value.constraintValue.relation,
             multiplier: value.constraintValue.multiplier,
             priority: value.constraintValue.priority,
@@ -232,7 +232,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func left(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         left(to: side, of: view,
-            .init(initialValue: value.constraintValue.value),
+            .init(wrappedValue: value.constraintValue.value),
             relation: value.constraintValue.relation,
             multiplier: value.constraintValue.multiplier,
             priority: value.constraintValue.priority,
@@ -299,7 +299,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func trailing(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         trailing(to: side, of: view,
-            .init(initialValue: value.constraintValue.value),
+            .init(wrappedValue: value.constraintValue.value),
             relation: value.constraintValue.relation,
             multiplier: value.constraintValue.multiplier,
             priority: value.constraintValue.priority,
@@ -366,7 +366,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func right(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         right(to: side, of: view,
-            .init(initialValue: value.constraintValue.value),
+            .init(wrappedValue: value.constraintValue.value),
             relation: value.constraintValue.relation,
             multiplier: value.constraintValue.multiplier,
             priority: value.constraintValue.priority,
@@ -433,7 +433,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func bottom(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         bottom(to: side, of: view,
-            .init(initialValue: value.constraintValue.value),
+            .init(wrappedValue: value.constraintValue.value),
             relation: value.constraintValue.relation,
             multiplier: value.constraintValue.multiplier,
             priority: value.constraintValue.priority,
@@ -496,7 +496,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func centerX(to side: DeclarativeConstraintCXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         centerX(to: side, of: view,
-            .init(initialValue: value.constraintValue.value),
+            .init(wrappedValue: value.constraintValue.value),
             relation: value.constraintValue.relation,
             multiplier: value.constraintValue.multiplier,
             priority: value.constraintValue.priority)
@@ -558,7 +558,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func centerY(to side: DeclarativeConstraintCYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         centerY(to: side, of: view,
-            .init(initialValue: value.constraintValue.value),
+            .init(wrappedValue: value.constraintValue.value),
             relation: value.constraintValue.relation,
             multiplier: value.constraintValue.multiplier,
             priority: value.constraintValue.priority)
@@ -740,7 +740,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func width(to side: DeclarativeConstraintDSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         width(to: side, of: view,
-            .init(initialValue: value.constraintValue.value),
+            .init(wrappedValue: value.constraintValue.value),
             relation: value.constraintValue.relation,
             multiplier: value.constraintValue.multiplier,
             priority: value.constraintValue.priority)
@@ -802,7 +802,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func height(to side: DeclarativeConstraintDSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
         height(to: side, of: view,
-            .init(initialValue: value.constraintValue.value),
+            .init(wrappedValue: value.constraintValue.value),
             relation: value.constraintValue.relation,
             multiplier: value.constraintValue.multiplier,
             priority: value.constraintValue.priority)
@@ -913,6 +913,7 @@ extension DeclarativeProtocol {
                     case .bottom: constraint = declarativeView.topAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.bottomAnchor, constant: pc.value.wrappedValue)
                     default: break
                     }
+                @unknown default: break
                 }
             // MARK: leading
             case .leading:
@@ -944,6 +945,7 @@ extension DeclarativeProtocol {
                     case .centerX: constraint = declarativeView.leadingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
                     default: break
                     }
+                @unknown default: break
                 }
             // MARK: left
             case .left:
@@ -975,6 +977,7 @@ extension DeclarativeProtocol {
                     case .centerX: constraint = declarativeView.leftAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
                     default: break
                     }
+                @unknown default: break
                 }
             // MARK: trailing
             case .trailing:
@@ -1006,6 +1009,7 @@ extension DeclarativeProtocol {
                     case .centerX: constraint = declarativeView.trailingAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
                     default: break
                     }
+                @unknown default: break
                 }
             // MARK: right
             case .right:
@@ -1037,6 +1041,7 @@ extension DeclarativeProtocol {
                     case .centerX: constraint = declarativeView.rightAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.centerXAnchor, constant: pc.value.wrappedValue)
                     default: break
                     }
+                @unknown default: break
                 }
             // MARK: bottom
             case .bottom:
@@ -1059,6 +1064,7 @@ extension DeclarativeProtocol {
                     case .bottom: constraint = declarativeView.bottomAnchor.constraint(lessThanOrEqualTo: destinationView.safeArea.bottomAnchor, constant: pc.value.wrappedValue)
                     default: break
                     }
+                @unknown default: break
                 }
             default: break
             }

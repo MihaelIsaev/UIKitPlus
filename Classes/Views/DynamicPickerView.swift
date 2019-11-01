@@ -53,10 +53,10 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
         .font(v: cancelFont)
         .color(cancelColor)
         .color(cancelHighlightedColor, .highlighted)
-        .tapAction {
+        .onTapGesture {
         // TODO: onCancel()
     }
-    lazy var titleLabel = Label(title)
+    lazy var titleLabel = Text(title)
         .font(v: titleFont)
         .color(titleColor)
         .centerY(to: cancelButton)
@@ -66,7 +66,7 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
         .font(v: doneFont)
         .color(doneColor)
         .color(doneHighlightedColor, .highlighted)
-        .tapAction {
+        .onTapGesture {
         // TODO: onDone()
     }
     

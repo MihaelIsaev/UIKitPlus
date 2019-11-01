@@ -13,7 +13,7 @@ public class State<Value> {
     
     public var projectedValue: State<Value> { self }
 
-    public init(initialValue value: Value) {
+    public init(wrappedValue value: Value) {
         _originalValue = value
         _wrappedValue = value
     }

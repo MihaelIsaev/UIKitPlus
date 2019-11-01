@@ -9,19 +9,19 @@ public class ForEach<Item>: Listable, ListableForEach, ListableBuilderItem, View
     let block: BuildViewHandler
     
     public init (_ items: [Item], @ViewBuilder block: @escaping BuildViewHandler) {
-        self.items = State(initialValue: items)
+        self.items = State(wrappedValue: items)
         self.block = block
     }
     
     public init (_ items: [Item], @ViewBuilder block: @escaping BuildViewHandlerValue) {
-        self.items = State(initialValue: items)
+        self.items = State(wrappedValue: items)
         self.block = { _, v in
             block(v)
         }
     }
     
     public init (_ items: [Item], @ViewBuilder block: @escaping BuildViewHandlerSimple) {
-        self.items = State(initialValue: items)
+        self.items = State(wrappedValue: items)
         self.block = { _,_ in
             block()
         }

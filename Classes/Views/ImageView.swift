@@ -117,7 +117,7 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
     }
     
     deinit {
-        self._imageLoader.downloadTask?.cancel()
+        _imageLoader.cancel()
     }
     
     open func buildView() {}

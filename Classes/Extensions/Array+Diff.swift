@@ -20,17 +20,17 @@ extension Array {
     public func difference<T1: Hashable, T2: Hashable>(_ first: [T1], _ second: [T2], with compare: (Int,Int) -> Bool) -> DiffResult<T1, T2> {
         let combinations = first.compactMap { a in (a, second.first { b in compare(a.hashValue, b.hashValue) }) }
         let common = combinations.filter { $0.1 != nil }.compactMap { ($0.0, $0.1!) }
-        var removed: [DiffItem<T1>] = combinations.filter { $0.1 == nil }.compactMap { a,_ in
+        let removed: [DiffItem<T1>] = combinations.filter { $0.1 == nil }.compactMap { a,_ in
             guard let index = first.firstIndex(where: { $0.hashValue == a.hashValue }) else { return nil }
             return DiffItem(index: index, value: a)
         }
-        var inserted: [DiffItem<T2>] = second.filter { b in
+        let inserted: [DiffItem<T2>] = second.filter { b in
             !common.contains { compare($0.0.hashValue, b.hashValue) }
         }.compactMap { b in
             guard let index = second.firstIndex(where: { $0.hashValue == b.hashValue }) else { return nil }
             return DiffItem(index: index, value: b)
         }
-        var modified: [DiffItem<T2>] = [] // TODO: ?
+        let modified: [DiffItem<T2>] = [] // TODO: ?
 //        print("1 removed: \(removed), inserted: \(inserted), modified: \(modified)   a.count: \(first.count)  b.count: \(second.count)")
 //        if inserted.count > 0, first.count - removed.count == second.count {
 //            modified = inserted

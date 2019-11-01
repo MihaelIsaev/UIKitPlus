@@ -26,6 +26,7 @@ public enum StatusBarStyle {
         case .default: return .default
         case .lightContent: return .light
         case .darkContent: return .dark
+        @unknown default: return .default
         }
     }
 }

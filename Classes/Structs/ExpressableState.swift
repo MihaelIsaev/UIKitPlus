@@ -11,7 +11,7 @@ public class ExpressableState<Value, Result> {
     }
     
     func unwrap() -> State<Result> {
-        var state: State<Result> = .init(initialValue: self.value())
+        let state: State<Result> = .init(wrappedValue: self.value())
         self.state.listen { _ in
             state.wrappedValue = self.value()
         }

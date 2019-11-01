@@ -114,6 +114,7 @@ open class CollectionViewAlignedFlowLayout: CollectionViewFlowLayout {
             default:
                 break
             }
+        @unknown default: break
         }
         
         // It's safe to force-unwrap as `.leading` and `.trailing` are covered
