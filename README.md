@@ -26,6 +26,8 @@ Support this lib by giving a ⭐️!
 
 ⚠️ don't use Xcode 11.2 because of compiler bug in it which is showing `Type of expression is ambiguous without more context` in function builders if expression is long. Use Xcode 11.1 cause there everything compiles fine. Hope this issue will be fixed in nearest Xcode update.
 
+Xcode 11.1 available here [https://developer.apple.com/download/more/](https://developer.apple.com/download/more/)
+
 #### Learn how to use through the [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
 Please feel free to request for specific examples in [example project issues](https://github.com/MihaelIsaev/UIKitPlusExample/issues) I'll try to cover as much as I can 🚀
 
