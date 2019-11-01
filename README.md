@@ -22,6 +22,10 @@ With that lib you could build UI in SwiftUI-like way for iOS9 and higher! 😺
 
 Support this lib by giving a ⭐️!
 
+# KNOW ISSUE
+
+⚠️ don't use Xcode 11.2 because of compiler bug in it which is showing `Type of expression is ambiguous without more context` in function builders is expression is long. Use Xcode 11.1 cause there everything compiles fine. Hope this issue will be fixed in nearest Xcode update.
+
 #### Learn how to use through the [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
 Please feel free to request for specific examples in [example project issues](https://github.com/MihaelIsaev/UIKitPlusExample/issues) I'll try to cover as much as I can 🚀
 
