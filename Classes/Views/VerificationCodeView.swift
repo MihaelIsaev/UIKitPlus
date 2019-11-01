@@ -71,7 +71,8 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
         movedToSuperview()
     }
     
-    lazy var hiddenTextField = TextField().alpha(0.05)
+    lazy var hiddenTextField = TextField().edgesToSuperview(top: 0, leading: 0)
+                                                          .alpha(0.05)
                                                           .keyboard(.numberPad)
                                                           .editingChanged(edited)
                                                           .shouldChangeCharacters(shouldChangeCharacters)
@@ -198,7 +199,7 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     func setupView() {
         digitViews = (0...quantity - 1).map { _ in DigitView().background(digitBackground).width($widthOfDigitView) }
         body {
-            hiddenTextField.edgesToSuperview(top: 0, leading: 0).size(1, 30).content(.oneTimeCode)
+            hiddenTextField.size(1, 30).content(.oneTimeCode)
             HStack {
                 digitViews
             }.spacing($spaceBetweenDigitViews).edgesToSuperview()

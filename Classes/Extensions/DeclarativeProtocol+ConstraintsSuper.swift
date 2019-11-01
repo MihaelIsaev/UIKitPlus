@@ -81,7 +81,7 @@ extension DeclarativeProtocol {
     }
         
     @discardableResult
-    public func edgesToSuperview(top: State<CGFloat>? = nil, leading: State<CGFloat>? = nil, trailing: State<CGFloat>? = nil, bottom: State<CGFloat>? = nil, safeArea: Bool) -> Self {
+    public func edgesToSuperview(top: State<CGFloat>? = nil, leading: State<CGFloat>? = nil, trailing: State<CGFloat>? = nil, bottom: State<CGFloat>? = nil, safeArea: Bool = false) -> Self {
         if let top = top {
             topToSuperview(top, safeArea: safeArea)
         }
