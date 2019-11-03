@@ -28,6 +28,8 @@ Support this lib by giving a ⭐️!
 
 Xcode 11.1 available here [https://developer.apple.com/download/more/](https://developer.apple.com/download/more/)
 
+If you experience any compilation problems in Xcode 11.1 please go to `Xcode -> Preferences -> Location` open derived data folder in finder and remove everything from it manually. Then restart Xcode and compile your project without any errors.
+
 #### Learn how to use through the [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
 Please feel free to request for specific examples in [example project issues](https://github.com/MihaelIsaev/UIKitPlusExample/issues) I'll try to cover as much as I can 🚀
 
