@@ -22,6 +22,7 @@ open class StaticList: View {
     
     lazy var tableView = TableView()
         .background(.clear)
+        .automaticDimension(44)
         .edgesToSuperview()
         .dataSource(self)
         .delegate(self)
