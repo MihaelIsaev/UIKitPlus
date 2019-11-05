@@ -21,7 +21,7 @@ open class StaticList: View {
     }
     
     lazy var tableView = TableView()
-        .background(.white)
+        .background(.clear)
         .edgesToSuperview()
         .dataSource(self)
         .delegate(self)
