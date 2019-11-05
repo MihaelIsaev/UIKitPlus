@@ -36,4 +36,22 @@ public class State<Value> {
     public func listen(_ listener: @escaping SimpleListener) {
         listeners.append({ _, new in listener(new) })
     }
+    
+    public func merge(with state: State<Value>) {
+        self.wrappedValue = state.wrappedValue
+        var justSetExternal = false
+        var justSetInternal = false
+        state.listen { new in
+            guard !justSetInternal else { return }
+            justSetExternal = true
+            self.wrappedValue = new
+            justSetExternal = false
+        }
+        self.listen { new in
+            guard !justSetExternal else { return }
+            justSetInternal = true
+            state.wrappedValue = new
+            justSetInternal = false
+        }
+    }
 }
