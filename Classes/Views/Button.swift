@@ -29,55 +29,13 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     // MARK: States
     
-    var titleNormal: UIKitPlus.State<String>? {
-        didSet {
-             titleNormal?.listen { [weak self] in
-                 self?.setTitle($0, for: .normal)
-             }
-        }
-    }
-    var titleHighlighted: UIKitPlus.State<String>? {
-        didSet {
-            titleNormal?.listen { [weak self] in
-                self?.setTitle($0, for: .highlighted)
-            }
-        }
-    }
-    var titleDisabled: UIKitPlus.State<String>? {
-        didSet {
-            titleNormal?.listen { [weak self] in
-                self?.setTitle($0, for: .disabled)
-            }
-        }
-    }
-    var titleSelected: UIKitPlus.State<String>? {
-        didSet {
-            titleNormal?.listen { [weak self] in
-                self?.setTitle($0, for: .selected)
-            }
-        }
-    }
-    var titleFocused: UIKitPlus.State<String>? {
-        didSet {
-            titleNormal?.listen { [weak self] in
-                self?.setTitle($0, for: .focused)
-            }
-        }
-    }
-    var titleApplication: UIKitPlus.State<String>? {
-        didSet {
-            titleNormal?.listen { [weak self] in
-                self?.setTitle($0, for: .application)
-            }
-        }
-    }
-    var titleReserved: UIKitPlus.State<String>? {
-        didSet {
-            titleNormal?.listen { [weak self] in
-                self?.setTitle($0, for: .reserved)
-            }
-        }
-    }
+    var titleNormal: UIKitPlus.State<String>?
+    var titleHighlighted: UIKitPlus.State<String>?
+    var titleDisabled: UIKitPlus.State<String>?
+    var titleSelected: UIKitPlus.State<String>?
+    var titleFocused: UIKitPlus.State<String>?
+    var titleApplication: UIKitPlus.State<String>?
+    var titleReserved: UIKitPlus.State<String>?
     
     // MARK: Initialization
     
@@ -92,6 +50,9 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         _setup()
         setTitle(state.wrappedValue, for: .normal)
         titleNormal = state
+        titleNormal?.listen { [weak self] new in
+            self?.setTitle(new, for: .normal)
+        }
     }
     
     public init <V>(_ expressable: ExpressableState<V, String>) {
@@ -99,6 +60,9 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         _setup()
         setTitle(expressable.value(), for: .normal)
         titleNormal = expressable.unwrap()
+        titleNormal?.listen { [weak self] new in
+            self?.setTitle(new, for: .normal)
+        }
     }
     
     public override init(frame: CGRect) {
@@ -165,13 +129,41 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     public func title(_ bind: UIKitPlus.State<String>, state: UIControl.State = .normal) -> Self  {
         setTitle(bind.wrappedValue, for: state)
         switch state {
-        case .application: titleApplication = bind
-        case .disabled: titleDisabled = bind
-        case .focused: titleFocused = bind
-        case .highlighted: titleHighlighted = bind
-        case .normal: titleNormal = bind
-        case .reserved: titleReserved = bind
-        case .selected: titleSelected = bind
+        case .application:
+            titleApplication = bind
+            bind.listen { [weak self] new in
+                self?.setTitle(new, for: .application)
+            }
+        case .disabled:
+            titleDisabled = bind
+            bind.listen { [weak self] new in
+                self?.setTitle(new, for: .disabled)
+            }
+        case .focused:
+            titleFocused = bind
+            bind.listen { [weak self] new in
+                self?.setTitle(new, for: .focused)
+            }
+        case .highlighted:
+            titleHighlighted = bind
+            bind.listen { [weak self] new in
+                self?.setTitle(new, for: .highlighted)
+            }
+        case .normal:
+            titleNormal = bind
+            bind.listen { [weak self] new in
+                self?.setTitle(new, for: .normal)
+            }
+        case .reserved:
+            titleReserved = bind
+            bind.listen { [weak self] new in
+                self?.setTitle(new, for: .reserved)
+            }
+        case .selected:
+            titleSelected = bind
+            bind.listen { [weak self] new in
+                self?.setTitle(new, for: .selected)
+            }
         default: break
         }
         return self
@@ -181,13 +173,41 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     public func title<V>(_ expressable: ExpressableState<V, String>, state: UIControl.State = .normal) -> Self {
         setTitle(expressable.value(), for: .normal)
         switch state {
-        case .application: titleApplication = expressable.unwrap()
-        case .disabled: titleDisabled = expressable.unwrap()
-        case .focused: titleFocused = expressable.unwrap()
-        case .highlighted: titleHighlighted = expressable.unwrap()
-        case .normal: titleNormal = expressable.unwrap()
-        case .reserved: titleReserved = expressable.unwrap()
-        case .selected: titleSelected = expressable.unwrap()
+        case .application:
+            titleApplication = expressable.unwrap()
+            titleApplication?.listen { [weak self] new in
+                self?.setTitle(new, for: .application)
+            }
+        case .disabled:
+            titleDisabled = expressable.unwrap()
+            titleDisabled?.listen { [weak self] new in
+                self?.setTitle(new, for: .disabled)
+            }
+        case .focused:
+            titleFocused = expressable.unwrap()
+            titleFocused?.listen { [weak self] new in
+                self?.setTitle(new, for: .focused)
+            }
+        case .highlighted:
+            titleHighlighted = expressable.unwrap()
+            titleHighlighted?.listen { [weak self] new in
+                self?.setTitle(new, for: .highlighted)
+            }
+        case .normal:
+            titleNormal = expressable.unwrap()
+            titleNormal?.listen { [weak self] new in
+                self?.setTitle(new, for: .normal)
+            }
+        case .reserved:
+            titleReserved = expressable.unwrap()
+            titleReserved?.listen { [weak self] new in
+                self?.setTitle(new, for: .reserved)
+            }
+        case .selected:
+            titleSelected = expressable.unwrap()
+            titleSelected?.listen { [weak self] new in
+                self?.setTitle(new, for: .selected)
+            }
         default: break
         }
         return self
