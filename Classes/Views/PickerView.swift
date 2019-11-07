@@ -68,6 +68,43 @@ open class PickerView: UIPickerView, DeclarativeProtocol, DeclarativeProtocolInt
         _changed = closure
         return self
     }
+    
+    // MARK: TextColor
+    
+    @discardableResult
+    public func textColor(_ color: UIColor) -> Self {
+        setValue(color, forKey: "textColor")
+        return self
+    }
+    
+    @discardableResult
+    public func textColor(_ hex: Int) -> Self {
+        textColor(hex.color)
+    }
+    
+    @discardableResult
+    public func textColor(_ binding: UIKitPlus.State<UIColor>) -> Self {
+        binding.listen { self.textColor($0) }
+        return textColor(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func textColor<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
+        expressable.state.listen { _ in self.textColor(expressable.value()) }
+        return textColor(expressable.value())
+    }
+    
+    @discardableResult
+    public func textColor(_ binding: UIKitPlus.State<Int>) -> Self {
+        binding.listen { self.textColor($0) }
+        return textColor(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func textColor<V>(_ expressable: ExpressableState<V, Int>) -> Self {
+        expressable.state.listen { _ in self.textColor(expressable.value()) }
+        return textColor(expressable.value())
+    }
 }
 
 extension PickerView: UIPickerViewDelegate {
