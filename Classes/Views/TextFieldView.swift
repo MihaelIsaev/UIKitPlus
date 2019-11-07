@@ -457,6 +457,35 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     @discardableResult
+    public func shouldReturnToNextResponder() -> Self {
+        _shouldReturnVoid = {
+            self.focusToNextResponderOrResign()
+        }
+        return self
+    }
+    
+    public func focusToNextResponderOrResign() {
+        let nextTag = tag + 1
+        var nextResponder: UIView?
+        if let view = superview?.viewWithTag(nextTag) {
+            nextResponder = view
+        } else if let view = superview?.superview?.viewWithTag(nextTag) {
+            nextResponder = view
+        } else if let view = superview?.superview?.superview?.viewWithTag(nextTag) {
+            nextResponder = view
+        } else if let view = superview?.superview?.superview?.superview?.viewWithTag(nextTag) {
+            nextResponder = view
+        } else if let view = superview?.superview?.superview?.superview?.superview?.viewWithTag(nextTag) {
+            nextResponder = view
+        }
+        if nextResponder != nil {
+            nextResponder?.becomeFirstResponder()
+        } else {
+            resignFirstResponder()
+        }
+    }
+    
+    @discardableResult
     public func editingDidBegin(_ closure: @escaping VoidClosure) -> Self {
         _editingDidBegin.append(closure)
         return self
