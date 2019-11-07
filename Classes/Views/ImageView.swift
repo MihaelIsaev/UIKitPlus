@@ -85,6 +85,18 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
         }
     }
     
+    public init <V>(_ expressable: ExpressableState<V, String>, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
+        super.init(frame: .zero)
+        _setup()
+        self.image = defaultImage
+        self._imageLoader = loader
+        self._imageLoader.load(expressable.value(), imageView: self)
+        expressable.state.listen { [weak self] old, new in
+            guard let self = self else { return }
+            self._imageLoader.load(expressable.value(), imageView: self)
+        }
+    }
+    
     public init (url: URL, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
         super.init(frame: .zero)
         _setup()
@@ -141,6 +153,22 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
     @discardableResult
     public func clipsToBounds(_ value: Bool) -> Self {
         clipsToBounds = value
+        return self
+    }
+    
+    @discardableResult
+    public func load(url: URL, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) -> Self {
+        image = defaultImage
+        _imageLoader = loader
+        _imageLoader.load(url, imageView: self)
+        return self
+    }
+    
+    @discardableResult
+    public func load(url: String, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) -> Self {
+        image = defaultImage
+        _imageLoader = loader
+        _imageLoader.load(url, imageView: self)
         return self
     }
 }
