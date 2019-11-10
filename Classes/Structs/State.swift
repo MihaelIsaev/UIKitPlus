@@ -37,6 +37,10 @@ public class State<Value> {
         listeners.append({ _, new in listener(new) })
     }
     
+    public func listen(_ listener: @escaping () -> Void) {
+        listeners.append({ _,_ in listener() })
+    }
+    
     public func merge(with state: State<Value>) {
         self.wrappedValue = state.wrappedValue
         var justSetExternal = false
