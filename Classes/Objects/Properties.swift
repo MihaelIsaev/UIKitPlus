@@ -4,6 +4,7 @@ public class Properties<V> {
     @State var alpha: CGFloat = 1
     @State var opacity: Float = 1
     @State var hidden: Bool = false
+    @State var userInteraction: Bool = false
     @State var tint: UIColor = .clear
     @State var background: UIColor = .clear
     @State var color: UIColor = .clear
