@@ -1,7 +1,7 @@
 import UIKit
 
 open class HScrollStack: ScrollView {
-    lazy var stack = HStack().edgesToSuperview().widthToSuperview()
+    lazy var stack = HStack().edgesToSuperview().heightToSuperview()
     
     public override init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
