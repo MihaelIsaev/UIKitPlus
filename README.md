@@ -24,7 +24,7 @@ Support this lib by giving a ⭐️!
 
 # KNOWN ISSUE
 
-⚠️ don't use Xcode 11.2 and 11.3 because of its compiler bug which is showing `Type of expression is ambiguous without more context` in function builders if expression is long while that code compiles just fine with simple `swift build` command. Use Xcode 11.1 cause there everything compiles fine. Hope this issue will be fixed([please vote for this issue here](https://bugs.swift.org/browse/SR-11694)).
+⚠️ don't use Xcode 11.2 and 11.3 because of its compiler bug which is showing `Type of expression is ambiguous without more context` in function builders if expression is long while the same code compiles just fine with simple `swift build` in console. Use Xcode 11.1 cause there everything compiles fine. Hope this issue will be fixed([please vote for this issue here](https://bugs.swift.org/browse/SR-11694)).
 
 Xcode 11.1 available here [https://developer.apple.com/download/more/](https://developer.apple.com/download/more/)
 
