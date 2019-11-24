@@ -57,6 +57,18 @@ open class TableView: UITableView, DeclarativeProtocol, DeclarativeProtocolInter
         movedToSuperview()
     }
     
+    // MARK: - Refresh Control
+    
+    @discardableResult
+    public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
+        if #available(iOS 10.0, *) {
+            self.refreshControl = refreshControl
+        } else {
+            addSubview(refreshControl)
+        }
+        return self
+    }
+    
     // MARK: Indicators
     
     @discardableResult

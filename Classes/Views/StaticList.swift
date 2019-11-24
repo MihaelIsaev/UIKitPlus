@@ -66,6 +66,14 @@ open class StaticList: View {
         views.removeLast()
     }
     
+    // MARK: - Refresh Control
+    
+    @discardableResult
+    public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
+        tableView.refreshControl(refreshControl)
+        return self
+    }
+    
     // MARK: - Separator
     
     @discardableResult

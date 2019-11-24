@@ -60,6 +60,18 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
         movedToSuperview()
     }
     
+    // MARK: - Refresh Control
+    
+    @discardableResult
+    public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
+        if #available(iOS 10.0, *) {
+            self.refreshControl = refreshControl
+        } else {
+            addSubview(refreshControl)
+        }
+        return self
+    }
+    
     // MARK: ContentInsetAdjustment
     
     @discardableResult

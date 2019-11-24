@@ -82,6 +82,14 @@ public class List: View, UITableViewDataSource {
         }
     }
     
+    // MARK: - Refresh Control
+    
+    @discardableResult
+    public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
+        tableView.refreshControl(refreshControl)
+        return self
+    }
+    
     // MARK: - UITableViewDataSource
     
     public func numberOfSections(in tableView: UITableView) -> Int {

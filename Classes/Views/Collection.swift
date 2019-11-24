@@ -54,6 +54,14 @@ public class Collection: View, UICollectionViewDataSource {
         }
     }
     
+    // MARK: - Refresh Control
+    
+    @discardableResult
+    public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
+        collectionView.refreshControl(refreshControl)
+        return self
+    }
+    
     // MARK: - UITableViewDataSource
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
