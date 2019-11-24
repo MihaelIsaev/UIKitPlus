@@ -131,7 +131,7 @@ extension Button {
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 1.8.1'
+pod 'UIKit-Plus', '~> 1.9.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
