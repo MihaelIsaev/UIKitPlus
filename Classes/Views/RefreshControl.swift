@@ -24,6 +24,12 @@ open class RefreshControl: UIRefreshControl {
         addTarget(self, action: #selector(_refreshAction(_:)), for: .valueChanged)
     }
     
+    open override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        frame = .init(x: 0, y: 0, width: 20, height: 20)
+        setNeedsLayout()
+    }
+    
     @objc private func _refreshAction(_ sender: Any) {
         refreshHandler()
     }
