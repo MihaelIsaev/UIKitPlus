@@ -300,6 +300,18 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         return image(expressable.value(), state)
     }
     
+    @discardableResult
+    public func lineBreakMode(_ mode: NSLineBreakMode) -> Self {
+        titleLabel?.lineBreakMode = mode
+        return self
+    }
+    
+    @discardableResult
+    public func alignment(_ alignment: NSTextAlignment) -> Self {
+        titleLabel?.textAlignment = alignment
+        return self
+    }
+    
     // MARK: Mode
     
     @discardableResult
@@ -308,7 +320,26 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         return self
     }
     
+    // MARK: Scale Factor
+    
+    @discardableResult
+    public func minimumScaleFactor(_ value: CGFloat) -> Self {
+        titleLabel?.minimumScaleFactor = value
+        return self
+    }
+    
     // MARK: Insets
+    
+    @discardableResult
+    public func contentInsets(_ insets: UIEdgeInsets) -> Self {
+        contentEdgeInsets = insets
+        return self
+    }
+    
+    @discardableResult
+    public func contentInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
+        contentInsets(.init(top: top, left: left, bottom: bottom, right: right))
+    }
     
     @discardableResult
     public func titleInsets(_ insets: UIEdgeInsets) -> Self {
