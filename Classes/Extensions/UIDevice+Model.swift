@@ -39,6 +39,7 @@ extension UIDevice {
         case iPhone5
         case iPhone6
         case iPhone6Plus
+        case iPhoneXr
         case iPhoneX
         case iPhoneXMax
         case iPhoneUnknown
@@ -54,6 +55,7 @@ extension UIDevice {
             case .iPhone5: return .iPhone5
             case .iPhone6: return .iPhone6
             case .iPhone6PlusVirtual, .iPhone6PlusReal: return .iPhone6Plus
+            case .iPhoneXr: return .iPhoneXr
             case .iPhoneX: return .iPhoneX
             case .iPhoneXMax, .iPhoneXr: return .iPhoneXMax
             case .iPad1stGen, .iPad6thGen: return .iPad
@@ -101,6 +103,10 @@ extension UIDevice {
     
     public class var isPhoneX: Bool {
         isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhoneX.rawValue
+    }
+    
+    public class var isPhoneXr: Bool {
+        isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhoneXr.rawValue
     }
     
     public class var isPhoneXMax: Bool {
