@@ -172,6 +172,7 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
         self.stateString = expressable.value
         text = expressable.value()
+        binding = expressable.unwrap()
         expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
         return self
     }
@@ -462,27 +463,6 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
             self.focusToNextResponderOrResign()
         }
         return self
-    }
-    
-    public func focusToNextResponderOrResign() {
-        let nextTag = tag + 1
-        var nextResponder: UIView?
-        if let view = superview?.viewWithTag(nextTag) {
-            nextResponder = view
-        } else if let view = superview?.superview?.viewWithTag(nextTag) {
-            nextResponder = view
-        } else if let view = superview?.superview?.superview?.viewWithTag(nextTag) {
-            nextResponder = view
-        } else if let view = superview?.superview?.superview?.superview?.viewWithTag(nextTag) {
-            nextResponder = view
-        } else if let view = superview?.superview?.superview?.superview?.superview?.viewWithTag(nextTag) {
-            nextResponder = view
-        }
-        if nextResponder != nil {
-            nextResponder?.becomeFirstResponder()
-        } else {
-            resignFirstResponder()
-        }
     }
     
     @discardableResult

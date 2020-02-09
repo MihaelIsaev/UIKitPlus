@@ -1,6 +1,6 @@
 import UIKit
 
-open class View: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class View: UIView, UIViewable, DeclarativeProtocolInternal {
     public var declarativeView: View { self }
     public lazy var properties = Properties<View>()
     lazy var _properties = PropertiesInternal()
