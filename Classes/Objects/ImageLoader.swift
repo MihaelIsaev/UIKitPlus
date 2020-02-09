@@ -172,12 +172,17 @@ open class ImageLoader {
     open func downloadImage(_ url: URL, callback: @escaping (Data) -> Void) {
         downloadTask?.cancel()
         downloadTask = nil
-        downloadTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
-//            debugPrint("image load 6 response.code: \((response as? HTTPURLResponse)?.statusCode) error: \(error)")
-            guard let data = data else { return }
+        if url.isFileURL {
+            guard let data = try? Data(contentsOf: url) else { return }
             callback(data)
+        } else {
+            downloadTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
+//                debugPrint("image load 6 response.code: \((response as? HTTPURLResponse)?.statusCode) error: \(error)")
+                guard let data = data else { return }
+                callback(data)
+            }
+            downloadTask?.resume()
         }
-        downloadTask?.resume()
     }
     
     /// Cancels download task
