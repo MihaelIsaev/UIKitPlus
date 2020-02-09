@@ -66,7 +66,7 @@ open class VScrollStack: ScrollView {
         stack.insertArrangedSubview(view, at: stackIndex)
     }
     
-    // Mask: Alignment
+    // MARK: Alignment
     
     @discardableResult
     public func alignment(_ alignment: UIStackView.Alignment) -> Self {
@@ -74,7 +74,7 @@ open class VScrollStack: ScrollView {
         return self
     }
     
-    // Mask: Distribution
+    // MARK: Distribution
     
     @discardableResult
     public func distribution(_ distribution: UIStackView.Distribution) -> Self {
@@ -82,7 +82,7 @@ open class VScrollStack: ScrollView {
         return self
     }
     
-    // Mask: Spacing
+    // MARK: Spacing
     
     @discardableResult
     public func spacing(_ spacing: CGFloat) -> Self {
