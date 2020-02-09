@@ -313,13 +313,13 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func centerXInSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+    public func centerXInSuperview(_ value: ConstraintValue = CGFloat(0), side: DeclarativeConstraintXSide = .centerX, safeArea: Bool = false) -> Self {
         _createSuper(value: State<CGFloat>(wrappedValue: value.constraintValue.value),
                      relation: value.constraintValue.relation,
                      multiplier: value.constraintValue.multiplier,
                      priority: value.constraintValue.priority,
                      attribute1: .centerX,
-                     attribute2: .centerX,
+                     attribute2: side.side,
                      toSafe: safeArea,
                      destinationView: declarativeView.superview)
     }
@@ -590,34 +590,18 @@ extension DeclarativeProtocol {
     }
     
     func linkStates(_ attr: NSLayoutConstraint.Attribute, _ _self: DeclarativeProtocolInternal, _ state: State<CGFloat>) {
-        let internalState: State<CGFloat>
         switch attr {
-        case .top: internalState = _self.__top
-        case .leading: internalState = _self.__leading
-        case .left: internalState = _self.__left
-        case .trailing: internalState = _self.__trailing
-        case .right: internalState = _self.__right
-        case .bottom: internalState = _self.__bottom
-        case .height: internalState = _self.__height
-        case .width: internalState = _self.__width
-        case .centerX: internalState = _self.__centerX
-        case .centerY: internalState = _self.__centerY
+        case .top: _self.__top.merge(with: state)
+        case .leading: _self.__leading.merge(with: state)
+        case .left: _self.__left.merge(with: state)
+        case .trailing: _self.__trailing.merge(with: state)
+        case .right: _self.__right.merge(with: state)
+        case .bottom: _self.__bottom.merge(with: state)
+        case .height: _self.__height.merge(with: state)
+        case .width: _self.__width.merge(with: state)
+        case .centerX: _self.__centerX.merge(with: state)
+        case .centerY: _self.__centerY.merge(with: state)
         default: return
-        }
-        internalState.wrappedValue = state.wrappedValue
-        var justSetExternal = false
-        var justSetInternal = false
-        state.listen { new in
-            guard !justSetInternal else { return }
-            justSetExternal = true
-            internalState.wrappedValue = new
-            justSetExternal = false
-        }
-        internalState.listen { new in
-            guard !justSetExternal else { return }
-            justSetInternal = true
-            state.wrappedValue = new
-            justSetInternal = false
         }
     }
 }
