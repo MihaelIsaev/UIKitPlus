@@ -89,6 +89,27 @@ public class List: View, UITableViewDataSource {
         tableView.keyboardDismissMode = mode
         return self
     }
+    
+    // MARK: ScrollView methods
+    
+    open func setContentOffset(_ contentOffset: CGPoint, animated: Bool) {
+        tableView.setContentOffset(contentOffset, animated: animated)
+    }
+
+    open func scrollRectToVisible(_ rect: CGRect, animated: Bool) {
+        tableView.scrollRectToVisible(rect, animated: animated)
+    }
+    
+    // MARK: TableView methods
+    
+    open func beginUpdates() {
+        tableView.beginUpdates()
+    }
+    
+    open func endUpdates() {
+        tableView.endUpdates()
+    }
+    
     // MARK: - Refresh Control
     
     @discardableResult
