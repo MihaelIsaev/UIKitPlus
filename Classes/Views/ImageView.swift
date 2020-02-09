@@ -66,7 +66,7 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
         _setup()
         self.image = defaultImage
         self._imageLoader = loader
-        self._imageLoader.load(url.wrappedValue, imageView: self)
+        self._imageLoader.load(url.wrappedValue, imageView: self, defaultImage: defaultImage)
         url.listen { [weak self] old, new in
             guard let self = self else { return }
             self._imageLoader.load(new, imageView: self)
@@ -78,7 +78,7 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
         _setup()
         self.image = defaultImage
         self._imageLoader = loader
-        self._imageLoader.load(url.wrappedValue, imageView: self)
+        self._imageLoader.load(url.wrappedValue, imageView: self, defaultImage: defaultImage)
         url.listen { [weak self] old, new in
             guard let self = self else { return }
             self._imageLoader.load(new, imageView: self)
