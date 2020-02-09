@@ -11,7 +11,7 @@ open class AttributedString {
     }
     
     @discardableResult
-    private func addAttribute(_ attr: NSAttributedString.Key, _ value: Any, at range: ClosedRange<Int>? = nil) -> AttributedString {
+    func addAttribute(_ attr: NSAttributedString.Key, _ value: Any, at range: ClosedRange<Int>? = nil) -> AttributedString {
         let range = range ?? 0...attributedString.length
         attributedString.addAttribute(attr, value: value, range: range.nsRange)
         return self
