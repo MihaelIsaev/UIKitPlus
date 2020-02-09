@@ -18,7 +18,7 @@ class NotImplementedViewController: ViewController {
         super.buildUI()
         view.backgroundColor = .darkGray
         body {
-            Text(AttrStr("`\(name)`").foreground(.red), AttrStr(" hasn't been implemented yet"))
+            Text(attributed: AttrStr("`\(name)`").foreground(.red), AttrStr(" hasn't been implemented yet"))
                 .color(.white)
                 .alignment(.center)
                 .centerYInSuperview()
