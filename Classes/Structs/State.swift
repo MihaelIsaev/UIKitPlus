@@ -1,5 +1,15 @@
+public protocol Stateable: AnyState {
+    associatedtype Value
+    
+    var wrappedValue: Value { get set }
+    
+    func listen(_ listener: @escaping (_ old: Value, _ new: Value) -> Void)
+    func listen(_ listener: @escaping (_ value: Value) -> Void)
+    func listen(_ listener: @escaping () -> Void)
+}
+
 @propertyWrapper
-public class State<Value> {
+public class State<Value>: Stateable {
     private var _originalValue: Value
     private var _wrappedValue: Value
     public var wrappedValue: Value {
@@ -58,4 +68,29 @@ public class State<Value> {
             justSetInternal = false
         }
     }
+    
+    // MARK: Experimental part
+    
+    public struct CombinedStateResult<A, B> {
+        public let left: A
+        public let right: B
+    }
+    
+    /// Merging two states into one combined state which could be used as expressable state
+    public func and<V>(_ state: State<V>) -> State<CombinedStateResult<Value, V>> {
+        let stateA = self
+        let stateB = state
+        var combinedValue = {
+            return CombinedStateResult(left: stateA.wrappedValue, right: stateB.wrappedValue)
+        }
+        let resultState = State<CombinedStateResult<Value, V>>(wrappedValue: combinedValue())
+        stateA.listen {
+            resultState.wrappedValue = combinedValue()
+        }
+        stateB.listen {
+            resultState.wrappedValue = combinedValue()
+        }
+        return resultState
+    }
+}
 }
