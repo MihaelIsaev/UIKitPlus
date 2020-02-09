@@ -31,6 +31,7 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     
     public typealias EnteredClosure = (String) -> Void
     private var enteredClosure: EnteredClosure  = { _ in }
+    private var simpleEnteredClosure  = {}
     
     var bindCode: State<String>?
     
@@ -224,6 +225,7 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
         bindCode?.wrappedValue = hiddenTextField.text ?? ""
         if hiddenTextField.text?.count == digitViews.count {
             enteredClosure(hiddenTextField.text ?? "")
+            simpleEnteredClosure()
         }
     }
     
@@ -240,6 +242,12 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     @discardableResult
     public func entered(_ closure: @escaping EnteredClosure) -> Self {
         enteredClosure = closure
+        return self
+    }
+    
+    @discardableResult
+    public func entered(_ closure: @escaping () -> Void) -> Self {
+        simpleEnteredClosure = closure
         return self
     }
     
