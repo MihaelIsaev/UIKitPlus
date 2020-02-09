@@ -6,3 +6,14 @@
 //
 
 import Foundation
+import UIKit
+
+extension Array where Element: AttributedString {
+    public func joined() -> AttrStr {
+        var result = AttributedString("")
+        forEach {
+            result.attributedString.append($0.attributedString)
+        }
+        return result
+    }
+}
