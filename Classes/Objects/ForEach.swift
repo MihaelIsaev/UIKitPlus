@@ -1,6 +1,6 @@
 import UIKit
 
-public class ForEach<Item>: Listable, ListableForEach, ListableBuilderItem, ViewBuilderItem where Item: Hashable {
+public class ForEach<Item> where Item: Hashable {
     public typealias BuildViewHandler = (Int, Item) -> ViewBuilderItem
     public typealias BuildViewHandlerValue = (Item) -> ViewBuilderItem
     public typealias BuildViewHandlerSimple = () -> ViewBuilderItem
@@ -45,9 +45,9 @@ public class ForEach<Item>: Listable, ListableForEach, ListableBuilderItem, View
             block()
         }
     }
-    
-    // MARK: Listable
-    
+}
+
+extension ForEach: Listable {
     public var count: Int { items.wrappedValue.count }
     
     public func item(at index: Int) -> VStack {
@@ -55,9 +55,9 @@ public class ForEach<Item>: Listable, ListableForEach, ListableBuilderItem, View
         let rawViews = block(index, items.wrappedValue[index]).viewBuilderItems
         return VStack { rawViews.map { View(inline: $0) } }
     }
-    
-    // MARK: ListableForEach
-    
+}
+
+extension ForEach: ListableForEach {
     func subscribeToChanges(_ handler: @escaping ([Int], [Int], [Int]) -> Void) {
         items.listen { old, new in
             let diff = old.difference(new)
@@ -68,13 +68,26 @@ public class ForEach<Item>: Listable, ListableForEach, ListableBuilderItem, View
             handler(deletions, insertions, modifications)
         }
     }
-    
-    // MARK: ListableBuilderItem
-    
+}
+
+extension ForEach: StackForEach {
+    func subscribeToChanges(_ handler: @escaping ([Any], [Any], [Int], [Int], [Int]) -> Void) {
+        items.listen { old, new in
+            let diff = old.difference(new)
+            let deletions = diff.removed.compactMap { $0.index }
+            let insertions = diff.inserted.compactMap { $0.index }
+            let modifications = diff.modified.compactMap { $0.index }
+            guard deletions.count > 0 || insertions.count > 0 || modifications.count > 0 else { return }
+            handler(old, new, deletions, insertions, modifications)
+        }
+    }
+}
+
+extension ForEach: ListableBuilderItem {
     public var listableBuilderItems: [Listable] { [self] }
-    
-    // MARK: ViewBuilderItem
-    
+}
+
+extension ForEach: ViewBuilderItem {
     public var viewBuilderItems: [UIView] {
         items.wrappedValue.enumerated().map { item(at: $0.offset) }
     }
