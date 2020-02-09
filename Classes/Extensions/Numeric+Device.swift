@@ -19,6 +19,7 @@ public enum iPhoneNumeric {
     case iPhone5(Any)
     case iPhone6(Any)
     case iPhone6Plus(Any)
+    case iPhoneXr(Any)
     case iPhoneX(Any)
     case iPhoneXMax(Any)
     case iPad(Any)
@@ -30,6 +31,7 @@ public enum iPhoneNumeric {
         case .iPhone5: return UIDevice.isPhone5
         case .iPhone6: return UIDevice.isPhone6
         case .iPhone6Plus: return UIDevice.isPhone6Plus
+        case .iPhoneXr: return UIDevice.isPhoneXr
         case .iPhoneX: return UIDevice.isPhoneX
         case .iPhoneXMax: return UIDevice.isPhoneXMax
         case .iPad: return UIDevice.isPad
@@ -53,6 +55,9 @@ extension BinaryInteger {
             return Self(Double(String(describing: v)) ?? Double(self))
         case .iPhone6Plus(let v):
             guard UIDevice.isPhone6Plus else { return self }
+            return Self(Double(String(describing: v)) ?? Double(self))
+        case .iPhoneXr(let v):
+            guard UIDevice.isPhoneXr else { return self }
             return Self(Double(String(describing: v)) ?? Double(self))
         case .iPhoneX(let v):
             guard UIDevice.isPhoneX else { return self }
@@ -87,6 +92,9 @@ extension BinaryFloatingPoint {
             return Self(Double(String(describing: v)) ?? Double(self))
         case .iPhone6Plus(let v):
             guard UIDevice.isPhone6Plus else { return self }
+            return Self(Double(String(describing: v)) ?? Double(self))
+        case .iPhoneXr(let v):
+            guard UIDevice.isPhoneXr else { return self }
             return Self(Double(String(describing: v)) ?? Double(self))
         case .iPhoneX(let v):
             guard UIDevice.isPhoneX else { return self }
