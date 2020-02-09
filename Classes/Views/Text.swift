@@ -33,9 +33,11 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     var __centerY: State<CGFloat> { $centerY }
     
     fileprivate var stateString: StateStringBuilder.Handler?
+    fileprivate var stateAttrString: StateAttrStringBuilder.Handler?
     private var binding: UIKitPlus.State<String>?
+    private var attributedBinding: UIKitPlus.State<[AttributedString]>?
     
-    public init (_ text: String = "") {
+    public init (_ text: String) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
@@ -45,48 +47,76 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     public init (_ state: State<String>) {
         self.binding = state
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
-        clipsToBounds = true
+        _setup()
         text = state.wrappedValue
         state.listen { _,n in self.text = n }
     }
     
-    public init (_ attributedStrings: AttributedString...) {
+    public init (attributed state: State<[AttributedString]>) {
+        self.attributedBinding = state
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
-        clipsToBounds = true
-        let attrStr = NSMutableAttributedString(string: "")
-        attributedStrings.forEach {
-            attrStr.append($0.attributedString)
-        }
-        attributedText = attrStr
+        _setup()
+        _applyAttributedStrings(state.wrappedValue)
+        state.listen { self._applyAttributedStrings($0) }
+    }
+    
+    public init (attributed attributedStrings: AttributedString...) {
+        super.init(frame: .zero)
+        _setup()
+        _applyAttributedStrings(attributedStrings)
     }
     
     public init<V>(_ expressable: ExpressableState<V, String>) {
         stateString = expressable.value
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
-        clipsToBounds = true
+        _setup()
         text = expressable.value()
         expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
+    }
+    
+    public init<V>(attributed expressable: ExpressableState<V, [AttributedString]>) {
+        self.stateAttrString = { expressable.value().joined() }
+        self.attributedBinding = expressable.unwrap()
+        super.init(frame: .zero)
+        _setup()
+        _applyAttributedStrings(expressable.value())
+        expressable.state.listen { [weak self] _,_ in self?.self._applyAttributedStrings(expressable.value()) }
     }
     
     public init (@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) {
         self.stateString = stateString
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
-        clipsToBounds = true
+        _setup()
         self.text = stateString()
+    }
+    
+    public init (@StateStringBuilder stateString: @escaping StateAttrStringBuilder.Handler) {
+        self.stateAttrString = stateString
+        super.init(frame: .zero)
+        _setup()
+        _applyAttributedStrings([stateString()])
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        translatesAutoresizingMaskIntoConstraints = false
-        clipsToBounds = true
+        _setup()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func _setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
+    }
+    
+    func _applyAttributedStrings(_ attributedStrings: [AttributedString]) {
+        let attrStr = NSMutableAttributedString(string: "")
+        attributedStrings.forEach {
+            attrStr.append($0.attributedString)
+        }
+        attributedText = attrStr
     }
     
     open override func layoutSubviews() {
@@ -106,7 +136,7 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     }
     
     @discardableResult
-    public func text(_ attributedStrings: AttributedString...) -> Self {
+    public func attributedText(_ attributedStrings: AttributedString...) -> Self {
         let attrStr = NSMutableAttributedString(string: "")
         attributedStrings.forEach {
             attrStr.append($0.attributedString)
@@ -123,6 +153,13 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     }
     
     @discardableResult
+    public func attributedText(_ state: State<[AttributedString]>) {
+        self.attributedBinding = state
+        _applyAttributedStrings(state.wrappedValue)
+        state.listen { self._applyAttributedStrings($0) }
+    }
+    
+    @discardableResult
     public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
         self.stateString = expressable.value
         text = expressable.value()
@@ -131,9 +168,25 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     }
     
     @discardableResult
+    public func attributedText<V>(_ expressable: ExpressableState<V, [AttributedString]>) -> Self {
+        self.stateAttrString = { expressable.value().joined() }
+        self.attributedBinding = expressable.unwrap()
+        _applyAttributedStrings(expressable.value())
+        expressable.state.listen { [weak self] _,_ in self?.self._applyAttributedStrings(expressable.value()) }
+        return self
+    }
+    
+    @discardableResult
     public func text(@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) -> Self {
         self.stateString = stateString
         text = stateString()
+        return self
+    }
+    
+    @discardableResult
+    public func attributedText(@StateStringBuilder stateString: @escaping StateAttrStringBuilder.Handler) -> Self {
+        self.stateAttrString = stateString
+        _applyAttributedStrings([stateString()])
         return self
     }
     
@@ -226,6 +279,8 @@ extension Text: Refreshable {
     public func refresh() {
         if let stateString = stateString {
             text = stateString()
+        } else if let stateAttrString = stateAttrString {
+            attributedText = stateAttrString().attributedString
         }
     }
 }
