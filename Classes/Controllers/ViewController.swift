@@ -98,6 +98,15 @@ open class ViewController: UIViewController {
         }
         return true
     }
+    
+    /// Call it to disable the interactive dismissal of presented view controller in iOS 13
+    @discardableResult
+    public func modalInPresentation(_ value: Bool = true) -> Self {
+        if #available(iOS 13.0, *) {
+            isModalInPresentation = value
+        }
+        return self
+    }
 }
 
 // MARK: Keyboard Notifications
