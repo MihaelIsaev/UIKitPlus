@@ -183,9 +183,7 @@ open class DatePicker: UIDatePicker, DeclarativeProtocol, DeclarativeProtocolInt
     
     @discardableResult
     public func date<V>(_ expressable: ExpressableState<V, Date>, animated: Bool = false) -> Self {
-        dateBinding = expressable.unwrap()
-        expressable.state.listen { _ in self.date(expressable.value(), animated: animated) }
-        return date(expressable.value())
+        return date(expressable.unwrap(), animated: animated)
     }
     
     // MARK: Minimum Date
