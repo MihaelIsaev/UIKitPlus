@@ -60,6 +60,14 @@ open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativePro
         movedToSuperview()
     }
     
+    // MARK: Keyboard Dismiss Mode
+    
+    @discardableResult
+    public func keyboardDismissMode(_ mode: UIScrollView.KeyboardDismissMode) -> Self {
+        keyboardDismissMode = mode
+        return self
+    }
+    
     // MARK: - Refresh Control
     
     @discardableResult

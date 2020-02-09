@@ -28,6 +28,14 @@ open class VScrollStack: ScrollView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Keyboard Dismiss Mode
+    
+    @discardableResult
+    public func keyboardDismissMode(_ mode: UIScrollView.KeyboardDismissMode) -> Self {
+        keyboardDismissMode = mode
+        return self
+    }
+    
     /* Add a view to the end of the arrangedSubviews list.
     Maintains the rule that the arrangedSubviews list is a subset of the
     subviews list by adding the view as a subview of the receiver if

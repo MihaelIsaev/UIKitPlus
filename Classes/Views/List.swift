@@ -82,6 +82,13 @@ public class List: View, UITableViewDataSource {
         }
     }
     
+    // MARK: Keyboard Dismiss Mode
+    
+    @discardableResult
+    public func keyboardDismissMode(_ mode: UIScrollView.KeyboardDismissMode) -> Self {
+        tableView.keyboardDismissMode = mode
+        return self
+    }
     // MARK: - Refresh Control
     
     @discardableResult

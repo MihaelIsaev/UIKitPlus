@@ -54,6 +54,14 @@ public class Collection: View, UICollectionViewDataSource {
         }
     }
     
+    // MARK: Keyboard Dismiss Mode
+    
+    @discardableResult
+    public func keyboardDismissMode(_ mode: UIScrollView.KeyboardDismissMode) -> Self {
+        collectionView.keyboardDismissMode = mode
+        return self
+    }
+    
     // MARK: - Refresh Control
     
     @discardableResult

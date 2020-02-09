@@ -66,6 +66,14 @@ open class StaticList: View {
         views.removeLast()
     }
     
+    // MARK: Keyboard Dismiss Mode
+    
+    @discardableResult
+    public func keyboardDismissMode(_ mode: UIScrollView.KeyboardDismissMode) -> Self {
+        tableView.keyboardDismissMode = mode
+        return self
+    }
+    
     // MARK: - Refresh Control
     
     @discardableResult
