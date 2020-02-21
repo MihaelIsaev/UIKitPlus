@@ -10,19 +10,52 @@ public class Collection: View, UICollectionViewDataSource {
     
     var scrollPosition: State<CGPoint>?
     
+    class SectionChanges {
+        let section: Int
+        var deletions: Set<Int> = []
+        var insertions: Set<Int> = []
+        var modifications: Set<Int> = []
+        
+        init (section: Int) {
+            self.section = section
+        }
+    }
+    
+    var changesPool: [SectionChanges] = []
+    var isChanging = false
+    
+    func applyChanges(_ changes: SectionChanges) {
+        if isChanging {
+            changesPool.append(changes)
+            return
+        }
+        isChanging = true
+        collectionView.performBatchUpdates({ [weak self] in
+            collectionView.deleteItems(at: changes.deletions.map { IndexPath(row: $0, section: changes.section)})
+            collectionView.insertItems(at: changes.insertions.map { IndexPath(row: $0, section: changes.section) })
+            collectionView.reloadItems(at: changes.modifications.map { IndexPath(row: $0, section: changes.section) })
+        }) { _ in
+            self.isChanging = false
+            if self.changesPool.count > 0 {
+                self.applyChanges(self.changesPool.removeFirst())
+            }
+        }
+    }
+    
     public init (_ layout: UICollectionViewLayout = CollectionView.defaultLayout, @ListableBuilder block: ListableBuilder.SingleView) {
         self.layout = layout
         self.listables = block().listableBuilderItems
         super.init(frame: .zero)
-        listables.enumerated().forEach { i, listable in
+        listables.enumerated().forEach { [weak self] i, listable in
             if let l = listable as? ListableForEach {
-                l.subscribeToChanges({}, { [weak self] deletions, insertions, modifications in
-                    self?.collectionView.performBatchUpdates({ [weak self] in
-                        self?.collectionView.deleteItems(at: deletions.map { IndexPath(row: $0, section: i)})
-                        self?.collectionView.insertItems(at: insertions.map { IndexPath(row: $0, section: i) })
-                        self?.collectionView.reloadItems(at: modifications.map { IndexPath(row: $0, section: i) })
-                    }, completion: nil)
-                }) {}
+                let changes = SectionChanges(section: i)
+                l.subscribeToChanges({}, { [weak self] d, i, m in
+                    d.forEach { changes.deletions.insert($0) }
+                    i.forEach { changes.insertions.insert($0) }
+                    m.forEach { changes.modifications.insert($0) }
+                }) { [weak self] in
+                    self?.applyChanges(changes)
+                }
             }
         }
         $reversed.listen { [weak self] old, new in
