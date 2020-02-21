@@ -28,6 +28,9 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
     
+    /// See `AnyForeacheableView`
+    public lazy var isVisibleInList: Bool = !isHidden
+    
     private weak var outsideDelegate: TextFieldDelegate?
     
     fileprivate var stateString: StateStringBuilder.Handler?

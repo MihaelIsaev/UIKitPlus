@@ -16,13 +16,13 @@ public class Collection: View, UICollectionViewDataSource {
         super.init(frame: .zero)
         listables.enumerated().forEach { i, listable in
             if let l = listable as? ListableForEach {
-                l.subscribeToChanges { [weak self] deletions, insertions, modifications in
+                l.subscribeToChanges({}, { [weak self] deletions, insertions, modifications in
                     self?.collectionView.performBatchUpdates({ [weak self] in
                         self?.collectionView.deleteItems(at: deletions.map { IndexPath(row: $0, section: i)})
                         self?.collectionView.insertItems(at: insertions.map { IndexPath(row: $0, section: i) })
                         self?.collectionView.reloadItems(at: modifications.map { IndexPath(row: $0, section: i) })
                     }, completion: nil)
-                }
+                }) {}
             }
         }
         $reversed.listen { [weak self] old, new in

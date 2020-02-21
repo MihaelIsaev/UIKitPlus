@@ -15,7 +15,9 @@ public class CodableState<Value>: Stateable, Codable, Equatable, Hashable where 
         set {
             let oldValue = _wrappedValue
             _wrappedValue = newValue
+            beginTriggers.forEach { $0() }
             listeners.forEach { $0(oldValue, newValue) }
+            endTriggers.forEach { $0() }
         }
     }
     
@@ -40,13 +42,26 @@ public class CodableState<Value>: Stateable, Codable, Equatable, Hashable where 
     public func reset() {
         let oldValue = _wrappedValue
         _wrappedValue = _originalValue
+        beginTriggers.forEach { $0() }
         listeners.forEach { $0(oldValue, _wrappedValue) }
+        endTriggers.forEach { $0() }
     }
     
+    public typealias Trigger = () -> Void
     public typealias Listener = (_ old: Value, _ new: Value) -> Void
     public typealias SimpleListener = (_ value: Value) -> Void
     
+    private var beginTriggers: [Trigger] = []
+    private var endTriggers: [Trigger] = []
     private var listeners: [Listener] = []
+    
+    public func beginTrigger(_ trigger: @escaping Trigger) {
+        beginTriggers.append(trigger)
+    }
+    
+    public func endTrigger(_ trigger: @escaping Trigger) {
+        endTriggers.append(trigger)
+    }
     
     public func listen(_ listener: @escaping Listener) {
         listeners.append(listener)

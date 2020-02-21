@@ -26,6 +26,9 @@ open class Stepper: UIStepper, DeclarativeProtocol, DeclarativeProtocolInternal 
     var __bottom: UIKitPlus.State<CGFloat> { $bottom }
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
+    
+    /// See `AnyForeacheableView`
+    public lazy var isVisibleInList: Bool = !isHidden
 
     public init(_ value: Double) {
         super.init(frame: .zero)

@@ -12,11 +12,13 @@ public class List: View, UITableViewDataSource {
         super.init(frame: .zero)
         listables.enumerated().forEach { i, listable in
             if let l = listable as? ListableForEach {
-                l.subscribeToChanges { [weak self] deletions, insertions, modifications in
+                l.subscribeToChanges({ [weak self] in
                     self?.tableView.beginUpdates()
+                }, { [weak self] deletions, insertions, modifications in
                     self?.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: i)}, with: .automatic)
                     self?.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: i) }, with: .automatic)
                     self?.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: i) }, with: .automatic)
+                }) { [weak self] in
                     self?.tableView.endUpdates()
                 }
             }
@@ -38,11 +40,13 @@ public class List: View, UITableViewDataSource {
         self.listables = block(self).listableBuilderItems
         listables.enumerated().forEach { i, listable in
             if let l = listable as? ListableForEach {
-                l.subscribeToChanges { [weak self] deletions, insertions, modifications in
+                l.subscribeToChanges({ [weak self] in
                     self?.tableView.beginUpdates()
+                }, { [weak self] deletions, insertions, modifications in
                     self?.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: i)}, with: .automatic)
                     self?.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: i) }, with: .automatic)
                     self?.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: i) }, with: .automatic)
+                }) { [weak self] in
                     self?.tableView.endUpdates()
                 }
             }

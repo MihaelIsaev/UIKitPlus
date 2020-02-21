@@ -27,6 +27,9 @@ open class SliderView: UISlider, DeclarativeProtocol, DeclarativeProtocolInterna
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
     
+    /// See `AnyForeacheableView`
+    public lazy var isVisibleInList: Bool = !isHidden
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false

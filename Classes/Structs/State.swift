@@ -3,6 +3,8 @@ public protocol Stateable: AnyState {
     
     var wrappedValue: Value { get set }
     
+    func beginTrigger(_ trigger: @escaping () -> Void)
+    func endTrigger(_ trigger: @escaping () -> Void)
     func listen(_ listener: @escaping (_ old: Value, _ new: Value) -> Void)
     func listen(_ listener: @escaping (_ value: Value) -> Void)
     func listen(_ listener: @escaping () -> Void)
@@ -17,7 +19,9 @@ public class State<Value>: Stateable {
         set {
             let oldValue = _wrappedValue
             _wrappedValue = newValue
+            beginTriggers.forEach { $0() }
             listeners.forEach { $0(oldValue, newValue) }
+            endTriggers.forEach { $0() }
         }
     }
     
@@ -31,13 +35,26 @@ public class State<Value>: Stateable {
     public func reset() {
         let oldValue = _wrappedValue
         _wrappedValue = _originalValue
+        beginTriggers.forEach { $0() }
         listeners.forEach { $0(oldValue, _wrappedValue) }
+        endTriggers.forEach { $0() }
     }
     
+    public typealias Trigger = () -> Void
     public typealias Listener = (_ old: Value, _ new: Value) -> Void
     public typealias SimpleListener = (_ value: Value) -> Void
     
+    private var beginTriggers: [Trigger] = []
+    private var endTriggers: [Trigger] = []
     private var listeners: [Listener] = []
+    
+    public func beginTrigger(_ trigger: @escaping Trigger) {
+        beginTriggers.append(trigger)
+    }
+    
+    public func endTrigger(_ trigger: @escaping Trigger) {
+        endTriggers.append(trigger)
+    }
     
     public func listen(_ listener: @escaping Listener) {
         listeners.append(listener)

@@ -58,7 +58,8 @@ extension ForEach: Listable {
 }
 
 extension ForEach: ListableForEach {
-    func subscribeToChanges(_ handler: @escaping ([Int], [Int], [Int]) -> Void) {
+    func subscribeToChanges(_ begin: @escaping () -> Void, _ handler: @escaping ([Int], [Int], [Int]) -> Void, _ end: @escaping () -> Void) {
+        items.beginTrigger(begin)
         items.listen { old, new in
             let diff = old.difference(new)
             let deletions = diff.removed.compactMap { $0.index }
@@ -67,6 +68,7 @@ extension ForEach: ListableForEach {
             guard deletions.count > 0 || insertions.count > 0 || modifications.count > 0 else { return }
             handler(deletions, insertions, modifications)
         }
+        items.endTrigger(end)
     }
 }
 

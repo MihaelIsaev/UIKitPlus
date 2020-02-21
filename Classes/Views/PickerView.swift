@@ -16,16 +16,19 @@ open class PickerView: UIPickerView, DeclarativeProtocol, DeclarativeProtocolInt
     @State public var centerX: CGFloat = 0
     @State public var centerY: CGFloat = 0
     
-    var __height: State<CGFloat> { $height }
-    var __width: State<CGFloat> { $width }
-    var __top: State<CGFloat> { $top }
-    var __leading: State<CGFloat> { $leading }
-    var __left: State<CGFloat> { $left }
-    var __trailing: State<CGFloat> { $trailing }
-    var __right: State<CGFloat> { $right }
-    var __bottom: State<CGFloat> { $bottom }
-    var __centerX: State<CGFloat> { $centerX }
-    var __centerY: State<CGFloat> { $centerY }
+    var __height: State<CGFloat> { _height }
+    var __width: State<CGFloat> { _width }
+    var __top: State<CGFloat> { _top }
+    var __leading: State<CGFloat> { _leading }
+    var __left: State<CGFloat> { _left }
+    var __trailing: State<CGFloat> { _trailing }
+    var __right: State<CGFloat> { _right }
+    var __bottom: State<CGFloat> { _bottom }
+    var __centerX: State<CGFloat> { _centerX }
+    var __centerY: State<CGFloat> { _centerY }
+    
+    /// See `AnyForeacheableView`
+    public lazy var isVisibleInList: Bool = !isHidden
     
     public override init(frame: CGRect) {
         super.init(frame: frame)

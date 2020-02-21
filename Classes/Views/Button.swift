@@ -27,6 +27,9 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
     
+    /// See `AnyForeacheableView`
+    public lazy var isVisibleInList: Bool = !isHidden
+    
     // MARK: States
     
     var titleNormal: UIKitPlus.State<String>?

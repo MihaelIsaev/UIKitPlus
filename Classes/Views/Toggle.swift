@@ -27,6 +27,9 @@ open class Toggle: UISwitch, DeclarativeProtocol, DeclarativeProtocolInternal {
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
     
+    /// See `AnyForeacheableView`
+    public lazy var isVisibleInList: Bool = !isHidden
+    
     var binding: UIKitPlus.State<Bool>?
     
     public override init(frame: CGRect) {
