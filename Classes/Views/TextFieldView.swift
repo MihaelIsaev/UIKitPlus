@@ -36,6 +36,10 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     fileprivate var stateString: StateStringBuilder.Handler?
     private var binding: UIKitPlus.State<String>?
     
+    @UIKitPlus.State private var isTyping = false
+    private var typingInterval: TimeInterval = 0.5
+    private var typingTimer: Timer?
+    
     public init (_ text: String? = nil) {
         super.init(frame: .zero)
         self.text = text
@@ -143,6 +147,21 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     public func secure<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
         expressable.state.listen { _ in self.secure(expressable.value()) }
         return secure(expressable.value())
+    }
+    
+    @discardableResult
+    public func typing(_ binding: UIKitPlus.State<Bool>, _ interval: TimeInterval? = nil) -> Self {
+        if let interval = interval {
+            typingInterval = interval
+        }
+        _isTyping.listen {
+            guard binding.wrappedValue != $0 else { return }
+            binding.wrappedValue = $0
+        }
+        if binding.wrappedValue != isTyping {
+            binding.wrappedValue = isTyping
+        }
+        return self
     }
     
     @discardableResult
@@ -490,7 +509,14 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
         _editingDidBegin.forEach { $0(self) }
     }
     
+    @objc private func __invalidateTimer() {
+        isTyping = false
+    }
+    
     @objc func __editingChanged() {
+        typingTimer?.invalidate()
+        typingTimer = Timer.scheduledTimer(timeInterval: typingInterval, target: self, selector: #selector(__invalidateTimer), userInfo: nil, repeats: false)
+        isTyping = true
         _editingChanged.forEach { $0(self) }
         binding?.wrappedValue = self.text ?? ""
     }
