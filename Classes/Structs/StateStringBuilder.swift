@@ -26,3 +26,30 @@ import Foundation
         second
     }
 }
+
+@_functionBuilder public struct StateAttrStringBuilder {
+    public typealias Handler = () -> AttributedString
+    
+    public static func buildBlock() -> AttributedString { AttributedString("") }
+    
+    public static func buildBlock(_ string: AttributedString...) -> AttributedString {
+        buildBlock(string)
+    }
+    
+    public static func buildBlock(_ string: [AttributedString]) -> AttributedString {
+        string.joined()
+    }
+    
+    public static func buildIf(_ content: AttributedString?) -> AttributedString {
+        guard let content = content else { return AttributedString("") }
+        return content
+    }
+    
+    public static func buildEither(first: AttributedString) -> AttributedString {
+        first
+    }
+
+    public static func buildEither(second: AttributedString) -> AttributedString {
+        second
+    }
+}
