@@ -83,7 +83,7 @@ open class SegmentedControl: UISegmentedControl, DeclarativeProtocol, Declarativ
     @discardableResult
     public func select(_ binding: UIKitPlus.State<Int>) -> Self {
         selectBinding = binding
-        binding.listen { self.select($0) }
+        binding.listen { self.selectedSegmentIndex = $0 }
         return select(binding.wrappedValue)
     }
     
