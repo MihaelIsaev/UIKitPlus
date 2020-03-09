@@ -16,20 +16,13 @@ With that lib you could build UI in SwiftUI-like way for iOS9 and higher! 😺
 
 ```swift
 // NOTE:
-// Now it is written for Swift 5.1 and Xcode 11
+// Now it is written for Swift 5.2 and Xcode 11.4
 // stable code for Swift 4.2 is available in swift4 branch
 ```
 
 Support this lib by giving a ⭐️!
 
-# KNOWN ISSUE
-**UPD: works well since Swift 5.2!**
-
-⚠️ don't use Xcode 11.2 and 11.3 because of its compiler bug which is showing `Type of expression is ambiguous without more context` in function builders if expression is long while the same code compiles just fine with simple `swift build` in console. Use Xcode 11.1 cause there everything compiles fine. Hope this issue will be fixed([please vote for this issue here](https://bugs.swift.org/browse/SR-11694)).
-
-Xcode 11.1 available here [https://developer.apple.com/download/more/](https://developer.apple.com/download/more/)
-
-If you experience any compilation problems in Xcode 11.1 please go to `Xcode -> Preferences -> Location` open derived data folder in finder and remove everything from it manually. Then restart Xcode and compile your project without any errors.
+It works well since Xcode 11.4 and Swift 5.2. Otherwise [Xcode 11.1 and Swift 5.1.0](https://developer.apple.com/download/more/) only, don't try it with Swift 5.1.1, 5.1.2, 5.1.3, 5.1.4 because of its bugs.
 
 #### Learn how to use through the [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
 Please feel free to request for specific examples in [example project issues](https://github.com/MihaelIsaev/UIKitPlusExample/issues) I'll try to cover as much as I can 🚀
