@@ -24,4 +24,22 @@ extension DeclarativeProtocol {
     public func corners(_ radius: CGFloat, _ corners: UIRectCorner...) -> Self {
         self.corners(radius, corners)
     }
+    
+    @discardableResult
+    public func corners(_ state: State<CGFloat>) -> Self {
+        corners(state.wrappedValue)
+        state.listen { [weak self] old, new in
+            self?.corners(state.wrappedValue)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func corners<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        corners(expressable.value())
+        expressable.state.listen { [weak self] old, new in
+            self?.corners(expressable.value())
+        }
+        return self
+    }
 }
