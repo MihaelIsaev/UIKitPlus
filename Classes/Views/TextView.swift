@@ -305,10 +305,7 @@ open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInterna
     // MARK: Placeholder
     
     @State var placeholderText: String?
-    @State var placeholderColor: UIColor = .lightGray
-    @State var placeholderFont: UIFont?
-    @State var placeholderAlignment: NSTextAlignment?
-    let defaultPlaceholderFont: UIFont = UIFont.systemFont(ofSize: 14)
+    var placeholderAttrText: NSMutableAttributedString?
     var generatedPlaceholderString: NSAttributedString?
     
     @discardableResult
@@ -320,39 +317,23 @@ open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInterna
         return self
     }
     
+    @discardableResult
+    public func placeholder(_ attributedStrings: AttributedString...) -> Self {
+        let attrStr = NSMutableAttributedString(string: "")
+        attributedStrings.forEach {
+            attrStr.append($0.attributedString)
+        }
+        placeholderAttrText = attrStr
+        return placeholder(attrStr.string)
+    }
+    
     func _generatePlaceholderAttributedString(with text: String) -> NSAttributedString {
-        let str = AttrStr(text).foreground(placeholderColor).font(v: font ?? defaultPlaceholderFont).attributedString
-        generatedPlaceholderString = str
-        return str
-    }
-    
-    @discardableResult
-    public func placeholderColor(_ color: UIColor) -> Self {
-        placeholderColor = color
-        return self
-    }
-    
-    @discardableResult
-    public func placeholderColor(_ number: Int) -> Self {
-        placeholderColor = number.color
-        return self
-    }
-    
-    @discardableResult
-    public func placeholderFont(v: UIFont?) -> Self {
-        self.placeholderFont = v
-        return self
-    }
-    
-    @discardableResult
-    public func placeholderFont(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        placeholderFont(v: UIFont(name: identifier.fontName, size: size))
-    }
-    
-    @discardableResult
-    public func placeholderAlignment(_ alignment: NSTextAlignment) -> Self {
-        placeholderAlignment = alignment
-        return self
+        guard let placeholderAttrText = placeholderAttrText else {
+            let str = AttrStr(text).foreground(.lightGray).font(v: font ?? .systemFont(ofSize: 14)).attributedString
+            generatedPlaceholderString = str
+            return str
+        }
+        return placeholderAttrText
     }
     
     // MARK: - Delegate Replication

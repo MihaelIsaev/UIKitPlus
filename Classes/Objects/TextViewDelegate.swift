@@ -18,7 +18,7 @@ class TextViewDelegate: NSObject, UITextViewDelegate {
     }
     
     public func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.textView.attributedText == self.textView.generatedPlaceholderString {
+        if self.textView.attributedText.string == self.textView.placeholderText {
             self.textView.text = ""
         }
         self.textView.didBeginEditingHandler?()
