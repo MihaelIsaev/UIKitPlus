@@ -72,7 +72,7 @@ public class List: View, UITableViewDataSource {
         tableView.separatorStyle(.none)
     }
     
-    lazy var tableView = TableView()
+    public lazy var tableView = TableView()
         .register(ListDynamicCell.self)
         .edgesToSuperview()
         .dataSource(self)
