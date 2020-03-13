@@ -106,6 +106,14 @@ public class List: View, UITableViewDataSource {
     
     // MARK: TableView methods
     
+    open func reloadData() {
+        tableView.reloadData()
+    }
+    
+    open func reloadSection(_ i: Int) {
+        tableView.reloadSections(IndexSet(integer: i), with: UITableView.RowAnimation.fade)
+    }
+    
     open func beginUpdates() {
         tableView.beginUpdates()
     }
