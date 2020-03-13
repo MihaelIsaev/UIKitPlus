@@ -40,6 +40,34 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     var titleApplication: UIKitPlus.State<String>?
     var titleReserved: UIKitPlus.State<String>?
     
+    private var titleChangeTransition: UIView.AnimationOptions?
+    
+    open override func setTitle(_ title: String?, for state: UIControl.State) {
+        guard let transition = titleChangeTransition else {
+            super.setTitle(title, for: state)
+            return
+        }
+        UIView.transition(with: self, duration: 0.25, options: transition, animations: {
+            super.setTitle(title, for: state)
+        }, completion: nil)
+    }
+    
+    open override func setAttributedTitle(_ title: NSAttributedString?, for state: UIControl.State) {
+        guard let transition = titleChangeTransition else {
+            super.setAttributedTitle(title, for: state)
+            return
+        }
+        UIView.transition(with: self, duration: 0.25, options: transition, animations: {
+            super.setAttributedTitle(title, for: state)
+        }, completion: nil)
+    }
+    
+    @discardableResult
+    public func titleChangeTransition(_ value: UIView.AnimationOptions) -> Self {
+        titleChangeTransition = value
+        return self
+    }
+    
     // MARK: Initialization
     
     public init (_ title: String = "") {
