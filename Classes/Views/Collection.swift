@@ -49,7 +49,11 @@ public class Collection: View, UICollectionViewDataSource {
         listables.enumerated().forEach { [weak self] i, listable in
             if let l = listable as? ListableForEach {
                 let changes = SectionChanges(section: i)
-                l.subscribeToChanges({}, { [weak self] d, i, m in
+                l.subscribeToChanges({
+                    changes.deletions.removeAll()
+                    changes.insertions.removeAll()
+                    changes.modifications.removeAll()
+                }, { [weak self] d, i, m in
                     d.forEach { changes.deletions.insert($0) }
                     i.forEach { changes.insertions.insert($0) }
                     m.forEach { changes.modifications.insert($0) }
