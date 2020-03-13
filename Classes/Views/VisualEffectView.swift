@@ -27,18 +27,26 @@ open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, Declarativ
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
     
+    var _defaultEffect, _darkEffect: UIVisualEffect?
+    
     public override init(effect: UIVisualEffect?) {
+        self._defaultEffect = effect
         super.init(effect: effect)
+        switchEffect()
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    public init(_ effect: UIVisualEffect?) {
+    public init(_ effect: UIVisualEffect?, _ darkEffect: UIVisualEffect? = nil) {
+        self._defaultEffect = effect
+        self._darkEffect = darkEffect
         super.init(effect: effect)
+        switchEffect()
         translatesAutoresizingMaskIntoConstraints = false
     }
     
     public init () {
         super.init(effect: nil)
+        switchEffect()
         translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -58,8 +66,34 @@ open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, Declarativ
     
     @discardableResult
     public func effect(_ effect: UIVisualEffect?) -> Self {
-        self.effect = effect
+        self._defaultEffect = effect
+        switchEffect()
         return self
+    }
+    
+    @discardableResult
+    public func darkEffect(_ effect: UIVisualEffect?) -> Self {
+        self._darkEffect = effect
+        switchEffect()
+        return self
+    }
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        switchEffect()
+    }
+    
+    var isDark: Bool {
+        if #available(iOSApplicationExtension 12.0, *) {
+            return traitCollection.userInterfaceStyle == .dark
+        }
+        return false
+    }
+    
+    private func switchEffect() {
+        if isDark {
+            self.effect = _darkEffect
+        }
+        self.effect = _defaultEffect
     }
 }
 
