@@ -39,20 +39,47 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     fileprivate var stateAttrString: StateAttrStringBuilder.Handler?
     private var binding: UIKitPlus.State<String>?
     private var attributedBinding: UIKitPlus.State<[AttributedString]>?
+    private var textChangeTransition: UIView.AnimationOptions?
     
     public init (_ text: String) {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
-        self.text = text
+        changeText(to: text)
+    }
+    
+    private func changeText(to newValue: String) {
+        guard let transition = textChangeTransition else {
+            text = newValue
+            return
+        }
+        UIView.transition(with: self, duration: 0.25, options: transition, animations: {
+            self.text = newValue
+        }, completion: nil)
+    }
+    
+    private func changeText(to newValue: NSMutableAttributedString) {
+        guard let transition = textChangeTransition else {
+            attributedText = newValue
+            return
+        }
+        UIView.transition(with: self, duration: 0.25, options: transition, animations: {
+            self.attributedText = newValue
+        }, completion: nil)
+    }
+    
+    @discardableResult
+    public func textChangeTransition(_ value: UIView.AnimationOptions) -> Self {
+        textChangeTransition = value
+        return self
     }
     
     public init (_ state: State<String>) {
         self.binding = state
         super.init(frame: .zero)
         _setup()
-        text = state.wrappedValue
-        state.listen { _,n in self.text = n }
+        changeText(to: state.wrappedValue)
+        state.listen { self.changeText(to: $0) }
     }
     
     public init (attributed state: State<[AttributedString]>) {
@@ -73,8 +100,8 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         stateString = expressable.value
         super.init(frame: .zero)
         _setup()
-        text = expressable.value()
-        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
+        changeText(to: expressable.value())
+        expressable.state.listen { [weak self] _,_ in self?.changeText(to: expressable.value()) }
     }
     
     public init<V>(attributed expressable: ExpressableState<V, [AttributedString]>) {
@@ -90,7 +117,7 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         self.stateString = stateString
         super.init(frame: .zero)
         _setup()
-        self.text = stateString()
+        changeText(to: stateString())
     }
     
     public init (@StateStringBuilder stateString: @escaping StateAttrStringBuilder.Handler) {
@@ -119,7 +146,7 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         attributedStrings.forEach {
             attrStr.append($0.attributedString)
         }
-        attributedText = attrStr
+        changeText(to: attrStr)
     }
     
     open override func layoutSubviews() {
@@ -134,7 +161,7 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     
     @discardableResult
     public func text(_ text: String) -> Self {
-        self.text = text
+        changeText(to: text)
         return self
     }
     
@@ -144,14 +171,14 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         attributedStrings.forEach {
             attrStr.append($0.attributedString)
         }
-        attributedText = attrStr
+        changeText(to: attrStr)
         return self
     }
     
     @discardableResult
     public func text(_ state: State<String>) -> Self {
-        text = state.wrappedValue
-        state.listen { _,n in self.text = n }
+        changeText(to: state.wrappedValue)
+        state.listen { self.changeText(to: $0) }
         return self
     }
     
@@ -165,8 +192,8 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     @discardableResult
     public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
         self.stateString = expressable.value
-        text = expressable.value()
-        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
+        changeText(to: expressable.value())
+        expressable.state.listen { [weak self] _,_ in self?.changeText(to: expressable.value()) }
         return self
     }
     
@@ -182,7 +209,7 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     @discardableResult
     public func text(@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) -> Self {
         self.stateString = stateString
-        text = stateString()
+        changeText(to: stateString())
         return self
     }
     
@@ -270,9 +297,9 @@ extension Text: Refreshable {
     /// Refreshes using `RefreshHandler`
     public func refresh() {
         if let stateString = stateString {
-            text = stateString()
+            changeText(to: stateString())
         } else if let stateAttrString = stateAttrString {
-            attributedText = stateAttrString().attributedString
+            changeText(to: stateAttrString().attributedString)
         }
     }
 }
