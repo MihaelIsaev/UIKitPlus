@@ -86,6 +86,7 @@ open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInterna
     
     private func _setup() {
         clipsToBounds = true
+        textContainer.lineFragmentPadding = 0
         translatesAutoresizingMaskIntoConstraints = false
         delegate = _delegate
     }
