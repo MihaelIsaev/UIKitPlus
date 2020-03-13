@@ -92,6 +92,27 @@ open class ActivityIndicator: UIActivityIndicatorView, DeclarativeProtocol, Decl
     }
     
     @discardableResult
+    public func started(_ value: Bool) -> Self {
+        if value {
+            startAnimating()
+        } else {
+            stopAnimating()
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func started(_ binding: State<Bool>) -> Self {
+        binding.listen { self.started($0) }
+        return started(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func started<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
+        started(expressable.unwrap())
+    }
+    
+    @discardableResult
     public func hidesWhenStopped() -> Self {
         self.hidesWhenStopped = true
         return self
