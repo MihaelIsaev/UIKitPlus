@@ -16,4 +16,12 @@ extension Array where Element: AttributedString {
         }
         return result
     }
+    
+    public func joined() -> NSMutableAttributedString {
+        let result = NSMutableAttributedString(string: "")
+        forEach {
+            result.append($0.attributedString)
+        }
+        return result
+    }
 }

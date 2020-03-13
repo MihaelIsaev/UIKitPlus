@@ -4,6 +4,9 @@ public class PropertiesInternal {
     var circleCorners: Bool = false
     var customCorners: CustomCorners?
     lazy var borders = Borders()
+    var textChangeTransition: UIView.AnimationOptions?
+    var stateString: StateStringBuilder.Handler?
+    var stateAttrString: StateAttrStringBuilder.Handler?
     
     // MARK: - Internal Constraints
     

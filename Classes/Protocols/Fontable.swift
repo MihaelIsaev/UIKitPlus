@@ -12,15 +12,14 @@ protocol _Fontable: Fontable {
     func _setFont(_ v: UIFont?)
 }
 
-extension _Fontable {
+extension Fontable {
     @discardableResult
     public func font(v: UIFont?) -> Self {
-        _setFont(v)
+        guard let s = self as? _Fontable else { return self }
+        s._setFont(v)
         return self
     }
-}
-
-extension Fontable {
+    
     @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
         font(v: UIFont(name: identifier.fontName, size: size))
