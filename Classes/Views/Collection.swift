@@ -130,6 +130,12 @@ public class Collection: View, UICollectionViewDataSource {
         reversed = value
         return self
     }
+    
+    @discardableResult
+    public func alwaysBounceVertical(_ value: Bool = true) -> Self {
+        collectionView.alwaysBounceVertical = value
+        return self
+    }
 }
 
 extension Collection: UICollectionViewDelegate {
