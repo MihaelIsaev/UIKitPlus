@@ -136,6 +136,14 @@ public class Collection: View, UICollectionViewDataSource {
         collectionView.alwaysBounceVertical = value
         return self
     }
+    
+    // MARK: Delegate
+    
+    @discardableResult
+    public func delegate(_ delegate: UICollectionViewDelegate) -> Self {
+        self.collectionView.delegate = delegate
+        return self
+    }
 }
 
 extension Collection: UICollectionViewDelegate {
