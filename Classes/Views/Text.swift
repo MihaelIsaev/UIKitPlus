@@ -230,12 +230,6 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     }
     
     @discardableResult
-    public func font(v: UIFont?) -> Self {
-        self.font = v
-        return self
-    }
-    
-    @discardableResult
     public func minimumScaleFactor(_ value: CGFloat) -> Self {
         self.minimumScaleFactor = value
         return self
@@ -251,11 +245,6 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     public func adjustsFontSizeToFitWidth(_ value: Bool = true) -> Self {
         self.adjustsFontSizeToFitWidth = value
         return self
-    }
-    
-    @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        font(v: UIFont(name: identifier.fontName, size: size))
     }
     
     @discardableResult
@@ -285,5 +274,11 @@ extension Text: Refreshable {
         } else if let stateAttrString = stateAttrString {
             attributedText = stateAttrString().attributedString
         }
+    }
+}
+
+extension Text: _Fontable {
+    func _setFont(_ v: UIFont?) {
+        font = v
     }
 }

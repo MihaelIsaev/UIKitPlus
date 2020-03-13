@@ -12,8 +12,17 @@ open class AttributedString {
     
     @discardableResult
     func addAttribute(_ attr: NSAttributedString.Key, _ value: Any, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        // TODO: check range
         let range = range ?? 0...attributedString.length
         attributedString.addAttribute(attr, value: value, range: range.nsRange)
+        return self
+    }
+    
+    @discardableResult
+    func removeAttribute(_ attr: NSAttributedString.Key, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        // TODO: check range
+        let range = range ?? 0...attributedString.length
+        attributedString.removeAttribute(attr, range: range.nsRange)
         return self
     }
     
@@ -39,19 +48,6 @@ open class AttributedString {
     @discardableResult
     public func foreground(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
         addAttribute(.foregroundColor, value.color, at: range)
-    }
-    
-    @discardableResult
-    public func font(v: UIFont, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.font, v, at: range)
-    }
-    
-    @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        if let value = UIFont(name: identifier.fontName, size: size) {
-            addAttribute(.font, value, at: range)
-        }
-        return self
     }
     
     /// NSParagraphStyle, default defaultParagraphStyle
@@ -194,5 +190,24 @@ open class AttributedString {
     @discardableResult
     public func writingDirection(_ direction: NSWritingDirection, at range: ClosedRange<Int>? = nil) -> AttributedString {
         addAttribute(.writingDirection, direction, at: range)
+    }
+}
+
+extension AttrStr: _FontableAtRange {
+    func _setFont(_ v: UIFont?) {
+        guard let v = v else {
+            removeAttribute(.font)
+            return
+        }
+        addAttribute(.font, v)
+    }
+    
+    public func font(v: UIFont?, at range: ClosedRange<Int>) -> Self {
+        guard let v = v else {
+            removeAttribute(.font, at: range)
+            return self
+        }
+        addAttribute(.font, v, at: range)
+        return self
     }
 }

@@ -115,17 +115,6 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     }
     
     @discardableResult
-    public func font(v: UIFont?) -> Self {
-        self.font = v
-        return self
-    }
-    
-    @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        font(v: UIFont(name: identifier.fontName, size: size))
-    }
-    
-    @discardableResult
     public func alignment(_ alignment: NSTextAlignment) -> Self {
         textAlignment = alignment
         return self
@@ -603,5 +592,11 @@ extension TextField: Refreshable {
         if let stateString = stateString {
             text = stateString()
         }
+    }
+}
+
+extension TextField: _Fontable {
+    func _setFont(_ v: UIFont?) {
+        font = v
     }
 }

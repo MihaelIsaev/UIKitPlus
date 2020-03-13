@@ -151,17 +151,6 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     }
     
     @discardableResult
-    public func font(v: UIFont?) -> Self {
-        digitViews.forEach { $0.labelFont = v }
-        return self
-    }
-    
-    @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        font(v: UIFont(name: identifier.fontName, size: size))
-    }
-    
-    @discardableResult
     public func digitCorners(_ radius: CGFloat, _ corners: UIRectCorner...) -> Self {
         digitViews.forEach { $0.label.corners(radius, corners) }
         return self
@@ -264,6 +253,12 @@ open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtoco
     
     public func cleanup() {
         hiddenTextField.cleanup()
+    }
+}
+
+extension VerificationCodeView: _Fontable {
+    func _setFont(_ v: UIFont?) {
+        digitViews.forEach { $0.labelFont = v }
     }
 }
 

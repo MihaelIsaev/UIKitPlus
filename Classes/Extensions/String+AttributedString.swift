@@ -28,12 +28,18 @@ extension String {
     
     @discardableResult
     public func font(v: UIFont, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        AttrStr(self).font(v: v, at: range)
+        guard let range = range else {
+            return AttrStr(self).font(v: v)
+        }
+        return AttrStr(self).font(v: v, at: range)
     }
     
     @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        AttrStr(self).font(identifier, size, at: range)
+        guard let range = range else {
+            return AttrStr(self).font(identifier, size)
+        }
+        return AttrStr(self).font(identifier, size, at: range)
     }
     
     /// NSParagraphStyle, default defaultParagraphStyle

@@ -175,17 +175,6 @@ open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func font(v: UIFont?) -> Self {
-        self.font = v
-        return self
-    }
-    
-    @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        font(v: UIFont(name: identifier.fontName, size: size))
-    }
-    
-    @discardableResult
     public func alignment(_ alignment: NSTextAlignment) -> Self {
         textAlignment = alignment
         return self
@@ -620,5 +609,11 @@ extension TextView: Refreshable {
         if let stateString = stateString {
             text = stateString()
         }
+    }
+}
+
+extension TextView: _Fontable {
+    func _setFont(_ v: UIFont?) {
+        font = v
     }
 }

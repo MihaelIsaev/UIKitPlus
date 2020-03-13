@@ -114,22 +114,6 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
         return self
     }
     
-    // MARK: Font
-    
-    @discardableResult
-    public func font(v: UIFont?) -> NavigationController {
-        if let font = v {
-            self.font = font
-            setupAppearance()
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> NavigationController {
-        return font(v: UIFont(name: identifier.fontName, size: size))
-    }
-    
     @discardableResult
     public func statusBarStyle(_ style: StatusBarStyle) -> NavigationController {
         _statusBarStyle = style
@@ -155,3 +139,10 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
     //    }
 }
 
+extension NavigationController: _Fontable {
+    func _setFont(_ v: UIFont?) {
+        guard let v = v else { return }
+        font = v
+        setupAppearance()
+    }
+}

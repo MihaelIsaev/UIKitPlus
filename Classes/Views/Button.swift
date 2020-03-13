@@ -253,31 +253,6 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         return color(expressable.value(), state)
     }
     
-    // MARK: Title Font
-    
-    @discardableResult
-    public func font(v: UIFont?) -> Self {
-        titleLabel?.font = v
-        return self
-    }
-    
-    @discardableResult
-    public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
-        font(v: UIFont(name: identifier.fontName, size: size))
-    }
-    
-    @discardableResult
-    public func font(_ binding: UIKitPlus.State<UIFont>) -> Self {
-        binding.listen { self.font(v: $0) }
-        return font(v: binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func font<V>(_ expressable: ExpressableState<V, UIFont>) -> Self {
-        expressable.state.listen { _ in self.font(v: expressable.value()) }
-        return font(v: expressable.value())
-    }
-    
     // MARK: Image
     
     @discardableResult
@@ -364,5 +339,11 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     @discardableResult
     public func imageInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
         imageInsets(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+}
+
+extension Button: _Fontable {
+    func _setFont(_ v: UIFont?) {
+        titleLabel?.font = v
     }
 }
