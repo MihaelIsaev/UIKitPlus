@@ -123,6 +123,10 @@ open class View: UIView, UIViewable, DeclarativeProtocolInternal {
 // MARK: Convenience Initializers
 
 extension View {
+    public static func inline(_ v: () -> UIView) -> View {
+        .init(inline: v())
+    }
+    
     public convenience init (_ innerView: UIView) {
         self.init()
         body { innerView }
