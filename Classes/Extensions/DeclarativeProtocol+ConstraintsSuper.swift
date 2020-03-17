@@ -55,11 +55,57 @@ extension DeclarativeProtocol {
         return self
     }
     
+    @discardableResult
+    public func edgesToSuperview(h: CGFloat) -> Self {
+        leadingToSuperview(h)
+        trailingToSuperview(h * (-1))
+        return self
+    }
+    
+    @discardableResult
+    public func edgesToSuperview(v: CGFloat) -> Self {
+        topToSuperview(v)
+        bottomToSuperview(v * (-1))
+        return self
+    }
+    
+    @discardableResult
+    public func edgesToSuperview(h: CGFloat, v: CGFloat) -> Self {
+        topToSuperview(v)
+        leadingToSuperview(h)
+        trailingToSuperview(h * (-1))
+        bottomToSuperview(v * (-1))
+        return self
+    }
+    
     public func edgesToSuperview(_ value: State<CGFloat>) -> Self {
         topToSuperview(value)
         leadingToSuperview(value)
         trailingToSuperview(value.map { -1 * $0 })
         bottomToSuperview(value.map { -1 * $0 })
+        return self
+    }
+    
+    @discardableResult
+    public func edgesToSuperview(h: State<CGFloat>) -> Self {
+        leadingToSuperview(h)
+        trailingToSuperview(h.map { -1 * $0 })
+        return self
+    }
+    
+    @discardableResult
+    public func edgesToSuperview(v: State<CGFloat>) -> Self {
+        topToSuperview(v)
+        bottomToSuperview(v.map { -1 * $0 })
+        return self
+    }
+    
+    @discardableResult
+    public func edgesToSuperview(h: State<CGFloat>, v: State<CGFloat>) -> Self {
+        topToSuperview(v)
+        leadingToSuperview(h)
+        trailingToSuperview(h.map { -1 * $0 })
+        bottomToSuperview(v.map { -1 * $0 })
         return self
     }
         
