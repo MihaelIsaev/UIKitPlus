@@ -1,6 +1,6 @@
 import UIKit
 
-extension DeclarativeProtocol {
+extension UIView {
     public func shake(values: [CGFloat] = [-20, 20, -20, 20, -10, 10, -5, 5, 0],
                       duration: CFTimeInterval = 0.6,
                       axis: NSLayoutConstraint.Axis = .horizontal,
@@ -9,7 +9,7 @@ extension DeclarativeProtocol {
         animation.timingFunction = CAMediaTimingFunction(name: timing)
         animation.duration = duration
         animation.values = values
-        declarativeView.layer.add(animation, forKey: "shake")
+        layer.add(animation, forKey: "shake")
     }
     
     public func shake(_ values: CGFloat...,
