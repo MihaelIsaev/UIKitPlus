@@ -3,123 +3,28 @@
         <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT License">
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/swift-5.1-brightgreen.svg" alt="Swift 5.1">
+        <img src="https://img.shields.io/badge/swift-5.2-brightgreen.svg" alt="Swift 5.2">
     </a>
     <a href="https://cocoapods.org/pods/UIKit-Plus">
         <img src="https://img.shields.io/cocoapods/v/UIKit-Plus.svg" alt="Cocoapod">
     </a>
 </p>
 
-**This project is in active development state**
+❤️ you will love UIKit more than ever ❤️
 
-With that lib you could build UI in SwiftUI-like way for iOS9 and higher! 😺
+Nothing is impossible! Build awesome responsive UIs even simpler than with SwiftUI cause you already know everything.
 
-```swift
-// NOTE:
-// Now it is written for Swift 5.2 and Xcode 11.4
-// stable code for Swift 4.2 is available in swift4 branch
-```
+With. Live. Preview. iOS9+.
 
-Support this lib by giving a ⭐️!
+[EXAMPLES](https://github.com/MihaelIsaev/UIKitPlusExample)
 
-**It works well since Xcode 11.4 and Swift 5.2.**
+## Requirements
 
-Otherwise [Xcode 11.1 and Swift 5.1.0](https://developer.apple.com/download/more/) only, don't try it with Swift 5.1.1, 5.1.2, 5.1.3, 5.1.4 because of its bugs.
+Xcode 11.4+
 
-#### Learn how to use through the [Example](https://github.com/MihaelIsaev/UIKitPlusExample) project 🎮 
-Please feel free to request for specific examples in [example project issues](https://github.com/MihaelIsaev/UIKitPlusExample/issues) I'll try to cover as much as I can 🚀
+Swift 5.2+
 
-## Main Features
-
-You can build your view anywhere with all the constraints (even to other views), and then once you add it into a superview all the constraints will be activated.
-
-Reusing views is pretty easy. Just declare them in extensions!
-
-## Really short intro
-```swift
-class MyViewController: ViewController {
-    lazy var view1 = View()
-    lazy var view2 = View()
-
-    override func buildUI() {
-        super.buildUI()
-        body {
-            view1.background(.black).size(100).centerInSuperview()
-            view2.background(.red).size(30, 20).centerXInSuperview().top(to: .bottom, of: view1, 16)
-        }
-    }
-}
-```
-## Long intro
-```swift
-import UIKit
-import UIKitPlus
-
-// Just feel how easy you could build & declare your views
-// with all needed constraints, properties and actions
-// even before adding them to superview!
-class LoginViewController: ViewController {
-    @State var email = ""
-    @State var password = ""
-    
-    override func buildUI() {
-        super.buildUI()
-        view.backgroundColor = .black
-        body {
-            Button.back.onTapGesture { print("back tapped") }
-            Label.welcome.text("Welcome").centerXInSuperview().topToSuperview(62)
-            VStack {
-                TextField.welcome.text($email).placeholder("Email").keyboard(.emailAddress).content(.emailAddress)
-                TextField.welcome.text($password).placeholder("Password").content(.password).secure()
-                View().height(10) // just to add extra space
-                Button.bigBottomGreen.title("Sign In").tapAction(signIn)
-            }.edgesToSuperview(top: 120, leading: 16, trailing: -16)
-        }
-    }
-
-    func signIn() {
-        // do an API call to your server with my awesome CodyFire lib 😉
-    }
-}
-```
-And that's it! Yeah! You just need few extensions to make it work 😍
-```swift
-// PRO-TIP:
-// To avoid mess declare reusable views in extensions like this
-extension FontIdentifier {
-    static var sfProRegular = FontIdentifier("SFProDisplay-Regular")
-    static var sfProMedium = FontIdentifier("SFProDisplay-Medium")
-}
-extension Text {
-    static var title: Text { Text().color(.white).font(.sfProMedium, 18) }
-}
-extension TextField {
-    static var welcome: TextField {
-        TextField()
-            .height(40)
-            .background(.clear)
-            .color(.black)
-            .tint(.mainGreen)
-            .border(.bottom, 1, .gray)
-            .font(.sfProRegular, 16)
-    }
-}
-extension Button {
-    static var back: Button { return Button("backIcon").topToSuperview(64).leadingToSuperview(24) }
-    static var bigBottomGreen: Button {
-        Button()
-            .color(.white)
-            .font(.sfProMedium, 15)
-            .background(.green)
-            .height(50)
-            .circle()
-            .shadow(.gray, opacity: 1, offset: .init(width: 0, height: -1), radius: 10)
-    }
-}
-
-// PRO-TIP2:
-// I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
-```
+Good mood
 
 ## Installation
 
@@ -137,117 +42,814 @@ In Xcode11 go to `File -> Swift Packages -> Add Package Dependency` and enter th
 https://github.com/MihaelIsaev/UIKitPlus
 ```
 
-#### With [Carthage](https://github.com/Carthage/Carthage)
+## Features
 
-Not supported yet. Feel free to send PR for that.
+### 1. Delayed constraints
+
+Declare all the constraints in advance before adding view to superview.
+
+### 2. Declarativity
+
+Build everything declarative way. Any view. Any control. Even layers, gestures, colors, fonts, etc.
+
+### 3. Reactivity
+
+Use `@State` for any property, react on any thing, map states to different types, etc.
+
+### 4. Purity
+
+Everything is pretty clear. Clean short code without magic.
+
+### 5. SwiftUI-like but still beloved UIKit
+
+Declare subviews like in SwiftUI
+
+```swift
+body {
+    View1()
+    View2()
+    View3()
+    // btw it is NOT limited to 10
+}
+```
+
+### 6. Reusable and extendable
+
+Declare views or its styles in extensions. Subclass views. Use all the power of OOP.
+
+### 7. All modern features
+
+Dynamic colors for light/dark mode. Stateable animations. Reactivity.
+
+### 8. Everything and even more
+
+Built-in `ImageLoader`, no need in huge 3rd party libs. Just set URL to `Image`. Fully customizable and overridable.
+
+Easy device model and type detection and ability to set values based on that.
+
+Custom trait collections.
+
 
 ## Usage
 
 ```swift
-import UIKit
 import UIKitPlus
 ```
 
-### Cheatsheet
-| | UIKitPlus | UIKit |
-| - | ------- | -------------- |
-| ✅ | View | UIView |
-| ✅ | WrapperView | UIView |
-| ✅ | ScrollView | UIScrollView |
-| ✅ | CollectionView, Collection | UICollectionView |
-| ✅ | TableView, List, StaticList | UITableView |
-| ✅ | Image | UIImageView |
-| ✅ | Button | UIButton |
-| ✅ | Text | UILabel |
-| ✅ | TextField | UITextField |
-| ✅ | SegmentedControl | UISegmentedControl |
-| ✅ | VisualEffectView | UIVisualEffectView |
-| ✅ | StackView | UIStackView |
-| ✅ | HStack | UIStackView |
-| ✅ | VStack | UIStackView |
-| ✅ | VerificationCodeView |  |
-| ✅ | AttributedString (aka AttrStr) | NSAttributedString |
-| ✅ | ViewController | UIViewController |
-| ✅ | NavigationController | UINavigationController |
-| ✅ | FormController | |
-| ✅ | DatePicker | UIDatePicker |
-| ✅ | Stepper | UIStepper |
-| ✅ | Slider | UISlider |
-| ✅ | Toggle | UISwitch |
+### Constraints
 
-### ✋ Readme below should be updated, cause there are a lot of new features in v1.0.0 and higher
+#### Solo
+
+##### aspectRatio
+
+```swift
+/// 1:1
+View().aspectRatio()
+
+/// 1:1 low priority
+View().aspectRatio(priority: .defaultLow)
+
+/// 4:3
+View().aspectRatio(4 / 3)
+
+/// 4:3 low priority
+View().aspectRatio(priority: .defaultLow)
+```
+##### width
+
+```swift
+/// 100pt
+View().width(100)
+
+/// Stateable width
+@State var width: CGFloat = 100
+
+View().width($width)
+
+/// Stateable but based on different type
+@State var expanded = false
+
+View().width($expanded.map { $0 ? 200 : 100 })
+
+/// Different value for different devices
+/// 80pt for iPhone5, 120pt for any iPad, 100pt for any other devices
+View().width(100 !! .iPhone5(80) !! .iPad(150))
+```
+
+##### height
+
+```swift
+/// 100pt
+View().height(100)
+
+/// Stateable width
+@State var height: CGFloat = 100
+
+View().height($width)
+
+/// Stateable but based on different type
+@State var expanded = false
+
+View().height($expanded.map { $0 ? 200 : 100 })
+
+/// Different value for different devices
+/// 80pt for iPhone5, 120pt for any iPad, 100pt for any other devices
+View().height(100 !! .iPhone5(80) !! .iPad(150))
+```
+
+##### size
+
+```swift
+/// width 100pt, height 100pt
+View().size(100)
+
+/// width 100pt, height 200pt
+View().size(100, 200)
+
+/// Stateable
+@State var width: CGFloat = 100
+@State var height: CGFloat = 100
+
+View().size($width, 200)
+View().size(100, $height)
+View().size($width, $height)
+
+/// for both
+@State var size: CGFloat = 100
+View().size($size)
+
+/// Stateable but based on different type
+@State var expanded = false
+
+View().size($expanded.map { $0 ? 200 : 100 })
+View().size(100, $expanded.map { $0 ? 200 : 100 })
+View().size(100 !! .iPad(200), $expanded.map { $0 ? 200 !! .iPad(300) : 100 !! .iPad(200) })
+View().size($width, $expanded.map { $0 ? 200 : 100 })
+View().size($expanded.map { $0 ? 200 : 100 }, 100)
+View().size($expanded.map { $0 ? 200 : 100 }, $height)
+```
+
+Read and write view's solo constraints directly. And even animate them.
+
+```swift
+let v = View()
+v.width = 100
+v.height = 100
+UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut) {
+    v.width = 200
+    v.height = 300
+}.startAnimation()
+```
+
+#### Super
+
+##### edges
+
+```swift
+/// all edges to superview 0pt
+View().edgesToSuperview()
+
+/// all edges to superview 16pt
+View().edgesToSuperview(16)
+
+/// horizontal edges: 16pt, vertical edges: 24pt
+View().edgesToSuperview(16, 24)
+
+/// horizontal edges: 16pt
+View().edgesToSuperview(h: 16)
+
+/// vertical edges: 24pt
+View().edgesToSuperview(v: 24)
+
+/// each edge to different value to superview 
+View().edgesToSuperview(top: 24, leading: 16, trailing: -16, bottom: -8)
+```
+
+##### top
+
+```swift
+/// 16pt to top of superview
+View().topToSuperview(16)
+
+/// 16pt to safeArea top of superview
+View().topToSuperview(16, safeArea: true)
+
+/// Stateable
+@State var top: CGFloat = 16
+
+View().topToSuperview($top)
+
+/// Stateable but based on different type
+@State var expanded = false
+
+View().topToSuperview($expanded.map { $0 ? 0 : 16 })
+```
+
+##### leading
+
+```swift
+/// 16pt to leading of superview
+View().leadingToSuperview(16)
+
+/// all the same as with topToSuperview
+```
+
+##### trailing
+
+```swift
+/// -16pt to trailing of superview
+View().trailingToSuperview(-16)
+
+/// all the same as with topToSuperview
+```
+
+##### bottom
+
+```swift
+/// -16pt to bottom of superview
+View().leadingToSuperview(-16)
+
+/// all the same as with topToSuperview
+```
+
+##### centerX
+
+```swift
+/// right in center of superview horizontally
+View().centerXInSuperview()
+
+/// 16pt from horizontal center of superview
+View().centerXToSuperview(16)
+
+/// all the same as with topToSuperview
+```
+
+##### centerY
+
+```swift
+/// right in center of superview vertically
+View().centerYInSuperview()
+
+/// 16pt from vertical center of superview
+View().centerYToSuperview(16)
+
+/// all the same as with topToSuperview
+```
+
+##### center
+
+```swift
+/// right in center of superview both horizontally and vertically
+View().centerInSuperview()
+
+/// 16pt from horizontal center of superview, 8pt from vertical center of superview
+View().centerInSuperview(x: 16, y: 8)
+
+/// all the same as with topToSuperview
+```
+
+##### width
+
+```swift
+/// equal width with superview
+View().widthToSuperview()
+
+/// equal width with superview with low priority
+View().widthToSuperview(priority: .defaultLow)
+
+/// half width of superview
+View().widthToSuperview(multipliedBy: 0.5)
+
+/// half width of superview with low priority
+View().widthToSuperview(multipliedBy: 0.5, priority: .defaultLow)
+
+/// all the same as with topToSuperview
+```
+
+##### height
+
+```swift
+/// equal height with superview
+View().heightToSuperview()
+
+/// all the same as with widthToSuperview
+```
+
+Read and write view's super constraints directly. And even animate them.
+
+```swift
+let v = View()
+v.top = 24
+v.leading = 16
+v.trailing = 16
+v.bottom = -24
+UIViewPropertyAnimator(duration: 0.5, curve: .easeInOut) {
+    v.top = 0
+    v.leading = 8
+    v.trailing = 8
+    v.bottom = 0
+}.startAnimation()
+```
+
+#### Relative
+
+##### top
+
+```swift
+View().top(to: otherView)
+View().top(to: otherView, 16)
+View().top(to: otherView, $topStateValue)
+View().top(to: .top, of: otherView)
+View().top(to: .top, of: otherView, $topStateValue)
+```
+
+##### leading
+```swift
+View().leading(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+##### trailing
+```swift
+View().trailing(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+##### bottom
+```swift
+View().bottom(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+##### left
+```swift
+View().left(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+##### right
+```swift
+View().right(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+##### centerX
+```swift
+View().centerX(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+##### centerY
+```swift
+View().centerY(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+##### center
+```swift
+View().center(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+##### width
+```swift
+View().width(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+##### height
+```swift
+View().height(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+##### equal
+```swift
+/// just a convenient method to width&height
+View().equalSize(to: otherView)
+
+/// all the same as for top(to:)
+```
+
+> 💡 TIP: Feel free to use `State`, `ExpressableState`, and values based on device type everywhere
+
+#### Extra
+
+Any constraint value may be set as `CGFloat` or with `Relation` and even `Multiplier`
+```swift
+// just equal to 10
+View().leading(to: .trailing, of: anotherView, 10)
+
+// greaterThanOrEqual to 10
+View().leading(to: .trailing, of: anotherView, >=10)
+
+// lessThanOrEqual to 10
+View().leading(to: .trailing, of: anotherView, <=10)
+
+// equal to 10 with 1.5 multiplier
+View().leading(to: .trailing, of: anotherView, 10 ~ 1.5)
+
+// equal to 10 with 1.5 multiplier and 999 priority
+View().leading(to: .trailing, of: anotherView, 10 ~ 1.5 ! 999)
+
+// equal to 10 with 1.5 multiplier and `.defaultLow` priority
+View().leading(to: .trailing, of: anotherView, 10 ~ 1.5 ! .defaultLow)
+
+// equal to 10 with 999 priority
+View().leading(to: .trailing, of: anotherView, 10 ! 999)
+```
+
+#### More about constraints direct access
+Ok, let's imagine that you have a view which is sticked to its superview
+```swift
+let view = View().edgesToSuperview()
+```
+now your view have top, leading, trailing and bottom constraints to its superview and e.g. you want to change `top` constraint so you could do it like this
+```swift
+view.top = 16
+```
+or
+```swift
+view.declarativeConstraints.top?.constant = 16
+```
+the same way works with all view's constraints, so you can change them or even delete them just by setting them `nil`.
+
+Another situation if you have a view which have a constrain to another relative view
+```swift
+let centerView = View().background(.black).size(100).centerInSuperview()
+let secondView = View().background(.green).size(100).centerXInSuperview().top(to: .bottom, of: centerView, 16)
+```
+and for example you want to reach bottom constraint of `centerView` related to `secondView`, do it like this
+```swift
+// short way
+centerView.outer[.bottom, secondView] = 32 // changes their vertical spacing from 16 to 32
+// long way
+centerView.declarativeConstraints.outer[.bottom, secondView]?.constant = 32 // changes their vertical spacing from 16 to 32
+```
 
 ### View
-It is just a simple view with ability to customize it declarative way
-```swift
-View().background(.red).shadow().edgesToSuperview()
-```
-Also you can initialize it with predefined subviews
-```swift
-View.subviews {
-    let avatar = Image("some").size(100)
-//                             stick to top, leading and trailing of superview
-                              .edgesToSuperview(top: 0, leading: 0, trailing: 0)
 
-//                                 stick top to bottom of avatar view with 16pt
-    let name = Label("John Smith").top(to: .bottom, of: avatar, 8)
-//                                 stick to leading, trailing and bottom of superview
-                                  .edgesToSuperview(leading: 0, trailing: 0, bottom: 0)
-    return [avatar, name]
+View may be created with empty initializer
+```swift
+View()
+```
+or you can put subviews into it right while initialization
+```swift
+View {
+    View()
+    View()
+}
+```
+or you can wrap some view using `inline` keyword so that inner view will stick all edges to superview
+```swift
+View(inline: MKMapView())
+```
+also you can add subviews to that superview by calling `.body { ... }` method. even multiple times.
+```swift
+View().body {
+    View()
+    View()
+}.body {
+    View()
+}.body {
+    View()
+    View()
+    View()
 }
 ```
 
-### WrapperView
-It is simple `View` but with ability to initialize with inner view
+#### Properties
+
+All the properties are available to be set declaratively and can be binded to `State` or `ExpressableState`.
+
+A lot of layer properties are available directly and have convenient initializers.
+
+##### Alpha
 ```swift
-WrapperView {
-  View().background(.red).shadow()
-}.background(.green).shadow()
-```
-and you could specify innerView`s padding right here
-```swift
-// to the same padding for all sides
-WrapperView {
-  View()
-}.padding(10)
-// or to specific padding for each side
-WrapperView {
-  View()
-}.padding(top: 10, left: 5, right: 10, bottom: 5)
-// or even like this
-WrapperView {
-  View()
-}.padding(top: 10, right: 10)
+View().alpha(0)
+View().alpha($alphaState)
+View().alpha($boolState.map { $0 ? 1 : 0 })
 ```
 
-### ScrollView
-Nothing interesting yet, but you could specify some settings in declarative manner
+##### Background
 ```swift
-ScrollView().paging(true).scrolling(false).hideIndicator(.horizontal)
-ScrollView().paging(true).scrolling(false).hideAllIndicators()
-ScrollView().contentInset(.zero)
-ScrollView().contentInset(top: 10, left: 5, right: 5, bottom: 10)
-ScrollView().contentInset(top: 10, bottom: 10)
-ScrollView().scrollIndicatorInsets(.zero)
-ScrollView().scrollIndicatorInsets(top: 10, left: 5, right: 5, bottom: 10)
-ScrollView().scrollIndicatorInsets(top: 10, bottom: 10)
+View().background(.red)
+View().background(0xff0000)
+View().background($colorState)
+View().background($boolState.map { $0 ? .red : .green })
 ```
 
-### CollectionView
-Nothing interesting yet
+##### Borders
+To set border on all sides
 ```swift
-CollectionView().paging(true)
+View().border(1, .black)
+View().border(1, 0x000)
+```
+To set border on specific side
+```swift
+View().border(.top, 1, .black)
+View().border(.left, 1, .black)
+View().border(.right, 1, .black)
+View().border(.bottom, 1, .black)
+```
+To remove border from specific side
+```swift
+.removeBorder(.top)
 ```
 
-### TableView
-Nothing interesting yet
-
-### Image
+##### Bounds
 ```swift
-Image("someImage").mode(.scaleAspectFill).clipsToBounds(true)
+// implemented. to be described
 ```
 
-### Button
+##### Compression Resistance
+```swift
+// implemented. to be described
+```
+
+##### Corners
+To set radius to all corners
+```swift
+View().corners(10)
+View().corners($cornerRadiusState)
+```
+To set custom radius for specific corner
+```swift
+View().corners(10, .topLeft, topRight)
+View().corners(10, .topLeft, .bottomRight)
+View().corners(10, .topLeft, topRight, .bottomLeft, .bottomRight)
+```
+To make you view's corners round automatically by smaller side
+```swift
+View().circle()
+```
+
+##### Hidden
+```swift
+View().hidden() // will set `true` by default
+View().hidden(true)
+View().hidden(false)
+View().hidden($hiddenState)
+View().hidden($stringState.map { $0.count > 0 })
+```
+
+##### Hugging Priority
+```swift
+// implemented. to be described
+```
+
+##### Itself
+```swift
+// implemented. to be described
+```
+
+##### Layout Margin
+```swift
+// to all sides
+View().layoutMargin(10)
+// optional sides
+View().layoutMargin(top: 10)
+View().layoutMargin(left: 10, bottom: 5)
+View().layoutMargin(top: 10, right: 5)
+// vertical and horizontal
+View().layoutMargin(x: 10, y: 5) // top: 5, left: 10, right: 10, bottom: 5
+View().layoutMargin(x: 10) // left: 10, right: 10
+View().layoutMargin(y: 5) // top: 5, bottom: 5
+```
+
+##### Focus to next responder or resign
+```swift
+// implemented. to be described
+```
+
+##### Opacity
+```swift
+View().opacity(0)
+View().opacity($alphaState)
+View().opacity($boolState.map { $0 ? 1 : 0 })
+```
+
+##### Rasterize
+To rasterize layer, e.g. for better shadow performance
+```swift
+View().rasterize() // true by default
+View().rasterize(true)
+View().rasterize(false)
+```
+
+##### Shadow
+```swift
+// to be described more
+
+// and with mroe than one shadow
+// and with state, expressableState
+```
+```swift
+View().shadow() // by default it's black, opacity 1, zero offset, radius 10
+View().shadow(.gray, opacity: 0.8, offset: .zero, radius: 5)
+View().shadow(0x000000, opacity: 0.8, offset: .zero, radius: 5)
+```
+
+##### Shake
+You can shake any view just by calling
+```swift
+View().shake()
+```
+And you could customize shake effect
+```swift
+View().shake(values: [-20, 20, -20, 20, -10, 10, -5, 5, 0],
+             duration: 0.6,
+             axis: .horizontal,
+             timing: .easeInEaseOut)
+View().shake(-20, 20, -20, 20, -10, 10, -5, 5, 0,
+             duration: 0.6,
+             axis: .horizontal,
+             timing: .easeInEaseOut)
+```
+or even create an extension
+```swift
+import UIKitPlus
+
+extension DeclarativeProtocol {
+  func myShake() {
+      View().shake(-20, 20, -20, 20, -10, 10, -5, 5, 0,
+                   duration: 0.6,
+                   axis: .horizontal,
+                   timing: .easeInEaseOut)
+  }
+}
+```
+
+##### Tag
+```swift
+View().tag(0)
+```
+
+##### Gestures
+```swift
+// implemented. to be described
+```
+
+##### Tint
+```swift
+View().tint(.red)
+View().tint(0xff0000)
+View().tint($colorState)
+View().tint($boolState.map { $0 ? .red : .green })
+```
+
+##### User Interaction
+```swift
+// implemented. to be described
+```
+
+## View Controller
+
+`// implemented. to be described`
+
+## Gestures
+
+`// implemented. to be described`
+
+## Colors
+
+```swift
+/// Simple color
+UIColor.red
+
+/// Automatic dynamic color: black for light mode, white for dark mode
+UIColor.black / UIColor.white
+
+/// color in hex, represented as int and supported by all color properties
+0xFF0000
+
+/// hex color converted to UIColor
+0xFF0000.color
+
+/// hex colors as dynamic UIColor
+0x000.color / 0xfff.color
+
+/// color with alpha
+UIColor.white.alpha(0.5)
+
+/// hex color with alpha
+0xFFFFFF.color.alpha(0.5)
+```
+
+Declare custom colors like this
+```swift
+import UIKit
+import UIKitPlus
+
+extension UIColor {
+    static var mainBlack: UIColor { return .black  }
+    static var otherGreen: UIColor { return 0x3D7227.color  } // 61 114 39
+}
+```
+and then use them just like
+```swift
+Label("Hello world").color(.otherGreen).background(.mainBlack)
+```
+
+## Fonts
+
+```swift
+// implemented. to be described
+
+/// helper to print all the fonts in console (debug only)
+UIFont.printAll()
+```
+
+Add your custom fonts to the project and then declare them like this
+```swift
+import UIKitPlus
+
+extension FontIdentifier {
+    public static var sfProBold = FontIdentifier("SFProDisplay-Bold")
+    public static var sfProRegular = FontIdentifier("SFProDisplay-Regular")
+    public static var sfProMedium = FontIdentifier("SFProDisplay-Medium")
+}
+```
+and then use them just like
+```swift
+Button().font(.sfProMedium, 15)
+```
+
+## States
+
+```swift
+/// usual
+@State var myState = UIColor.red
+@State var myState = ""
+@State var myState = 0
+// etc.
+
+/// expressable
+$boolStateToColor.map { $0 == true ? .red : .green }
+$boolStateToString.map { !$0 ? "night" : "day" }
+
+/// mix to Int states into one String expressable
+$state1.and($state2).map { $0.left > $0.right ? "higher" : "lower" }
+```
+
+## Attributed Strings
+
+```swift
+AttributedString("hello").background(.gray)
+                         .foreground(.red)
+                         .font(.sfProBold, 15)
+                         .paragraphStyle(.default)
+                         .ligature(1)
+                         .kern(1)
+                         .strikethroughStyle(1)
+                         .underlineStyle(.patternDash)
+                         .strokeColor(.purple)
+                         .strokeWidth(1)
+                         .shadow()
+                   // or .shadow(offset: .zero, blur: 1, color: .lightGray)
+                         .textEffect("someEffect")
+                         .attachment(someAttachment)
+                         .link("http://github.com")
+                         .baselineOffset(1)
+                         .underlineColor(.cyan)
+                         .strikethroughColor(.magenta)
+                         .obliqueness(1)
+                         .expansion(1)
+                         .glyphForm(.horizontal)
+                         .writingDirection(.rightToLeft)
+
+/// also use shorter alias
+AttrStr("hello").foreground(.red)
+// or even just
+"hello".foreground(.red)
+```
+
+## Animations
+
+`// implemented. to be described`
+
+## Activity Indicator
+
+`// implemented. to be described`
+
+## Bar Button Item
+
+`// implemented. to be described`
+
+## Button
+
+`// to be described more`
+
 ```swift
 Button()
 Button("Tap me")
@@ -274,50 +876,230 @@ Button("Tap me").image("cat")
 ```
 You can handle tap action easily
 ```swift
-Button("Tap me").tapAction { print("button tapped") }
-Button("Tap me").tapAction { button in
+Button("Tap me").onTapGesture { print("button tapped") }
+Button("Tap me").onTapGesture { button in
     print("button tapped")
 }
 ```
 or like this
 ```swift
 func tapped() { print("button tapped") }
-Button("Tap me").tapAction(tapped)
+Button("Tap me").onTapGesture(tapped)
 
 func tapped(_ button: Button) { print("button tapped") }
-Button("Tap me").tapAction(tapped)
+Button("Tap me").onTapGesture(tapped)
 ```
 
-### Label
-It either may be initialized with `String` or unlimited amount of `AttributedString`s
+Declare custom buttons like this
 ```swift
-Label("hello 👋 ")
-Label().text("hello") // useful if declare label in extension like below
-Label.mySuperLabel.text("hello")
-Label(AttributedString("hello").foreground(.red), AttributedString("world").foreground(.green))
+import UIKitPlus
+
+extension Button {
+    static var bigBottomWhite: Button {
+        return Button().color(.darkGray).color(.black, .highlighted).font(.sfProMedium, 15).background(.white).backgroundHighlighted(.lightGray).circle()
+    }
+    static var bigBottomGreen: Button {
+        return Button().color(.white).font(.sfProMedium, 15).background(.mainGreen).circle()
+    }
+}
 ```
-set some font from declared identifiers or with system fonts
+and then use them like this
 ```swift
-Label("hello").font(v: .systemFont(ofSize: 15))
-Label("hello").font(.sfProBold, 15)
-```
-set text color
-```swift
-Label("hello").color(.red)
-```
-set text alignment
-```swift
-Label("hello").alignment(.center)
-```
-set amount of lines
-```swift
-Label("hello").lines(1)
-Label("hello\nworld").lines(0)
-Label("hello\nworld").lines(2)
-Label("hello\nworld").multiline()
+Button.bigBottomWhite.size(300, 50).bottomToSuperview(20).centerInSuperview()
 ```
 
-### TextField
+## Collection
+
+```swift
+// implemented. to be described
+
+// difference between Collection and CollectionView
+// flow layouts
+```
+
+## ControlView
+
+`// implemented. to be described`
+
+## DatePicker
+
+`// implemented. to be described`
+
+## DynamicPickerView
+
+`// implemented. to be described`
+
+## StackView
+
+`// implemented. to be described`
+
+```swift
+StackView().axis(.vertical)
+           .alignment(.fill)
+           .distribution(.fillEqually)
+           .spacing(16)
+```
+
+## VStack
+
+`// implemented. to be described more`
+The same as `StackView` but with predefined axis and ability to easily add arranged subviews
+```swift
+VStack (
+  Text("hello world").background(.green),
+  VSpace(16) // 16pt delimiter
+  Text("hello world").background(.red)
+)
+.spacing(10)
+.alignment(.left)
+.distribution(...)
+```
+
+
+## VScrollStack
+
+```swift
+// implemented. to be described
+
+/// it is the same as VStack but it is combined with ScrollView
+```
+
+## HStack
+
+`// implemented. to be described more`
+The same as `StackView` but with predefined axis and ability to easily add arranged subviews
+```swift
+HStack (
+  Text("hello world").background(.green),
+  HSpace(16) // 16pt delimiter
+  Text("hello world").background(.red)
+)
+.spacing(10)
+.alignment(.left)
+.distribution(...)
+```
+
+## HScrollStack
+
+```swift
+// implemented. to be described
+
+/// it is the same as HStack but it is combined with ScrollView
+```
+
+
+## HSpace
+
+```swift
+/// just a horizontal delimiter
+HSpace(16)
+/// alternatively
+View().width(16)
+```
+
+## VSpace
+
+```swift
+/// just a vertical delimiter
+VSpace(16)
+/// alternatively
+View().height(16)
+```
+
+## Space
+
+```swift
+/// just a flexible space for stack views
+Space()
+/// alternatively
+View()
+```
+
+## HUD
+
+`// implemented. to be described`
+
+## Image
+
+`// to be described more`
+
+Declare asset images like this
+```swift
+import UIKitPlus
+
+extension Image {
+    static var welcomeBackground: Image { return Image("WelcomeBackground") }
+}
+```
+and then use them like this
+```swift
+let backgroudImage = Image.welcomeBackground.edgesToSuperview()
+```
+
+## InputView
+
+`// implemented. to be described`
+
+## List
+
+```swift
+// implemented. to be described
+
+also describe auto-DIFF with Identable models
+```
+
+## TableView
+
+`// implemented. to be described`
+
+## PickerView
+
+`// implemented. to be described`
+
+## RefreshControl
+
+`// implemented. to be described`
+
+## ScrollView
+
+`// implemented. to be described more`
+```swift
+ScrollView().paging(true).scrolling(false).hideIndicator(.horizontal)
+ScrollView().paging(true).scrolling(false).hideAllIndicators()
+ScrollView().contentInset(.zero)
+ScrollView().contentInset(top: 10, left: 5, right: 5, bottom: 10)
+ScrollView().contentInset(top: 10, bottom: 10)
+ScrollView().scrollIndicatorInsets(.zero)
+ScrollView().scrollIndicatorInsets(top: 10, left: 5, right: 5, bottom: 10)
+ScrollView().scrollIndicatorInsets(top: 10, bottom: 10)
+```
+
+## SegmentedControl
+
+`// implemented. to be described more`
+```swift
+@State var selectedItem = 0
+SegmentedControl("One", "Two").select($selectedItem)
+// or simply
+SegmentedControl("One", "Two").select(0).changed { print("segment changed to \($0)") }
+```
+
+## SliderView
+
+`// implemented. to be described`
+
+## Stepper
+
+`// implemented. to be described`
+
+## TextField
+
+```swift
+// implemented. to be described
+
+// format with AnyFormat
+```
+
 ```swift
 TextField()
 TextField("some text")
@@ -373,442 +1155,37 @@ TextField().shouldBeginEditing { tf in return true }
            .editingDidEnd { tf in }
 ```
 
-### SegmentedControl
+## Text (aka UILabel)
+
+`// to be described more`
+It either may be initialized with `String` or unlimited amount of `AttributedString`s
 ```swift
-SegmentedControl("One", "Two").select(1).changed { print("segment changed to \($0)") }
+Label("hello 👋 ")
+Label().text("hello") // useful if declare label in extension like below
+Label.mySuperLabel.text("hello")
+Label("hello".foreground(.red), "world".foreground(.green))
+```
+set some font from declared identifiers or with system fonts
+```swift
+Label("hello").font(v: .systemFont(ofSize: 15))
+Label("hello").font(.sfProBold, 15)
+```
+set text color
+```swift
+Label("hello").color(.red)
+```
+set text alignment
+```swift
+Label("hello").alignment(.center)
+```
+set amount of lines
+```swift
+Label("hello").lines(1)
+Label("hello\nworld").lines(0)
+Label("hello\nworld").lines(2)
+Label("hello\nworld").multiline()
 ```
 
-### VisualEffectView
-```swift
-VisualEffectView(.darkBlur)
-VisualEffectView(.lightBlur)
-VisualEffectView(.extraLightBlur)
-// iOS10+
-VisualEffectView(.prominent)
-VisualEffectView(.regular)
-```
-Create your own extension for your custom effects to use them easily like in example above
-```swift
-extension UIVisualEffect {
-    public static var darkBlur: UIVisualEffect { return UIBlurEffect(style: .dark) }
-}
-```
-
-### StackView
-```swift
-StackView().axis(.vertical)
-           .alignment(.fill)
-           .distribution(.fillEqually)
-           .spacing(16)
-```
-
-### HStackView
-The same as `StackView` but with predefined axis and ability to easily add arranged subviews
-```swift
-HStackView (
-  Label("hello world").background(.green),
-  Label("hello world").background(.red)
-).spacing(10)
-```
-
-### VStackView
-The same as `StackView` but with predefined axis and ability to easily add arranged subviews
-```swift
-VStackView (
-  Label("hello world").background(.green),
-  Label("hello world").background(.red)
-).spacing(10)
-```
-
-### VerificationCodeView
-This is really bonus view! :D Almost every app now uses verification codes for login and now you can easily implement that code view with UIKitPlus! :)
-```swift
-VerificationCodeField().digitWidth(64)
-                       .digitsMargin(25)
-                       .digitBorder(.bottom, 1, 0xC6CBD3)
-                       .digitColor(0x171A1D)
-                       .font(.sfProRegular, 32)
-                       .entered(verify)
-
-func verify(_ code: String) {
-  print("entered code: " + code)
-}
-```
-
-### Any view
-
-#### Background
-```swift
-View().background(.red)
-View().background(0xff0000)
-```
-
-#### Tint
-```swift
-View().tint(.red)
-View().tint(0xff0000)
-```
-
-#### Corners
-To set radius to all corners
-```swift
-View().corners(10)
-```
-To set custom radius for specific corner
-```swift
-View().corners(10, .topLeft, topRight)
-View().corners(10, .topLeft, .bottomRight)
-View().corners(10, .topLeft, topRight, .bottomLeft, .bottomRight)
-```
-To make you view's corners round automatically by smaller side
-```swift
-View().circle()
-```
-
-#### Borders
-To set border on all sides
-```swift
-View().border(1, .black)
-View().border(1, 0x000)
-```
-To set border on specific side
-```swift
-View().border(.top, 1, .black)
-View().border(.left, 1, .black)
-View().border(.right, 1, .black)
-View().border(.bottom, 1, .black)
-```
-To remove border from specific side
-```swift
-.removeBorder(.top)
-```
-
-#### Alpha
-```swift
-View().alpha(0)
-```
-
-#### Opacity
-```swift
-View().opacity(0)
-```
-
-#### Hidden
-```swift
-View().hidden() // true by default
-View().hidden(true)
-View().hidden(false)
-```
-
-#### Rasterize
-To rasterize layer, e.g. for better shadow performance
-```swift
-View().rasterize() // true by default
-View().rasterize(true)
-View().rasterize(false)
-```
-
-#### Shadow
-```swift
-View().shadow() // by default it's black, opacity 1, zero offset, radius 10
-View().shadow(.gray, opacity: 0.8, offset: .zero, radius: 5)
-View().shadow(0x000000, opacity: 0.8, offset: .zero, radius: 5)
-```
-
-#### Shake
-You can shake any view just by calling
-```swift
-View().shake()
-```
-And you could customize shake effect
-```swift
-View().shake(values: [-20, 20, -20, 20, -10, 10, -5, 5, 0],
-             duration: 0.6,
-             axis: .horizontal,
-             timing: .easeInEaseOut)
-View().shake(-20, 20, -20, 20, -10, 10, -5, 5, 0,
-             duration: 0.6,
-             axis: .horizontal,
-             timing: .easeInEaseOut)
-```
-or even create an extension
-```swift
-import UIKitPlus
-
-extension DeclarativeProtocol {
-  func myShake() {
-      View().shake(-20, 20, -20, 20, -10, 10, -5, 5, 0,
-                   duration: 0.6,
-                   axis: .horizontal,
-                   timing: .easeInEaseOut)
-  }
-}
-```
-
-#### AttributedString
-You could create attributed strings in declarative way easily
-```swift
-AttributedString("hello").background(.gray)
-                         .foreground(.red)
-                         .font(.sfProBold, 15)
-                         .paragraphStyle(.default)
-                         .ligature(1)
-                         .kern(1)
-                         .strikethroughStyle(1)
-                         .underlineStyle(.patternDash)
-                         .strokeColor(.purple)
-                         .strokeWidth(1)
-                         .shadow()
-                   // or .shadow(offset: .zero, blur: 1, color: .lightGray)
-                         .textEffect("someEffect")
-                         .attachment(someAttachment)
-                         .link("http://github.com")
-                         .baselineOffset(1)
-                         .underlineColor(.cyan)
-                         .strikethroughColor(.magenta)
-                         .obliqueness(1)
-                         .expansion(1)
-                         .glyphForm(.horizontal)
-                         .writingDirection(.rightToLeft)
-```
-
-#### Constraints
-##### Size
-You can set view size by passing `width` and `height` values like this
-```swift
-View().size(100, 200)
-```
-or square size by passing single value
-```swift
-View().size(100)
-```
-or view's size can be equal to other view size so when you change size of one view other view will change its size as well
-```swift
-let view1 = View().size(100, 200)
-let view2 = View().equalSize(to: view1)
-```
-Of course you can specify just width or just height or both but by separate methods
-```swift
-View().width(100)
-View().height(200)
-View().width(100).height(200)
-```
-##### Superview
-Your view can stick to its superview by any side or even by all sides
-```swift
-// this way it will stick with 0 constant value
-View().edgesToSuperview()
-// this way it will stick with 10 constant value for all sides
-View().edgesToSuperview(10)
-// also you could specify some values manually, but all the rest values are 0 by default
-View().edgesToSuperview(top: 16, leading: 16, trailing: -16)
-View().edgesToSuperview(trailing: -16, bottom: -16)
-```
-you could stick your view to only one side of superview like this
-```swift
-// empty argument means 0 constant value
-View()topToSuperview()
-View()topToSuperview(16)
-View()leadingToSuperview()
-View()leadingToSuperview(16)
-View()trailingToSuperview()
-View()trailingToSuperview(16)
-View()bottomToSuperview()
-View()bottomToSuperview(16)
-View()centerXToSuperview()
-View()centerXToSuperview(16)
-View()centerYToSuperview()
-View()centerYToSuperview(16)
-View()widthToSuperview()
-View()heightToSuperview()
-```
-##### Relative
-Any side of your view could also stick to any side of other view
-```swift
-// Sides to superview
-View().top(to: .bottom, of: someView, 16) // stick view's top to someView`s bottom with 16pt (by default 0pt)
-View().leading(to: .trailing, of: someView)
-View().trailing(to: .leading, of: someView)
-View().bottom(to: .top, of: someView)
-// Center to superview
-View().centerX(to: .centerX, of: someView)
-View().centerY(to: .centerY, of: someView)
-// Dimension Superview
-View().width(to: .width, of: someView)
-View().height(to: .height, of: someView)
-```
-or this way
-```swift
-// Sides to superview
-View().edge(.top, toSuperview: someView, .bottom)
-View().edge(.leading, toSuperview: someView, .trailing)
-View().edge(.trailing, toSuperview: someView, .leading)
-View().edge(.bottom, toSuperview: someView, .top)
-// Center to superview
-View().edge(.centerX, toSuperview: someView, .centerX)
-View().edge(.centerY, toSuperview: someView, .centerY)
-// Dimension Superview
-View().edge(.width, toSuperview: someView, .width)
-View().edge(.height, toSuperview: someView, .height)
-```
-To build constraints between two relative views
-```swift
-// Sides to another views
-View().spacing(.leading, to: relativeView, toSide: .trailing, 16) // last parameter is optional, 0 by default
-View().spacing(.trailing, to: relativeView, toSide: .leading)
-View().spacing(.top, to: relativeView, toSide: .bottom)
-View().spacing(.bottom, to: relativeView, toSide: .top)
-// Center to another relative views
-View().center(.x, to: relativeView, toSide: .x)
-View().center(.y, to: relativeView, toSide: .y)
-// Dimension Relative
-View().dimension(.width, to: relativeView, toSide: .width)
-View().dimension(.height, to: relativeView, toSide: .height)
-```
-##### Center
-Your view could be in center of its superview
-```swift
-View().centerInSuperview() // exact center
-View().centerInSuperview(10) // exact center +10 by x-axis, and +10 by y-axis
-View().centerInSuperview(x: 5, y: 10) // exact center +5 by x-axis, and +10 by y-axis
-```
-also it may be in center of another view
-```swift
-View().center(to: anotherView) // exact center
-View().center(to: anotherView, 10) // exact center +10 by x-axis, and +10 by y-axis
-View().center(to: anotherView, x: 5, y: 10) // exact center +5 by x-axis, and +10 by y-axis
-```
-
-##### Constraints direct access
-Ok, let's imagine that you have a view which is sticked to its superview
-```swift
-let view = View().edgesToSuperview()
-```
-now your view have top, leading, trailing and bottom constraints to its superview and e.g. you want to change `top` constraint so you could do it like this
-```swift
-view.top = 16
-```
-or
-```swift
-view.declarativeConstraints.top?.constant = 16
-```
-the same way works with all view's constraints, so you can change them or even delete them just by setting them `nil`.
-
-Another situation if you have a view which have a constrain to another relative view
-```swift
-let centerView = View().background(.black).size(100).centerInSuperview()
-let secondView = View().background(.green).size(100).centerXInSuperview().top(to: .bottom, of: centerView, 16)
-```
-and for example you want to reach bottom constraint of `centerView` related to `secondView`, do it like this
-```swift
-// short way
-centerView.outer[.bottom, secondView] = 32 // changes their vertical spacing from 16 to 32
-// long way
-centerView.declarativeConstraints.outer[.bottom, secondView]?.constant = 32 // changes their vertical spacing from 16 to 32
-```
-
-##### Layout Margin
-```swift
-// to all sides
-View().layoutMargin(10)
-// optional sides
-View().layoutMargin(top: 10)
-View().layoutMargin(left: 10, bottom: 5)
-View().layoutMargin(top: 10, right: 5)
-// vertical and horizontal
-View().layoutMargin(x: 10, y: 5) // top: 5, left: 10, right: 10, bottom: 5
-View().layoutMargin(x: 10) // left: 10, right: 10
-View().layoutMargin(y: 5) // top: 5, bottom: 5
-```
-
-##### SafeArea
-You could get `safeArea` safely at any view without `#available(iOS 11.0, *)` check like this
-```swift
-someView.safeArea.topAnchor
-```
-
-##### Constraint values
-Any constraint value may be set as `CGFloat` or with `Relation` and even `Multiplier`
-```swift
-// just equal to 10
-View().leading(to: .trailing, of: anotherView, 10)
-
-// greaterThanOrEqual to 10
-View().leading(to: .trailing, of: anotherView, >=10)
-
-// lessThanOrEqual to 10
-View().leading(to: .trailing, of: anotherView, <=10)
-
-// equal to 10 with 1.5 multiplier
-View().leading(to: .trailing, of: anotherView, 10 ~ 1.5)
-
-// equal to 10 with 1.5 multiplier and 999 priority
-View().leading(to: .trailing, of: anotherView, 10 ~ 1.5 ! 999)
-
-// equal to 10 with 1.5 multiplier and `.defaultLow` priority
-View().leading(to: .trailing, of: anotherView, 10 ~ 1.5 ! .defaultLow)
-
-// equal to 10 with 999 priority
-View().leading(to: .trailing, of: anotherView, 10 ! 999)
-```
-
-### Colors
-With UIKitPlus you're able to use hex colors just by typing them with `0x` prefix like `0x000` for black or `0xfff` for white.
-
-### Extensions
-
-#### Fonts
-Add your custom fonts to the project and then declare them like this
-```swift
-import UIKitPlus
-
-extension FontIdentifier {
-    public static var sfProBold = FontIdentifier("SFProDisplay-Bold")
-    public static var sfProRegular = FontIdentifier("SFProDisplay-Regular")
-    public static var sfProMedium = FontIdentifier("SFProDisplay-Medium")
-}
-```
-and then use them just like
-```swift
-Button().font(.sfProMedium, 15)
-```
-
-#### Colors
-Declare custom colors like this
-```swift
-import UIKit
-import UIKitPlus
-
-extension UIColor {
-    static var mainBlack: UIColor { return .black  }
-    static var otherGreen: UIColor { return 0x3D7227.color  } // 61 114 39
-}
-```
-and then use them just like
-```swift
-Label("Hello world").color(.otherGreen).background(.mainBlack)
-```
-
-#### Buttons
-Declare custom buttons like this
-```swift
-import UIKitPlus
-
-extension Button {
-    static var bigBottomWhite: Button {
-        return Button().color(.darkGray).color(.black, .highlighted).font(.sfProMedium, 15).background(.white).backgroundHighlighted(.lightGray).circle()
-    }
-    static var bigBottomGreen: Button {
-        return Button().color(.white).font(.sfProMedium, 15).background(.mainGreen).circle()
-    }
-}
-```
-and then use them like this
-```swift
-Button.bigBottomWhite.size(300, 50).bottomToSuperview(20).centerInSuperview()
-```
-
-#### Labels
 Declare custom attributed labels like this
 ```swift
 import UIKitPlus
@@ -825,26 +1202,180 @@ and then use them like this
 let logo = Label.welcomeLogo.centerInSuperview()
 ```
 
-#### Images
-Declare asset images like this
+## TextView
+
+`// implemented. to be described`
+
+## Toggle
+
+`// implemented. to be described`
+
+## VerificationCodeView
+
+`// implemented. to be described more`
+
+This is really bonus view! :D Almost every app now uses verification codes for login and now you can easily implement that code view with UIKitPlus! :)
+```swift
+VerificationCodeField().digitWidth(64)
+                       .digitsMargin(25)
+                       .digitBorder(.bottom, 1, 0xC6CBD3)
+                       .digitColor(0x171A1D)
+                       .font(.sfProRegular, 32)
+                       .entered(verify)
+
+func verify(_ code: String) {
+  print("entered code: " + code)
+}
+```
+
+## VisualEffectView
+
+```swift
+// implemented. to be described more
+
+VisualEffectView(.darkBlur)
+VisualEffectView(.lightBlur)
+VisualEffectView(.extraLightBlur)
+// iOS10+
+VisualEffectView(.prominent)
+VisualEffectView(.regular)
+
+// iOS13+ (but can be used since iOS9+)
+// automatic dynamic effect for light and dark modes
+VisualEffectView(.darkBlur, .lightBlur) // effect will be switched automatically. darkBlur is for light mode.
+```
+Create your own extension for your custom effects to use them easily like in example above
+```swift
+extension UIVisualEffect {
+    public static var darkBlur: UIVisualEffect { return UIBlurEffect(style: .dark) }
+}
+```
+
+## WrapperView
+
+It is simple `View` but with ability to initialize with inner view
+```swift
+WrapperView {
+  View().background(.red).shadow()
+}.background(.green).shadow()
+```
+and you could specify innerView`s padding right here
+```swift
+// to the same padding for all sides
+WrapperView {
+  View()
+}.padding(10)
+// or to specific padding for each side
+WrapperView {
+  View()
+}.padding(top: 10, left: 5, right: 10, bottom: 5)
+// or even like this
+WrapperView {
+  View()
+}.padding(top: 10, right: 10)
+```
+
+## LayerView
+
+`// implemented. to be described`
+
+# Impact Feedback
+My favourite feature.
+
+```swift
+ImpactFeedback.error()
+ImpactFeedback.success()
+ImpactFeedback.selected()
+ImpactFeedback.bzz()
+```
+
+# Live View
+
+`// implemented. to be described`
+
+
+## Example 1
 ```swift
 import UIKitPlus
 
-extension Image {
-    static var welcomeBackground: Image { return Image("WelcomeBackground") }
-}
-```
-and then use them like this
-```swift
-let backgroudImage = Image.welcomeBackground.edgesToSuperview()
-```
+class MyViewController: ViewController {
+    lazy var view1 = View()
 
-#### Subviews
-Add subviews easily
-```swift
-view.body {
-    view1
-    view2
-    view3
+    override func buildUI() {
+        super.buildUI()
+        body {
+            view1.background(.black).size(100).centerInSuperview()
+            View().background(.red).size(30, 20).centerXInSuperview().top(to: .bottom, of: view1, 16)
+        }
+    }
 }
+```
+## Example 2
+```swift
+import UIKitPlus
+
+// Just feel how easy you could build & declare your views
+// with all needed constraints, properties and actions
+// even before adding them to superview!
+class LoginViewController: ViewController {
+    @State var email = ""
+    @State var password = ""
+    
+    override func buildUI() {
+        super.buildUI()
+        view.backgroundColor = .black
+        body {
+            Button.back.onTapGesture { print("back tapped") }
+            Label.welcome.text("Welcome").centerXInSuperview().topToSuperview(62, safeArea: true)
+            VStack {
+                TextField.welcome.text($email).placeholder("Email").keyboard(.emailAddress).content(.emailAddress)
+                TextField.welcome.text($password).placeholder("Password").content(.password).secure()
+                View().height(10) // just to add extra space
+                Button.bigBottomGreen.title("Sign In").onTapGesture(signIn)
+            }.edgesToSuperview(top: 120, leading: 16, trailing: -16)
+        }
+    }
+
+    func signIn() {
+        // do an API call to your server with awesome CodyFire lib 😉
+    }
+}
+```
+And you just need a few extensions to make it work
+```swift
+// PRO-TIP:
+// To avoid mess declare reusable views in extensions like this
+extension FontIdentifier {
+    static var sfProRegular = FontIdentifier("SFProDisplay-Regular")
+    static var sfProMedium = FontIdentifier("SFProDisplay-Medium")
+}
+extension Text {
+    static var title: Text { Text().color(.white).font(.sfProMedium, 18) }
+}
+extension TextField {
+    static var welcome: TextField {
+        TextField()
+            .height(40)
+            .background(.clear)
+            .color(.black)
+            .tint(.mainGreen)
+            .border(.bottom, 1, .gray)
+            .font(.sfProRegular, 16)
+    }
+}
+extension Button {
+    static var back: Button { return Button("backIcon").topToSuperview(64).leadingToSuperview(24) }
+    static var bigBottomGreen: Button {
+        Button()
+            .color(.white)
+            .font(.sfProMedium, 15)
+            .background(.green)
+            .height(50)
+            .circle()
+            .shadow(.gray, opacity: 1, offset: .init(width: 0, height: -1), radius: 10)
+    }
+}
+
+// PRO-TIP2:
+// I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
