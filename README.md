@@ -10,7 +10,7 @@
     </a>
 </p>
 
-❤️ you will love UIKit more than ever ❤️
+❤️ YOU WILL LOVE UIKit MORE THAN EVER ❤️
 
 Nothing is impossible! Build awesome responsive UIs even simpler than with SwiftUI cause you already know everything.
 
@@ -589,7 +589,7 @@ View().corners(10, .topLeft, topRight)
 View().corners(10, .topLeft, .bottomRight)
 View().corners(10, .topLeft, topRight, .bottomLeft, .bottomRight)
 ```
-To make you view's corners round automatically by smaller side
+To make your view's corners round automatically by smaller side
 ```swift
 View().circle()
 ```
@@ -1288,6 +1288,9 @@ ImpactFeedback.success()
 ImpactFeedback.selected()
 ImpactFeedback.bzz()
 ```
+# Localization
+
+# Root View Controller
 
 # Live View
 
