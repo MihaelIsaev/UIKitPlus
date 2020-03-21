@@ -8,8 +8,10 @@
     <a href="https://cocoapods.org/pods/UIKit-Plus">
         <img src="https://img.shields.io/cocoapods/v/UIKit-Plus.svg" alt="Cocoapod">
     </a>
+    <a href="https://discord.gg/q5wCPYv">
+        <img src="https://img.shields.io/badge/CLICK_HERE_TO_DISCUSS_THIS_LIB-SWIFT.STREAM-FD6F32.svg" alt="Swift.Stream">
+    </a>
 </p>
-
 <p align="center">🚀❤️ YOU WILL LOVE <b>UIKit</b> MORE THAN EVER ❤️🚀</p>
 <br/>
 <p align="center"><b>Nothing is impossible!</b></p>
