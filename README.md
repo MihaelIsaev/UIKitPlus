@@ -721,6 +721,14 @@ View().tint($boolState.map { $0 ? .red : .green })
 
 `// implemented. to be described`
 
+### Status bar style
+In any `ViewController` you can set `statusBarStyle` and all its values are iOS9+.
+```swift
+override var statusBarStyle: StatusBarStyle { .default }
+override var statusBarStyle: StatusBarStyle { .dark }
+override var statusBarStyle: StatusBarStyle { .light }
+```
+
 ## Gestures
 
 `// implemented. to be described`
