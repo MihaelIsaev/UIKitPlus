@@ -18,7 +18,6 @@
 <p align="center">With. Live. Preview. iOS9+.</p>
 <br/>
 <p align="center"><a href="https://github.com/MihaelIsaev/UIKitPlusExample" style="color:green;">A LOT OF EXAMPLES</a></p>
-<br/>
 <p align="center"><a href="https://discord.gg/q5wCPYv">SWIFT.STREAM COMMUNITY IN DISCORD</a></p>
 
 ## Requirements
