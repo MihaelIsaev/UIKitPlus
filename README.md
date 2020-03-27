@@ -5,6 +5,9 @@
     <a href="https://swift.org">
         <img src="https://img.shields.io/badge/swift-5.2-brightgreen.svg" alt="Swift 5.2">
     </a>
+    <a href="https://swift.org">
+        <img src="https://img.shields.io/badge/iOS-9+-brightgreen.svg" alt="Swift 5.2">
+    </a>
     <a href="https://cocoapods.org/pods/UIKit-Plus">
         <img src="https://img.shields.io/cocoapods/v/UIKit-Plus.svg" alt="Cocoapod">
     </a>
@@ -36,12 +39,12 @@ Good mood
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 1.9.0'
+pod 'UIKit-Plus', '~> 1.15.1'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
 
-In Xcode11 go to `File -> Swift Packages -> Add Package Dependency` and enter there URL of this repo
+In Xcode 11.4+ go to `File -> Swift Packages -> Add Package Dependency` and enter there URL of this repo
 ```
 https://github.com/MihaelIsaev/UIKitPlus
 ```
@@ -93,12 +96,50 @@ Easy device model and type detection and ability to set values based on that.
 
 Custom trait collections.
 
+### 9. Live Preview
+
+Live preview provided by SwiftUI (available only since macOS Catalina).
+
+> The only problem we have is that since names of views are the same in `UIKitPlus` and `SwiftUI` we should use aliases like `UButton` for `Button` or `UView` for `View`, so everything with `U` prefix. It is only necessary if you want to use live previews, otherwise there is no need to import `SwiftUI`, so no name conflicts.
+
+```swift
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+@available(iOS 13.0, *)
+struct MyViewController_Preview: PreviewProvider, UIKitPreviewProvider {
+    static var colorScheme: PreviewColorScheme { .dark }
+    static var device: UIKitPreviewDevice { .iPhoneX }
+    static var view: UIView { MainViewController().view }
+}
+#endif
+```
+```swift
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+@available(iOS 13.0, *)
+struct MyButton_Preview: PreviewProvider, UIKitPreviewProvider {
+    static var colorScheme: PreviewColorScheme { .light }
+    static var layout: PreviewLayout { .fixed(width: 375, height: 60) }
+    static var view: UIView {
+        UButton("Hello")
+            .circle()
+            .background(.blackHole / .white)
+            .color(.white / .black)
+            .height(54)
+            .edgesToSuperview(h: 8)
+            .centerYInSuperview()
+    }
+}
+#endif
+```
 
 ## Usage
 
 ```swift
 import UIKitPlus
 ```
+
+Even no need to import `UIKit` at all!
 
 ### Constraints
 
@@ -225,7 +266,7 @@ View().edgesToSuperview(h: 16)
 /// vertical edges: 24pt
 View().edgesToSuperview(v: 24)
 
-/// each edge to different value to superview 
+/// each edge to different value to superview
 View().edgesToSuperview(top: 24, leading: 16, trailing: -16, bottom: -8)
 ```
 
@@ -502,6 +543,8 @@ centerView.declarativeConstraints.outer[.bottom, secondView]?.constant = 32 // c
 ```
 
 ### View
+
+> alias is `UView`
 
 View may be created with empty initializer
 ```swift
@@ -799,6 +842,8 @@ Button().font(.sfProMedium, 15)
 
 ## States
 
+> alias is `UState`
+
 ```swift
 /// usual
 @State var myState = UIColor.red
@@ -859,6 +904,8 @@ AttrStr("hello").foreground(.red)
 `// implemented. to be described`
 
 ## Button
+
+> alias is `UButton`
 
 `// to be described more`
 
@@ -943,6 +990,8 @@ Button.bigBottomWhite.size(300, 50).bottomToSuperview(20).centerInSuperview()
 
 ## StackView
 
+> alias is `UStackView`
+
 `// implemented. to be described`
 
 ```swift
@@ -953,6 +1002,8 @@ StackView().axis(.vertical)
 ```
 
 ## VStack
+
+> alias is `UVStack`
 
 `// implemented. to be described more`
 The same as `StackView` but with predefined axis and ability to easily add arranged subviews
@@ -977,6 +1028,8 @@ VStack (
 ```
 
 ## HStack
+
+> alias is `UHStack`
 
 `// implemented. to be described more`
 The same as `StackView` but with predefined axis and ability to easily add arranged subviews
@@ -1033,6 +1086,8 @@ View()
 
 ## Image
 
+> alias is `UImage`
+
 `// to be described more`
 
 Declare asset images like this
@@ -1053,6 +1108,8 @@ let backgroudImage = Image.welcomeBackground.edgesToSuperview()
 `// implemented. to be described`
 
 ## List
+
+> alias is `UList`
 
 ```swift
 // implemented. to be described
@@ -1088,6 +1145,8 @@ ScrollView().scrollIndicatorInsets(top: 10, bottom: 10)
 
 ## SegmentedControl
 
+> alias is `USegmentedControl`
+
 `// implemented. to be described more`
 ```swift
 @State var selectedItem = 0
@@ -1102,9 +1161,13 @@ SegmentedControl("One", "Two").select(0).changed { print("segment changed to \($
 
 ## Stepper
 
+> alias is `UStepper`
+
 `// implemented. to be described`
 
 ## TextField
+
+> alias is `UTextField`
 
 ```swift
 // implemented. to be described
@@ -1169,6 +1232,8 @@ TextField().shouldBeginEditing { tf in return true }
 
 ## Text (aka UILabel)
 
+> alias is `UText` or just `Label`
+
 `// to be described more`
 It either may be initialized with `String` or unlimited amount of `AttributedString`s
 ```swift
@@ -1216,9 +1281,13 @@ let logo = Label.welcomeLogo.centerInSuperview()
 
 ## TextView
 
+> alias is `UTextView`
+
 `// implemented. to be described`
 
 ## Toggle
+
+> alias is `UToggle`
 
 `// implemented. to be described`
 
@@ -1300,14 +1369,26 @@ ImpactFeedback.success()
 ImpactFeedback.selected()
 ImpactFeedback.bzz()
 ```
-# Localization
+# Localization 🇮🇸🇩🇪🇯🇵🇲🇽
 
-# Root View Controller
+```swift
+// create string relative to current language
+let myString = String(
+    .en("Hello"),
+    .fr("Bonjour"),
+    .ru("Привет"),
+    .es("Hola"),
+    .zh_Hans("你好"),
+    .ja("こんにちは"))
+print(myString)
+```
 
-# Live View
+By default current language is equal to `Locale.current` but you can change it by setting `Localizer.current = .en`.
+Also localizer have `default` language in case if user's language doesn't match any in your string, and you could set it just by calling `Localizer.default = .en`.
 
-`// implemented. to be described`
+# Root View Controller 🍀
 
+[Detailed instruction](Readme/RootViewController.md)
 
 ## Example 1
 ```swift
@@ -1335,7 +1416,7 @@ import UIKitPlus
 class LoginViewController: ViewController {
     @State var email = ""
     @State var password = ""
-    
+
     override func buildUI() {
         super.buildUI()
         view.backgroundColor = .black
