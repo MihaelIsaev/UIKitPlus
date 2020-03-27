@@ -1390,6 +1390,10 @@ Also localizer have `default` language in case if user's language doesn't match 
 
 [Detailed instruction](Readme/RootViewController.md)
 
+# Examples
+
+[Example app is here](https://github.com/MihaelIsaev/UIKitPlusExample)
+
 ## Example 1
 ```swift
 import UIKitPlus
