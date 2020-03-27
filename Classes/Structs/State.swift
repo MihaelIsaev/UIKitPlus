@@ -13,7 +13,7 @@ public protocol Stateable: AnyState {
 public typealias UState = State
 
 @propertyWrapper
-public class State<Value>: Stateable {
+open class State<Value>: Stateable {
     private var _originalValue: Value
     private var _wrappedValue: Value
     public var wrappedValue: Value {
