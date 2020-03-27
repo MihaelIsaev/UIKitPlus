@@ -1,0 +1,38 @@
+import UIKit
+
+public protocol TextFieldLeftViewable {
+    func leftView(_ view: UIView) -> Self
+    func leftView(_ view: UIView, mode: UITextField.ViewMode) -> Self
+    func leftView(_ view: @escaping () -> UIView) -> Self
+    func leftView(mode: UITextField.ViewMode, _ view: @escaping () -> UIView) -> Self
+}
+
+protocol _TextFieldLeftViewable: TextFieldLeftViewable {
+    func _setLeftView(v: UIView)
+    func _setLeftViewMode(v: UITextField.ViewMode)
+}
+
+extension TextFieldLeftViewable {
+    @discardableResult
+    public func leftView(_ view: UIView) -> Self {
+        leftView(view, mode: .always)
+    }
+    
+    @discardableResult
+    public func leftView(_ view: UIView, mode: UITextField.ViewMode) -> Self {
+        guard let s = self as? _TextFieldLeftViewable else { return self }
+        s._setLeftView(v: view)
+        s._setLeftViewMode(v: mode)
+        return self
+    }
+
+    @discardableResult
+    public func leftView(_ view: @escaping () -> UIView) -> Self {
+        leftView(mode: .always, view)
+    }
+    
+    @discardableResult
+    public func leftView(mode: UITextField.ViewMode, _ view: @escaping () -> UIView) -> Self {
+        leftView(view(), mode: mode)
+    }
+}
