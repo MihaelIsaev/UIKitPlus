@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UForEach = ForEach
 public class ForEach<Item> where Item: Hashable {
     public typealias BuildViewHandler = (Int, Item) -> ViewBuilderItem
     public typealias BuildViewHandlerValue = (Item) -> ViewBuilderItem
