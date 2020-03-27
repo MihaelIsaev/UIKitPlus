@@ -1,6 +1,6 @@
 import UIKit
 
-@available(iOSApplicationExtension 13.0, *)
+@available(iOS 13.0, *)
 final public class HoverGestureRecognizer: UIHoverGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
     var _tracker = _GestureTracker()
     var _delegator = _GestureDelegator()

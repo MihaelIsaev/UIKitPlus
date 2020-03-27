@@ -21,7 +21,7 @@ public struct LiveView: UIViewRepresentable {
 }
 public enum PreviewColorScheme {
     case light, dark
-    @available(iOSApplicationExtension 13.0, *)
+    @available(iOS 13.0, *)
     fileprivate var val: SwiftUI.ColorScheme {
         switch self {
         case .light: return .light
@@ -34,7 +34,7 @@ public protocol UIKitPreviewProvider: SwiftUI.PreviewProvider {
     static var view: UIView { get }
     static var colorScheme: PreviewColorScheme { get }
     static var device: UIKitPreviewDevice { get }
-    @available(iOSApplicationExtension 13.0, *)
+    @available(iOS 13.0, *)
     static var layout: PreviewLayout { get }
 }
 
@@ -117,7 +117,7 @@ extension UIKitPreviewProvider {
     
     public static var device: UIKitPreviewDevice { .iPhoneX }
     
-    @available(iOSApplicationExtension 13.0, *)
+    @available(iOS 13.0, *)
     public static var layout: PreviewLayout { .device }
     
     public static var title: String { "Preview" }

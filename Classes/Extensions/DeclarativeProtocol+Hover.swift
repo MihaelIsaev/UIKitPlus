@@ -1,6 +1,6 @@
 import UIKit
 
-@available(iOSApplicationExtension 13.0, *)
+@available(iOS 13.0, *)
 extension DeclarativeProtocol {
     @discardableResult
     public func onHoverGesture(_ action: @escaping (HoverGestureRecognizer) -> Void) -> Self {

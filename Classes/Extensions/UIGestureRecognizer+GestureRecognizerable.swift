@@ -22,13 +22,13 @@ extension UIGestureRecognizer: _GestureRecognizerable {
     }
     
     func _setName(_ v: String) {
-        if #available(iOSApplicationExtension 11.0, *) {
+        if #available(iOS 11.0, *) {
             name = v
         }
     }
     
     func _setRequiresExclusiveTouchType(_ v: Bool) {
-        if #available(iOSApplicationExtension 9.2, *) {
+        if #available(iOS 9.2, *) {
             requiresExclusiveTouchType = v
         }
     }

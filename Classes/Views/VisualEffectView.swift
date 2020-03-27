@@ -84,7 +84,7 @@ open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, Declarativ
     }
     
     var isDark: Bool {
-        if #available(iOSApplicationExtension 12.0, *) {
+        if #available(iOS 12.0, *) {
             return traitCollection.userInterfaceStyle == .dark
         }
         return false
