@@ -32,46 +32,37 @@ open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInterna
     /// See `AnyForeacheableView`
     public lazy var isVisibleInList: Bool = !isHidden
     
-    fileprivate var stateString: StateStringBuilder.Handler?
-    var binding: UIKitPlus.State<String>?
-    
     public init (_ text: String = "", textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)
+        self.text(text)
         _setup()
-        self.text = text
     }
     
     public init (_ state: State<String>, textContainer: NSTextContainer? = nil) {
-        self.binding = state
         super.init(frame: .zero, textContainer: textContainer)
+        _properties.textBinding = state
+        text(state)
         _setup()
-        text = state.wrappedValue
-        state.listen { _,n in self.text = n }
     }
     
     public init (_ attributedStrings: AttributedString..., textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)
+        attributedText(attributedStrings.joined())
         _setup()
-        let attrStr = NSMutableAttributedString(string: "")
-        attributedStrings.forEach {
-            attrStr.append($0.attributedString)
-        }
-        attributedText = attrStr
     }
     
     public init<V>(_ expressable: ExpressableState<V, String>, textContainer: NSTextContainer? = nil) {
-        stateString = expressable.value
         super.init(frame: .zero, textContainer: textContainer)
+        let state = expressable.unwrap()
+        _properties.textBinding = state
+        text(state)
         _setup()
-        text = expressable.value()
-        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
     }
     
     public init (@StateStringBuilder stateString: @escaping StateStringBuilder.Handler, textContainer: NSTextContainer? = nil) {
-        self.stateString = stateString
         super.init(frame: .zero, textContainer: textContainer)
+        text(stateString())
         _setup()
-        self.text = stateString()
     }
     
     public override init(frame: CGRect, textContainer: NSTextContainer? = nil) {
@@ -103,148 +94,8 @@ open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func text(_ text: String) -> Self {
-        self.text = text
-        return self
-    }
-    
-    @discardableResult
-    public func text(_ attributedStrings: AttributedString...) -> Self {
-        let attrStr = NSMutableAttributedString(string: "")
-        attributedStrings.forEach {
-            attrStr.append($0.attributedString)
-        }
-        attributedText = attrStr
-        return self
-    }
-    
-    @discardableResult
-    public func text(_ state: State<String>) -> Self {
-        text = state.wrappedValue
-        state.listen { _,n in self.text = n }
-        return self
-    }
-    
-    @discardableResult
-    public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
-        self.stateString = expressable.value
-        text = expressable.value()
-        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
-        return self
-    }
-    
-    @discardableResult
-    public func text(@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) -> Self {
-        self.stateString = stateString
-        text = stateString()
-        return self
-    }
-    
-    @discardableResult
-    public func color(_ color: UIColor) -> Self {
-        textColor = color
-        return self
-    }
-    
-    @discardableResult
-    public func color(_ number: Int) -> Self {
-        textColor = number.color
-        return self
-    }
-    
-    public var colorState: State<UIColor> { properties.$background }
-    
-    @discardableResult
-    public func color(_ color: State<UIColor>) -> Self {
-        declarativeView.textColor = color.wrappedValue
-        properties.textColor = color.wrappedValue
-        color.listen { [weak self] old, new in
-            self?.declarativeView.textColor = new
-            self?.properties.textColor = new
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func color<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        declarativeView.textColor = expressable.value()
-        properties.textColor = expressable.value()
-        expressable.state.listen { [weak self] old, new in
-            self?.declarativeView.textColor = expressable.value()
-            self?.properties.textColor = expressable.value()
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func alignment(_ alignment: NSTextAlignment) -> Self {
-        textAlignment = alignment
-        return self
-    }
-    
-    // MARK: Scrolling
-    
-    @discardableResult
-    public func scrolling(_ enabled: Bool) -> Self {
-        isScrollEnabled = enabled
-        return self
-    }
-    
-    // MARK: Indicators
-    
-    @discardableResult
-    public func hideIndicator(_ indicators: NSLayoutConstraint.Axis...) -> Self {
-        if indicators.contains(.horizontal) {
-            showsHorizontalScrollIndicator = false
-        }
-        if indicators.contains(.vertical) {
-            showsVerticalScrollIndicator = false
-        }
-        return self
-    }
-    
-    // MARK: Indicators
-    
-    @discardableResult
-    public func hideAllIndicators() -> Self {
-        showsHorizontalScrollIndicator = false
-        showsVerticalScrollIndicator = false
-        return self
-    }
-    
-    @discardableResult
     public func delegate(_ delegate: UITextViewDelegate?) -> Self {
         self.delegate = delegate
-        return self
-    }
-    
-    @discardableResult
-    public func keyboard(_ keyboard: UIKeyboardType) -> Self {
-        keyboardType = keyboard
-        return self
-    }
-    
-    @discardableResult
-    public func autocapitalization(_ type: UITextAutocapitalizationType) -> Self {
-        autocapitalizationType = type
-        return self
-    }
-    
-    @discardableResult
-    public func autocorrection(_ type: UITextAutocorrectionType) -> Self {
-        autocorrectionType = type
-        return self
-    }
-    
-    @discardableResult
-    public func returnKeyType(_ type: UIReturnKeyType) -> Self {
-        returnKeyType = type
-        return self
-    }
-    
-    @discardableResult
-    public func keyboardAppearance(_ appearance: UIKeyboardAppearance) -> Self {
-        keyboardAppearance = appearance
         return self
     }
     
@@ -267,74 +118,6 @@ open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInterna
     @discardableResult
     public func textInsets(top: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0, bottom: CGFloat = 0) -> Self {
         textInsets(.init(top: top, left: left, bottom: bottom, right: right))
-    }
-    
-    // MARK: Cleanup
-    
-    @discardableResult
-    public func cleanup() -> Self {
-        text = ""
-        didChangeTextHandler?()
-        didChangeTextHandlerText?(self)
-        return self
-    }
-    
-    // MARK: Input View
-    
-    @discardableResult
-    public func inputView(_ view: UIView) -> Self {
-        inputView = view
-        return self
-    }
-    
-    @discardableResult
-    public func inputView(_ view: (TextView) -> UIView) -> Self {
-        inputView(view(self))
-    }
-    
-    @discardableResult
-    public func inputAccessoryView(_ view: UIView) -> Self {
-        inputAccessoryView = view
-        return self
-    }
-    
-    @discardableResult
-    public func inputAccessoryView(_ view: (TextView) -> UIView) -> Self {
-        inputAccessoryView(view(self))
-    }
-    
-    // MARK: Placeholder
-    
-    @State var placeholderText: String?
-    var placeholderAttrText: NSMutableAttributedString?
-    var generatedPlaceholderString: NSAttributedString?
-    
-    @discardableResult
-    public func placeholder(_ value: String) -> Self {
-        placeholderText = value
-        if text.count == 0 && attributedText.string.count == 0 {
-            attributedText = _generatePlaceholderAttributedString(with: value)
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func placeholder(_ attributedStrings: AttributedString...) -> Self {
-        let attrStr = NSMutableAttributedString(string: "")
-        attributedStrings.forEach {
-            attrStr.append($0.attributedString)
-        }
-        placeholderAttrText = attrStr
-        return placeholder(attrStr.string)
-    }
-    
-    func _generatePlaceholderAttributedString(with text: String) -> NSAttributedString {
-        guard let placeholderAttrText = placeholderAttrText else {
-            let str = AttrStr(text).foreground(.lightGray).font(v: font ?? .systemFont(ofSize: 14)).attributedString
-            generatedPlaceholderString = str
-            return str
-        }
-        return placeholderAttrText
     }
     
     // MARK: - Delegate Replication
@@ -589,7 +372,7 @@ open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInterna
 extension TextView: Refreshable {
     /// Refreshes using `RefreshHandler`
     public func refresh() {
-        if let stateString = stateString {
+        if let stateString = _properties.stateString {
             text = stateString()
         }
     }
@@ -598,5 +381,158 @@ extension TextView: Refreshable {
 extension TextView: _Fontable {
     func _setFont(_ v: UIFont?) {
         font = v
+    }
+}
+
+extension TextView: _TextBindable {
+    func _setTextBind(_ binding: State<String>?) {
+        _properties.textBinding = binding
+    }
+}
+
+extension TextView: _Textable {
+    var _stateString: StateStringBuilder.Handler? {
+        get { _properties.stateString }
+        set { _properties.stateString = newValue }
+    }
+    
+    var _stateAttrString: StateAttrStringBuilder.Handler? {
+        get { _properties.stateAttrString }
+        set { _properties.stateAttrString = newValue }
+    }
+    
+    var _textChangeTransition: UIView.AnimationOptions? {
+        get { _properties.textChangeTransition }
+        set { _properties.textChangeTransition = newValue }
+    }
+    
+    func _setText(_ v: String?) {
+        text = v
+    }
+    
+    func _setText(_ v: NSMutableAttributedString?) {
+        attributedText = v
+    }
+}
+
+extension TextView: _Typeable {
+    func _setTypingInterval(_ v: TimeInterval) {
+        _properties.typingInterval = v
+    }
+    
+    func _observeTypingState(_ v: UIKitPlus.State<Bool>) {
+        _properties.isTypingState.listen {
+            guard v.wrappedValue != $0 else { return }
+            v.wrappedValue = $0
+        }
+        if v.wrappedValue != _properties.isTyping {
+            v.wrappedValue = _properties.isTyping
+        }
+    }
+}
+
+extension TextView: _Colorable {
+    var _colorState: UIKitPlus.State<UIColor> { properties.textColorState }
+    
+    func _setColor(_ v: UIColor?) {
+        textColor = v
+        properties.textColor = v ?? .clear
+    }
+}
+
+extension TextView: _TextAligmentable {
+    func _setTextAlignment(v: NSTextAlignment) {
+        textAlignment = v
+    }
+}
+
+extension TextView: _Placeholderable {
+    func _setPlaceholder(_ v: String) {
+        _properties.placeholderText = v
+        if text.count == 0 && attributedText.string.count == 0 {
+            attributedText = _generatePlaceholderAttributedString(with: v)
+        }
+    }
+
+    func _setPlaceholder(_ v: AttrStr?) {
+        attributedText = v?.attributedString
+        _properties.placeholderText = attributedText?.string ?? ""
+        _properties.placeholderAttrText = v?.attributedString
+    }
+    
+    func _generatePlaceholderAttributedString(with text: String) -> NSAttributedString {
+        guard let placeholderAttrText = _properties.placeholderAttrText else {
+            let str = AttrStr(text).foreground(.lightGray).font(v: font ?? .systemFont(ofSize: 14)).attributedString
+            _properties.generatedPlaceholderString = str
+            return str
+        }
+        return placeholderAttrText
+    }
+}
+
+
+extension TextView: _Keyboardable {
+    func _setKeyboardType(_ v: UIKeyboardType) {
+        keyboardType = v
+    }
+    
+    func _setReturnKeyType(_ v: UIReturnKeyType) {
+        returnKeyType = v
+    }
+    
+    func _setKeyboardAppearance(_ v: UIKeyboardAppearance) {
+        keyboardAppearance = v
+    }
+    
+    func _setInputView(_ v: UIView?) {
+        inputView = v
+    }
+    
+    func _setInputAccessoryView(_ v: UIView?) {
+        inputAccessoryView = v
+    }
+    
+    @discardableResult
+    public func inputView(_ view: (TextView) -> UIView) -> Self {
+        inputView(view(self))
+    }
+    
+    @discardableResult
+    public func inputAccessoryView(_ view: (TextView) -> UIView) -> Self {
+        inputAccessoryView(view(self))
+    }
+}
+
+extension TextView: _TextAutocapitalizationable {
+    func _setTextAutocapitalizationType(_ v: UITextAutocapitalizationType) {
+        autocapitalizationType = v
+    }
+}
+
+extension TextView: _TextAutocorrectionable {
+    func _setTextAutocorrectionType(_ v: UITextAutocorrectionType) {
+        autocorrectionType = v
+    }
+}
+
+extension TextView: _Cleanupable {
+    func _cleanup() {
+        text = ""
+        didChangeTextHandler?()
+        didChangeTextHandlerText?(self)
+    }
+}
+
+extension TextView: _Scrollable {
+    func _setScrollingEnabled(_ v: Bool) {
+        isScrollEnabled = v
+    }
+    
+    func _setVisibleHScrollIndicator(_ v: Bool) {
+        showsHorizontalScrollIndicator = v
+    }
+    
+    func _setVisibleVScrollIndicator(_ v: Bool) {
+        showsVerticalScrollIndicator = v
     }
 }

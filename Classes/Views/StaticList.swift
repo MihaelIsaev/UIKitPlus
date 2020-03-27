@@ -123,7 +123,12 @@ extension StaticList: UITableViewDataSource {
 extension StaticList: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let view = views[indexPath.row] as? View {
-            view.gestureRecognizers?.forEach { ($0 as? TapGestureRecognizer)?.action() }
+            view.gestureRecognizers?.forEach {
+                if let v = $0 as? TapGestureRecognizer {
+                    v._tracker.began?()
+                    v._tracker.ended?()
+                }
+            }
         } else if let view = views[indexPath.row] as? Button {
             view.triggerActionHandler()
         }

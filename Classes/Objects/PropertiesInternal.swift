@@ -8,6 +8,18 @@ public class PropertiesInternal {
     var stateString: StateStringBuilder.Handler?
     var stateAttrString: StateAttrStringBuilder.Handler?
     
+    var textBinding: State<String>?
+    
+    @State var isTyping = false
+    var isTypingState: State<Bool> { _isTyping }
+    
+    var typingInterval: TimeInterval = 0.5
+    var typingTimer: Timer?
+    
+    @State var placeholderText: String?
+    var placeholderAttrText: NSMutableAttributedString?
+    var generatedPlaceholderString: NSAttributedString?
+    
     // MARK: - Internal Constraints
     
     var notAppliedPreConstraintsSuper: [PreConstraint] = []

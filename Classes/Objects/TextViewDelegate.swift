@@ -18,7 +18,7 @@ class TextViewDelegate: NSObject, UITextViewDelegate {
     }
     
     public func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.textView.attributedText.string == self.textView.placeholderText {
+        if self.textView.attributedText.string == self.textView._properties.placeholderText {
             self.textView.text = ""
         }
         self.textView.didBeginEditingHandler?()
@@ -26,7 +26,7 @@ class TextViewDelegate: NSObject, UITextViewDelegate {
     }
 
     public func textViewDidEndEditing(_ textView: UITextView) {
-        if self.textView.text.count == 0, let text = self.textView.placeholderText {
+        if self.textView.text.count == 0, let text = self.textView._properties.placeholderText {
             self.textView.attributedText = self.textView._generatePlaceholderAttributedString(with: text)
         }
         self.textView.didEndEditingHandler?()
@@ -40,16 +40,23 @@ class TextViewDelegate: NSObject, UITextViewDelegate {
             ?? self.textView.shouldChangeTextHandlerRangeString?(range, text)
             ?? true
     }
+    
+    @objc private func invalidateTimer() {
+        self.textView._properties.isTyping = false
+    }
 
     public func textViewDidChange(_ textView: UITextView) {
+        self.textView._properties.typingTimer?.invalidate()
+        self.textView._properties.typingTimer = Timer.scheduledTimer(timeInterval: self.textView._properties.typingInterval, target: self, selector: #selector(invalidateTimer), userInfo: nil, repeats: false)
+        self.textView._properties.isTyping = true
         self.textView.didChangeTextHandler?()
         self.textView.didChangeTextHandlerText?(self.textView)
         if self.textView.text.count > 0 {
-            self.textView.binding?.wrappedValue = self.textView.text
+            self.textView._properties.textBinding?.wrappedValue = self.textView.text
         } else if self.textView.attributedText.string.count > 0 {
-            self.textView.binding?.wrappedValue = self.textView.attributedText.string
+            self.textView._properties.textBinding?.wrappedValue = self.textView.attributedText.string
         } else {
-            self.textView.binding?.wrappedValue = ""
+            self.textView._properties.textBinding?.wrappedValue = ""
         }
     }
     

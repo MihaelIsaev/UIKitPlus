@@ -1,10 +1,11 @@
 import Foundation
 import UIKit
-public typealias UTextField = TextField
 
-open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, DeclarativeProtocolInternal {
+public typealias UTextField = TextField
+open class TextField: UITextField, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: TextField { self }
-    public lazy var properties = Properties<TextField>()
+    public typealias P = Properties<TextField>
+    public lazy var properties = P()
     lazy var _properties = PropertiesInternal()
     
     @UIKitPlus.State public var height: CGFloat = 0
@@ -32,41 +33,32 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     /// See `AnyForeacheableView`
     public lazy var isVisibleInList: Bool = !isHidden
     
-    private weak var outsideDelegate: TextFieldDelegate?
-    
-    fileprivate var stateString: StateStringBuilder.Handler?
-    private var binding: UIKitPlus.State<String>?
-    
-    @UIKitPlus.State private var isTyping = false
-    private var typingInterval: TimeInterval = 0.5
-    private var typingTimer: Timer?
+    fileprivate weak var outsideDelegate: TextFieldDelegate?
     
     public init (_ text: String? = nil) {
         super.init(frame: .zero)
-        self.text = text
+        self.text(text ?? "")
         _setup()
     }
     
     public init (_ state: UIKitPlus.State<String>) {
-        self.binding = state
         super.init(frame: .zero)
-        self.text = state.wrappedValue
-        state.listen { [weak self] new in self?.text = new }
+        text(state)
+        _setTextBind(state)
         _setup()
     }
     
     public init <V>(_ expressable: ExpressableState<V, String>) {
         super.init(frame: .zero)
-        self.stateString = expressable.value
-        text = expressable.value()
-        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
+        let state = expressable.unwrap()
+        text(state)
+        _setTextBind(state)
         _setup()
     }
     
     public init (@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) {
         super.init(frame: .zero)
-        self.stateString = stateString
-        text = stateString()
+        text(stateString())
         _setup()
     }
     
@@ -89,242 +81,17 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
         movedToSuperview()
     }
     
+    fileprivate lazy var _innerDelegate = _InnerDelegate(self)
+    
     private func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
-        delegate = self
-        addTarget(self, action: #selector(__editingDidBegin), for: .editingDidBegin)
-        addTarget(self, action: #selector(__editingChanged), for: .editingChanged)
-        addTarget(self, action: #selector(__editingDidEnd), for: .editingDidEnd)
-    }
-    
-    @discardableResult
-    public func bind(_ to: UIKitPlus.State<String>) -> Self {
-        self.binding = to
-        return self
-    }
-    
-    @discardableResult
-    public func color(_ color: UIColor) -> Self {
-        textColor = color
-        return self
-    }
-    
-    @discardableResult
-    public func color(_ number: Int) -> Self {
-        textColor = number.color
-        return self
-    }
-    
-    @discardableResult
-    public func alignment(_ alignment: NSTextAlignment) -> Self {
-        textAlignment = alignment
-        return self
-    }
-    
-    @discardableResult
-    public func secure(_ value: Bool = true) -> Self {
-        isSecureTextEntry = value
-        return self
-    }
-    
-    @discardableResult
-    public func secure(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.secure($0) }
-        return secure(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func secure<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        expressable.state.listen { _ in self.secure(expressable.value()) }
-        return secure(expressable.value())
-    }
-    
-    @discardableResult
-    public func typing(_ binding: UIKitPlus.State<Bool>, _ interval: TimeInterval? = nil) -> Self {
-        if let interval = interval {
-            typingInterval = interval
-        }
-        _isTyping.listen {
-            guard binding.wrappedValue != $0 else { return }
-            binding.wrappedValue = $0
-        }
-        if binding.wrappedValue != isTyping {
-            binding.wrappedValue = isTyping
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func text(_ text: String?) -> Self {
-        self.text = text
-        binding?.wrappedValue = text ?? ""
-        return self
-    }
-    
-    @discardableResult
-    public func text(_ attributedStrings: AttributedString...) -> Self {
-        let attrStr = NSMutableAttributedString(string: "")
-        attributedStrings.forEach {
-            attrStr.append($0.attributedString)
-        }
-        attributedText = attrStr
-        binding?.wrappedValue = attrStr.string
-        return self
-    }
-    
-    @discardableResult
-    public func text(_ state: UIKitPlus.State<String>) -> Self {
-        binding = state
-        text = state.wrappedValue
-        state.listen { [weak self] new in self?.text = new }
-        return self
-    }
-    
-    @discardableResult
-    public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
-        self.stateString = expressable.value
-        text = expressable.value()
-        binding = expressable.unwrap()
-        expressable.state.listen { [weak self] _,_ in self?.text = expressable.value() }
-        return self
-    }
-    
-    @discardableResult
-    public func text(@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) -> Self {
-        self.stateString = stateString
-        text = stateString()
-        return self
-    }
-    
-    @discardableResult
-    public func placeholder(_ text: String?) -> Self {
-        placeholder = text
-        return self
-    }
-    
-    @discardableResult
-    public func placeholder(_ binding: UIKitPlus.State<String>) -> Self {
-        binding.listen { self.placeholder($0) }
-        return placeholder(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func placeholder<V>(_ expressable: ExpressableState<V, String>) -> Self {
-        expressable.state.listen { _ in self.placeholder(expressable.value()) }
-        return placeholder(expressable.value())
-    }
-    
-    @discardableResult
-    public func placeholder(_ attributedStrings: AttributedString...) -> Self {
-        guard !attributedStrings.isEmpty else {
-            attributedPlaceholder = nil
-            return self
-        }
-        let attrStr = NSMutableAttributedString(string: "")
-        attributedStrings.forEach {
-            attrStr.append($0.attributedString)
-        }
-        attributedPlaceholder = attrStr
-        return self
+        delegate = _innerDelegate
     }
     
     @discardableResult
     public func delegate(_ delegate: TextFieldDelegate?) -> Self {
         self.outsideDelegate = delegate
         return self
-    }
-    
-    @discardableResult
-    public func keyboard(_ keyboard: UIKeyboardType) -> Self {
-        keyboardType = keyboard
-        return self
-    }
-    
-    @discardableResult
-    public func autocapitalization(_ type: UITextAutocapitalizationType) -> Self {
-        autocapitalizationType = type
-        return self
-    }
-    
-    @discardableResult
-    public func autocorrection(_ type: UITextAutocorrectionType) -> Self {
-        autocorrectionType = type
-        return self
-    }
-    
-    @discardableResult
-    public func returnKeyType(_ type: UIReturnKeyType) -> Self {
-        returnKeyType = type
-        return self
-    }
-    
-    @discardableResult
-    public func keyboardAppearance(_ appearance: UIKeyboardAppearance) -> Self {
-        keyboardAppearance = appearance
-        return self
-    }
-    
-    @discardableResult
-    public func content(_ content: TextFieldContentType) -> Self {
-        if #available(iOS 10.0, *) {
-            if let type = content.type {
-                textContentType = type
-            }
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func cleanup() -> Self {
-        text = ""
-        __editingChanged()
-        return self
-    }
-    
-    @discardableResult
-    public func leftView(_ view: UIView, mode: UITextField.ViewMode = .always) -> Self {
-        leftView = view
-        leftViewMode = mode
-        return self
-    }
-    
-    @discardableResult
-    public func leftView(mode: UITextField.ViewMode = .always, _ view: (TextField) -> UIView) -> Self {
-        leftView(view(self), mode: mode)
-    }
-    
-    @discardableResult
-    public func rightView(_ view: UIView, mode: UITextField.ViewMode = .always) -> Self {
-        rightView = view
-        rightViewMode = mode
-        return self
-    }
-    
-    @discardableResult
-    public func rightView(mode: UITextField.ViewMode = .always, _ view: (TextField) -> UIView) -> Self {
-        rightView(view(self), mode: mode)
-    }
-    
-    @discardableResult
-    public func inputView(_ view: UIView) -> Self {
-        inputView = view
-        return self
-    }
-    
-    @discardableResult
-    public func inputView(_ view: (TextField) -> UIView) -> Self {
-        inputView(view(self))
-    }
-    
-    @discardableResult
-    public func inputAccessoryView(_ view: UIView) -> Self {
-        inputAccessoryView = view
-        return self
-    }
-    
-    @discardableResult
-    public func inputAccessoryView(_ view: (TextField) -> UIView) -> Self {
-        inputAccessoryView(view(self))
     }
     
     var textRect: CGRect?
@@ -369,45 +136,27 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     
     // MARK: Delegate Closures
     
-    public typealias FormatCharactersClosure = (_ textField: TextField, _ range: NSRange, _ replacement: String) -> Void
-    public typealias ChangeCharactersClosure = (_ textField: TextField, _ range: NSRange, _ replacement: String) -> Bool
-    public typealias BoolClosure = (TextField) -> Bool
-    public typealias VoidClosure = (TextField) -> Void
-    
-    private var _shouldBeginEditing: BoolClosure = { _ in return true }
-    private var _didBeginEditing: [VoidClosure] = []
-    private var _shouldEndEditing: BoolClosure = { _ in return true }
-    private var _didEndEditing: [VoidClosure] = []
-    private var _shouldFormatCharacters: FormatCharactersClosure?
-    private var _shouldChangeCharacters: ChangeCharactersClosure?
-    private var _shouldClear: BoolClosure = { _ in return true }
-    private var _shouldReturnVoid: () -> Void = {}
-    private var _shouldReturn: BoolClosure = { _ in return true }
-    private var _editingDidBegin: [VoidClosure] = []
-    private var _editingChanged: [VoidClosure] = []
-    private var _editingDidEnd: [VoidClosure] = []
-    
     @discardableResult
-    public func shouldBeginEditing(_ closure: @escaping BoolClosure) -> Self {
-        _shouldBeginEditing = closure
+    public func shouldBeginEditing(_ closure: @escaping P.BoolClosure) -> Self {
+        properties._shouldBeginEditing = closure
         return self
     }
     
     @discardableResult
-    public func didBeginEditing(_ closure: @escaping VoidClosure) -> Self {
-        _didBeginEditing.append(closure)
+    public func didBeginEditing(_ closure: @escaping P.VoidClosure) -> Self {
+        properties._didBeginEditing.append(closure)
         return self
     }
     
     @discardableResult
-    public func shouldEndEditing(_ closure: @escaping BoolClosure) -> Self {
-        _shouldEndEditing = closure
+    public func shouldEndEditing(_ closure: @escaping P.BoolClosure) -> Self {
+        properties._shouldEndEditing = closure
         return self
     }
     
     @discardableResult
-    public func didEndEditing(_ closure: @escaping VoidClosure) -> Self {
-        _didEndEditing.append(closure)
+    public func didEndEditing(_ closure: @escaping P.VoidClosure) -> Self {
+        properties._didEndEditing.append(closure)
         return self
     }
     
@@ -440,130 +189,144 @@ open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, Dec
     /// }
     /// ```
     @discardableResult
-    public func formatCharacters(_ closure: @escaping FormatCharactersClosure) -> Self {
-        _shouldFormatCharacters = closure
+    public func formatCharacters(_ closure: @escaping P.FormatCharactersClosure) -> Self {
+        properties._shouldFormatCharacters = closure
         return self
     }
     
     @discardableResult
-    public func shouldChangeCharacters(_ closure: @escaping ChangeCharactersClosure) -> Self {
-        _shouldChangeCharacters = closure
+    public func shouldChangeCharacters(_ closure: @escaping P.ChangeCharactersClosure) -> Self {
+        properties._shouldChangeCharacters = closure
         return self
     }
     
     @discardableResult
-    public func shouldClear(_ closure: @escaping BoolClosure) -> Self {
-        _shouldClear = closure
+    public func shouldClear(_ closure: @escaping P.BoolClosure) -> Self {
+        properties._shouldClear = closure
         return self
     }
     
     @discardableResult
     public func shouldReturn(_ closure: @escaping () -> Void) -> Self {
-        _shouldReturnVoid = closure
+        properties._shouldReturnVoid = closure
         return self
     }
     
     @discardableResult
-    public func shouldReturn(_ closure: @escaping BoolClosure) -> Self {
-        _shouldReturn = closure
+    public func shouldReturn(_ closure: @escaping P.BoolClosure) -> Self {
+        properties._shouldReturn = closure
         return self
     }
     
     @discardableResult
     public func shouldReturnToNextResponder() -> Self {
-        _shouldReturnVoid = {
+        properties._shouldReturnVoid = {
             self.focusToNextResponderOrResign()
         }
         return self
     }
     
     @discardableResult
-    public func editingDidBegin(_ closure: @escaping VoidClosure) -> Self {
-        _editingDidBegin.append(closure)
+    public func editingDidBegin(_ closure: @escaping P.VoidClosure) -> Self {
+        properties._editingDidBegin.append(closure)
         return self
     }
     
     @discardableResult
-    public func editingChanged(_ closure: @escaping VoidClosure) -> Self {
-        _editingChanged.append(closure)
+    public func editingChanged(_ closure: @escaping P.VoidClosure) -> Self {
+        properties._editingChanged.append(closure)
         return self
     }
     
     @discardableResult
-    public func editingDidEnd(_ closure: @escaping VoidClosure) -> Self {
-        _editingDidEnd.append(closure)
+    public func editingDidEnd(_ closure: @escaping P.VoidClosure) -> Self {
+        properties._editingDidEnd.append(closure)
         return self
     }
     
-    @objc func __editingDidBegin() {
-        _editingDidBegin.forEach { $0(self) }
+    public func `return`() {
+        _ = _innerDelegate.textFieldShouldReturn(self)
+    }
+}
+
+fileprivate class _InnerDelegate: NSObject, UITextFieldDelegate {
+    let parent: TextField
+    
+    init (_ textField: TextField) {
+        parent = textField
+        super.init()
+        parent.addTarget(self, action: #selector(editingDidBegin), for: .editingDidBegin)
+        parent.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
+        parent.addTarget(self, action: #selector(editingDidEnd), for: .editingDidEnd)
     }
     
-    @objc private func __invalidateTimer() {
-        isTyping = false
+    @objc func editingDidBegin() {
+        parent.properties._editingDidBegin.forEach { $0(self.parent) }
     }
     
-    @objc func __editingChanged() {
-        typingTimer?.invalidate()
-        typingTimer = Timer.scheduledTimer(timeInterval: typingInterval, target: self, selector: #selector(__invalidateTimer), userInfo: nil, repeats: false)
-        isTyping = true
-        _editingChanged.forEach { $0(self) }
-        binding?.wrappedValue = self.text ?? ""
+    @objc private func invalidateTimer() {
+        parent._properties.isTyping = false
     }
     
-    @objc func __editingDidEnd() {
-        _editingDidEnd.forEach { $0(self) }
+    @objc func editingChanged() {
+        parent._properties.typingTimer?.invalidate()
+        parent._properties.typingTimer = Timer.scheduledTimer(timeInterval: parent._properties.typingInterval, target: self, selector: #selector(invalidateTimer), userInfo: nil, repeats: false)
+        parent._properties.isTyping = true
+        parent.properties._editingChanged.forEach { $0(self.parent) }
+        parent._properties.textBinding?.wrappedValue = parent.text ?? ""
     }
     
-    // MARK: UITextFieldDelegate
+    @objc func editingDidEnd() {
+        parent.properties._editingDidEnd.forEach { $0(self.parent) }
+    }
     
     public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        return outsideDelegate?.textFieldShouldBeginEditing?(self) ?? _shouldBeginEditing(self)
+        parent.outsideDelegate?.textFieldShouldBeginEditing?(parent) ?? parent.properties._shouldBeginEditing(parent)
     }
     
     public func textFieldDidBeginEditing(_ textField: UITextField) {
-        outsideDelegate?.textFieldDidBeginEditing?(self)
-        _didBeginEditing.forEach { $0(self) }
+        parent.outsideDelegate?.textFieldDidBeginEditing?(parent)
+        parent.properties._didBeginEditing.forEach { $0(self.parent) }
     }
     
     public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        outsideDelegate?.textFieldShouldEndEditing?(self) ?? _shouldEndEditing(self)
+        parent.outsideDelegate?.textFieldShouldEndEditing?(parent) ?? parent.properties._shouldEndEditing(parent)
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
-        outsideDelegate?.textFieldDidEndEditing?(self)
-        _didEndEditing.forEach { $0(self) }
+        parent.outsideDelegate?.textFieldDidEndEditing?(parent)
+        parent.properties._didEndEditing.forEach { $0(self.parent) }
     }
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let result = outsideDelegate?.textField?(self, shouldChangeCharactersIn: range, replacementString: string) {
+        if let result = parent.outsideDelegate?.textField?(self.parent, shouldChangeCharactersIn: range, replacementString: string) {
             return result
         }
-        if let handler = _shouldFormatCharacters {
-            handler(self, range, string)
-            __editingChanged()
+        if let handler = parent.properties._shouldFormatCharacters {
+            handler(self.parent, range, string)
+            editingChanged()
             return false
         }
-        if let handler = _shouldChangeCharacters {
-            return handler(self, range, string)
+        if let handler = parent.properties._shouldChangeCharacters {
+            return handler(self.parent, range, string)
         }
         return true
     }
     
     public func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        outsideDelegate?.textFieldShouldClear?(self) ?? _shouldClear(self)
+        parent.outsideDelegate?.textFieldShouldClear?(parent) ?? parent.properties._shouldClear(parent)
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        _shouldReturnVoid()
-        return outsideDelegate?.textFieldShouldReturn?(self) ?? _shouldReturn(self)
+        parent.properties._shouldReturnVoid()
+        return parent.outsideDelegate?.textFieldShouldReturn?(parent) ?? parent.properties._shouldReturn(parent)
     }
 }
 
 extension TextField: Refreshable {
     /// Refreshes using `RefreshHandler`
     public func refresh() {
-        if let stateString = stateString {
+        if let stateString = _properties.stateString {
             text = stateString()
         }
     }
@@ -572,5 +335,154 @@ extension TextField: Refreshable {
 extension TextField: _Fontable {
     func _setFont(_ v: UIFont?) {
         font = v
+    }
+}
+
+extension TextField: _Cleanupable {
+    func _cleanup() {
+        text = ""
+        _innerDelegate.editingChanged()
+    }
+}
+
+extension TextField: _Colorable {
+    var _colorState: UIKitPlus.State<UIColor> { properties.textColorState }
+    
+    func _setColor(_ v: UIColor?) {
+        textColor = v
+        properties.textColor = v ?? .clear
+    }
+}
+
+extension TextField: _TextAligmentable {
+    func _setTextAlignment(v: NSTextAlignment) {
+        textAlignment = v
+    }
+}
+
+extension TextField: _Secureable {
+    func _setSecure(_ v: Bool) {
+        isSecureTextEntry = v
+    }
+}
+
+extension TextField: _TextBindable {
+    func _setTextBind(_ binding: UIKitPlus.State<String>?) {
+        _properties.textBinding = binding
+    }
+}
+
+extension TextField: _Textable {
+    var _stateString: StateStringBuilder.Handler? {
+        get { _properties.stateString }
+        set { _properties.stateString = newValue }
+    }
+    
+    var _stateAttrString: StateAttrStringBuilder.Handler? {
+        get { _properties.stateAttrString }
+        set { _properties.stateAttrString = newValue }
+    }
+    
+    var _textChangeTransition: UIView.AnimationOptions? {
+        get { _properties.textChangeTransition }
+        set { _properties.textChangeTransition = newValue }
+    }
+    
+    func _setText(_ v: String?) {
+        text = v
+    }
+    
+    func _setText(_ v: NSMutableAttributedString?) {
+        attributedText = v
+    }
+}
+
+extension TextField: _Typeable {
+    func _setTypingInterval(_ v: TimeInterval) {
+        _properties.typingInterval = v
+    }
+    
+    func _observeTypingState(_ v: UIKitPlus.State<Bool>) {
+        _properties.isTypingState.listen {
+            guard v.wrappedValue != $0 else { return }
+            v.wrappedValue = $0
+        }
+        if v.wrappedValue != _properties.isTyping {
+            v.wrappedValue = _properties.isTyping
+        }
+    }
+}
+
+extension TextField: _Placeholderable {
+    func _setPlaceholder(_ v: String) {
+        placeholder = v
+    }
+    
+    func _setPlaceholder(_ v: AttrStr?) {
+        attributedPlaceholder = v?.attributedString
+    }
+}
+
+extension TextField: _Keyboardable {
+    func _setKeyboardType(_ v: UIKeyboardType) {
+        keyboardType = v
+    }
+    
+    func _setReturnKeyType(_ v: UIReturnKeyType) {
+        returnKeyType = v
+    }
+    
+    func _setKeyboardAppearance(_ v: UIKeyboardAppearance) {
+        keyboardAppearance = v
+    }
+    
+    func _setInputView(_ v: UIView?) {
+        inputView = v
+    }
+    
+    func _setInputAccessoryView(_ v: UIView?) {
+        inputAccessoryView = v
+    }
+}
+
+extension TextField: _TextAutocapitalizationable {
+    func _setTextAutocapitalizationType(_ v: UITextAutocapitalizationType) {
+        autocapitalizationType = v
+    }
+}
+
+extension TextField: _TextAutocorrectionable {
+    func _setTextAutocorrectionType(_ v: UITextAutocorrectionType) {
+        autocorrectionType = v
+    }
+}
+
+extension TextField: _TextFieldContentTypeable {
+    func _setTextFieldContentType(v: TextFieldContentType) {
+        if #available(iOS 10.0, *) {
+            if let type = v.type {
+                textContentType = type
+            }
+        }
+    }
+}
+
+extension TextField: _TextFieldLeftViewable {
+    func _setLeftView(v: UIView) {
+        leftView = v
+    }
+    
+    func _setLeftViewMode(v: UITextField.ViewMode) {
+        leftViewMode = v
+    }
+}
+
+extension TextField: _TextFieldRightViewable {
+    func _setRightView(v: UIView) {
+        rightView = v
+    }
+    
+    func _setRightViewMode(v: UITextField.ViewMode) {
+        rightViewMode = v
     }
 }

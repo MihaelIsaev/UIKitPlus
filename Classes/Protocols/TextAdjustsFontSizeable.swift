@@ -6,6 +6,12 @@ public protocol TextAdjustsFontSizeable {
     
     @discardableResult
     func adjustsFontSizeToFitWidth(_ value: Bool) -> Self
+    
+    @discardableResult
+    func adjustsFontSizeToFitWidth(_ binding: UIKitPlus.State<Bool>) -> Self
+    
+    @discardableResult
+    func adjustsFontSizeToFitWidth<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _TextAdjustsFontSizeable: TextAdjustsFontSizeable {
@@ -23,5 +29,16 @@ extension TextAdjustsFontSizeable {
         guard let s = self as? _TextAdjustsFontSizeable else { return self }
         s._setAdjustsFontSizeToFitWidth(value)
         return self
+    }
+    
+    @discardableResult
+    public func adjustsFontSizeToFitWidth(_ binding: UIKitPlus.State<Bool>) -> Self {
+        binding.listen { self.adjustsFontSizeToFitWidth($0) }
+        return adjustsFontSizeToFitWidth(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func adjustsFontSizeToFitWidth<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
+        adjustsFontSizeToFitWidth(expressable.unwrap())
     }
 }

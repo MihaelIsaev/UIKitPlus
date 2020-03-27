@@ -99,6 +99,9 @@ extension Textable {
         guard let s = self as? _Textable else { return self }
         s._changeText(to: state.wrappedValue)
         state.listen { s._changeText(to: $0) }
+        if let s = self as? TextBindable {
+            s.bind(state)
+        }
         return self
     }
 
