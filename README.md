@@ -8,15 +8,19 @@
     <a href="https://cocoapods.org/pods/UIKit-Plus">
         <img src="https://img.shields.io/cocoapods/v/UIKit-Plus.svg" alt="Cocoapod">
     </a>
+    <a href="https://discord.gg/q5wCPYv">
+        <img src="https://img.shields.io/badge/CLICK_HERE_TO_DISCUSS_THIS_LIB-SWIFT.STREAM-FD6F32.svg" alt="Swift.Stream">
+    </a>
 </p>
-
-❤️ you will love UIKit more than ever ❤️
-
-Nothing is impossible! Build awesome responsive UIs even simpler than with SwiftUI cause you already know everything.
-
-With. Live. Preview. iOS9+.
-
-[EXAMPLES](https://github.com/MihaelIsaev/UIKitPlusExample)
+<p align="center">🚀❤️ YOU WILL LOVE <b>UIKit</b> MORE THAN EVER ❤️🚀</p>
+<br/>
+<p align="center"><b>Nothing is impossible!</b></p>
+<p align="center">Build awesome responsive UIs even simpler than with SwiftUI <b>cause you already know everything</b>.</p>
+<br/>
+<p align="center">With. Live. Preview. iOS9+.</p>
+<br/>
+<p align="center"><a href="https://github.com/MihaelIsaev/UIKitPlusExample" style="color:green;">A LOT OF EXAMPLES</a></p>
+<p align="center"><a href="https://discord.gg/q5wCPYv">SWIFT.STREAM COMMUNITY IN DISCORD</a></p>
 
 ## Requirements
 
@@ -589,7 +593,7 @@ View().corners(10, .topLeft, topRight)
 View().corners(10, .topLeft, .bottomRight)
 View().corners(10, .topLeft, topRight, .bottomLeft, .bottomRight)
 ```
-To make you view's corners round automatically by smaller side
+To make your view's corners round automatically by smaller side
 ```swift
 View().circle()
 ```
@@ -716,6 +720,14 @@ View().tint($boolState.map { $0 ? .red : .green })
 ## View Controller
 
 `// implemented. to be described`
+
+### Status bar style
+In any `ViewController` you can set `statusBarStyle` and all its values are iOS9+.
+```swift
+override var statusBarStyle: StatusBarStyle { .default }
+override var statusBarStyle: StatusBarStyle { .dark }
+override var statusBarStyle: StatusBarStyle { .light }
+```
 
 ## Gestures
 
@@ -1288,6 +1300,9 @@ ImpactFeedback.success()
 ImpactFeedback.selected()
 ImpactFeedback.bzz()
 ```
+# Localization
+
+# Root View Controller
 
 # Live View
 
