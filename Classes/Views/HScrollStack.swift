@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UHScrollStack = HScrollStack
 open class HScrollStack: ScrollView {
     lazy var stack = HStack().edgesToSuperview().heightToSuperview()
     

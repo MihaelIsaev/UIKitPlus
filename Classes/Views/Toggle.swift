@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UToggle = Toggle
 open class Toggle: UISwitch, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Toggle { self }
     public lazy var properties = Properties<Toggle>()

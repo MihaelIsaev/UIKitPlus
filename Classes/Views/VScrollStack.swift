@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UVScrollStack = VScrollStack
 open class VScrollStack: ScrollView {
     lazy var stack = VStack().edgesToSuperview().widthToSuperview()
     

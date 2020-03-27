@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+public typealias UTextField = TextField
 
 open class TextField: UITextField, UITextFieldDelegate, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: TextField { self }

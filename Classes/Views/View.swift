@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UView = View
 open class View: UIView, UIViewable, DeclarativeProtocolInternal {
     public var declarativeView: View { self }
     public lazy var properties = Properties<View>()

@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UActivityIndicator = ActivityIndicator
 open class ActivityIndicator: UIActivityIndicatorView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: ActivityIndicator { self }
     public lazy var properties = Properties<ActivityIndicator>()

@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UDatePicker = DatePicker
 open class DatePicker: UIDatePicker, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: DatePicker { self }
     public lazy var properties = Properties<DatePicker>()

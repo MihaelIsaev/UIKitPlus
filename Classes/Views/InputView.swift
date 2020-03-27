@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UInputView = InputView
 open class InputView: UIInputView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public static var defaultKeyboardHeight: CGFloat = 216
     

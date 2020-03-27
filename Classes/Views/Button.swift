@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UButton = Button
 open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Button { self }
     public lazy var properties = Properties<Button>()

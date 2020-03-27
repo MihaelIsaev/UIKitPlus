@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias USliderView = SliderView
 open class SliderView: UISlider, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: SliderView { self }
     public lazy var properties = Properties<SliderView>()

@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UImage = Image
 open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Image { self }
     public lazy var properties = Properties<Image>()

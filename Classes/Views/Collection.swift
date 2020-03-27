@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UCollection = Collection
 public class Collection: View, UICollectionViewDataSource {
     @State
     var reversed = false

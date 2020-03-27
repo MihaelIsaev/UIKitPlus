@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UVisualEffectView = VisualEffectView
 open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: VisualEffectView { self }
     public lazy var properties = Properties<VisualEffectView>()

@@ -3,6 +3,7 @@ import UIKit
 @available(*, deprecated, renamed: "VStack")
 public typealias VStackView = VStack
 
+public typealias UVStack = VStack
 open class VStack: _StackView {
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)

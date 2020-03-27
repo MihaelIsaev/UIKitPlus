@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UPickerView = PickerView
 open class PickerView: UIPickerView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: PickerView { self }
     public lazy var properties = Properties<PickerView>()

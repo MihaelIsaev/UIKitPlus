@@ -4,6 +4,7 @@ extension UIRefreshControl {
     public static var `default`: RefreshControl { .init() }
 }
 
+public typealias URefreshControl = RefreshControl
 open class RefreshControl: UIRefreshControl {
     override init() {
         super.init()

@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UScrollView = ScrollView
 open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: ScrollView { self }
     public lazy var properties = Properties<ScrollView>()

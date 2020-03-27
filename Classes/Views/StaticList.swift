@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UStaticList = StaticList
 open class StaticList: View {
     @State var views: [UIView] = []
     

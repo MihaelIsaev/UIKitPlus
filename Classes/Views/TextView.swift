@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UTextView = TextView
 /// aka `UITextView`
 open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: TextView { self }

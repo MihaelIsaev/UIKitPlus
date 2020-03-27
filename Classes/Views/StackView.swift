@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UStackView = StackView
 open class StackView: _StackView {
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)

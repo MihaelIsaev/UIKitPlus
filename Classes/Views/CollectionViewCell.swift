@@ -2,6 +2,7 @@ import UIKit
 
 public typealias CollectionCell = CollectionViewCell
 
+public typealias UCollectionViewCell = CollectionViewCell
 open class CollectionViewCell: UICollectionViewCell, DeclarativeProtocol, DeclarativeProtocolInternal, Cellable {
     public var declarativeView: CollectionViewCell { self }
     public lazy var properties = Properties<CollectionViewCell>()

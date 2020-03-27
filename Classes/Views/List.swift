@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UList = List
 public class List: View, UITableViewDataSource {
     @State var reversed = false
     

@@ -3,6 +3,7 @@ import UIKit
 @available(*, deprecated, renamed: "HStack")
 public typealias HStackView = HStack
 
+public typealias UHStack = HStack
 open class HStack: _StackView {
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)

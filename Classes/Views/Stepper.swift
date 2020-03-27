@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UStepper = Stepper
 open class Stepper: UIStepper, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Stepper { self }
     public lazy var properties = Properties<Stepper>()

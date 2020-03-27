@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UBarButtonItem = BarButtonItem
 open class BarButtonItem: UIBarButtonItem {
     public init(_ title: String?) {
         super.init()

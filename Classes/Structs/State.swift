@@ -10,6 +10,8 @@ public protocol Stateable: AnyState {
     func listen(_ listener: @escaping () -> Void)
 }
 
+public typealias UState = State
+
 @propertyWrapper
 public class State<Value>: Stateable {
     private var _originalValue: Value

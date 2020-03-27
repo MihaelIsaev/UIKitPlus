@@ -1,5 +1,6 @@
 import UIKit
 
+public typealias UWrapperView = WrapperView
 open class WrapperView<V>: View where V: UIView {
     public override var declarativeView: WrapperView { return self }
     
