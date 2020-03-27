@@ -1,0 +1,31 @@
+import UIKit
+
+final public class RotationGestureRecognizer: UIRotationGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
+    var _tracker = _GestureTracker()
+    var _delegator = _GestureDelegator()
+    
+    public init(rotation: CGFloat? = nil) {
+        super.init(target: _tracker, action: #selector(_tracker.handle))
+        if let rotation = rotation {
+            self.rotation = rotation
+        }
+        delegate = _delegator
+    }
+    
+    @discardableResult
+    public func rotation(_ v: CGFloat) -> Self {
+        rotation = v
+        return self
+    }
+    
+    @discardableResult
+    public func rotation(_ state: UIKitPlus.State<CGFloat>) -> Self {
+        state.listen { self.rotation = $0 }
+        return self
+    }
+
+    @discardableResult
+    public func rotation<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        rotation(expressable.unwrap())
+    }
+}
