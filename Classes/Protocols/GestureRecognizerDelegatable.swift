@@ -13,6 +13,7 @@ protocol _GestureRecognizerDelegatable: GestureRecognizerDelegatable {
     var _shouldRecognizeSimultaneouslyWithOtherGestureRecognizer: ((UIGestureRecognizer, UIGestureRecognizer) -> Bool)? { get set }
 }
 
+@available(iOS 13.0, *)
 extension GestureRecognizerDelegatable {
     @discardableResult
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -24,7 +25,7 @@ extension GestureRecognizerDelegatable {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive press: UIPress) -> Bool {
         guard let s = self as? _GestureRecognizerDelegatable else { return true }
         return s._shouldReceivePress?(gestureRecognizer, press)
-            ?? s._outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldReceive: press) ?? true
+            ?? s._outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldReceive: press)
             ?? true
     }
     
@@ -32,7 +33,7 @@ extension GestureRecognizerDelegatable {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         guard let s = self as? _GestureRecognizerDelegatable else { return true }
         return s._shouldReceiveTouch?(gestureRecognizer, touch)
-            ?? s._outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldReceive: touch) ?? true
+            ?? s._outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldReceive: touch)
             ?? true
     }
     
@@ -40,7 +41,7 @@ extension GestureRecognizerDelegatable {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let s = self as? _GestureRecognizerDelegatable else { return true }
         return s._shouldRequireFailureOfOtherGestureRecognizer?(gestureRecognizer, otherGestureRecognizer)
-            ?? s._outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldRequireFailureOf: otherGestureRecognizer) ?? true
+            ?? s._outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldRequireFailureOf: otherGestureRecognizer)
             ?? true
     }
     
@@ -48,7 +49,7 @@ extension GestureRecognizerDelegatable {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let s = self as? _GestureRecognizerDelegatable else { return true }
         return s._shouldBeRequiredToFailByOtherGestureRecognizer?(gestureRecognizer, otherGestureRecognizer)
-            ?? s._outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldBeRequiredToFailBy: otherGestureRecognizer) ?? true
+            ?? s._outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldBeRequiredToFailBy: otherGestureRecognizer)
             ?? true
     }
     
@@ -56,7 +57,50 @@ extension GestureRecognizerDelegatable {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let s = self as? _GestureRecognizerDelegatable else { return true }
         return s._shouldRecognizeSimultaneouslyWithOtherGestureRecognizer?(gestureRecognizer, otherGestureRecognizer)
-            ?? s._outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldRecognizeSimultaneouslyWith: otherGestureRecognizer) ?? true
+            ?? s._outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldRecognizeSimultaneouslyWith: otherGestureRecognizer)
+            ?? true
+    }
+}
+
+// for iOS lower than 13
+extension _GestureRecognizerDelegatable {
+    @discardableResult
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        _shouldBegin?(gestureRecognizer) ?? _outerDelegate?.gestureRecognizerShouldBegin?(gestureRecognizer) ?? true
+    }
+    
+    @discardableResult
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive press: UIPress) -> Bool {
+        _shouldReceivePress?(gestureRecognizer, press)
+            ?? _outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldReceive: press)
+            ?? true
+    }
+    
+    @discardableResult
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        _shouldReceiveTouch?(gestureRecognizer, touch)
+            ?? _outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldReceive: touch)
+            ?? true
+    }
+    
+    @discardableResult
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        _shouldRequireFailureOfOtherGestureRecognizer?(gestureRecognizer, otherGestureRecognizer)
+            ?? _outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldRequireFailureOf: otherGestureRecognizer)
+            ?? true
+    }
+    
+    @discardableResult
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        _shouldBeRequiredToFailByOtherGestureRecognizer?(gestureRecognizer, otherGestureRecognizer)
+            ?? _outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldBeRequiredToFailBy: otherGestureRecognizer)
+            ?? true
+    }
+    
+    @discardableResult
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        _shouldRecognizeSimultaneouslyWithOtherGestureRecognizer?(gestureRecognizer, otherGestureRecognizer)
+            ?? _outerDelegate?.gestureRecognizer?(gestureRecognizer, shouldRecognizeSimultaneouslyWith: otherGestureRecognizer)
             ?? true
     }
 }

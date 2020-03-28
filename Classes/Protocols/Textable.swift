@@ -81,6 +81,32 @@ extension _Textable {
 
 extension Textable {
     @discardableResult
+    public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
+        text(expressable.unwrap())
+    }
+
+    // MARK: Attributed
+    
+    @discardableResult
+    public func attributedText<V>(_ expressable: ExpressableState<V, AttrStr>) -> Self {
+        attributedText(expressable.unwrap())
+    }
+    
+    @discardableResult
+    public func attributedText<V>(_ expressable: ExpressableState<V, [AttrStr]>) -> Self {
+        attributedText(expressable.unwrap())
+    }
+    
+
+    @discardableResult
+    public func attributedText(_ attributedStrings: AttributedString...) -> Self {
+        attributedText(attributedStrings)
+    }
+}
+
+@available(iOS 13.0, *)
+extension Textable {
+    @discardableResult
     public func textChangeTransition(_ value: UIView.AnimationOptions) -> Self {
         guard let s = self as? _Textable else { return self }
         s._textChangeTransition = value
@@ -104,20 +130,13 @@ extension Textable {
         }
         return self
     }
-
-    @discardableResult
-    public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
-        text(expressable.unwrap())
-    }
-
+    
     @discardableResult
     public func text(@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) -> Self {
         guard let s = self as? _Textable else { return self }
         s._stateString = stateString
         return text(stateString())
     }
-
-    // MARK: Attributed
     
     @discardableResult
     public func attributedText(_ state: State<AttrStr>) -> Self {
@@ -128,27 +147,11 @@ extension Textable {
     }
     
     @discardableResult
-    public func attributedText<V>(_ expressable: ExpressableState<V, AttrStr>) -> Self {
-        attributedText(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func attributedText(_ state: State<[AttrStr]>) -> Self {
         guard let s = self as? _Textable else { return self }
         s._changeText(to: state.wrappedValue.joined())
         state.listen { s._changeText(to: $0.joined()) }
         return self
-    }
-    
-    @discardableResult
-    public func attributedText<V>(_ expressable: ExpressableState<V, [AttrStr]>) -> Self {
-        attributedText(expressable.unwrap())
-    }
-    
-
-    @discardableResult
-    public func attributedText(_ attributedStrings: AttributedString...) -> Self {
-        attributedText(attributedStrings)
     }
     
     @discardableResult
@@ -162,6 +165,63 @@ extension Textable {
     public func attributedText(@StateStringBuilder stateString: @escaping StateAttrStringBuilder.Handler) -> Self {
         guard let s = self as? _Textable else { return self }
         s._stateAttrString = stateString
+        return attributedText(stateString())
+    }
+}
+
+// for iOS lower than 13
+extension _Textable {
+    @discardableResult
+    public func textChangeTransition(_ value: UIView.AnimationOptions) -> Self {
+        _textChangeTransition = value
+        return self
+    }
+    
+    @discardableResult
+    public func text(_ text: String) -> Self {
+        _changeText(to: text)
+        return self
+    }
+
+    @discardableResult
+    public func text(_ state: State<String>) -> Self {
+        _changeText(to: state.wrappedValue)
+        state.listen { self._changeText(to: $0) }
+        if let s = self as? TextBindable {
+            s.bind(state)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func text(@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) -> Self {
+        _stateString = stateString
+        return text(stateString())
+    }
+    
+    @discardableResult
+    public func attributedText(_ state: State<AttrStr>) -> Self {
+        _changeText(to: state.wrappedValue.attributedString)
+        state.listen { self._changeText(to: $0.attributedString) }
+        return self
+    }
+    
+    @discardableResult
+    public func attributedText(_ state: State<[AttrStr]>) -> Self {
+        _changeText(to: state.wrappedValue.joined())
+        state.listen { self._changeText(to: $0.joined()) }
+        return self
+    }
+    
+    @discardableResult
+    public func attributedText(_ attributedStrings: [AttributedString]) -> Self {
+        _changeText(to: attributedStrings.joined())
+        return self
+    }
+
+    @discardableResult
+    public func attributedText(@StateStringBuilder stateString: @escaping StateAttrStringBuilder.Handler) -> Self {
+        _stateAttrString = stateString
         return attributedText(stateString())
     }
 }

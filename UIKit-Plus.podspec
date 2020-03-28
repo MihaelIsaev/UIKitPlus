@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name               = 'UIKit-Plus'
   s.module_name   = 'UIKitPlus'
-  s.version             = '1.15.2'
+  s.version             = '1.15.3'
   s.summary          = '🏰 Declarative UIKit wrapper inspired by SwiftUI'
 
   s.swift_version    = '5.2'
@@ -39,4 +39,7 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit'
+
+  # SwiftUI fix for <iOS13
+  s.xcconfig = { "OTHER_LDFLAGS" => "-weak_framework SwiftUI" }
 end

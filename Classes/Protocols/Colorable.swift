@@ -22,13 +22,6 @@ protocol _Colorable: Colorable {
 
 extension Colorable {
     @discardableResult
-    public func color(_ color: UIColor) -> Self {
-        guard let s = self as? _Colorable else { return self }
-        s._setColor(color)
-        return self
-    }
-    
-    @discardableResult
     public func color(_ number: Int) -> Self {
         color(number.color)
     }
@@ -42,5 +35,24 @@ extension Colorable {
     @discardableResult
     public func color<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
         color(expressable.unwrap())
+    }
+}
+
+@available(iOS 13.0, *)
+extension Colorable {
+    @discardableResult
+    public func color(_ color: UIColor) -> Self {
+        guard let s = self as? _Colorable else { return self }
+        s._setColor(color)
+        return self
+    }
+}
+
+// for iOS lower than 13
+extension _Colorable {
+    @discardableResult
+    public func color(_ color: UIColor) -> Self {
+        _setColor(color)
+        return self
     }
 }

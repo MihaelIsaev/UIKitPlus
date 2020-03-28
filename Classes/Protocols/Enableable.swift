@@ -25,13 +25,6 @@ extension Enableable {
     }
     
     @discardableResult
-    public func enabled(_ value: Bool) -> Self {
-        guard let s = self as? _Enableable else { return self }
-        s._setEnabled(value)
-        return self
-    }
-    
-    @discardableResult
     public func enabled(_ binding: UIKitPlus.State<Bool>) -> Self {
         binding.listen { self.enabled($0) }
         return enabled(binding.wrappedValue)
@@ -40,5 +33,25 @@ extension Enableable {
     @discardableResult
     public func enabled<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
         enabled(expressable.unwrap())
+    }
+}
+
+@available(iOS 13.0, *)
+extension Enableable {
+    @discardableResult
+    public func enabled(_ value: Bool) -> Self {
+        guard let s = self as? _Enableable else { return self }
+        s._setEnabled(value)
+        return self
+    }
+}
+
+// for iOS lower than 13
+extension _Enableable {
+    @discardableResult
+    public func enabled(_ value: Bool) -> Self {
+        guard let s = self as? _Enableable else { return self }
+        s._setEnabled(value)
+        return self
     }
 }

@@ -25,13 +25,6 @@ extension TextAdjustsFontSizeable {
     }
     
     @discardableResult
-    public func adjustsFontSizeToFitWidth(_ value: Bool) -> Self {
-        guard let s = self as? _TextAdjustsFontSizeable else { return self }
-        s._setAdjustsFontSizeToFitWidth(value)
-        return self
-    }
-    
-    @discardableResult
     public func adjustsFontSizeToFitWidth(_ binding: UIKitPlus.State<Bool>) -> Self {
         binding.listen { self.adjustsFontSizeToFitWidth($0) }
         return adjustsFontSizeToFitWidth(binding.wrappedValue)
@@ -40,5 +33,24 @@ extension TextAdjustsFontSizeable {
     @discardableResult
     public func adjustsFontSizeToFitWidth<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
         adjustsFontSizeToFitWidth(expressable.unwrap())
+    }
+}
+
+@available(iOS 13.0, *)
+extension TextAdjustsFontSizeable {
+    @discardableResult
+    public func adjustsFontSizeToFitWidth(_ value: Bool) -> Self {
+        guard let s = self as? _TextAdjustsFontSizeable else { return self }
+        s._setAdjustsFontSizeToFitWidth(value)
+        return self
+    }
+}
+
+// for iOS lower than 13s
+extension _TextAdjustsFontSizeable {
+    @discardableResult
+    public func adjustsFontSizeToFitWidth(_ value: Bool) -> Self {
+        _setAdjustsFontSizeToFitWidth(value)
+        return self
     }
 }

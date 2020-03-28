@@ -19,14 +19,6 @@ extension TextFieldLeftViewable {
     }
     
     @discardableResult
-    public func leftView(_ view: UIView, mode: UITextField.ViewMode) -> Self {
-        guard let s = self as? _TextFieldLeftViewable else { return self }
-        s._setLeftView(v: view)
-        s._setLeftViewMode(v: mode)
-        return self
-    }
-
-    @discardableResult
     public func leftView(_ view: @escaping () -> UIView) -> Self {
         leftView(mode: .always, view)
     }
@@ -34,5 +26,26 @@ extension TextFieldLeftViewable {
     @discardableResult
     public func leftView(mode: UITextField.ViewMode, _ view: @escaping () -> UIView) -> Self {
         leftView(view(), mode: mode)
+    }
+}
+
+@available(iOS 13.0, *)
+extension TextFieldLeftViewable {
+    @discardableResult
+    public func leftView(_ view: UIView, mode: UITextField.ViewMode) -> Self {
+        guard let s = self as? _TextFieldLeftViewable else { return self }
+        s._setLeftView(v: view)
+        s._setLeftViewMode(v: mode)
+        return self
+    }
+}
+
+// for iOS lower than 13
+extension _TextFieldLeftViewable {
+    @discardableResult
+    public func leftView(_ view: UIView, mode: UITextField.ViewMode) -> Self {
+        _setLeftView(v: view)
+        _setLeftViewMode(v: mode)
+        return self
     }
 }

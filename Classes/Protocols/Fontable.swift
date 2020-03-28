@@ -14,13 +14,6 @@ protocol _Fontable: Fontable {
 
 extension Fontable {
     @discardableResult
-    public func font(v: UIFont?) -> Self {
-        guard let s = self as? _Fontable else { return self }
-        s._setFont(v)
-        return self
-    }
-    
-    @discardableResult
     public func font(_ identifier: FontIdentifier, _ size: CGFloat) -> Self {
         font(v: UIFont(name: identifier.fontName, size: size))
     }
@@ -34,6 +27,25 @@ extension Fontable {
     @discardableResult
     public func font<V>(_ expressable: ExpressableState<V, UIFont>) -> Self {
         font(expressable.unwrap())
+    }
+}
+
+@available(iOS 13.0, *)
+extension Fontable {
+    @discardableResult
+    public func font(v: UIFont?) -> Self {
+        guard let s = self as? _Fontable else { return self }
+        s._setFont(v)
+        return self
+    }
+}
+
+// for iOS lower than 13
+extension _Fontable {
+    @discardableResult
+    public func font(v: UIFont?) -> Self {
+        _setFont(v)
+        return self
     }
 }
 

@@ -29,6 +29,19 @@ protocol _Keyboardable: Keyboardable {
 
 extension Keyboardable {
     @discardableResult
+    public func inputView(_ view: (Self) -> UIView) -> Self {
+        inputView(view(self))
+    }
+    
+    @discardableResult
+    public func inputAccessoryView(_ view: (Self) -> UIView) -> Self {
+        inputAccessoryView(view(self))
+    }
+}
+
+@available(iOS 13.0, *)
+extension Keyboardable {
+    @discardableResult
     public func keyboard(_ keyboard: UIKeyboardType) -> Self {
         guard let s = self as? _Keyboardable else { return self }
         s._setKeyboardType(keyboard)
@@ -62,14 +75,37 @@ extension Keyboardable {
         s._setInputAccessoryView(view)
         return self
     }
-    
+}
+
+// for iOS lower than 13
+extension _Keyboardable {
     @discardableResult
-    public func inputView(_ view: (Self) -> UIView) -> Self {
-        inputView(view(self))
+    public func keyboard(_ keyboard: UIKeyboardType) -> Self {
+        _setKeyboardType(keyboard)
+        return self
     }
     
     @discardableResult
-    public func inputAccessoryView(_ view: (Self) -> UIView) -> Self {
-        inputAccessoryView(view(self))
+    public func returnKeyType(_ type: UIReturnKeyType) -> Self {
+        _setReturnKeyType(type)
+        return self
+    }
+    
+    @discardableResult
+    public func keyboardAppearance(_ appearance: UIKeyboardAppearance) -> Self {
+        _setKeyboardAppearance(appearance)
+        return self
+    }
+    
+    @discardableResult
+    public func inputView(_ view: UIView) -> Self {
+        _setInputView(view)
+        return self
+    }
+    
+    @discardableResult
+    public func inputAccessoryView(_ view: UIView) -> Self {
+        _setInputAccessoryView(view)
+        return self
     }
 }
