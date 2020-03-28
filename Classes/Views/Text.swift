@@ -1,10 +1,8 @@
 import UIKit
 
-/// aka `UILabel`
-@available(*, deprecated, renamed: "Text")
 public typealias Label = Text
-
 public typealias UText = Text
+
 /// aka `UILabel`
 open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Text { self }
