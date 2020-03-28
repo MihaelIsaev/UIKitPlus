@@ -62,10 +62,16 @@ Without that your app gonna crash on iOS lower than 13 because it will try to lo
 ### 1. Delayed constraints
 
 Declare all the constraints in advance before adding view to superview.
+```swift
+Button("Click me").width(300).centerInSuperview()
+```
 
 ### 2. Declarativity
 
 Build everything declarative way. Any view. Any control. Even layers, gestures, colors, fonts, etc.
+```swift
+Text("Hello world").color(.red).alignment(.center).font(.sfProMedium, 15)
+```
 
 ### 3. Reactivity
 
@@ -109,8 +115,24 @@ Dynamic colors for light/dark mode. Stateable animations. Reactivity.
 ### 8. Everything and even more
 
 Built-in `ImageLoader`, no need in huge 3rd party libs. Just set URL to `Image`. Fully customizable and overridable.
+```swift
+Image(url: "")
+Image(url: "", defaultImage: UIImage(named: "emptyImage")) // set default image to show it while loading
+Image(url: "", loader: .defaultRelease) // release image before start loading
+Image(url: "", loader: .defaultImmediate) // immediate replace image after loading
+Image(url: "", loader: .defaultFade) // replace image with fade effect after loading
+Image(url: "", loader: ImageLoader()) // subclass from `ImageLoader` and set you custom loader here
+```
 
 Easy device model and type detection and ability to set values based on that.
+```swift
+Button("Click me").width(400 !! iPhone6(300) !! .iPhone5(200))
+```
+
+Localizable strings
+```swift
+String(.en("Hello"), .fr("Bonjour"), .ru("Привет"))
+```
 
 Custom trait collections.
 
@@ -1119,6 +1141,17 @@ extension Image {
 and then use them like this
 ```swift
 let backgroudImage = Image.welcomeBackground.edgesToSuperview()
+```
+
+#### With built-in `ImageLoader`
+
+```swift
+Image(url: "")
+Image(url: "", defaultImage: UIImage(named: "emptyImage")) // set default image to show it while loading
+Image(url: "", loader: .defaultRelease) // release image before start loading
+Image(url: "", loader: .defaultImmediate) // immediate replace image after loading
+Image(url: "", loader: .defaultFade) // replace image with fade effect after loading
+Image(url: "", loader: ImageLoader()) // subclass from `ImageLoader` and set you custom loader here
 ```
 
 ## InputView
