@@ -70,6 +70,16 @@ Build everything declarative way. Any view. Any control. Even layers, gestures, 
 ### 3. Reactivity
 
 Use `@State` for any property, react on any thing, map states to different types, etc.
+```swift
+@State var text = "Hello world"
+Text($text)
+
+@State var number = 5
+Text($number.map { "\($0)" })
+
+@State var bool = false
+Text($bool.map { $0 ? "enabled" : "disabled" })
+```
 
 ### 4. Purity
 
