@@ -15,7 +15,7 @@
         <img src="https://img.shields.io/badge/CLICK_HERE_TO_DISCUSS_THIS_LIB-SWIFT.STREAM-FD6F32.svg" alt="Swift.Stream">
     </a>
 </p>
-<p align="center">🚀❤️ YOU WILL LOVE <b>UIKit</b> MORE THAN EVER ❤️🚀</p>
+<p align="center">🚀❤️ YOU WILL LOVE <b>UIKIT</b> MORE THAN EVER ❤️🚀</p>
 <br/>
 <p align="center"><b>Nothing is impossible!</b></p>
 <p align="center">Build awesome responsive UIs even simpler than with SwiftUI <b>cause you already know everything</b>.</p>
@@ -51,7 +51,7 @@ https://github.com/MihaelIsaev/UIKitPlus
 
 #### IMPORTANT!
 
-To support iOS lwer than 13 you have to set `-weak_framework SwiftUI` in `Other Linker Flags` in `Build Settings`. 
+To support iOS lower than 13 you have to set `-weak_framework SwiftUI` in `Other Linker Flags` in `Build Settings`. 
 
 Without that your app gonna crash on iOS lower than 13 because it will try to load SwiftUI without luck.
 
