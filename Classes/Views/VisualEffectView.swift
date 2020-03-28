@@ -91,10 +91,11 @@ open class VisualEffectView: UIVisualEffectView, DeclarativeProtocol, Declarativ
     }
     
     private func switchEffect() {
-        if isDark {
-            self.effect = _darkEffect
+        if isDark, let de = _darkEffect {
+            effect = de
+            return
         }
-        self.effect = _defaultEffect
+        effect = _defaultEffect
     }
 }
 
