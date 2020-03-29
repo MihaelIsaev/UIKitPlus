@@ -156,7 +156,7 @@ public class Preview {
 }
 
 public protocol DeclarativePreview: SwiftUI.PreviewProvider {
-    @available(iOSApplicationExtension 13.0, *)
+    @available(iOS 13.0, *)
     static var preview: Preview { get }
 }
 
