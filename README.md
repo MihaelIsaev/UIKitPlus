@@ -131,6 +131,8 @@ Button("Click me").width(400 !! iPhone6(300) !! .iPhone5(200))
 
 Localizable strings
 ```swift
+Localization.default = .en // set any localization as default
+Localization.current = .en // override current locale
 String(.en("Hello"), .fr("Bonjour"), .ru("Привет"))
 ```
 
@@ -149,6 +151,7 @@ import SwiftUI
 struct MyViewController_Preview: PreviewProvider, UIKitPreviewProvider {
     static var colorScheme: PreviewColorScheme { .dark }
     static var device: UIKitPreviewDevice { .iPhoneX }
+    static var language: Language { .ru }
     static var view: UIView { MainViewController().view }
 }
 #endif
@@ -160,8 +163,9 @@ import SwiftUI
 struct MyButton_Preview: PreviewProvider, UIKitPreviewProvider {
     static var colorScheme: PreviewColorScheme { .light }
     static var layout: PreviewLayout { .fixed(width: 375, height: 60) }
+    static var language: Language { .fr }
     static var view: UIView {
-        UButton("Hello")
+        UButton(String(.en("Hello"), .fr("Bonjour"), .ru("Привет")))
             .circle()
             .background(.blackHole / .white)
             .color(.white / .black)
@@ -1423,6 +1427,12 @@ ImpactFeedback.bzz()
 # Localization 🇮🇸🇩🇪🇯🇵🇲🇽
 
 ```swift
+// set any localization as default
+Localization.default = .en
+
+// override current locale
+Localization.current = .en
+
 // create string relative to current language
 let myString = String(
     .en("Hello"),
