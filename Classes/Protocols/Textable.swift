@@ -81,6 +81,16 @@ extension _Textable {
 
 extension Textable {
     @discardableResult
+    public func text(_ localized: LocalizedString...) -> Self {
+        text(String(localized))
+    }
+    
+    @discardableResult
+    public func text(_ localized: [LocalizedString]) -> Self {
+        text(String(localized))
+    }
+    
+    @discardableResult
     public func text<V>(_ expressable: ExpressableState<V, String>) -> Self {
         text(expressable.unwrap())
     }

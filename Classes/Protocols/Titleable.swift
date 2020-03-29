@@ -20,6 +20,16 @@ protocol _Titleable: Titleable {
 
 extension Titleable {
     @discardableResult
+    public func title(_ localized: LocalizedString...) -> Self {
+        title(String(localized))
+    }
+    
+    @discardableResult
+    public func title(_ localized: [LocalizedString]) -> Self {
+        title(String(localized))
+    }
+    
+    @discardableResult
     public func title<V>(_ expressable: ExpressableState<V, String>) -> Self {
         title(expressable.unwrap())
     }

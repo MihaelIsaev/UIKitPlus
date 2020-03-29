@@ -40,6 +40,18 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
         self.text(text)
     }
     
+    public init (_ localized: LocalizedString...) {
+        super.init(frame: .zero)
+        _setup()
+        self.text(String(localized))
+    }
+    
+    public init (_ localized: [LocalizedString]) {
+        super.init(frame: .zero)
+        _setup()
+        self.text(String(localized))
+    }
+    
     public init (_ state: State<String>) {
         super.init(frame: .zero)
         _setup()

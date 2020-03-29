@@ -77,6 +77,18 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         setTitle(title, for: .normal)
     }
     
+    public init (_ localized: LocalizedString...) {
+        super.init(frame: .zero)
+        _setup()
+        setTitle(String(localized), for: .normal)
+    }
+    
+    public init (_ localized: [LocalizedString]) {
+        super.init(frame: .zero)
+        _setup()
+        setTitle(String(localized), for: .normal)
+    }
+    
     public init (_ state: UIKitPlus.State<String>) {
         super.init(frame: .zero)
         _setup()
@@ -154,6 +166,18 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     @discardableResult
     public func title(_ title: String, _ state: UIControl.State = .normal) -> Self {
         setTitle(title, for: state)
+        return self
+    }
+    
+    @discardableResult
+    public func title(_ localized: LocalizedString..., state: UIControl.State = .normal) -> Self {
+        setTitle(String(localized), for: state)
+        return self
+    }
+    
+    @discardableResult
+    public func title(_ localized: [LocalizedString], state: UIControl.State = .normal) -> Self {
+        setTitle(String(localized), for: state)
         return self
     }
     

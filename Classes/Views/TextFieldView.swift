@@ -35,7 +35,19 @@ open class TextField: UITextField, DeclarativeProtocol, DeclarativeProtocolInter
     
     fileprivate weak var outsideDelegate: TextFieldDelegate?
     
-    public init (_ text: String? = nil) {
+    public init (_ text: String?) {
+        super.init(frame: .zero)
+        self.text(text ?? "")
+        _setup()
+    }
+    
+    public init (_ localized: LocalizedString...) {
+        super.init(frame: .zero)
+        self.text(text ?? "")
+        _setup()
+    }
+    
+    public init (_ localized: [LocalizedString]) {
         super.init(frame: .zero)
         self.text(text ?? "")
         _setup()

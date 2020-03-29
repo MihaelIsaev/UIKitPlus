@@ -39,7 +39,7 @@ Good mood
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 1.17.1'
+pod 'UIKit-Plus', '~> 1.18.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
@@ -1452,6 +1452,22 @@ print(myString)
 
 By default current language is equal to `Locale.current` but you can change it by setting `Localizer.current = .en`.
 Also localizer have `default` language in case if user's language doesn't match any in your string, and you could set it just by calling `Localizer.default = .en`.
+
+Also you can use localizable strings directly in Button, Text, TextView, TextField and AttributedString
+```swift
+Text(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+
+TextView(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+    .placeholder(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+
+TextField(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+    .placeholder(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+
+Button(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+Button().title(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"), state: .highlighted)
+
+AttrStr(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+```
 
 # Root View Controller 🍀
 

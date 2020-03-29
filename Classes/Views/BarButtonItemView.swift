@@ -8,6 +8,18 @@ open class BarButtonItem: UIBarButtonItem {
         setup()
     }
     
+    public init(_ localized: LocalizedString...) {
+        super.init()
+        self.title = String(localized)
+        setup()
+    }
+    
+    public init(_ localized: [LocalizedString]) {
+        super.init()
+        self.title = String(localized)
+        setup()
+    }
+    
     // TODO: figure out how to implement `barButtonSystemItem`
 //    public init(_ barButtonSystemItem: UIBarButtonItem.SystemItem) {
 //        super.init()

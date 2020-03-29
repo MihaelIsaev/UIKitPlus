@@ -32,9 +32,21 @@ open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInterna
     /// See `AnyForeacheableView`
     public lazy var isVisibleInList: Bool = !isHidden
     
-    public init (_ text: String = "", textContainer: NSTextContainer? = nil) {
+    public init (_ text: String, textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)
         self.text(text)
+        _setup()
+    }
+    
+    public init (_ localized: LocalizedString..., textContainer: NSTextContainer? = nil) {
+        super.init(frame: .zero, textContainer: textContainer)
+        self.text(String(localized))
+        _setup()
+    }
+    
+    public init (_ localized: [LocalizedString], textContainer: NSTextContainer? = nil) {
+        super.init(frame: .zero, textContainer: textContainer)
+        self.text(String(localized))
         _setup()
     }
     

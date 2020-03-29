@@ -10,6 +10,14 @@ open class AttributedString {
         attributedString = .init(string: string)
     }
     
+    public init (_ localized: LocalizedString...) {
+        attributedString = .init(string: String(localized))
+    }
+    
+    public init (_ localized: [LocalizedString]) {
+        attributedString = .init(string: String(localized))
+    }
+    
     @discardableResult
     func addAttribute(_ attr: NSAttributedString.Key, _ value: Any, at range: ClosedRange<Int>? = nil) -> AttributedString {
         // TODO: check range

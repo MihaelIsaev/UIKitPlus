@@ -21,6 +21,16 @@ protocol _Placeholderable: Placeholderable {
 
 extension Placeholderable {
     @discardableResult
+    public func placeholder(_ localized: LocalizedString...) -> Self {
+        placeholder(String(localized))
+    }
+    
+    @discardableResult
+    public func placeholder(_ localized: [LocalizedString]) -> Self {
+        placeholder(String(localized))
+    }
+    
+    @discardableResult
     public func placeholder(_ binding: UIKitPlus.State<String>) -> Self {
         binding.listen { self.placeholder($0) }
         return placeholder(binding.wrappedValue)
