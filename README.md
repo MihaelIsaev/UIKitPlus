@@ -39,7 +39,7 @@ Good mood
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 1.15.3'
+pod 'UIKit-Plus', '~> 1.16.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
@@ -51,7 +51,7 @@ https://github.com/MihaelIsaev/UIKitPlus
 
 #### IMPORTANT!
 
-To support iOS lower than 13 you have to set `-weak_framework SwiftUI` in `Other Linker Flags` in `Build Settings`. 
+To support iOS lower than 13 you have to set `-weak_framework SwiftUI` in `Other Linker Flags` in `Build Settings`.
 
 Without that your app gonna crash on iOS lower than 13 because it will try to load SwiftUI without luck.
 

@@ -122,9 +122,12 @@ extension UIKitPreviewProvider {
     
     public static var title: String { "Preview" }
     
+    public static var language: Language { Localization().detectCurrentLanguage() }
+    
     @available(iOS 13.0, *)
     public static var previews: some SwiftUI.View {
-        view.liveView
+        Localization.current = language
+        return view.liveView
             .preferredColorScheme(colorScheme.val)
             .previewLayout(layout)
             .previewDisplayName(title)
