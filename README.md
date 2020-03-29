@@ -39,7 +39,7 @@ Good mood
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 1.16.0'
+pod 'UIKit-Plus', '~> 1.17.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
@@ -148,11 +148,14 @@ Live preview provided by SwiftUI (available only since macOS Catalina).
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
-struct MyViewController_Preview: PreviewProvider, UIKitPreviewProvider {
-    static var colorScheme: PreviewColorScheme { .dark }
-    static var device: UIKitPreviewDevice { .iPhoneX }
-    static var language: Language { .ru }
-    static var view: UIView { MainViewController().view }
+struct MyViewController_Preview: PreviewProvider, DeclarativePreview {
+    Preview {
+        MainViewController()
+    }
+    .colorScheme(.dark)
+    .device(.iPhoneX)
+    .language(.fr)
+    .rtl(true)
 }
 #endif
 ```
@@ -160,18 +163,21 @@ struct MyViewController_Preview: PreviewProvider, UIKitPreviewProvider {
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
-struct MyButton_Preview: PreviewProvider, UIKitPreviewProvider {
-    static var colorScheme: PreviewColorScheme { .light }
-    static var layout: PreviewLayout { .fixed(width: 375, height: 60) }
-    static var language: Language { .fr }
-    static var view: UIView {
-        UButton(String(.en("Hello"), .fr("Bonjour"), .ru("Привет")))
-            .circle()
-            .background(.blackHole / .white)
-            .color(.white / .black)
-            .height(54)
-            .edgesToSuperview(h: 8)
-            .centerYInSuperview()
+struct MyButton_Preview: PreviewProvider, DeclarativePreview {
+    static var preview: Preview {
+        Preview {
+            UButton(String(.en("Hello"), .fr("Bonjour"), .ru("Привет")))
+                .circle()
+                .background(.blackHole / .white)
+                .color(.white / .black)
+                .height(54)
+                .edgesToSuperview(h: 8)
+                .centerYInSuperview()
+        }
+        .colorScheme(.dark)
+        .layout(.fixed(width: 300, height: 64))
+        .language(.fr)
+        .rtl(true)
     }
 }
 #endif

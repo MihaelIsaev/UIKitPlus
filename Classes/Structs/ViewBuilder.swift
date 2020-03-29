@@ -35,3 +35,9 @@ import UIKit
         second
     }
 }
+
+extension UIViewController: ViewBuilderItem {
+    public var viewBuilderItems: [UIView] {
+        [View(inline: view).edgesToSuperview()]
+    }
+}

@@ -19,6 +19,7 @@ public struct LiveView: UIViewRepresentable {
     
     public func updateUIView(_ view: UIView, context: Context) {}
 }
+
 public enum PreviewColorScheme {
     case light, dark
     @available(iOS 13.0, *)
@@ -28,14 +29,6 @@ public enum PreviewColorScheme {
         case .dark: return .dark
         }
     }
-}
-
-public protocol UIKitPreviewProvider: SwiftUI.PreviewProvider {
-    static var view: UIView { get }
-    static var colorScheme: PreviewColorScheme { get }
-    static var device: UIKitPreviewDevice { get }
-    @available(iOS 13.0, *)
-    static var layout: PreviewLayout { get }
 }
 
 public struct UIKitPreviewDevice {
@@ -111,28 +104,73 @@ public struct UIKitPreviewDevice {
     public static var AppleWatchSeries4_44mm: Self { .init("Apple Watch Series 4 - 44mm") }
 }
 
+@available(iOS 13.0, *)
+public class Preview {
+    let view: UIView
+    var colorScheme: PreviewColorScheme = .light
+    var device: UIKitPreviewDevice = .iPhoneX
+    var layout: PreviewLayout = .device
+    var title: String = "Preview"
+    var language: Language = Localization().detectCurrentLanguage()
+    var semanticContentAttribute: UISemanticContentAttribute = .unspecified
+    
+    public init(@ViewBuilder block: ViewBuilder.SingleView) {
+        view = View(block: block).edgesToSuperview()
+    }
+    
+    @discardableResult
+    public func colorScheme(_ v: PreviewColorScheme) -> Self {
+        colorScheme = v
+        return self
+    }
+    
+    @discardableResult
+    public func device(_ v: UIKitPreviewDevice) -> Self {
+        device = v
+        return self
+    }
+    
+    @discardableResult
+    public func layout(_ v: PreviewLayout) -> Self {
+        layout = v
+        return self
+    }
+    
+    @discardableResult
+    public func title(_ v: String) -> Self {
+        title = v
+        return self
+    }
+    
+    @discardableResult
+    public func language(_ v: Language) -> Self {
+        language = v
+        return self
+    }
+    
+    @discardableResult
+    public func rtl(_ v: Bool) -> Self {
+        semanticContentAttribute = v ? .forceRightToLeft : .forceLeftToRight
+        return self
+    }
+}
 
-extension UIKitPreviewProvider {
-    public static var colorScheme: PreviewColorScheme { .light }
-    
-    public static var device: UIKitPreviewDevice { .iPhoneX }
-    
-    @available(iOS 13.0, *)
-    public static var layout: PreviewLayout { .device }
-    
-    public static var title: String { "Preview" }
-    
-    public static var language: Language { Localization().detectCurrentLanguage() }
-    
+public protocol DeclarativePreview: SwiftUI.PreviewProvider {
+    @available(iOSApplicationExtension 13.0, *)
+    static var preview: Preview { get }
+}
+
+extension DeclarativePreview {
     @available(iOS 13.0, *)
     public static var previews: some SwiftUI.View {
-        Localization.current = language
-        return view.liveView
-            .preferredColorScheme(colorScheme.val)
-            .previewLayout(layout)
-            .previewDisplayName(title)
+        Localization.current = preview.language
+        UIView.appearance().semanticContentAttribute = preview.semanticContentAttribute
+        return LiveView(preview.view)
+            .preferredColorScheme(preview.colorScheme.val)
+            .previewLayout(preview.layout)
+            .previewDisplayName(preview.title)
             .edgesIgnoringSafeArea(.all)
-            .previewDevice(device.name == "none" ? nil : PreviewDevice(rawValue: device.name))
+            .previewDevice(preview.device.name == "none" ? nil : PreviewDevice(rawValue: preview.device.name))
     }
 }
 #endif
