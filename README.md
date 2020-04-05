@@ -39,7 +39,7 @@ Good mood
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 1.18.0'
+pod 'UIKit-Plus', '~> 1.19.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
