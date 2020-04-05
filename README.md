@@ -57,6 +57,26 @@ Without that your app gonna crash on iOS lower than 13 because it will try to lo
 
 <img width="816" alt="Screenshot 2020-03-29 at 03 35 10" src="https://user-images.githubusercontent.com/1272610/77836323-bbd71e00-716e-11ea-88f8-3a6b135b99ec.png">
 
+## Templates 🍾
+
+To simplify life with UIKitPlus you can download our templates!
+
+For that run the following commands in console
+
+```bash
+git clone https://github.com/MihaelIsaev/UIKitPlus.git
+cp -R UIKitPlus/Templates ~/Library/Developer/Xcode/
+rm -rf UIKitPlus
+```
+
+After that you will be able to go to `File -> New -> Project` and choose `UIKitPlus` app! 🚀
+
+![UIKitPlus App Template Screenshot](https://user-images.githubusercontent.com/1272610/78511655-87d3ac80-77af-11ea-96f7-dc0b75287207.jpg)
+
+> 💡After project creation you have to install UIKitPlus manually either with Swift Package Manager or with CocoaPods
+
+And the same is available for file creation!
+
 ## Features
 
 ### 1. Delayed constraints

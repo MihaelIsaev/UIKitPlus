@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>Kind</key>
+	<string>Xcode.Xcode3.ProjectTemplateUnitKind</string>
+	<key>Identifier</key>
+	<string>com.mihaelisaev.dt.unit.manual.uikitplus</string>
+	<key>Ancestors</key>
+	<array/>
+	<key>Description</key>
+	<string>This template provides a starting point for an application that uses UIKitPlus library.</string>
+	<key>Concrete</key>
+	<true/>
+	<key>SortOrder</key>
+	<integer>-2</integer>
+	<key>NameOfInitialFileForEditor</key>
+	<string>MainViewController.swift</string>
+	<key>Project</key>
+	<dict>
+		<key>SDK</key>
+		<string>iphoneos</string>
+		<key>SharedSettings</key>
+		<dict>
+			<key>CLANG_WARN_UNGUARDED_AVAILABILITY</key>
+			<string>YES_AGGRESSIVE</string>
+			<key>GCC_C_LANGUAGE_STANDARD</key>
+			<string>gnu11</string>
+			<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+			<string>gnu++14</string>
+			<key>CLANG_CXX_LIBRARY</key>
+			<string>libc++</string>
+			<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+			<string>YES_ERROR</string>
+			<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+			<string>YES_AGGRESSIVE</string>
+			<key>CLANG_WARN_UNREACHABLE_CODE</key>
+			<string>YES</string>
+			<key>GCC_WARN_UNUSED_VARIABLE</key>
+			<string>YES</string>
+			<key>GCC_WARN_UNUSED_FUNCTION</key>
+			<string>YES</string>
+			<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+			<string>YES</string>
+			<key>CLANG_WARN_EMPTY_BODY</key>
+			<string>YES</string>
+			<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+			<string>YES</string>
+			<key>CLANG_WARN_INT_CONVERSION</key>
+			<string>YES</string>
+			<key>CLANG_WARN_BOOL_CONVERSION</key>
+			<string>YES</string>
+			<key>CLANG_WARN_DOCUMENTATION_COMMENTS</key>
+			<string>YES</string>
+			<key>CLANG_WARN_ENUM_CONVERSION</key>
+			<string>YES</string>
+			<key>CLANG_WARN_NON_LITERAL_NULL_CONVERSION</key>
+			<string>YES</string>
+			<key>CLANG_WARN_OBJC_LITERAL_CONVERSION</key>
+			<string>YES</string>
+			<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+			<string>YES_ERROR</string>
+			<key>CLANG_ANALYZER_NONNULL</key>
+			<string>YES</string>
+			<key>CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION</key>
+			<string>YES_AGGRESSIVE</string>
+			<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+			<string>YES</string>
+			<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+			<string>YES</string>
+			<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+			<string>YES_ERROR</string>
+			<key>CLANG_WARN_INFINITE_RECURSION</key>
+			<string>YES</string>
+			<key>CLANG_WARN_SUSPICIOUS_MOVE</key>
+			<string>YES</string>
+			<key>CLANG_WARN_COMMA</key>
+			<string>YES</string>
+			<key>CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING</key>
+			<string>YES</string>
+			<key>CLANG_WARN_STRICT_PROTOTYPES</key>
+			<string>YES</string>
+			<key>CLANG_WARN_RANGE_LOOP_ANALYSIS</key>
+			<string>YES</string>
+			<key>CLANG_ENABLE_OBJC_ARC</key>
+			<string>YES</string>
+			<key>CLANG_ENABLE_MODULES</key>
+			<string>YES</string>
+			<key>GCC_NO_COMMON_BLOCKS</key>
+			<string>YES</string>
+			<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+			<string>YES</string>
+			<key>ALWAYS_SEARCH_USER_PATHS</key>
+			<string>NO</string>
+			<key>COPY_PHASE_STRIP</key>
+			<string>NO</string>
+			<key>CLANG_ENABLE_OBJC_WEAK</key>
+			<string>YES</string>
+			<key>CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF</key>
+			<string>YES</string>
+			<key>CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS</key>
+			<string>YES</string>
+			<key>MTL_FAST_MATH</key>
+			<string>YES</string>
+			<key>SWIFT_VERSION</key>
+			<string>5.0.0</string>
+		</dict>
+		<key>Configurations</key>
+		<dict>
+			<key>Debug</key>
+			<dict>
+				<key>ONLY_ACTIVE_ARCH</key>
+				<string>YES</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<string>DEBUG=1 $(inherited)</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>INCLUDE_SOURCE</string>
+				<key>ENABLE_TESTABILITY</key>
+				<string>YES</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>DEBUG_INFORMATION_FORMAT</key>
+				<string>dwarf</string>
+				<key>SWIFT_OPTIMIZATION_LEVEL</key>
+				<string>-Onone</string>
+				<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
+				<string>DEBUG</string>
+			</dict>
+			<key>Release</key>
+			<dict>
+				<key>ENABLE_NS_ASSERTIONS</key>
+				<string>NO</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>NO</string>
+				<key>DEBUG_INFORMATION_FORMAT</key>
+				<string>dwarf-with-dsym</string>
+				<key>SWIFT_COMPILATION_MODE</key>
+				<string>wholemodule</string>
+			</dict>
+		</dict>
+	</dict>
+	<key>Platforms</key>
+	<array>
+		<string>com.apple.platform.iphoneos</string>
+	</array>
+	<key>Targets</key>
+	<array>
+		<dict>
+			<key>TargetIdentifier</key>
+			<string>com.apple.dt.iosApplicationTarget</string>
+			<key>Name</key>
+			<string>___PACKAGENAME___</string>
+			<key>ProductType</key>
+			<string>com.apple.product-type.application</string>
+			<key>Frameworks</key>
+			<array>
+				<string>Foundation</string>
+				<string>UIKit</string>
+			</array>
+			<key>BuildPhases</key>
+			<array>
+				<dict>
+					<key>Class</key>
+					<string>Sources</string>
+				</dict>
+				<dict>
+					<key>Class</key>
+					<string>Frameworks</string>
+				</dict>
+				<dict>
+					<key>Class</key>
+					<string>Resources</string>
+				</dict>
+			</array>
+			<key>SharedSettings</key>
+			<dict>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
+				<string>___VARIABLE_bundleIdentifierPrefix:bundleIdentifier___.___VARIABLE_productName:RFC1034Identifier___</string>
+				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
+				<string>AppIcon</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<string>$(inherited) @executable_path/Frameworks</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>9.3</string>
+				<key>OTHER_LDFLAGS</key>
+				<string>$(inherited) -weak_framework SwiftUI</string>
+				<key>INFOPLIST_FILE</key>
+				<string>___PACKAGENAME___/Info.plist</string>
+			</dict>
+			<key>Configurations</key>
+			<dict>
+				<key>Debug</key>
+				<dict/>
+				<key>Release</key>
+				<dict>
+					<key>VALIDATE_PRODUCT</key>
+					<string>YES</string>
+				</dict>
+			</dict>
+		</dict>
+	</array>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Identifier</key>
+			<string>productName</string>
+			<key>Required</key>
+			<true/>
+			<key>Name</key>
+			<string>Product Name:</string>
+			<key>NotPersisted</key>
+			<true/>
+			<key>Description</key>
+			<string>Your new product&apos;s name</string>
+			<key>EmptyReplacement</key>
+			<string>ProductName</string>
+			<key>Type</key>
+			<string>text</string>
+			<key>SortOrder</key>
+			<integer>-2</integer>
+		</dict>
+		<dict>
+			<key>Identifier</key>
+			<string>organizationName</string>
+			<key>Name</key>
+			<string>Organization Name:</string>
+			<key>Description</key>
+			<string>Your company&apos;s name</string>
+			<key>Type</key>
+			<string>text</string>
+			<key>Default</key>
+			<string>___FULLUSERNAME___</string>
+		</dict>
+		<dict>
+			<key>Identifier</key>
+			<string>bundleIdentifierPrefix</string>
+			<key>Required</key>
+			<true/>
+			<key>Name</key>
+			<string>Organization Identifier:</string>
+			<key>Description</key>
+			<string>Your organization&apos;s bundle identifier prefix</string>
+			<key>EmptyReplacement</key>
+			<string>com.yourcompany</string>
+			<key>Type</key>
+			<string>text</string>
+		</dict>
+		<dict>
+			<key>Identifier</key>
+			<string>bundleIdentifier</string>
+			<key>Name</key>
+			<string>Bundle Identifier:</string>
+			<key>NotPersisted</key>
+			<true/>
+			<key>Description</key>
+			<string>Your new product&apos;s bundle identifier</string>
+			<key>Default</key>
+			<string>___VARIABLE_bundleIdentifierPrefix:bundleIdentifier___.___VARIABLE_productName:RFC1034Identifier___</string>
+			<key>Type</key>
+			<string>static</string>
+		</dict>
+	</array>
+	<key>Nodes</key>
+	<array>
+		<string>Info.plist:iPhone</string>
+		<string>Info.plist:UIRequiredDeviceCapabilities:base</string>
+		<string>Info.plist:LaunchScreen</string>
+		<string>Info.plist:UISupportedInterfaceOrientations~iPhone</string>
+		<string>Info.plist:UISupportedInterfaceOrientations~iPad</string>
+		<string>Info.plist:Identifier</string>
+		<string>Info.plist:statusBarTintForNavBar</string>
+		<string>Info.plist:UIStatusBarHidden</string>
+		<string>Info.plist:LaunchScreen</string>
+		<string>Info.plist:PlistVersion</string>
+		<string>Info.plist:Executable</string>
+		<string>Info.plist:BundleName</string>
+		<string>Info.plist:DevelopmentRegion</string>
+		<string>Info.plist:PackageType</string>
+		<string>Info.plist:ProductVersion</string>
+		<string>Assets.xcassets</string>
+		<string>Base.lproj/LaunchScreen.storyboard</string>
+		<string>ViewControllers/MainViewController.swift</string>
+		<string>AppDelegate.swift</string>
+		<string>SceneDelegate.swift</string>
+		<string>ViewControllers/RootViewController.swift</string>
+		<string>ViewControllers/SplashViewController.swift</string>
+		<string>ViewControllers/WelcomeViewController.swift</string>
+		<string>Info.plist:ITSAppUsesNonExemptEncryption</string>
+		<string>Info.plist:NSAppTransportSecurity</string>
+		<string>Info.plist:UIAppFonts</string>
+		<string>DeepLinkManager.swift</string>
+		<string>Info.plist:UIApplicationSceneManifest</string>
+		<string>Extensions/Buttons.swift</string>
+		<string>Extensions/Colors.swift</string>
+		<string>Extensions/Fonts.swift</string>
+		<string>Extensions/Images.swift</string>
+	</array>
+	<key>Definitions</key>
+	<dict>
+		<key>Assets.xcassets</key>
+		<dict>
+			<key>Path</key>
+			<string>Images.xcassets</string>
+			<key>AssetGeneration</key>
+			<array>
+				<dict>
+					<key>Type</key>
+					<string>appicon</string>
+					<key>Name</key>
+					<string>AppIcon</string>
+					<key>Platforms</key>
+					<dict>
+						<key>iOS</key>
+						<string>true</string>
+					</dict>
+				</dict>
+			</array>
+			<key>SortOrder</key>
+			<integer>100</integer>
+		</dict>
+		<key>Info.plist</key>
+		<dict>
+			<key>Beginning</key>
+			<string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
+&lt;plist version=&quot;1.0&quot;&gt;
+&lt;dict&gt;
+</string>
+			<key>End</key>
+			<string>&lt;/dict&gt;
+&lt;/plist&gt;</string>
+			<key>Indent</key>
+			<integer>1</integer>
+			<key>SortOrder</key>
+			<integer>200</integer>
+			<key>TargetIdentifiers</key>
+			<array/>
+			<key>SubstituteMacros</key>
+			<true/>
+		</dict>
+		<key>Info.plist:iPhone</key>
+		<string>&lt;key&gt;LSRequiresIPhoneOS&lt;/key&gt;
+&lt;true/&gt;
+</string>
+		<key>Info.plist:UIRequiredDeviceCapabilities</key>
+		<dict>
+			<key>Beginning</key>
+			<string>&lt;key&gt;UIRequiredDeviceCapabilities&lt;/key&gt;
+&lt;array&gt;</string>
+			<key>End</key>
+			<string>&lt;/array&gt;</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>Info.plist:UIRequiredDeviceCapabilities:base</key>
+		<string>&lt;string&gt;armv7&lt;/string&gt;</string>
+		<key>Info.plist:statusBarTintForNavBar</key>
+		<string>&lt;key&gt;UIStatusBarTintParameters&lt;/key&gt;
+&lt;dict&gt;
+    &lt;key&gt;UINavigationBar&lt;/key&gt;
+    &lt;dict&gt;
+        &lt;key&gt;Style&lt;/key&gt;
+        &lt;string&gt;UIBarStyleDefault&lt;/string&gt;
+        &lt;key&gt;Translucent&lt;/key&gt;
+        &lt;false/&gt;
+    &lt;/dict&gt;
+&lt;/dict&gt;
+</string>
+		<key>Info.plist:UIStatusBarHidden</key>
+		<string>&lt;key&gt;UIStatusBarHidden&lt;/key&gt;
+&lt;true/&gt;
+</string>
+		<key>Info.plist:LaunchScreen</key>
+		<string>&lt;key&gt;UILaunchStoryboardName&lt;/key&gt;
+&lt;string&gt;LaunchScreen&lt;/string&gt;
+</string>
+		<key>Info.plist:Identifier</key>
+		<string>&lt;key&gt;CFBundleIdentifier&lt;/key&gt;
+&lt;string&gt;$(PRODUCT_BUNDLE_IDENTIFIER)&lt;/string&gt;
+</string>
+		<key>Info.plist:PlistVersion</key>
+		<string>&lt;key&gt;CFBundleInfoDictionaryVersion&lt;/key&gt;
+&lt;string&gt;6.0&lt;/string&gt;
+</string>
+		<key>Info.plist:Executable</key>
+		<string>&lt;key&gt;CFBundleExecutable&lt;/key&gt;
+&lt;string&gt;$(EXECUTABLE_NAME)&lt;/string&gt;
+</string>
+		<key>Info.plist:BundleName</key>
+		<string>&lt;key&gt;CFBundleName&lt;/key&gt;
+&lt;string&gt;$(PRODUCT_NAME)&lt;/string&gt;
+</string>
+		<key>Info.plist:DevelopmentRegion</key>
+		<string>&lt;key&gt;CFBundleDevelopmentRegion&lt;/key&gt;
+&lt;string&gt;$(DEVELOPMENT_LANGUAGE)&lt;/string&gt;
+</string>
+		<key>Info.plist:PackageType</key>
+		<string>&lt;key&gt;CFBundlePackageType&lt;/key&gt;
+&lt;string&gt;$(PRODUCT_BUNDLE_PACKAGE_TYPE)&lt;/string&gt;
+</string>
+		<key>Info.plist:ProductVersion</key>
+		<string>&lt;key&gt;CFBundleShortVersionString&lt;/key&gt;
+&lt;string&gt;1.0&lt;/string&gt;
+&lt;key&gt;CFBundleVersion&lt;/key&gt;
+&lt;string&gt;1.0.0&lt;/string&gt;
+</string>
+		<key>Info.plist:ITSAppUsesNonExemptEncryption</key>
+		<string>&lt;key&gt;ITSAppUsesNonExemptEncryption&lt;/key&gt;
+&lt;false/&gt;</string>
+		<key>Info.plist:NSAppTransportSecurity</key>
+		<string>&lt;key&gt;NSAppTransportSecurity&lt;/key&gt;
+&lt;dict&gt;
+    &lt;key&gt;NSAllowsArbitraryLoads&lt;/key&gt;
+    &lt;true/&gt;
+    &lt;key&gt;NSExceptionDomains&lt;/key&gt;
+    &lt;dict&gt;
+        &lt;key&gt;example.com&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;NSExceptionAllowsInsecureHTTPLoads&lt;/key&gt;
+            &lt;true/&gt;
+            &lt;key&gt;NSIncludesSubdomains&lt;/key&gt;
+            &lt;true/&gt;
+        &lt;/dict&gt;
+    &lt;/dict&gt;
+&lt;/dict&gt;</string>
+		<key>Info.plist:UISupportedInterfaceOrientations~iPhone</key>
+		<string>&lt;key&gt;UISupportedInterfaceOrientations&lt;/key&gt;
+&lt;array&gt;
+     &lt;string&gt;UIInterfaceOrientationPortrait&lt;/string&gt;
+     &lt;string&gt;UIInterfaceOrientationLandscapeLeft&lt;/string&gt;
+     &lt;string&gt;UIInterfaceOrientationLandscapeRight&lt;/string&gt;
+&lt;/array&gt;
+</string>
+		<key>Info.plist:UISupportedInterfaceOrientations~iPad</key>
+		<string>&lt;key&gt;UISupportedInterfaceOrientations~ipad&lt;/key&gt;
+&lt;array&gt;
+    &lt;string&gt;UIInterfaceOrientationPortrait&lt;/string&gt;
+    &lt;string&gt;UIInterfaceOrientationPortraitUpsideDown&lt;/string&gt;
+    &lt;string&gt;UIInterfaceOrientationLandscapeLeft&lt;/string&gt;
+    &lt;string&gt;UIInterfaceOrientationLandscapeRight&lt;/string&gt;
+&lt;/array&gt;
+</string>
+		<key>Info.plist:UIApplicationSceneManifest</key>
+		<string>&lt;key&gt;UIApplicationSceneManifest&lt;/key&gt;
+	&lt;dict&gt;
+		&lt;key&gt;UIApplicationSupportsMultipleScenes&lt;/key&gt;
+		&lt;false/&gt;
+		&lt;key&gt;UISceneConfigurations&lt;/key&gt;
+		&lt;dict&gt;
+			&lt;key&gt;UIWindowSceneSessionRoleApplication&lt;/key&gt;
+			&lt;array&gt;
+				&lt;dict&gt;
+					&lt;key&gt;UISceneConfigurationName&lt;/key&gt;
+					&lt;string&gt;Default Configuration&lt;/string&gt;
+					&lt;key&gt;UISceneDelegateClassName&lt;/key&gt;
+					&lt;string&gt;$(PRODUCT_MODULE_NAME).SceneDelegate&lt;/string&gt;
+				&lt;/dict&gt;
+			&lt;/array&gt;
+		&lt;/dict&gt;
+	&lt;/dict&gt;</string>
+		<key>DeepLinkManager.swift</key>
+		<dict>
+			<key>Path</key>
+			<string>DeepLinkManager.swift</string>
+			<key>SortOrder</key>
+			<integer>92</integer>
+		</dict>
+		<key>Base.lproj/LaunchScreen.storyboard</key>
+		<dict>
+			<key>Path</key>
+			<string>LaunchScreen.storyboard</string>
+			<key>SortOrder</key>
+			<integer>101</integer>
+		</dict>
+		<key>ViewControllers/MainViewController.swift</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>ViewControllers</string>
+			</array>
+			<key>Path</key>
+			<string>ViewControllers/MainViewController.swift</string>
+			<key>SortOrder</key>
+			<integer>4</integer>
+		</dict>
+		<key>AppDelegate.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>90</integer>
+			<key>Path</key>
+			<string>AppDelegate.swift</string>
+		</dict>
+		<key>SceneDelegate.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>91</integer>
+			<key>Path</key>
+			<string>SceneDelegate.swift</string>
+		</dict>
+		<key>ViewControllers/RootViewController.swift</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>ViewControllers</string>
+			</array>
+			<key>Path</key>
+			<string>ViewControllers/RootViewController.swift</string>
+			<key>SortOrder</key>
+			<integer>1</integer>
+		</dict>
+		<key>ViewControllers/SplashViewController.swift</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>ViewControllers</string>
+			</array>
+			<key>Path</key>
+			<string>ViewControllers/SplashViewController.swift</string>
+			<key>SortOrder</key>
+			<integer>2</integer>
+		</dict>
+		<key>ViewControllers/WelcomeViewController.swift</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>ViewControllers</string>
+			</array>
+			<key>Path</key>
+			<string>ViewControllers/WelcomeViewController.swift</string>
+			<key>SortOrder</key>
+			<integer>3</integer>
+		</dict>
+		<key>Extensions/Buttons.swift</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>Extensions</string>
+			</array>
+			<key>Path</key>
+			<string>Extensions/Buttons.swift</string>
+		</dict>
+		<key>Extensions/Colors.swift</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>Extensions</string>
+			</array>
+			<key>Path</key>
+			<string>Extensions/Colors.swift</string>
+		</dict>
+		<key>Extensions/Fonts.swift</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>Extensions</string>
+			</array>
+			<key>Path</key>
+			<string>Extensions/Fonts.swift</string>
+		</dict>
+		<key>Extensions/Images.swift</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>Extensions</string>
+			</array>
+			<key>Path</key>
+			<string>Extensions/Images.swift</string>
+		</dict>
+		<key>*:imports:importHeader:*</key>
+		<string></string>
+		<key>*:imports:importFramework:*</key>
+		<string>import ___*___</string>
+		<key>*:class:*</key>
+		<string></string>
+		<key>*:implementation</key>
+		<dict>
+			<key>Beginning</key>
+			<string>class ___*___ {
+</string>
+			<key>End</key>
+			<string>
+}
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>*:implementation:methods:init</key>
+		<dict>
+			<key>Beginning</key>
+			<string>override init() {
+    super.init()
+</string>
+			<key>End</key>
+			<string>}
+
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>*:imports:importCocoa</key>
+		<string>import UIKit</string>
+		<key>*:imports:importFoundation</key>
+		<string>import Foundation</string>
+		<key>*:implementation:viewDidLoad</key>
+		<dict>
+			<key>Beginning</key>
+			<string>override func viewDidLoad() {
+    super.viewDidLoad()
+    // Do any additional setup after loading the view.</string>
+			<key>End</key>
+			<string>}
+</string>
+			<key>Indent</key>
+			<integer>1</integer>
+		</dict>
+		<key>main.swift</key>
+		<dict>
+			<key>SortOrder</key>
+			<integer>999</integer>
+		</dict>
+		<key>main.swift:main</key>
+		<dict>
+			<key>Beginning</key>
+			<string></string>
+			<key>End</key>
+			<string></string>
+		</dict>
+	</dict>
+	<key>Variables</key>
+	<dict>
+		<key>Swift</key>
+		<dict>
+			<key>ibCustomModuleProvider</key>
+			<string>target</string>
+			<key>moduleNamePrefixForClasses</key>
+			<string>$(PRODUCT_MODULE_NAME).</string>
+		</dict>
+		<key>Objective-C</key>
+		<dict>
+			<key>ibCustomModuleProvider</key>
+			<string></string>
+			<key>moduleNamePrefixForClasses</key>
+			<string></string>
+		</dict>
+	</dict>
+</dict>
+</plist>
