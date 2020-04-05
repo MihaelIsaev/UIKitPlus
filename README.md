@@ -57,7 +57,7 @@ Without that your app gonna crash on iOS lower than 13 because it will try to lo
 
 <img width="816" alt="Screenshot 2020-03-29 at 03 35 10" src="https://user-images.githubusercontent.com/1272610/77836323-bbd71e00-716e-11ea-88f8-3a6b135b99ec.png">
 
-## Templates 🍾
+## Template! 🍾
 
 To simplify life with UIKitPlus you can download our templates!
 
