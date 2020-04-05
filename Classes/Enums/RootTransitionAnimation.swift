@@ -1,3 +1,3 @@
 public enum RootTransitionAnimation {
-    case none, fade
+    case none, dismiss, fade
 }

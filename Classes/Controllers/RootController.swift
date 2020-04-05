@@ -8,9 +8,9 @@ public typealias SimpleRootController = RootController<Never>
 open class RootController<DeeplinkType>: ViewController, RootControllerable {
     open override var preferredStatusBarStyle: UIStatusBarStyle { current.preferredStatusBarStyle }
     
-    public internal(set) var current: UIViewController = .init()
+    public internal(set) var current: UIViewController = NotImplementedViewController("nothing")
     
-    @State public var currentType: RootScreenType = .nothing
+    @State public internal(set) var currentType: RootScreenType = .nothing
     
     public var deeplink: DeeplinkType? {
         didSet {
@@ -29,7 +29,7 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
     /// By default shows `splashScreen`
     open var initialScreen: UIViewController { splashScreen }
     
-    open var shouldShowOnboardingBeforeMainScreen: Bool { return true }
+    open var shouldShowOnboardingBeforeMainScreen: Bool { true }
     
     required public override init() {
         super.init(nibName:  nil, bundle: nil)
@@ -48,66 +48,81 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
         current.didMove(toParent: self)
     }
     
-    open func showLoginScreen() {
-        if currentType == .login {
-            print("⚠️ Don't show login twice")
-            return
-        }
-        currentType = .login
-        replaceWithoutAnimation(loginScreen)
-    }
-    
     @discardableResult
+    @available(*, deprecated, message: "Please use `switch(to:)`")
     open func showOnboardingScreen() -> Bool {
-        guard let new = onboardingScreen else { return false }
-        if currentType == .onboarding {
-            print("⚠️ Don't show onboarding twice")
-            return false
-        }
-        currentType = .onboarding
-        replaceWithoutAnimation(new)
+        guard onboardingScreen != nil else { return false }
+        `switch`(to: .onboarding, animation: .none)
         return true
     }
     
+    @available(*, deprecated, message: "Please use `switch(to:)`")
+    open func showLoginScreen() {
+        `switch`(to: .login, animation: .none)
+    }
+    
+    @available(*, deprecated, message: "Please use `switch(to:)`")
     open func switchToLogout(beforeTransition: RootBeforeTransition? = nil, completion: RootSimpleCompletion? = nil) {
-        if currentType == .logout {
-            print("⚠️ Don't call switch to logout twice")
-            return
-        }
-        currentType = .logout
-        let logoutScreen = self.logoutScreen
-        beforeTransition?(logoutScreen)
-        animateDismissTransition(to: logoutScreen) {
-            self.currentType = .login
-            completion?()
-        }
+        `switch`(to: .logout, animation: .dismiss, beforeTransition: beforeTransition, completion: completion)
     }
     
+    @available(*, deprecated, message: "Please use `switch(to:)`")
     open func switchToMainScreen(beforeTransition: RootBeforeTransition? = nil, completion: RootSimpleCompletion? = nil) {
-        if currentType == .main {
-            print("⚠️ Don't call switch to main screen twice")
+        `switch`(to: .main, animation: .fade, beforeTransition: beforeTransition, completion: completion)
+    }
+    
+    open func `switch`(to type: RootScreenType, animation: RootTransitionAnimation, beforeTransition: RootBeforeTransition?, completion: RootSimpleCompletion?) {
+        if currentType == type {
+            print("⚠️ Don't show \(type) twice")
             return
         }
-        if shouldShowOnboardingBeforeMainScreen, showOnboardingScreen() { return }
-        currentType = .main
-        let mainScreen = self.mainScreen
-        beforeTransition?(mainScreen)
-        animateFadeTransition(to: mainScreen) { [weak self] in
-            if let deeplink = self?.deeplink {
-                self?.handleDeepLink(type: deeplink)
-            }
+        guard let vc = nextViewController(for: type) else { return }
+        if shouldShowOnboardingBeforeMainScreen, onboardingScreen != nil {
+            `switch`(to: .onboarding, animation: animation, beforeTransition: beforeTransition, completion: completion)
+            return
+        }
+        currentType = type
+        beforeTransition?(vc)
+        switch animation {
+        case .none:
+            replaceWithoutAnimation(loginScreen)
+            proceedDeeplink()
             completion?()
+        case .dismiss:
+            animateDismissTransition(to: vc) { [weak self] in
+                if type == .logout {
+                    self?.currentType = .login
+                }
+                self?.proceedDeeplink()
+                completion?()
+            }
+        case .fade:
+            animateFadeTransition(to: vc) { [weak self] in
+                if type == .logout {
+                    self?.currentType = .login
+                }
+                self?.proceedDeeplink()
+                completion?()
+            }
         }
     }
     
-    public func `switch`(to: UIViewController, as: RootScreenType, animation: RootTransitionAnimation, completion: RootSimpleCompletion? = nil) {
+    public func `switch`(to: UIViewController, as: RootScreenType, animation: RootTransitionAnimation, beforeTransition: RootBeforeTransition? = nil, completion: RootSimpleCompletion? = nil) {
         currentType = `as`
         switch animation {
         case .none:
+            beforeTransition?(to)
             replaceWithoutAnimation(to)
             proceedDeeplink()
             completion?()
+        case .dismiss:
+            beforeTransition?(to)
+            animateDismissTransition(to: to) {
+                self.proceedDeeplink()
+                completion?()
+            }
         case .fade:
+            beforeTransition?(to)
             animateFadeTransition(to: to) {
                 self.proceedDeeplink()
                 completion?()
@@ -138,6 +153,7 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
     
     private func animateFadeTransition(to new: UIViewController, completion: RootSimpleCompletion? = nil) {
         current.willMove(toParent: nil)
+        new.view.frame = self.view.bounds
         addChild(new)
         new.willMove(toParent: self)
         transition(from: current, to: new, duration: 0.3, options: [.transitionCrossDissolve, .curveEaseOut], animations: {}) { completed in
@@ -154,7 +170,6 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
         current.willMove(toParent: nil)
         addChild(new)
         new.view.frame = initialFrame
-        
         transition(from: current, to: new, duration: 0.3, options: [], animations: {
             new.view.frame = self.view.bounds
         }) { completed in
@@ -181,5 +196,67 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
         window.rootViewController = self
         window.makeKeyAndVisible()
         return window
+    }
+}
+
+extension UIViewController {
+    @available(iOSApplicationExtension, unavailable)
+    public var rootController: RootControllerable {
+        view.rootController
+    }
+}
+
+extension UIView {
+    @available(iOSApplicationExtension, unavailable)
+    public var rootController: RootControllerable {
+        if #available(iOS 13.0, *) {
+            guard
+                let scene = UIApplication.shared.connectedScenes.first(where: {
+                    ($0.delegate as? UIWindowSceneDelegate)?.window == self.window
+                }),
+                let delegate = scene.delegate as? UIWindowSceneDelegate,
+                let window = delegate.window,
+                let rootController = window?.rootViewController as? RootControllerable
+            else {
+                return appDelegateRootController
+            }
+            return rootController
+//            (!.delegate as! UIWindowSceneDelegate).window!!.rootViewController as! RootViewController
+//            UIApplication.shared.connectedScenes.first?.activationState = UIScene.ActivationState.foregroundActive
+//            (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window
+//            return window!.rootViewController as! RootViewController
+        } else {
+            return appDelegateRootController
+        }
+    }
+    
+    @available(iOSApplicationExtension, unavailable)
+    private var appDelegateRootController: RootControllerable {
+        guard
+            let delegate = UIApplication.shared.delegate
+        else {
+            #if DEBUG
+            fatalError("Unable to reach UIApplicationDelegate")
+            #else
+            return SimpleRootController()
+            #endif
+        }
+        return delegate.rootController
+    }
+}
+
+extension UIApplicationDelegate {
+    @available(iOSApplicationExtension, unavailable)
+    public var rootController: RootControllerable {
+        guard
+            let rootController = window??.rootViewController as? RootControllerable
+        else {
+            #if DEBUG
+            fatalError("Unable to reach RootViewController")
+            #else
+            return SimpleRootController()
+            #endif
+        }
+        return rootController
     }
 }
