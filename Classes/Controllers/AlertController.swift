@@ -123,7 +123,7 @@ extension UIAlertViewControllerable {
     
     @discardableResult
     public func action(_ title: String?, _ handler: @escaping (() -> Void)) -> Self {
-        action(title, handler)
+        action(title, .default, handler)
     }
     
     @discardableResult
@@ -133,12 +133,12 @@ extension UIAlertViewControllerable {
     
     @discardableResult
     public func destructive(_ title: String?, _ handler: @escaping (() -> Void)) -> Self {
-        action(title, handler)
+        action(title, .destructive, handler)
     }
     
     @discardableResult
     public func destructive(_ title: String?) -> Self {
-        action(title)
+        destructive(title) { _ in }
     }
     
     @discardableResult
