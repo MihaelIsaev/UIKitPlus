@@ -8,42 +8,42 @@ Create a `RootViewController.swift` in your project and inherit it from `RootCon
 import UIKitPlus
 
 class RootViewController: SwifRootViewController<DeeplinkType> {
-  // may be shown on app launch as initial view controller
-  override var splashScreen: UIViewController {
-    SplashViewController() // replace with yours
-  }
+    // may be shown on app launch as initial view controller
+    override var splashScreen: UIViewController {
+        SplashViewController() // replace with yours
+    }
 
-  // where user will be moved on `showLoginScreen`
-  override var loginScreen: UIViewController {
-    LoginViewController() // replace with yours
-  }
+    // where user will be moved on `showLoginScreen`
+    override var loginScreen: UIViewController {
+        LoginViewController() // replace with yours
+    }
 
-  // where user will be moved on `switchToLogout`
-  override var logoutScreen: UIViewController {
-    LoginViewController() // replace with yours
-  }
+    // where user will be moved on `switchToLogout`
+    override var logoutScreen: UIViewController {
+        LoginViewController() // replace with yours
+    }
 
-  // means your main view controller for authorized users
-  override var mainScreen: UIViewController {
-    MainViewController() // replace with yours
-  }
+    // means your main view controller for authorized users
+    override var mainScreen: UIViewController {
+        MainViewController() // replace with yours
+    }
 
-  // shows before main screen
-  override var onboardingScreen: UIViewController? {
-    // return something here to show it right after authorization
-    nil
-  }
+    // shows before main screen
+    override var onboardingScreen: UIViewController? {
+        // return something here to show it right after authorization
+        nil
+    }
 
-  // check authorization here and return proper screen
-  override var initialScreen: UIViewController {
-    Session.shared.isAuthorized ? splashScreen : loginScreen
-  }
+    // check authorization here and return proper screen
+    override var initialScreen: UIViewController {
+        Session.shared.isAuthorized ? splashScreen : loginScreen
+    }
 
-  // handle deep links here
-  override func handleDeepLink(type: DeeplinkType) {
-    /// check you deep link in switch/case
-    /// and go to the proper view controller
-  }
+    // handle deep links here
+    override func handleDeepLink(type: DeeplinkType) {
+        /// check you deep link in switch/case
+        /// and go to the proper view controller
+    }
 }
 ```
 
@@ -54,18 +54,18 @@ class RootViewController: SwifRootViewController<DeeplinkType> {
 ```swift
 @UIApplicationMain
 class AppDelegateBase: UIResponder, UIApplicationDelegate {
-  var window: UIWindow?
+    var window: UIWindow?
 
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    if #available(iOS 13.0, *) {
-      // use scene delegate
-    } else {
-      window = UIWindow(frame: UIScreen.main.bounds)
-      RootViewController().attach(to: window)
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        if #available(iOS 13.0, *) {
+            // use scene delegate
+        } else {
+            window = UIWindow(frame: UIScreen.main.bounds)
+            RootViewController().attach(to: window)
+        }
+        ShortcutParser.shared.registerShortcuts()
+        return true
     }
-    ShortcutParser.shared.registerShortcuts()
-    return true
-  }
 }
 ```
 
@@ -74,12 +74,12 @@ Configure `SceneDelegate`
 ```swift
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-  var window: UIWindow?
+    var window: UIWindow?
 
-  func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-    guard let _ = (scene as? UIWindowScene) else { return }
-    window = RootViewController().attach(to: scene)
-  }
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let _ = (scene as? UIWindowScene) else { return }
+        window = RootViewController().attach(to: scene)
+    }
 }
 ```
 
@@ -101,34 +101,34 @@ import Foundation
 import UIKit
 
 enum ShortcutKey: String {
-  case activity = "com.yourapp.activity"
-  case messages = "com.yourapp.messages"
+    case activity = "com.yourapp.activity"
+    case messages = "com.yourapp.messages"
 }
 
 class ShortcutParser {
-  static let shared = ShortcutParser()
-  private init() { }
+    static let shared = ShortcutParser()
+    private init() { }
 
-  func registerShortcuts() {
-    let activityIcon = UIApplicationShortcutIcon(type: .invitation)
-    let activityShortcutItem = UIApplicationShortcutItem(type: ShortcutKey.activity.rawValue, localizedTitle: "Recent Activity", localizedSubtitle: nil, icon: activityIcon, userInfo: nil)
+    func registerShortcuts() {
+        let activityIcon = UIApplicationShortcutIcon(type: .invitation)
+        let activityShortcutItem = UIApplicationShortcutItem(type: ShortcutKey.activity.rawValue, localizedTitle: "Recent Activity", localizedSubtitle: nil, icon: activityIcon, userInfo: nil)
 
-    let messageIcon = UIApplicationShortcutIcon(type: .message)
-    let messageShortcutItem = UIApplicationShortcutItem(type: ShortcutKey.messages.rawValue, localizedTitle: "Messages", localizedSubtitle: nil, icon: messageIcon, userInfo: nil)
+        let messageIcon = UIApplicationShortcutIcon(type: .message)
+        let messageShortcutItem = UIApplicationShortcutItem(type: ShortcutKey.messages.rawValue, localizedTitle: "Messages", localizedSubtitle: nil, icon: messageIcon, userInfo: nil)
 
-    UIApplication.shared.shortcutItems = [activityShortcutItem, messageShortcutItem]
-  }
-
-  func handleShortcut(_ shortcut: UIApplicationShortcutItem) -> DeeplinkType? {
-    switch shortcut.type {
-    case ShortcutKey.activity.rawValue:
-      return  .activity
-    case ShortcutKey.messages.rawValue:
-      return  .messages
-    default:
-      return nil
+        UIApplication.shared.shortcutItems = [activityShortcutItem, messageShortcutItem]
     }
-  }
+
+    func handleShortcut(_ shortcut: UIApplicationShortcutItem) -> DeeplinkType? {
+        switch shortcut.type {
+        case ShortcutKey.activity.rawValue:
+            return  .activity
+        case ShortcutKey.messages.rawValue:
+            return  .messages
+        default:
+            return nil
+        }
+    }
 }
 ```
 
@@ -138,31 +138,31 @@ import UIKitPlus
 
 // List your deeplinks in this enum
 enum DeeplinkType {
-  case messages
-  case activity
+    case messages
+    case activity
 }
 
 let Deeplinker = DeepLinkManager()
 class DeepLinkManager {
-  fileprivate init() {}
+    fileprivate init() {}
 
-  private var deeplinkType: DeeplinkType?
+    private var deeplinkType: DeeplinkType?
 
-  @discardableResult
-  func handleShortcut(item: UIApplicationShortcutItem) -> Bool {
-    deeplinkType = ShortcutParser.shared.handleShortcut(item)
-    return deeplinkType != nil
-  }
-
-  // check existing deepling and perform action
-  func checkDeepLink() {
-    if let rootViewController = AppDelegate.shared.rootViewController as? RootViewController {
-      rootViewController.deeplink = deeplinkType
+    @discardableResult
+    func handleShortcut(item: UIApplicationShortcutItem) -> Bool {
+        deeplinkType = ShortcutParser.shared.handleShortcut(item)
+        return deeplinkType != nil
     }
 
-    // reset deeplink after handling
-    self.deeplinkType = nil
-  }
+    // check existing deepling and perform action
+    func checkDeepLink() {
+        if let rootViewController = AppDelegate.shared.rootViewController as? RootViewController {
+            rootViewController.deeplink = deeplinkType
+        }
+
+        // reset deeplink after handling
+        self.deeplinkType = nil
+    }
 }
 
 ```
@@ -171,37 +171,39 @@ Configure `AppDelegate`
 ```swift
 @UIApplicationMain
 class AppDelegateBase: UIResponder, UIApplicationDelegate {
-  var window: UIWindow?
+    var window: UIWindow?
 
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    if #available(iOS 13.0, *) {
-      // use scene delegate
-    } else {
-      window = UIWindow(frame: UIScreen.main.bounds)
-      RootViewController().attach(to: window)
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        if #available(iOS 13.0, *) {
+            // use scene delegate
+        } else {
+            window = UIWindow(frame: UIScreen.main.bounds)
+            RootViewController().attach(to: window)
+        }
+        ShortcutParser.shared.registerShortcuts()
+        return true
     }
-    ShortcutParser.shared.registerShortcuts()
-    return true
-  }
 
-  @available(iOS 13.0, *)
-  func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-    UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-  }
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        super.applicationDidBecomeActive(application)
+        Deeplinker.checkDeepLink()
+    }
 
-  @available(iOS 13.0, *)
-  func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {}
+    // MARK: Shortcuts
 
-  override func applicationDidBecomeActive(_ application: UIApplication) {
-    super.applicationDidBecomeActive(application)
-    Deeplinker.checkDeepLink()
-  }
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        completionHandler(Deeplinker.handleShortcut(item: shortcutItem))
+    }
 
-  // MARK: Shortcuts
+    // MARK: UISceneSession Lifecycle
 
-  func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-    completionHandler(Deeplinker.handleShortcut(item: shortcutItem))
-  }
+    @available(iOS 13.0, *)
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    }
+
+    @available(iOS 13.0, *)
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {}
 }
 ```
 
@@ -210,11 +212,11 @@ Configure `SceneDelegate`
 ```swift
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-  var window: UIWindow?
+    var window: UIWindow?
 
-  func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-    guard let _ = (scene as? UIWindowScene) else { return }
-    window = RootViewController().attach(to: scene)
-  }
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let _ = (scene as? UIWindowScene) else { return }
+        window = RootViewController().attach(to: scene)
+    }
 }
 ```
