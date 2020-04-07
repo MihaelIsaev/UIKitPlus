@@ -8,6 +8,7 @@
     <a href="https://swift.org">
         <img src="https://img.shields.io/badge/iOS-9+-brightgreen.svg" alt="Swift 5.2">
     </a>
+    <img src="https://img.shields.io/badge/iPadOS+Catalyst-✓-brightgreen.svg" alt="iPadOS and Catalyst support">
     <a href="https://cocoapods.org/pods/UIKit-Plus">
         <img src="https://img.shields.io/cocoapods/v/UIKit-Plus.svg" alt="Cocoapod">
     </a>
