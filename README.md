@@ -151,7 +151,7 @@ Button("Click me").width(400 !! iPhone6(300) !! .iPhone5(200))
 
 Localizable strings
 ```swift
-Localization.default = .en // set any localization as default
+Localization.default = .en // set any localization as default to use it with not covered languages
 Localization.current = .en // override current locale
 String(.en("Hello"), .fr("Bonjour"), .ru("Привет"))
 ```
