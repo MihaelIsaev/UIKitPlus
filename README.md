@@ -217,13 +217,17 @@ struct MyButton_Preview: PreviewProvider, DeclarativePreview {
 
 #### Preview group 🔥
 
-It is just convenience way to create multiple previews inside one struct, but it has limitations related to `rtl` and `language` properties which should be set to whole group
+It is just convenience way to create multiple previews inside one struct
+
+But it has limitations:
+- only 10 previews inside group (SwiftUI's limitation)
+- `rtl` and `language` properties can be set only to group, not to previews directly
 
 ```swift
 #if canImport(SwiftUI)
 import SwiftUI
 @available(iOS 13.0, *)
-struct MyViewController_Preview: PreviewProvider, DeclarativePreviewGroup {
+struct MyPreviewGroup_Preview: PreviewProvider, DeclarativePreviewGroup {
     static var previewGroup: PreviewGroup {
         PreviewGroup { // 1 to 10 previews inside
             Preview {
