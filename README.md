@@ -241,7 +241,8 @@ struct MyPreviewGroup_Preview: PreviewProvider, DeclarativePreviewGroup {
             .colorScheme(.light)
             .device(.iPhoneX)
             Preview {
-                UButton(String(.en("Hello"), .fr("Bonjour"), .ru("Привет"))) // in this group title will be shown in `fr`
+                // in this group title will be shown in `fr` language
+                UButton(String(.en("Hello"), .fr("Bonjour"), .ru("Привет")))
                     .circle()
                     .background(.blackHole / .white)
                     .color(.white / .black)
