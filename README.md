@@ -131,7 +131,7 @@ Declare views or its styles in extensions. Subclass views. Use all the power of 
 
 ### 7. All modern features
 
-Dynamic colors for light/dark mode. Stateable animations. Reactivity.
+Diffable data-source (yes yes for iOS9+). Dynamic colors for light/dark mode. Stateable animations. Reactivity.
 
 ### 8. Everything and even more
 
