@@ -166,7 +166,7 @@ Live preview provided by SwiftUI (available only since macOS Catalina).
 > The only problem we have is that since names of views are the same in `UIKitPlus` and `SwiftUI` we should use aliases like `UButton` for `Button` or `UView` for `View`, so everything with `U` prefix. It is only necessary if you want to use live previews, otherwise there is no need to import `SwiftUI`, so no name conflicts.
 
 ```swift
-#if canImport(SwiftUI) && DEBUG
+#if canImport(SwiftUI)
 import SwiftUI
 @available(iOS 13.0, *)
 struct MyViewController_Preview: PreviewProvider, DeclarativePreview {
@@ -181,7 +181,7 @@ struct MyViewController_Preview: PreviewProvider, DeclarativePreview {
 #endif
 ```
 ```swift
-#if canImport(SwiftUI) && DEBUG
+#if canImport(SwiftUI)
 import SwiftUI
 @available(iOS 13.0, *)
 struct MyButton_Preview: PreviewProvider, DeclarativePreview {
