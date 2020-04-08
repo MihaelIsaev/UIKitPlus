@@ -219,8 +219,8 @@ struct MyButton_Preview: PreviewProvider, DeclarativePreview {
 
 It is just convenience way to create multiple previews inside one struct
 
-But it has limitations:
-- only 10 previews inside group (SwiftUI's limitation)
+Limitations:
+- only 10 previews inside group
 - `rtl` and `language` properties can be set only to group, not to previews directly
 
 ```swift
@@ -240,13 +240,17 @@ struct MyPreviewGroup_Preview: PreviewProvider, DeclarativePreviewGroup {
             }
             .colorScheme(.light)
             .device(.iPhoneX)
-            UButton(String(.en("Hello"), .fr("Bonjour"), .ru("Привет"))) // in this group title will be shown in `fr`
-                .circle()
-                .background(.blackHole / .white)
-                .color(.white / .black)
-                .height(54)
-                .edgesToSuperview(h: 8)
-                .centerYInSuperview()
+            Preview {
+                UButton(String(.en("Hello"), .fr("Bonjour"), .ru("Привет"))) // in this group title will be shown in `fr`
+                    .circle()
+                    .background(.blackHole / .white)
+                    .color(.white / .black)
+                    .height(54)
+                    .edgesToSuperview(h: 8)
+                    .centerYInSuperview()
+            }
+            .colorScheme(.dark)
+            .layout(.fixed(width: 300, height: 64))
         }
         .language(.fr) // limited to group
         .rtl(true) // limited to group
