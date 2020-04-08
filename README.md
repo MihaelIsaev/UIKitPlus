@@ -217,7 +217,7 @@ struct MyButton_Preview: PreviewProvider, DeclarativePreview {
 
 #### Preview group 🔥
 
-It is just convenience way to create multiple previews inside one struct
+It is just convenient way to create multiple previews inside one struct
 
 Limitations:
 - only 10 previews inside group
