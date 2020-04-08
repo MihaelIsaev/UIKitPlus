@@ -1,5 +1,6 @@
 import UIKit
 
+#if canImport(SwiftUI) && DEBUG
 @available(iOS 13.0, *)
 public protocol PreviewBuilderItem {
     var previewBuilderItems: [Preview] { get }
@@ -20,3 +21,4 @@ public struct PreviewBuilderItems: PreviewBuilderItem {
 extension Preview: PreviewBuilderItem {
     public var previewBuilderItems: [Preview] { [self] }
 }
+#endif
