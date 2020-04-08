@@ -172,7 +172,7 @@ Live preview provided by SwiftUI (available only since macOS Catalina).
 `ViewController` example
 
 ```swift
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
 struct MyViewController_Preview: PreviewProvider, DeclarativePreview {
@@ -192,7 +192,7 @@ struct MyViewController_Preview: PreviewProvider, DeclarativePreview {
 `View` example
 
 ```swift
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
 struct MyButton_Preview: PreviewProvider, DeclarativePreview {
@@ -224,7 +224,7 @@ Limitations:
 - `rtl` and `language` properties can be set only to group, not to previews directly
 
 ```swift
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
 struct MyPreviewGroup_Preview: PreviewProvider, DeclarativePreviewGroup {
