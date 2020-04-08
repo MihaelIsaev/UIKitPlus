@@ -153,6 +153,15 @@ public class Preview {
         semanticContentAttribute = v ? .forceRightToLeft : .forceLeftToRight
         return self
     }
+    
+    fileprivate var liveView: some SwiftUI.View {
+        LiveView(view)
+            .preferredColorScheme(colorScheme.val)
+            .previewLayout(layout)
+            .previewDisplayName(title)
+            .edgesIgnoringSafeArea(.all)
+            .previewDevice(device.name == "none" ? nil : PreviewDevice(rawValue: device.name))
+    }
 }
 
 public protocol DeclarativePreview: SwiftUI.PreviewProvider {
@@ -165,12 +174,52 @@ extension DeclarativePreview {
     public static var previews: some SwiftUI.View {
         Localization.current = preview.language
         UIView.appearance().semanticContentAttribute = preview.semanticContentAttribute
-        return LiveView(preview.view)
-            .preferredColorScheme(preview.colorScheme.val)
-            .previewLayout(preview.layout)
-            .previewDisplayName(preview.title)
-            .edgesIgnoringSafeArea(.all)
-            .previewDevice(preview.device.name == "none" ? nil : PreviewDevice(rawValue: preview.device.name))
+        return preview.liveView
+    }
+}
+
+public protocol DeclarativePreviewGroup: SwiftUI.PreviewProvider {
+    @available(iOS 13.0, *)
+    static var previewGroup: PreviewGroup { get }
+}
+
+extension DeclarativePreviewGroup {
+    @available(iOS 13.0, *)
+    public static var previews: some SwiftUI.View {
+        Localization.current = previewGroup.language
+        UIView.appearance().semanticContentAttribute = previewGroup.semanticContentAttribute
+        return SwiftUI.Group {
+            if previewGroup.previews.count > 0 {
+                previewGroup.previews[0].liveView
+            }
+            if previewGroup.previews.count > 1 {
+                previewGroup.previews[1].liveView
+            }
+            if previewGroup.previews.count > 2 {
+                previewGroup.previews[2].liveView
+            }
+            if previewGroup.previews.count > 3 {
+                previewGroup.previews[3].liveView
+            }
+            if previewGroup.previews.count > 4 {
+                previewGroup.previews[4].liveView
+            }
+            if previewGroup.previews.count > 5 {
+                previewGroup.previews[5].liveView
+            }
+            if previewGroup.previews.count > 6 {
+                previewGroup.previews[6].liveView
+            }
+            if previewGroup.previews.count > 7 {
+                previewGroup.previews[7].liveView
+            }
+            if previewGroup.previews.count > 8 {
+                previewGroup.previews[8].liveView
+            }
+            if previewGroup.previews.count > 9 {
+                previewGroup.previews[9].liveView
+            }
+        }
     }
 }
 #endif

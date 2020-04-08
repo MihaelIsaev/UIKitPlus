@@ -40,7 +40,7 @@ Good mood
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 1.19.0'
+pod 'UIKit-Plus', '~> 1.20.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
@@ -165,21 +165,32 @@ Live preview provided by SwiftUI (available only since macOS Catalina).
 
 > The only problem we have is that since names of views are the same in `UIKitPlus` and `SwiftUI` we should use aliases like `UButton` for `Button` or `UView` for `View`, so everything with `U` prefix. It is only necessary if you want to use live previews, otherwise there is no need to import `SwiftUI`, so no name conflicts.
 
+#### Preview single item
+
+> 💡 You can create as many preview structs as you need
+
+`ViewController` example
+
 ```swift
 #if canImport(SwiftUI)
 import SwiftUI
 @available(iOS 13.0, *)
 struct MyViewController_Preview: PreviewProvider, DeclarativePreview {
-    Preview {
-        MainViewController()
+    static var preview: Preview {
+        Preview {
+            MainViewController()
+        }
+        .colorScheme(.dark)
+        .device(.iPhoneX)
+        .language(.fr)
+        .rtl(true)
     }
-    .colorScheme(.dark)
-    .device(.iPhoneX)
-    .language(.fr)
-    .rtl(true)
 }
 #endif
 ```
+
+`View` example
+
 ```swift
 #if canImport(SwiftUI)
 import SwiftUI
@@ -199,6 +210,42 @@ struct MyButton_Preview: PreviewProvider, DeclarativePreview {
         .layout(.fixed(width: 300, height: 64))
         .language(.fr)
         .rtl(true)
+    }
+}
+#endif
+```
+
+#### Preview group 🔥
+
+It is just convenience way to create multiple previews inside one struct, but it has limitations related to `rtl` and `language` properties which should be set to whole group
+
+```swift
+#if canImport(SwiftUI)
+import SwiftUI
+@available(iOS 13.0, *)
+struct MyViewController_Preview: PreviewProvider, DeclarativePreviewGroup {
+    static var previewGroup: PreviewGroup {
+        PreviewGroup { // 1 to 10 previews inside
+            Preview {
+                MainViewController()
+            }
+            .colorScheme(.dark)
+            .device(.iPhoneX)
+            Preview {
+                MainViewController()
+            }
+            .colorScheme(.light)
+            .device(.iPhoneX)
+            UButton(String(.en("Hello"), .fr("Bonjour"), .ru("Привет"))) // in this group title will be shown in `fr`
+                .circle()
+                .background(.blackHole / .white)
+                .color(.white / .black)
+                .height(54)
+                .edgesToSuperview(h: 8)
+                .centerYInSuperview()
+        }
+        .language(.fr) // limited to group
+        .rtl(true) // limited to group
     }
 }
 #endif
