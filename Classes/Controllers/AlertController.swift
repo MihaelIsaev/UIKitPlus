@@ -20,7 +20,7 @@ open class ActionSheet: UIAlertController, _Titleable, _Messageable, _UIAlertVie
 }
 
 open class AlertController: UIAlertController, _Titleable, _Messageable, _UIAlertViewControllerable {
-    public convenience init(_ style: UIAlertController.Style = .alert) {
+    public convenience init(_ style: UIAlertController.Style) {
         self.init(title: nil, message: nil, preferredStyle: style)
     }
     
