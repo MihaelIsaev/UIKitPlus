@@ -1,7 +1,7 @@
 import UIKit
 
-public typealias UCollection = Collection
-public class Collection: View, UICollectionViewDataSource {
+public typealias Collection = UCollection
+public class UCollection: View, UICollectionViewDataSource {
     @State
     var reversed = false
     
@@ -147,12 +147,12 @@ public class Collection: View, UICollectionViewDataSource {
     }
 }
 
-extension Collection: UICollectionViewDelegate {
+extension UCollection: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {}
     public func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool { false }
 }
 
-extension Collection: UIScrollViewDelegate {
+extension UCollection: UIScrollViewDelegate {
     @discardableResult
     public func contentOffset(_ position: CGPoint, animated: Bool = true) -> Self {
         collectionView.setContentOffset(position, animated: animated)
@@ -176,7 +176,7 @@ extension Collection: UIScrollViewDelegate {
     }
 }
 
-extension Collection {
+extension UCollection {
     // MARK: Indicators
     
     @discardableResult

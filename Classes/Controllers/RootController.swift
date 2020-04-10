@@ -200,6 +200,8 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
 }
 
 extension UIViewController {
+    @available(macCatalystApplicationExtension, unavailable)
+    @available(OSXApplicationExtension, unavailable)
     @available(iOSApplicationExtension, unavailable)
     public var rootController: RootControllerable {
         view.rootController
@@ -207,6 +209,8 @@ extension UIViewController {
 }
 
 extension UIView {
+    @available(macCatalystApplicationExtension, unavailable)
+    @available(OSXApplicationExtension, unavailable)
     @available(iOSApplicationExtension, unavailable)
     public var rootController: RootControllerable {
         if #available(iOS 13.0, *) {
@@ -230,6 +234,10 @@ extension UIView {
         }
     }
     
+//    @available(macCatalyst, introduced: 1.0, deprecated: 2.0, obsoleted: 9.0,
+//    @available(macOS 10.12, iOS 9.3, tvOS 9.2, watchOS 3.0, *)
+    @available(macCatalystApplicationExtension, unavailable)
+    @available(OSXApplicationExtension, unavailable)
     @available(iOSApplicationExtension, unavailable)
     private var appDelegateRootController: RootControllerable {
         guard
@@ -246,6 +254,8 @@ extension UIView {
 }
 
 extension UIApplicationDelegate {
+    @available(macCatalystApplicationExtension, unavailable)
+    @available(OSXApplicationExtension, unavailable)
     @available(iOSApplicationExtension, unavailable)
     public var rootController: RootControllerable {
         guard
