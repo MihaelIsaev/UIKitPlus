@@ -671,7 +671,8 @@ centerView.declarativeConstraints.outer[.bottom, secondView]?.constant = 32 // c
 ```
 </details>
 
-### View
+<details>
+<summary>View</summary>
 
 > alias is `UView`
 
@@ -703,6 +704,7 @@ View().body {
     View()
 }
 ```
+</details>
 
 #### Properties
 
@@ -710,22 +712,27 @@ All the properties are available to be set declaratively and can be binded to `S
 
 A lot of layer properties are available directly and have convenient initializers.
 
-##### Alpha
+<details>
+<summary>Alpha</summary>
 ```swift
 View().alpha(0)
 View().alpha($alphaState)
 View().alpha($boolState.map { $0 ? 1 : 0 })
 ```
+</details>
 
-##### Background
+<details>
+<summary>Background</summary>
 ```swift
 View().background(.red)
 View().background(0xff0000)
 View().background($colorState)
 View().background($boolState.map { $0 ? .red : .green })
 ```
+</details>
 
-##### Borders
+<details>
+<summary>Borders</summary>
 To set border on all sides
 ```swift
 View().border(1, .black)
@@ -742,18 +749,24 @@ To remove border from specific side
 ```swift
 .removeBorder(.top)
 ```
+</details>
 
-##### Bounds
+<details>
+<summary>Bounds</summary>
 ```swift
 // implemented. to be described
 ```
+</details>
 
-##### Compression Resistance
+<details>
+<summary>Compression Resistance</summary>
 ```swift
 // implemented. to be described
 ```
+</details>
 
-##### Corners
+<details>
+<summary>Corners</summary>
 To set radius to all corners
 ```swift
 View().corners(10)
@@ -769,8 +782,10 @@ To make your view's corners round automatically by smaller side
 ```swift
 View().circle()
 ```
+</details>
 
-##### Hidden
+<details>
+<summary>Hidden</summary>
 ```swift
 View().hidden() // will set `true` by default
 View().hidden(true)
@@ -778,18 +793,24 @@ View().hidden(false)
 View().hidden($hiddenState)
 View().hidden($stringState.map { $0.count > 0 })
 ```
+</details>
 
-##### Hugging Priority
+<details>
+<summary>Hugging Priority</summary>
 ```swift
 // implemented. to be described
 ```
+</details>
 
-##### Itself
+<details>
+<summary>Itself</summary>
 ```swift
 // implemented. to be described
 ```
+</details>
 
-##### Layout Margin
+<details>
+<summary>Layout Margin</summary>
 ```swift
 // to all sides
 View().layoutMargin(10)
@@ -802,28 +823,36 @@ View().layoutMargin(x: 10, y: 5) // top: 5, left: 10, right: 10, bottom: 5
 View().layoutMargin(x: 10) // left: 10, right: 10
 View().layoutMargin(y: 5) // top: 5, bottom: 5
 ```
+</details>
 
-##### Focus to next responder or resign
+<details>
+<summary>Focus to next responder or resign</summary>
 ```swift
 // implemented. to be described
 ```
+</details>
 
-##### Opacity
+<details>
+<summary>Opacity</summary>
 ```swift
 View().opacity(0)
 View().opacity($alphaState)
 View().opacity($boolState.map { $0 ? 1 : 0 })
 ```
+</details>
 
-##### Rasterize
+<details>
+<summary>Rasterize</summary>
 To rasterize layer, e.g. for better shadow performance
 ```swift
 View().rasterize() // true by default
 View().rasterize(true)
 View().rasterize(false)
 ```
+</details>
 
-##### Shadow
+<details>
+<summary>Shadow</summary>
 ```swift
 // to be described more
 
@@ -835,8 +864,10 @@ View().shadow() // by default it's black, opacity 1, zero offset, radius 10
 View().shadow(.gray, opacity: 0.8, offset: .zero, radius: 5)
 View().shadow(0x000000, opacity: 0.8, offset: .zero, radius: 5)
 ```
+</details>
 
-##### Shake
+<details>
+<summary>Shake</summary>
 You can shake any view just by calling
 ```swift
 View().shake()
@@ -865,48 +896,56 @@ extension DeclarativeProtocol {
   }
 }
 ```
+</details>
 
-##### Tag
+<details>
+<summary>Tag</summary>
 ```swift
 View().tag(0)
 ```
+</details>
 
-##### Gestures
+<details>
+<summary>Gestures</summary>
 ```swift
 // implemented. to be described
 ```
+</details>
 
-##### Tint
+<details>
+<summary>Tint</summary>
 ```swift
 View().tint(.red)
 View().tint(0xff0000)
 View().tint($colorState)
 View().tint($boolState.map { $0 ? .red : .green })
 ```
+</details>
 
-##### User Interaction
+<details>
+<summary>User Interaction</summary>
 ```swift
 // implemented. to be described
 ```
+</details>
 
-## View Controller
-
+<details>
+<summary>View Controller</summary>
 `// implemented. to be described`
+</details>
 
-### Status bar style
+<details>
+<summary>Status bar style</summary>
 In any `ViewController` you can set `statusBarStyle` and all its values are iOS9+.
 ```swift
 override var statusBarStyle: StatusBarStyle { .default }
 override var statusBarStyle: StatusBarStyle { .dark }
 override var statusBarStyle: StatusBarStyle { .light }
 ```
+</details>
 
-## Gestures
-
-`// implemented. to be described`
-
-## Colors
-
+<details>
+<summary>Colors</summary>
 ```swift
 /// Simple color
 UIColor.red
@@ -944,8 +983,10 @@ and then use them just like
 ```swift
 Label("Hello world").color(.otherGreen).background(.mainBlack)
 ```
+</details>
 
-## Fonts
+<details>
+<summary>Fonts</summary>
 
 ```swift
 // implemented. to be described
@@ -968,8 +1009,10 @@ and then use them just like
 ```swift
 Button().font(.sfProMedium, 15)
 ```
+</details>
 
-## States
+<details>
+<summary>States</summary>
 
 > alias is `UState`
 
@@ -987,8 +1030,10 @@ $boolStateToString.map { !$0 ? "night" : "day" }
 /// mix to Int states into one String expressable
 $state1.and($state2).map { $0.left > $0.right ? "higher" : "lower" }
 ```
+</details>
 
-## Attributed Strings
+<details>
+<summary>Attributed Strings</summary>
 
 ```swift
 AttributedString("hello").background(.gray)
@@ -1019,20 +1064,25 @@ AttrStr("hello").foreground(.red)
 // or even just
 "hello".foreground(.red)
 ```
+</details>
 
-## Animations
-
+<details>
+<summary>Animations</summary>
 `// implemented. to be described`
+</details>
 
-## Activity Indicator
-
+<details>
+<summary>Activity Indicator</summary>
 `// implemented. to be described`
+</details>
 
-## Bar Button Item
-
+<details>
+<summary>Bar Button Item</summary>
 `// implemented. to be described`
+</details>
 
-## Button
+<details>
+<summary>Button</summary>
 
 > alias is `UButton`
 
@@ -1095,8 +1145,10 @@ and then use them like this
 ```swift
 Button.bigBottomWhite.size(300, 50).bottomToSuperview(20).centerInSuperview()
 ```
+</details>
 
-## Collection
+<details>
+<summary>Collection</summary>
 
 ```swift
 // implemented. to be described
@@ -1104,21 +1156,25 @@ Button.bigBottomWhite.size(300, 50).bottomToSuperview(20).centerInSuperview()
 // difference between Collection and CollectionView
 // flow layouts
 ```
+</details>
 
-## ControlView
-
+<details>
+<summary>ControlView</summary>
 `// implemented. to be described`
+</details>
 
-## DatePicker
-
+<details>
+<summary>DatePicker</summary>
 `// implemented. to be described`
+</details>
 
-## DynamicPickerView
-
+<details>
+<summary>DynamicPickerView</summary>
 `// implemented. to be described`
+</details>
 
-## StackView
-
+<details>
+<summary>StackView</summary>
 > alias is `UStackView`
 
 `// implemented. to be described`
@@ -1129,9 +1185,10 @@ StackView().axis(.vertical)
            .distribution(.fillEqually)
            .spacing(16)
 ```
+</details>
 
-## VStack
-
+<details>
+<summary>VStack</summary>
 > alias is `UVStack`
 
 `// implemented. to be described more`
@@ -1146,17 +1203,20 @@ VStack (
 .alignment(.left)
 .distribution(...)
 ```
+</details>
 
-
-## VScrollStack
+<details>
+<summary>VScrollStack</summary>
 
 ```swift
 // implemented. to be described
 
 /// it is the same as VStack but it is combined with ScrollView
 ```
+</details>
 
-## HStack
+<details>
+<summary>HStack</summary>
 
 > alias is `UHStack`
 
@@ -1172,17 +1232,20 @@ HStack (
 .alignment(.left)
 .distribution(...)
 ```
+</details>
 
-## HScrollStack
+<details>
+<summary>HScrollStack</summary>
 
 ```swift
 // implemented. to be described
 
 /// it is the same as HStack but it is combined with ScrollView
 ```
+</details>
 
-
-## HSpace
+<details>
+<summary>HSpace</summary>
 
 ```swift
 /// just a horizontal delimiter
@@ -1190,8 +1253,10 @@ HSpace(16)
 /// alternatively
 View().width(16)
 ```
+</details>
 
-## VSpace
+<details>
+<summary>VSpace</summary>
 
 ```swift
 /// just a vertical delimiter
@@ -1199,8 +1264,10 @@ VSpace(16)
 /// alternatively
 View().height(16)
 ```
+</details>
 
-## Space
+<details>
+<summary>Space</summary>
 
 ```swift
 /// just a flexible space for stack views
@@ -1208,12 +1275,15 @@ Space()
 /// alternatively
 View()
 ```
+</details>
 
-## HUD
-
+<details>
+<summary>HUD</summary>
 `// implemented. to be described`
+</details>
 
-## Image
+<details>
+<summary>Image</summary>
 
 > alias is `UImage`
 
@@ -1242,12 +1312,15 @@ Image(url: "", loader: .defaultImmediate) // immediate replace image after loadi
 Image(url: "", loader: .defaultFade) // replace image with fade effect after loading
 Image(url: "", loader: ImageLoader()) // subclass from `ImageLoader` and set you custom loader here
 ```
+</details>
 
-## InputView
-
+<details>
+<summary>InputView</summary>
 `// implemented. to be described`
+</details>
 
-## List
+<details>
+<summary>List</summary>
 
 > alias is `UList`
 
@@ -1256,20 +1329,25 @@ Image(url: "", loader: ImageLoader()) // subclass from `ImageLoader` and set you
 
 also describe auto-DIFF with Identable models
 ```
+</details>
 
-## TableView
-
+<details>
+<summary>TableView</summary>
 `// implemented. to be described`
+</details>
 
-## PickerView
-
+<details>
+<summary>PickerView</summary>
 `// implemented. to be described`
+</details>
 
-## RefreshControl
-
+<details>
+<summary>RefreshControl</summary>
 `// implemented. to be described`
+</details>
 
-## ScrollView
+<details>
+<summary>ScrollView</summary>
 
 `// implemented. to be described more`
 ```swift
@@ -1282,8 +1360,10 @@ ScrollView().scrollIndicatorInsets(.zero)
 ScrollView().scrollIndicatorInsets(top: 10, left: 5, right: 5, bottom: 10)
 ScrollView().scrollIndicatorInsets(top: 10, bottom: 10)
 ```
+</details>
 
-## SegmentedControl
+<details>
+<summary>SegmentedControl</summary>
 
 > alias is `USegmentedControl`
 
@@ -1294,18 +1374,23 @@ SegmentedControl("One", "Two").select($selectedItem)
 // or simply
 SegmentedControl("One", "Two").select(0).changed { print("segment changed to \($0)") }
 ```
+</details>
 
-## SliderView
-
+<details>
+<summary>SliderView</summary>
 `// implemented. to be described`
+</details>
 
-## Stepper
-
+<details>
+<summary>Stepper</summary>
+    
 > alias is `UStepper`
 
 `// implemented. to be described`
+</details>
 
-## TextField
+<details>
+<summary>TextField</summary>
 
 > alias is `UTextField`
 
@@ -1369,8 +1454,10 @@ TextField().shouldBeginEditing { tf in return true }
            .editingChanged { tf in }
            .editingDidEnd { tf in }
 ```
+</details>
 
-## Text (aka UILabel)
+<details>
+<summary>Text (aka UILabel)</summary>
 
 > alias is `UText` or just `Label`
 
@@ -1418,20 +1505,26 @@ and then use them like this
 ```swift
 let logo = Label.welcomeLogo.centerInSuperview()
 ```
+</details>
 
-## TextView
+<details>
+<summary>TextView</summary>
 
 > alias is `UTextView`
 
 `// implemented. to be described`
+</details>
 
-## Toggle
+<details>
+<summary>Toggle</summary>
 
 > alias is `UToggle`
 
 `// implemented. to be described`
+</details>
 
-## VerificationCodeView
+<details>
+<summary>VerificationCodeView</summary>
 
 `// implemented. to be described more`
 
@@ -1448,8 +1541,10 @@ func verify(_ code: String) {
   print("entered code: " + code)
 }
 ```
+</details>
 
-## VisualEffectView
+<details>
+<summary>VisualEffectView</summary>
 
 ```swift
 // implemented. to be described more
@@ -1471,8 +1566,10 @@ extension UIVisualEffect {
     public static var darkBlur: UIVisualEffect { return UIBlurEffect(style: .dark) }
 }
 ```
+</details>
 
-## WrapperView
+<details>
+<summary>WrapperView</summary>
 
 It is simple `View` but with ability to initialize with inner view
 ```swift
@@ -1495,12 +1592,15 @@ WrapperView {
   View()
 }.padding(top: 10, right: 10)
 ```
+</details>
 
-## LayerView
-
+<details>
+<summary>LayerView</summary>
 `// implemented. to be described`
+</details>
 
-# Impact Feedback
+<details>
+<summary>Impact Feedback</summary>
 My favourite feature.
 
 ```swift
@@ -1509,7 +1609,10 @@ ImpactFeedback.success()
 ImpactFeedback.selected()
 ImpactFeedback.bzz()
 ```
-# Localization 🇮🇸🇩🇪🇯🇵🇲🇽
+</details>
+
+<details>
+<summary>Localization 🇮🇸🇩🇪🇯🇵🇲🇽</summary>
 
 ```swift
 // set any localization as default
@@ -1640,12 +1743,15 @@ Text(.copyLinkSucceeded) // Copy link to clipboard
 Button(.shareNumber) // Share number
 Button(.shareLink) // Share link
 ```
+</details>
 
-# Root View Controller 🍀
-
+<details>
+<summary>Root View Controller 🍀</summary>
 [Detailed instruction](Readme/RootViewController.md)
+</details>
 
-# Examples
+<details>
+<summary>Examples</summary>
 
 [Example app is here](https://github.com/MihaelIsaev/UIKitPlusExample)
 
@@ -1734,3 +1840,4 @@ extension Button {
 // PRO-TIP2:
 // I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
+</details>
