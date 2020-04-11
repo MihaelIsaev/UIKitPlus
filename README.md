@@ -268,7 +268,8 @@ import UIKitPlus
 
 Even no need to import `UIKit` at all!
 
-### Constraints
+<details>
+<summary>Constraints</summary>
 
 #### Solo
 
@@ -668,6 +669,7 @@ centerView.outer[.bottom, secondView] = 32 // changes their vertical spacing fro
 // long way
 centerView.declarativeConstraints.outer[.bottom, secondView]?.constant = 32 // changes their vertical spacing from 16 to 32
 ```
+</details>
 
 ### View
 
