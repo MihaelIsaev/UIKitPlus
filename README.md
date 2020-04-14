@@ -673,6 +673,7 @@ centerView.declarativeConstraints.outer[.bottom, secondView]?.constant = 32 // c
 
 <details>
 <summary>Root View Controller 🍀</summary>
+
 [Detailed instruction](Readme/RootViewController.md)
 </details>
 
@@ -784,11 +785,13 @@ WrapperView {
 
 <details>
 <summary>LayerView</summary>
+
 `// implemented. to be described`
 </details>
 
 <details>
 <summary>Impact Feedback</summary>
+
 My favourite feature.
 
 ```swift
@@ -935,11 +938,13 @@ Button(.shareLink) // Share link
 
 <details>
 <summary>View Controller</summary>
+
 `// implemented. to be described`
 </details>
 
 <details>
 <summary>Status bar style</summary>
+
 In any `ViewController` you can set `statusBarStyle` and all its values are iOS9+.
 ```swift
 override var statusBarStyle: StatusBarStyle { .default }
@@ -950,6 +955,7 @@ override var statusBarStyle: StatusBarStyle { .light }
 
 <details>
 <summary>Colors</summary>
+
 ```swift
 /// Simple color
 UIColor.red
@@ -1072,16 +1078,19 @@ AttrStr("hello").foreground(.red)
 
 <details>
 <summary>Animations</summary>
+
 `// implemented. to be described`
 </details>
 
 <details>
 <summary>Activity Indicator</summary>
+
 `// implemented. to be described`
 </details>
 
 <details>
 <summary>Bar Button Item</summary>
+
 `// implemented. to be described`
 </details>
 
@@ -1164,21 +1173,25 @@ Button.bigBottomWhite.size(300, 50).bottomToSuperview(20).centerInSuperview()
 
 <details>
 <summary>ControlView</summary>
+
 `// implemented. to be described`
 </details>
 
 <details>
 <summary>DatePicker</summary>
+
 `// implemented. to be described`
 </details>
 
 <details>
 <summary>DynamicPickerView</summary>
+
 `// implemented. to be described`
 </details>
 
 <details>
 <summary>StackView</summary>
+
 > alias is `UStackView`
 
 `// implemented. to be described`
@@ -1193,6 +1206,7 @@ StackView().axis(.vertical)
 
 <details>
 <summary>VStack</summary>
+
 > alias is `UVStack`
 
 `// implemented. to be described more`
@@ -1283,6 +1297,7 @@ View()
 
 <details>
 <summary>HUD</summary>
+
 `// implemented. to be described`
 </details>
 
@@ -1320,6 +1335,7 @@ Image(url: "", loader: ImageLoader()) // subclass from `ImageLoader` and set you
 
 <details>
 <summary>InputView</summary>
+
 `// implemented. to be described`
 </details>
 
@@ -1337,16 +1353,19 @@ also describe auto-DIFF with Identable models
 
 <details>
 <summary>TableView</summary>
+
 `// implemented. to be described`
 </details>
 
 <details>
 <summary>PickerView</summary>
+
 `// implemented. to be described`
 </details>
 
 <details>
 <summary>RefreshControl</summary>
+
 `// implemented. to be described`
 </details>
 
@@ -1382,6 +1401,7 @@ SegmentedControl("One", "Two").select(0).changed { print("segment changed to \($
 
 <details>
 <summary>SliderView</summary>
+
 `// implemented. to be described`
 </details>
 
@@ -1535,6 +1555,7 @@ A lot of layer properties are available directly and have convenient initializer
 
 <details>
 <summary>Alpha</summary>
+
 ```swift
 View().alpha(0)
 View().alpha($alphaState)
@@ -1544,6 +1565,7 @@ View().alpha($boolState.map { $0 ? 1 : 0 })
 
 <details>
 <summary>Background</summary>
+
 ```swift
 View().background(.red)
 View().background(0xff0000)
@@ -1554,6 +1576,7 @@ View().background($boolState.map { $0 ? .red : .green })
 
 <details>
 <summary>Borders</summary>
+
 To set border on all sides
 ```swift
 View().border(1, .black)
@@ -1574,6 +1597,7 @@ To remove border from specific side
 
 <details>
 <summary>Bounds</summary>
+
 ```swift
 // implemented. to be described
 ```
@@ -1581,6 +1605,7 @@ To remove border from specific side
 
 <details>
 <summary>Compression Resistance</summary>
+
 ```swift
 // implemented. to be described
 ```
@@ -1588,6 +1613,7 @@ To remove border from specific side
 
 <details>
 <summary>Corners</summary>
+
 To set radius to all corners
 ```swift
 View().corners(10)
@@ -1607,6 +1633,7 @@ View().circle()
 
 <details>
 <summary>Hidden</summary>
+
 ```swift
 View().hidden() // will set `true` by default
 View().hidden(true)
@@ -1618,6 +1645,7 @@ View().hidden($stringState.map { $0.count > 0 })
 
 <details>
 <summary>Hugging Priority</summary>
+
 ```swift
 // implemented. to be described
 ```
@@ -1625,6 +1653,7 @@ View().hidden($stringState.map { $0.count > 0 })
 
 <details>
 <summary>Itself</summary>
+
 ```swift
 // implemented. to be described
 ```
@@ -1632,6 +1661,7 @@ View().hidden($stringState.map { $0.count > 0 })
 
 <details>
 <summary>Layout Margin</summary>
+
 ```swift
 // to all sides
 View().layoutMargin(10)
@@ -1648,6 +1678,7 @@ View().layoutMargin(y: 5) // top: 5, bottom: 5
 
 <details>
 <summary>Focus to next responder or resign</summary>
+
 ```swift
 // implemented. to be described
 ```
@@ -1655,6 +1686,7 @@ View().layoutMargin(y: 5) // top: 5, bottom: 5
 
 <details>
 <summary>Opacity</summary>
+
 ```swift
 View().opacity(0)
 View().opacity($alphaState)
@@ -1664,6 +1696,7 @@ View().opacity($boolState.map { $0 ? 1 : 0 })
 
 <details>
 <summary>Rasterize</summary>
+
 To rasterize layer, e.g. for better shadow performance
 ```swift
 View().rasterize() // true by default
@@ -1674,6 +1707,7 @@ View().rasterize(false)
 
 <details>
 <summary>Shadow</summary>
+
 ```swift
 // to be described more
 
@@ -1689,6 +1723,7 @@ View().shadow(0x000000, opacity: 0.8, offset: .zero, radius: 5)
 
 <details>
 <summary>Shake</summary>
+
 You can shake any view just by calling
 ```swift
 View().shake()
@@ -1721,6 +1756,7 @@ extension DeclarativeProtocol {
 
 <details>
 <summary>Tag</summary>
+
 ```swift
 View().tag(0)
 ```
@@ -1728,6 +1764,7 @@ View().tag(0)
 
 <details>
 <summary>Gestures</summary>
+
 ```swift
 // implemented. to be described
 ```
@@ -1735,6 +1772,7 @@ View().tag(0)
 
 <details>
 <summary>Tint</summary>
+
 ```swift
 View().tint(.red)
 View().tint(0xff0000)
@@ -1745,6 +1783,7 @@ View().tint($boolState.map { $0 ? .red : .green })
 
 <details>
 <summary>User Interaction</summary>
+
 ```swift
 // implemented. to be described
 ```
