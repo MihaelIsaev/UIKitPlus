@@ -1750,8 +1750,7 @@ let logo = Label.welcomeLogo.centerInSuperview()
 `// implemented. to be described`
 </details>
 
-<details>
-<summary>Examples</summary>
+# Examples
 
 [Example app is here](https://github.com/MihaelIsaev/UIKitPlusExample)
 
@@ -1840,4 +1839,3 @@ extension Button {
 // PRO-TIP2:
 // I'd suggest you to use extensions for everything: fonts, images, labels, buttons, colors, etc.
 ```
-</details>
