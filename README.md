@@ -933,229 +933,6 @@ Button(.shareLink) // Share link
 ```
 </details>
 
-#### Properties
-
-All the properties are available to be set declaratively and can be binded to `State` or `ExpressableState`.
-
-A lot of layer properties are available directly and have convenient initializers.
-
-<details>
-<summary>Alpha</summary>
-```swift
-View().alpha(0)
-View().alpha($alphaState)
-View().alpha($boolState.map { $0 ? 1 : 0 })
-```
-</details>
-
-<details>
-<summary>Background</summary>
-```swift
-View().background(.red)
-View().background(0xff0000)
-View().background($colorState)
-View().background($boolState.map { $0 ? .red : .green })
-```
-</details>
-
-<details>
-<summary>Borders</summary>
-To set border on all sides
-```swift
-View().border(1, .black)
-View().border(1, 0x000)
-```
-To set border on specific side
-```swift
-View().border(.top, 1, .black)
-View().border(.left, 1, .black)
-View().border(.right, 1, .black)
-View().border(.bottom, 1, .black)
-```
-To remove border from specific side
-```swift
-.removeBorder(.top)
-```
-</details>
-
-<details>
-<summary>Bounds</summary>
-```swift
-// implemented. to be described
-```
-</details>
-
-<details>
-<summary>Compression Resistance</summary>
-```swift
-// implemented. to be described
-```
-</details>
-
-<details>
-<summary>Corners</summary>
-To set radius to all corners
-```swift
-View().corners(10)
-View().corners($cornerRadiusState)
-```
-To set custom radius for specific corner
-```swift
-View().corners(10, .topLeft, topRight)
-View().corners(10, .topLeft, .bottomRight)
-View().corners(10, .topLeft, topRight, .bottomLeft, .bottomRight)
-```
-To make your view's corners round automatically by smaller side
-```swift
-View().circle()
-```
-</details>
-
-<details>
-<summary>Hidden</summary>
-```swift
-View().hidden() // will set `true` by default
-View().hidden(true)
-View().hidden(false)
-View().hidden($hiddenState)
-View().hidden($stringState.map { $0.count > 0 })
-```
-</details>
-
-<details>
-<summary>Hugging Priority</summary>
-```swift
-// implemented. to be described
-```
-</details>
-
-<details>
-<summary>Itself</summary>
-```swift
-// implemented. to be described
-```
-</details>
-
-<details>
-<summary>Layout Margin</summary>
-```swift
-// to all sides
-View().layoutMargin(10)
-// optional sides
-View().layoutMargin(top: 10)
-View().layoutMargin(left: 10, bottom: 5)
-View().layoutMargin(top: 10, right: 5)
-// vertical and horizontal
-View().layoutMargin(x: 10, y: 5) // top: 5, left: 10, right: 10, bottom: 5
-View().layoutMargin(x: 10) // left: 10, right: 10
-View().layoutMargin(y: 5) // top: 5, bottom: 5
-```
-</details>
-
-<details>
-<summary>Focus to next responder or resign</summary>
-```swift
-// implemented. to be described
-```
-</details>
-
-<details>
-<summary>Opacity</summary>
-```swift
-View().opacity(0)
-View().opacity($alphaState)
-View().opacity($boolState.map { $0 ? 1 : 0 })
-```
-</details>
-
-<details>
-<summary>Rasterize</summary>
-To rasterize layer, e.g. for better shadow performance
-```swift
-View().rasterize() // true by default
-View().rasterize(true)
-View().rasterize(false)
-```
-</details>
-
-<details>
-<summary>Shadow</summary>
-```swift
-// to be described more
-
-// and with mroe than one shadow
-// and with state, expressableState
-```
-```swift
-View().shadow() // by default it's black, opacity 1, zero offset, radius 10
-View().shadow(.gray, opacity: 0.8, offset: .zero, radius: 5)
-View().shadow(0x000000, opacity: 0.8, offset: .zero, radius: 5)
-```
-</details>
-
-<details>
-<summary>Shake</summary>
-You can shake any view just by calling
-```swift
-View().shake()
-```
-And you could customize shake effect
-```swift
-View().shake(values: [-20, 20, -20, 20, -10, 10, -5, 5, 0],
-             duration: 0.6,
-             axis: .horizontal,
-             timing: .easeInEaseOut)
-View().shake(-20, 20, -20, 20, -10, 10, -5, 5, 0,
-             duration: 0.6,
-             axis: .horizontal,
-             timing: .easeInEaseOut)
-```
-or even create an extension
-```swift
-import UIKitPlus
-
-extension DeclarativeProtocol {
-  func myShake() {
-      View().shake(-20, 20, -20, 20, -10, 10, -5, 5, 0,
-                   duration: 0.6,
-                   axis: .horizontal,
-                   timing: .easeInEaseOut)
-  }
-}
-```
-</details>
-
-<details>
-<summary>Tag</summary>
-```swift
-View().tag(0)
-```
-</details>
-
-<details>
-<summary>Gestures</summary>
-```swift
-// implemented. to be described
-```
-</details>
-
-<details>
-<summary>Tint</summary>
-```swift
-View().tint(.red)
-View().tint(0xff0000)
-View().tint($colorState)
-View().tint($boolState.map { $0 ? .red : .green })
-```
-</details>
-
-<details>
-<summary>User Interaction</summary>
-```swift
-// implemented. to be described
-```
-</details>
-
 <details>
 <summary>View Controller</summary>
 `// implemented. to be described`
@@ -1610,7 +1387,7 @@ SegmentedControl("One", "Two").select(0).changed { print("segment changed to \($
 
 <details>
 <summary>Stepper</summary>
-    
+
 > alias is `UStepper`
 
 `// implemented. to be described`
@@ -1748,6 +1525,229 @@ let logo = Label.welcomeLogo.centerInSuperview()
 > alias is `UToggle`
 
 `// implemented. to be described`
+</details>
+
+#### Properties
+
+All the properties are available to be set declaratively and can be binded to `State` or `ExpressableState`.
+
+A lot of layer properties are available directly and have convenient initializers.
+
+<details>
+<summary>Alpha</summary>
+```swift
+View().alpha(0)
+View().alpha($alphaState)
+View().alpha($boolState.map { $0 ? 1 : 0 })
+```
+</details>
+
+<details>
+<summary>Background</summary>
+```swift
+View().background(.red)
+View().background(0xff0000)
+View().background($colorState)
+View().background($boolState.map { $0 ? .red : .green })
+```
+</details>
+
+<details>
+<summary>Borders</summary>
+To set border on all sides
+```swift
+View().border(1, .black)
+View().border(1, 0x000)
+```
+To set border on specific side
+```swift
+View().border(.top, 1, .black)
+View().border(.left, 1, .black)
+View().border(.right, 1, .black)
+View().border(.bottom, 1, .black)
+```
+To remove border from specific side
+```swift
+.removeBorder(.top)
+```
+</details>
+
+<details>
+<summary>Bounds</summary>
+```swift
+// implemented. to be described
+```
+</details>
+
+<details>
+<summary>Compression Resistance</summary>
+```swift
+// implemented. to be described
+```
+</details>
+
+<details>
+<summary>Corners</summary>
+To set radius to all corners
+```swift
+View().corners(10)
+View().corners($cornerRadiusState)
+```
+To set custom radius for specific corner
+```swift
+View().corners(10, .topLeft, topRight)
+View().corners(10, .topLeft, .bottomRight)
+View().corners(10, .topLeft, topRight, .bottomLeft, .bottomRight)
+```
+To make your view's corners round automatically by smaller side
+```swift
+View().circle()
+```
+</details>
+
+<details>
+<summary>Hidden</summary>
+```swift
+View().hidden() // will set `true` by default
+View().hidden(true)
+View().hidden(false)
+View().hidden($hiddenState)
+View().hidden($stringState.map { $0.count > 0 })
+```
+</details>
+
+<details>
+<summary>Hugging Priority</summary>
+```swift
+// implemented. to be described
+```
+</details>
+
+<details>
+<summary>Itself</summary>
+```swift
+// implemented. to be described
+```
+</details>
+
+<details>
+<summary>Layout Margin</summary>
+```swift
+// to all sides
+View().layoutMargin(10)
+// optional sides
+View().layoutMargin(top: 10)
+View().layoutMargin(left: 10, bottom: 5)
+View().layoutMargin(top: 10, right: 5)
+// vertical and horizontal
+View().layoutMargin(x: 10, y: 5) // top: 5, left: 10, right: 10, bottom: 5
+View().layoutMargin(x: 10) // left: 10, right: 10
+View().layoutMargin(y: 5) // top: 5, bottom: 5
+```
+</details>
+
+<details>
+<summary>Focus to next responder or resign</summary>
+```swift
+// implemented. to be described
+```
+</details>
+
+<details>
+<summary>Opacity</summary>
+```swift
+View().opacity(0)
+View().opacity($alphaState)
+View().opacity($boolState.map { $0 ? 1 : 0 })
+```
+</details>
+
+<details>
+<summary>Rasterize</summary>
+To rasterize layer, e.g. for better shadow performance
+```swift
+View().rasterize() // true by default
+View().rasterize(true)
+View().rasterize(false)
+```
+</details>
+
+<details>
+<summary>Shadow</summary>
+```swift
+// to be described more
+
+// and with mroe than one shadow
+// and with state, expressableState
+```
+```swift
+View().shadow() // by default it's black, opacity 1, zero offset, radius 10
+View().shadow(.gray, opacity: 0.8, offset: .zero, radius: 5)
+View().shadow(0x000000, opacity: 0.8, offset: .zero, radius: 5)
+```
+</details>
+
+<details>
+<summary>Shake</summary>
+You can shake any view just by calling
+```swift
+View().shake()
+```
+And you could customize shake effect
+```swift
+View().shake(values: [-20, 20, -20, 20, -10, 10, -5, 5, 0],
+             duration: 0.6,
+             axis: .horizontal,
+             timing: .easeInEaseOut)
+View().shake(-20, 20, -20, 20, -10, 10, -5, 5, 0,
+             duration: 0.6,
+             axis: .horizontal,
+             timing: .easeInEaseOut)
+```
+or even create an extension
+```swift
+import UIKitPlus
+
+extension DeclarativeProtocol {
+  func myShake() {
+      View().shake(-20, 20, -20, 20, -10, 10, -5, 5, 0,
+                   duration: 0.6,
+                   axis: .horizontal,
+                   timing: .easeInEaseOut)
+  }
+}
+```
+</details>
+
+<details>
+<summary>Tag</summary>
+```swift
+View().tag(0)
+```
+</details>
+
+<details>
+<summary>Gestures</summary>
+```swift
+// implemented. to be described
+```
+</details>
+
+<details>
+<summary>Tint</summary>
+```swift
+View().tint(.red)
+View().tint(0xff0000)
+View().tint($colorState)
+View().tint($boolState.map { $0 ? .red : .green })
+```
+</details>
+
+<details>
+<summary>User Interaction</summary>
+```swift
+// implemented. to be described
+```
 </details>
 
 # Examples
