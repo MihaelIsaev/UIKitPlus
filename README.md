@@ -672,6 +672,11 @@ centerView.declarativeConstraints.outer[.bottom, secondView]?.constant = 32 // c
 </details>
 
 <details>
+<summary>Root View Controller 🍀</summary>
+[Detailed instruction](Readme/RootViewController.md)
+</details>
+
+<details>
 <summary>View</summary>
 
 > alias is `UView`
@@ -703,6 +708,228 @@ View().body {
     View()
     View()
 }
+```
+</details>
+
+<details>
+<summary>VerificationCodeView</summary>
+
+`// implemented. to be described more`
+
+This is really bonus view! :D Almost every app now uses verification codes for login and now you can easily implement that code view with UIKitPlus! :)
+```swift
+VerificationCodeField().digitWidth(64)
+                       .digitsMargin(25)
+                       .digitBorder(.bottom, 1, 0xC6CBD3)
+                       .digitColor(0x171A1D)
+                       .font(.sfProRegular, 32)
+                       .entered(verify)
+
+func verify(_ code: String) {
+  print("entered code: " + code)
+}
+```
+</details>
+
+<details>
+<summary>VisualEffectView</summary>
+
+```swift
+// implemented. to be described more
+
+VisualEffectView(.darkBlur)
+VisualEffectView(.lightBlur)
+VisualEffectView(.extraLightBlur)
+// iOS10+
+VisualEffectView(.prominent)
+VisualEffectView(.regular)
+
+// iOS13+ (but can be used since iOS9+)
+// automatic dynamic effect for light and dark modes
+VisualEffectView(.darkBlur, .lightBlur) // effect will be switched automatically. darkBlur is for light mode.
+```
+Create your own extension for your custom effects to use them easily like in example above
+```swift
+extension UIVisualEffect {
+    public static var darkBlur: UIVisualEffect { return UIBlurEffect(style: .dark) }
+}
+```
+</details>
+
+<details>
+<summary>WrapperView</summary>
+
+It is simple `View` but with ability to initialize with inner view
+```swift
+WrapperView {
+  View().background(.red).shadow()
+}.background(.green).shadow()
+```
+and you could specify innerView`s padding right here
+```swift
+// to the same padding for all sides
+WrapperView {
+  View()
+}.padding(10)
+// or to specific padding for each side
+WrapperView {
+  View()
+}.padding(top: 10, left: 5, right: 10, bottom: 5)
+// or even like this
+WrapperView {
+  View()
+}.padding(top: 10, right: 10)
+```
+</details>
+
+<details>
+<summary>LayerView</summary>
+`// implemented. to be described`
+</details>
+
+<details>
+<summary>Impact Feedback</summary>
+My favourite feature.
+
+```swift
+ImpactFeedback.error()
+ImpactFeedback.success()
+ImpactFeedback.selected()
+ImpactFeedback.bzz()
+```
+</details>
+
+<details>
+<summary>Localization 🇮🇸🇩🇪🇯🇵🇲🇽</summary>
+
+```swift
+// set any localization as default
+Localization.default = .en
+
+// override current locale
+Localization.current = .en
+
+// create string relative to current language
+let myString = String(
+    .en("Hello"),
+    .fr("Bonjour"),
+    .ru("Привет"),
+    .es("Hola"),
+    .zh_Hans("你好"),
+    .ja("こんにちは"))
+print(myString)
+```
+
+By default current language is equal to `Locale.current` but you can change it by setting `Localizer.current = .en`.
+Also localizer have `default` language in case if user's language doesn't match any in your string, and you could set it just by calling `Localizer.default = .en`.
+
+Also you can use localizable strings directly in Button, Text, TextView, TextField and AttributedString
+```swift
+Text(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+
+TextView(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+    .placeholder(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+
+TextField(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+    .placeholder(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+
+Button(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+Button().title(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"), state: .highlighted)
+
+AttrStr(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
+```
+
+### But how to use this awesome localization with 10+ languages in the app?
+
+Just create a dedicated localization file (e.g. `Localization.swift`) like this
+
+```swift
+extension String {
+    static func transferTo(_ wallet: String) -> String {
+        String(.en("Transfer to #\(wallet)"),
+                  .ru("Перевод на #\(wallet)"),
+                  .zh("转移到 #\(wallet)"),
+                  .ja("＃\(wallet)に転送"),
+                  .es("Transferir a #\(wallet)"),
+                  .fr("Transférer au #\(wallet)"),
+                  .sv("Överför till #\(wallet)"),
+                  .de("Übertragen Sie auf #\(wallet)"),
+                  .tr("\(wallet) numarasına aktar"),
+                  .it("Trasferimento al n. \(wallet)"),
+                  .cs("Převod na #\(wallet)"),
+                  .he("\(wallet) העבר למספר"),
+                  .ar("\(wallet)#نقل إلى"))
+    }
+    static var copyLink: String {
+        String(.en("Copy link to clipboard"),
+                  .ru("Скопировать ссылку"),
+                  .zh("复制链接到剪贴板"),
+                  .ja("リンクをクリップボードにコピー"),
+                  .es("Copiar enlace al portapapeles"),
+                  .fr("Copier le lien dans le presse-papiers"),
+                  .sv("Kopiera länk till urklipp"),
+                  .de("Link in Zwischenablage kopieren"),
+                  .tr("Bağlantıyı panoya kopyala"),
+                  .it("Copia il link negli appunti"),
+                  .cs("Zkopírujte odkaz do schránky"),
+                  .he("העתק קישור ללוח"),
+                  .ar("نسخ الرابط إلى الحافظة"))
+    }
+    static var copyLinkSucceeded: String {
+        String(.en("Link has been copied to clipboard"),
+                  .ru("Ссылка успешно скопирована в буфер обмена"),
+                  .zh("链接已复制到剪贴板"),
+                  .ja("リンクがクリップボードにコピーされました"),
+                  .es("El enlace ha sido copiado al portapapeles"),
+                  .fr("Le lien a été copié dans le presse-papiers"),
+                  .sv("Länken har kopierats till Urklipp"),
+                  .de("Der Link wurde in die Zwischenablage kopiert"),
+                  .tr("Bağlantı panoya kopyalandı"),
+                  .it("Il link è stato copiato negli appunti"),
+                  .cs("Odkaz byl zkopírován do schránky"),
+                  .he("הקישור הועתק ללוח"),
+                  .ar("تم نسخ الرابط إلى الحافظة"))
+    }
+    static var shareNumber: String {
+        String(.en("Share number"),
+                  .ru("Поделиться номером"),
+                  .zh("分享号码"),
+                  .ja("共有番号"),
+                  .es("Compartir número"),
+                  .fr("Numéro de partage"),
+                  .sv("Aktienummer"),
+                  .de("Teilenummer"),
+                  .tr("Numarayı paylaş"),
+                  .it("Condividi il numero"),
+                  .cs("Sdílejte číslo"),
+                  .he("מספר שתף"),
+                  .ar("رقم السهم"))
+    }
+    static var shareLink: String {
+        String(.en("Share link"),
+                  .ru("Поделиться ссылкой"),
+                  .zh("分享链接"),
+                  .ja("共有リンク"),
+                  .es("Compartir enlace"),
+                  .fr("Lien de partage"),
+                  .sv("Dela länk"),
+                  .de("Einen Link teilen"),
+                  .tr("Linki paylaş"),
+                  .it("Condividi il link"),
+                  .cs("Sdílet odkaz"),
+                  .he("שתף קישור"),
+                  .ar("مشاركة الرابط"))
+    }
+}
+```
+
+And then use localized string all over the app this easy way
+
+```swift
+Text(.transferTo("123")) // Transfer to #123
+Text(.copyLinkSucceeded) // Copy link to clipboard
+Button(.shareNumber) // Share number
+Button(.shareLink) // Share link
 ```
 </details>
 
@@ -1521,233 +1748,6 @@ let logo = Label.welcomeLogo.centerInSuperview()
 > alias is `UToggle`
 
 `// implemented. to be described`
-</details>
-
-<details>
-<summary>VerificationCodeView</summary>
-
-`// implemented. to be described more`
-
-This is really bonus view! :D Almost every app now uses verification codes for login and now you can easily implement that code view with UIKitPlus! :)
-```swift
-VerificationCodeField().digitWidth(64)
-                       .digitsMargin(25)
-                       .digitBorder(.bottom, 1, 0xC6CBD3)
-                       .digitColor(0x171A1D)
-                       .font(.sfProRegular, 32)
-                       .entered(verify)
-
-func verify(_ code: String) {
-  print("entered code: " + code)
-}
-```
-</details>
-
-<details>
-<summary>VisualEffectView</summary>
-
-```swift
-// implemented. to be described more
-
-VisualEffectView(.darkBlur)
-VisualEffectView(.lightBlur)
-VisualEffectView(.extraLightBlur)
-// iOS10+
-VisualEffectView(.prominent)
-VisualEffectView(.regular)
-
-// iOS13+ (but can be used since iOS9+)
-// automatic dynamic effect for light and dark modes
-VisualEffectView(.darkBlur, .lightBlur) // effect will be switched automatically. darkBlur is for light mode.
-```
-Create your own extension for your custom effects to use them easily like in example above
-```swift
-extension UIVisualEffect {
-    public static var darkBlur: UIVisualEffect { return UIBlurEffect(style: .dark) }
-}
-```
-</details>
-
-<details>
-<summary>WrapperView</summary>
-
-It is simple `View` but with ability to initialize with inner view
-```swift
-WrapperView {
-  View().background(.red).shadow()
-}.background(.green).shadow()
-```
-and you could specify innerView`s padding right here
-```swift
-// to the same padding for all sides
-WrapperView {
-  View()
-}.padding(10)
-// or to specific padding for each side
-WrapperView {
-  View()
-}.padding(top: 10, left: 5, right: 10, bottom: 5)
-// or even like this
-WrapperView {
-  View()
-}.padding(top: 10, right: 10)
-```
-</details>
-
-<details>
-<summary>LayerView</summary>
-`// implemented. to be described`
-</details>
-
-<details>
-<summary>Impact Feedback</summary>
-My favourite feature.
-
-```swift
-ImpactFeedback.error()
-ImpactFeedback.success()
-ImpactFeedback.selected()
-ImpactFeedback.bzz()
-```
-</details>
-
-<details>
-<summary>Localization 🇮🇸🇩🇪🇯🇵🇲🇽</summary>
-
-```swift
-// set any localization as default
-Localization.default = .en
-
-// override current locale
-Localization.current = .en
-
-// create string relative to current language
-let myString = String(
-    .en("Hello"),
-    .fr("Bonjour"),
-    .ru("Привет"),
-    .es("Hola"),
-    .zh_Hans("你好"),
-    .ja("こんにちは"))
-print(myString)
-```
-
-By default current language is equal to `Locale.current` but you can change it by setting `Localizer.current = .en`.
-Also localizer have `default` language in case if user's language doesn't match any in your string, and you could set it just by calling `Localizer.default = .en`.
-
-Also you can use localizable strings directly in Button, Text, TextView, TextField and AttributedString
-```swift
-Text(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
-
-TextView(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
-    .placeholder(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
-
-TextField(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
-    .placeholder(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
-
-Button(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
-Button().title(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"), state: .highlighted)
-
-AttrStr(.en("Hello"), .ru("Привет"), .fr("Bonjour"), .es("Hola"))
-```
-
-### But how to use this awesome localization with 10+ languages in the app?
-
-Just create a dedicated localization file (e.g. `Localization.swift`) like this
-
-```swift
-extension String {
-    static func transferTo(_ wallet: String) -> String {
-        String(.en("Transfer to #\(wallet)"),
-                  .ru("Перевод на #\(wallet)"),
-                  .zh("转移到 #\(wallet)"),
-                  .ja("＃\(wallet)に転送"),
-                  .es("Transferir a #\(wallet)"),
-                  .fr("Transférer au #\(wallet)"),
-                  .sv("Överför till #\(wallet)"),
-                  .de("Übertragen Sie auf #\(wallet)"),
-                  .tr("\(wallet) numarasına aktar"),
-                  .it("Trasferimento al n. \(wallet)"),
-                  .cs("Převod na #\(wallet)"),
-                  .he("\(wallet) העבר למספר"),
-                  .ar("\(wallet)#نقل إلى"))
-    }
-    static var copyLink: String {
-        String(.en("Copy link to clipboard"),
-                  .ru("Скопировать ссылку"),
-                  .zh("复制链接到剪贴板"),
-                  .ja("リンクをクリップボードにコピー"),
-                  .es("Copiar enlace al portapapeles"),
-                  .fr("Copier le lien dans le presse-papiers"),
-                  .sv("Kopiera länk till urklipp"),
-                  .de("Link in Zwischenablage kopieren"),
-                  .tr("Bağlantıyı panoya kopyala"),
-                  .it("Copia il link negli appunti"),
-                  .cs("Zkopírujte odkaz do schránky"),
-                  .he("העתק קישור ללוח"),
-                  .ar("نسخ الرابط إلى الحافظة"))
-    }
-    static var copyLinkSucceeded: String {
-        String(.en("Link has been copied to clipboard"),
-                  .ru("Ссылка успешно скопирована в буфер обмена"),
-                  .zh("链接已复制到剪贴板"),
-                  .ja("リンクがクリップボードにコピーされました"),
-                  .es("El enlace ha sido copiado al portapapeles"),
-                  .fr("Le lien a été copié dans le presse-papiers"),
-                  .sv("Länken har kopierats till Urklipp"),
-                  .de("Der Link wurde in die Zwischenablage kopiert"),
-                  .tr("Bağlantı panoya kopyalandı"),
-                  .it("Il link è stato copiato negli appunti"),
-                  .cs("Odkaz byl zkopírován do schránky"),
-                  .he("הקישור הועתק ללוח"),
-                  .ar("تم نسخ الرابط إلى الحافظة"))
-    }
-    static var shareNumber: String {
-        String(.en("Share number"),
-                  .ru("Поделиться номером"),
-                  .zh("分享号码"),
-                  .ja("共有番号"),
-                  .es("Compartir número"),
-                  .fr("Numéro de partage"),
-                  .sv("Aktienummer"),
-                  .de("Teilenummer"),
-                  .tr("Numarayı paylaş"),
-                  .it("Condividi il numero"),
-                  .cs("Sdílejte číslo"),
-                  .he("מספר שתף"),
-                  .ar("رقم السهم"))
-    }
-    static var shareLink: String {
-        String(.en("Share link"),
-                  .ru("Поделиться ссылкой"),
-                  .zh("分享链接"),
-                  .ja("共有リンク"),
-                  .es("Compartir enlace"),
-                  .fr("Lien de partage"),
-                  .sv("Dela länk"),
-                  .de("Einen Link teilen"),
-                  .tr("Linki paylaş"),
-                  .it("Condividi il link"),
-                  .cs("Sdílet odkaz"),
-                  .he("שתף קישור"),
-                  .ar("مشاركة الرابط"))
-    }
-}
-```
-
-And then use localized string all over the app this easy way
-
-```swift
-Text(.transferTo("123")) // Transfer to #123
-Text(.copyLinkSucceeded) // Copy link to clipboard
-Button(.shareNumber) // Share number
-Button(.shareLink) // Share link
-```
-</details>
-
-<details>
-<summary>Root View Controller 🍀</summary>
-[Detailed instruction](Readme/RootViewController.md)
 </details>
 
 <details>
