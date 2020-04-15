@@ -331,6 +331,31 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
         return image(expressable.value(), state)
     }
     
+    // MARK: Background Image
+    
+    @discardableResult
+    public func backgroundImage(_ image: UIImage?, _ state: UIControl.State = .normal) -> Self {
+        setBackgroundImage(image, for: state)
+        return self
+    }
+    
+    @discardableResult
+    public func backgroundImage(_ imageName: String, _ state: UIControl.State = .normal) -> Self {
+        backgroundImage(UIImage(named: imageName), state)
+    }
+    
+    @discardableResult
+    public func backgroundImage(_ binding: UIKitPlus.State<UIImage>, _ state: UIControl.State = .normal) -> Self {
+        binding.listen { self.image($0, state) }
+        return backgroundImage(binding.wrappedValue, state)
+    }
+    
+    @discardableResult
+    public func backgroundImage<V>(_ expressable: ExpressableState<V, UIImage>, _ state: UIControl.State = .normal) -> Self {
+        expressable.state.listen { _,_ in self.image(expressable.value(), state) }
+        return backgroundImage(expressable.value(), state)
+    }
+    
     @discardableResult
     public func lineBreakMode(_ mode: NSLineBreakMode) -> Self {
         titleLabel?.lineBreakMode = mode
