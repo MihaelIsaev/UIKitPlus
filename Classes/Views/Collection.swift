@@ -121,7 +121,7 @@ public class UCollection: View, UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(with: CollectionDynamicCell.self, for: indexPath)
         let rootView = listables[indexPath.section].item(at: indexPath.row)
-        cell.setRootView(rootView)
+        cell.setRootView(VStack { rootView })
         cell.transform = CGAffineTransform(rotationAngle: reversed ? CGFloat(Double.pi) : 0)
         return cell
     }

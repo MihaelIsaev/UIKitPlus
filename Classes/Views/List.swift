@@ -75,6 +75,7 @@ public class List: View, UITableViewDataSource {
     
     public lazy var tableView = TableView()
         .register(ListDynamicCell.self)
+        .automaticDimension()
         .edgesToSuperview()
         .dataSource(self)
         .delegate(self)
@@ -144,7 +145,7 @@ public class List: View, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(with: ListDynamicCell.self, for: indexPath)
         let rootView = listables[indexPath.section].item(at: indexPath.row)
-        cell.setRootView(rootView)
+        cell.setRootView(VStack { rootView })
         cell.transform = CGAffineTransform(rotationAngle: reversed ? CGFloat(Double.pi) : 0)
         return cell
     }

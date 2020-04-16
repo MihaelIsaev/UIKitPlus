@@ -51,10 +51,10 @@ public class ForEach<Item> where Item: Hashable {
 extension ForEach: Listable {
     public var count: Int { items.wrappedValue.count }
     
-    public func item(at index: Int) -> VStack {
-        guard index < items.wrappedValue.count else { return VStack() }
+    public func item(at index: Int) -> [UIView] {
+        guard index < items.wrappedValue.count else { return [] }
         let rawViews = block(index, items.wrappedValue[index]).viewBuilderItems
-        return VStack { rawViews.map { View(inline: $0) } }
+        return rawViews.map { View(inline: $0) }
     }
 }
 
@@ -92,7 +92,7 @@ extension ForEach: ListableBuilderItem {
 
 extension ForEach: ViewBuilderItem {
     public var viewBuilderItems: [UIView] {
-        items.wrappedValue.enumerated().map { item(at: $0.offset) }
+        items.wrappedValue.enumerated().map { item(at: $0.offset) }.flatMap { $0 }
     }
 }
 

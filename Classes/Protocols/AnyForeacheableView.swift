@@ -15,7 +15,7 @@ protocol __AnyForeacheableView: ListableForEach {
 protocol _AnyForeacheableView: __AnyForeacheableView, AnyForeacheableView {}
 extension AnyForeacheableView  {
     public var count: Int { self.isVisibleInList ? 1 : 0 }
-    public func item(at index: Int) -> VStack { VStack { View(inline: self.declarativeView) } }
+    public func item(at index: Int) -> [UIView] { [ View(inline: self.declarativeView) ] }
 }
 extension AnyForeacheableView {
     public var listableBuilderItems: [Listable] { [self] }
