@@ -6,8 +6,7 @@ open class ViewController: UIViewController {
     /// UIKitPlus reimplementation of `preferredStatusBarStyle`
     open var statusBarStyle: StatusBarStyle { .default }
     
-    @State
-    public var keyboardHeight: CGFloat = 0
+    @State public var keyboardHeight: CGFloat = 0
     
     public init () {
         super.init(nibName: nil, bundle: nil)
@@ -64,36 +63,36 @@ open class ViewController: UIViewController {
     
     var keyboardWasShownAtLeastOnce = false
     
-    open func keyboardAppeared(_ height: CGFloat, _ animationDuration: TimeInterval, _ animationCurve: UIView.AnimationCurve?, _ inThisController: Bool) {
+    open func keyboardAppeared(_ height: CGFloat, _ animationDuration: TimeInterval, _ animationCurve: UIView.AnimationCurve?, _ options: UIView.AnimationOptions, _ inThisController: Bool) {
         keyboardWasShownAtLeastOnce = true
         if inThisController {
-            if #available(iOS 10.0, *) {
+            if #available(iOS 11.0, *) {
                 UIViewPropertyAnimator(duration: animationDuration, curve: animationCurve ?? .linear) {
                     self.keyboardHeight = height
                     self.view.layoutIfNeeded()
                 }.startAnimation()
             } else {
                 self.keyboardHeight = height
-                UIView.animate(withDuration: animationDuration) {
+                UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: {
                     self.view.layoutIfNeeded()
-                }
+                }, completion: nil)
             }
         }
     }
     
-    open func keyboardDisappeared(_ animationDuration: TimeInterval, _ animationCurve: UIView.AnimationCurve?, _ inThisController: Bool) -> Bool {
+    open func keyboardDisappeared(_ animationDuration: TimeInterval, _ animationCurve: UIView.AnimationCurve?, _ options: UIView.AnimationOptions, _ inThisController: Bool) -> Bool {
         guard keyboardWasShownAtLeastOnce else { return false }
         if inThisController {
-            if #available(iOS 10.0, *) {
+            if #available(iOS 11.0, *) {
                 UIViewPropertyAnimator(duration: animationDuration, curve: animationCurve ?? .linear) {
                     self.keyboardHeight = 0
                     self.view.layoutIfNeeded()
                 }.startAnimation()
             } else {
                 self.keyboardHeight = 0
-                UIView.animate(withDuration: animationDuration) {
+                UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: {
                     self.view.layoutIfNeeded()
-                }
+                }, completion: nil)
             }
         }
         return true
@@ -119,21 +118,19 @@ extension ViewController {
         let keyboardRectangle = keyboardFrame.cgRectValue
         guard keyboardRectangle.height > 0 else { return }
         guard let animationDuration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else { return }
-        var animationCurve: UIView.AnimationCurve?
-        if let animationCurveInt = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.intValue {
-            animationCurve = UIView.AnimationCurve(rawValue: animationCurveInt)
-        }
-        keyboardAppeared(keyboardRectangle.height, animationDuration, animationCurve, isSubscribedToKeyboardNotifications)
+        guard let animationCurveUInt = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt else { return }
+        let animationOptions = UIView.AnimationOptions(rawValue: animationCurveUInt)
+        let animationCurve = UIView.AnimationCurve(rawValue: Int(animationCurveUInt))
+        keyboardAppeared(keyboardRectangle.height, animationDuration, animationCurve, animationOptions, isSubscribedToKeyboardNotifications)
     }
     
     @objc
     private func keyboardWillDisappear(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         guard let animationDuration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else { return }
-        var animationCurve: UIView.AnimationCurve?
-        if let animationCurveInt = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.intValue {
-            animationCurve = UIView.AnimationCurve(rawValue: animationCurveInt)
-        }
-        _ = keyboardDisappeared(animationDuration, animationCurve, isSubscribedToKeyboardNotifications)
+        guard let animationCurveUInt = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt else { return }
+        let animationOptions = UIView.AnimationOptions(rawValue: animationCurveUInt)
+        let animationCurve = UIView.AnimationCurve(rawValue: Int(animationCurveUInt))
+        _ = keyboardDisappeared(animationDuration, animationCurve, animationOptions, isSubscribedToKeyboardNotifications)
     }
 }
