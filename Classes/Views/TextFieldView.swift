@@ -487,6 +487,16 @@ extension TextField: _TextFieldLeftViewable {
     func _setLeftViewMode(v: UITextField.ViewMode) {
         leftViewMode = v
     }
+    
+    @discardableResult
+    public func leftView(_ view: @escaping (TextField) -> UIView) -> Self {
+        leftView(mode: .always) { view(self) }
+    }
+    
+    @discardableResult
+    public func leftView(mode: UITextField.ViewMode, _ view: @escaping (TextField) -> UIView) -> Self {
+        leftView(mode: mode) { view(self) }
+    }
 }
 
 extension TextField: _TextFieldRightViewable {
@@ -496,5 +506,15 @@ extension TextField: _TextFieldRightViewable {
     
     func _setRightViewMode(v: UITextField.ViewMode) {
         rightViewMode = v
+    }
+    
+    @discardableResult
+    public func rightView(_ view: @escaping (TextField) -> UIView) -> Self {
+        rightView(mode: .always) { view(self) }
+    }
+    
+    @discardableResult
+    public func rightView(mode: UITextField.ViewMode, _ view: @escaping (TextField) -> UIView) -> Self {
+        rightView(mode: mode) { view(self) }
     }
 }
