@@ -38,7 +38,7 @@ extension MainViewController {
     }
 }
 
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
 struct MainViewController_Preview: PreviewProvider, DeclarativePreview {

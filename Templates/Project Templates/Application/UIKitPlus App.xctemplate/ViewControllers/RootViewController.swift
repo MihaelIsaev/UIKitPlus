@@ -25,7 +25,7 @@ class RootViewController: RootController<DeeplinkType> {
     }
 }
 
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
 struct RootViewController_Preview: PreviewProvider, DeclarativePreview {

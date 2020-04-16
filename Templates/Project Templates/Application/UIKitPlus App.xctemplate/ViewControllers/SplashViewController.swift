@@ -33,7 +33,7 @@ extension SplashViewController {
     }
 }
 
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
 struct SplashViewController_Preview: PreviewProvider, DeclarativePreview {

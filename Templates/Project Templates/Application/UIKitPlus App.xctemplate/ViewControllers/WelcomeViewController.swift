@@ -39,7 +39,7 @@ extension WelcomeViewController {
     }
 }
 
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
 struct WelcomeViewController_Preview: PreviewProvider, DeclarativePreview {
