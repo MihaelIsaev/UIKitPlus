@@ -2,19 +2,24 @@ import UIKit
 
 extension DeclarativeProtocol {
     @discardableResult
-    public func onScreenEdgePanGesture(edges: UIRectEdge = .all, _ action: @escaping (ScreenEdgePanGestureRecognizer) -> Void) -> Self {
-        let recognizer = ScreenEdgePanGestureRecognizer(edges: edges)
-        declarativeView.addGestureRecognizer(recognizer.trackState { _ in
-            action(recognizer)
+    public func onSwipeGesture(edges: UIRectEdge = .all, _ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
+        declarativeView.addGestureRecognizer(ScreenEdgePanGestureRecognizer(edges: edges).trackState(action))
+        return self
+    }
+    
+    @discardableResult
+    public func onSwipeGesture(edges: UIRectEdge = .all, _ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
+        declarativeView.addGestureRecognizer(ScreenEdgePanGestureRecognizer(edges: edges).trackState {
+            action(self, $0)
         })
         return self
     }
     
     @discardableResult
-    public func onScreenEdgePanGesture(edges: UIRectEdge = .all, _ action: @escaping (Self, ScreenEdgePanGestureRecognizer) -> Void) -> Self {
+    public func onScreenEdgePanGesture(edges: UIRectEdge = .all, _ action: @escaping (Self, UIGestureRecognizer.State, ScreenEdgePanGestureRecognizer) -> Void) -> Self {
         let recognizer = ScreenEdgePanGestureRecognizer(edges: edges)
-        declarativeView.addGestureRecognizer(recognizer.trackState { _ in
-            action(self, recognizer)
+        declarativeView.addGestureRecognizer(recognizer.trackState {
+            action(self, $0, recognizer)
         })
         return self
     }

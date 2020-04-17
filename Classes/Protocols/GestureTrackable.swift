@@ -5,6 +5,9 @@ public protocol GestureTrackable {
     func trackState(_ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self
     
     @discardableResult
+    func trackState(_ action: @escaping (UIGestureRecognizer.State, Self) -> Void) -> Self
+    
+    @discardableResult
     func trackState(_ state: State<UIGestureRecognizer.State>) -> Self
     
     @discardableResult
@@ -92,6 +95,15 @@ extension GestureTrackable {
     }
     
     @discardableResult
+    public func trackState(_ action: @escaping (UIGestureRecognizer.State, Self) -> Void) -> Self {
+        guard let s = self as? _GestureTrackable else { return self }
+        s._tracker.change = {
+            action($0, self)
+        }
+        return self
+    }
+    
+    @discardableResult
     public func trackState(_ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
         s._tracker.change = { action(self, $0) }
@@ -162,6 +174,14 @@ extension _GestureTrackable {
     @discardableResult
     public func trackState(_ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
         _tracker.change = action
+        return self
+    }
+    
+    @discardableResult
+    public func trackState(_ action: @escaping (UIGestureRecognizer.State, Self) -> Void) -> Self {
+        _tracker.change = {
+            action($0, self)
+        }
         return self
     }
     

@@ -2,19 +2,24 @@ import UIKit
 
 extension DeclarativeProtocol {
     @discardableResult
-    public func onPinchGesture(scale: CGFloat? = nil, _ action: @escaping (PinchGestureRecognizer) -> Void) -> Self {
-        let recognizer = PinchGestureRecognizer(scale: scale)
-        declarativeView.addGestureRecognizer(recognizer.trackState { _ in
-            action(recognizer)
+    public func onPinchGesture(scale: CGFloat? = nil, _ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
+        declarativeView.addGestureRecognizer(PinchGestureRecognizer(scale: scale).trackState(action))
+        return self
+    }
+    
+    @discardableResult
+    public func onPinchGesture(scale: CGFloat? = nil, _ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
+        declarativeView.addGestureRecognizer(PinchGestureRecognizer(scale: scale).trackState {
+            action(self, $0)
         })
         return self
     }
     
     @discardableResult
-    public func onPinchGesture(scale: CGFloat? = nil, _ action: @escaping (Self, PinchGestureRecognizer) -> Void) -> Self {
+    public func onPinchGesture(scale: CGFloat? = nil, _ action: @escaping (Self, UIGestureRecognizer.State, PinchGestureRecognizer) -> Void) -> Self {
         let recognizer = PinchGestureRecognizer(scale: scale)
-        declarativeView.addGestureRecognizer(recognizer.trackState { _ in
-            action(self, recognizer)
+        declarativeView.addGestureRecognizer(recognizer.trackState {
+            action(self, $0, recognizer)
         })
         return self
     }

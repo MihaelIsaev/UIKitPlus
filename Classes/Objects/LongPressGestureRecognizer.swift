@@ -17,6 +17,10 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
         delegate = _delegator
     }
     
+    deinit {
+        print("LongPressGestureRecognizer deinit")
+    }
+    
     @discardableResult
     public func numberOfTapsRequired(_ v: Int) -> Self {
         numberOfTapsRequired = v

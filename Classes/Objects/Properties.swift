@@ -25,6 +25,8 @@ public class Properties<V> {
     @State var textColor: UIColor = .clear
     var textColorState: State<UIColor> { _textColor }
     
+    var hovered: Bool = false
+    
     public typealias FormatCharactersClosure = (_ textField: V, _ range: NSRange, _ replacement: String) -> Void
     public typealias ChangeCharactersClosure = (_ textField: V, _ range: NSRange, _ replacement: String) -> Bool
     public typealias BoolClosure = (V) -> Bool
