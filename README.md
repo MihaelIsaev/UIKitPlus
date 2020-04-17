@@ -1024,6 +1024,12 @@ Button().font(.sfProMedium, 15)
 </details>
 
 <details>
+<summary>Gestures</summary>
+
+[Detailed instruction](Docs/Gestures.md)
+</details>
+
+<details>
 <summary>States</summary>
 
 > alias is `UState`
@@ -1762,12 +1768,6 @@ extension DeclarativeProtocol {
 ```swift
 View().tag(0)
 ```
-</details>
-
-<details>
-<summary>Gestures</summary>
-
-[Detailed instruction](Docs/Gestures.md)
 </details>
 
 <details>
