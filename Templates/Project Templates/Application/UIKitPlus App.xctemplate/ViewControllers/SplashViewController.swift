@@ -18,18 +18,12 @@ final class SplashViewController: ViewController {
             .centerInSuperview()
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             self.rootController.switch(to: .main, animation: .fade)
         }
-    }
-}
-
-extension SplashViewController {
-    static var _mock: SplashViewController {
-        SplashViewController()
     }
 }
 
@@ -39,7 +33,7 @@ import SwiftUI
 struct SplashViewController_Preview: PreviewProvider, DeclarativePreview {
     static var preview: Preview {
         Preview {
-            SplashViewController._mock
+            SplashViewController()
         }
         .colorScheme(.dark)
         .device(.iPhoneX)

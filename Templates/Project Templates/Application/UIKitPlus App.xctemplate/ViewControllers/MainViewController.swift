@@ -25,16 +25,10 @@ final class MainViewController: ViewController {
             }.centerInSuperview()
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-    }
-}
 
-extension MainViewController {
-    static var _mock: MainViewController {
-        MainViewController()
     }
 }
 
@@ -44,7 +38,7 @@ import SwiftUI
 struct MainViewController_Preview: PreviewProvider, DeclarativePreview {
     static var preview: Preview {
         Preview {
-            MainViewController._mock
+            MainViewController()
         }
         .colorScheme(.dark)
         .device(.iPhoneX)

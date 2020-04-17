@@ -20,38 +20,37 @@ extension FontIdentifier {
     static var helveticaNeueBold = FontIdentifier("HelveticaNeue-Bold")
 }
 
-#if canImport(SwiftUI)
+#if canImport(SwiftUI) && DEBUG
 import SwiftUI
 @available(iOS 13.0, *)
-struct HelveticaNeueRegular_Preview: PreviewProvider, DeclarativePreview {
-    static var preview: Preview {
-        Preview {
-            UText("This is helvetica neue regular font").font(.helveticaNeueRegular, 16).centerInSuperview().color(.black / .white)
+struct Fonts_Preview: PreviewProvider, DeclarativePreviewGroup {
+    static var previewGroup: PreviewGroup {
+        PreviewGroup {
+            Preview {
+                UText("This is helvetica neue regular font")
+                    .font(.helveticaNeueRegular, 16)
+                    .centerInSuperview()
+                    .color(.black / .white)
+            }
+            .colorScheme(.light)
+            .layout(.fixed(width: 375, height: 50))
+            Preview {
+                UText("This is helvetica neue medium font")
+                    .font(.helveticaNeueMedium, 16)
+                    .centerInSuperview()
+                    .color(.black / .white)
+            }
+            .colorScheme(.light)
+            .layout(.fixed(width: 375, height: 50))
+            Preview {
+                UText("This is helvetica neue bold font")
+                    .font(.helveticaNeueBold, 16)
+                    .centerInSuperview()
+                    .color(.black / .white)
+            }
+            .colorScheme(.light)
+            .layout(.fixed(width: 375, height: 50))
         }
-        .colorScheme(.light)
-        .layout(.fixed(width: 375, height: 50))
-    }
-}
-@available(iOS 13.0, *)
-struct HelveticaNeueMedium_Preview: PreviewProvider, DeclarativePreview {
-    static var preview: Preview {
-        Preview {
-            UText("This is helvetica neue medium font").font(.helveticaNeueMedium, 16).centerInSuperview().color(.black / .white)
-        }
-        .colorScheme(.light)
-        .layout(.fixed(width: 375, height: 50))
-    }
-}
-@available(iOS 13.0, *)
-struct HelveticaNeueBold_Preview: PreviewProvider, DeclarativePreview {
-    static var preview: Preview {
-        Preview {
-            UText("This is helvetica neue bold font").font(.helveticaNeueBold, 16).centerInSuperview().color(.black / .white)
-        }
-        .colorScheme(.light)
-        .layout(.fixed(width: 375, height: 50))
     }
 }
 #endif
-
-

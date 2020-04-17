@@ -4,7 +4,7 @@ import UIKitPlus
 
 final class WelcomeViewController: ViewController {
 //    override var statusBarStyle: StatusBarStyle { .dark }
-    
+
     override func buildUI() {
         super.buildUI()
         self.view.backgroundColor = .white / .black
@@ -26,16 +26,10 @@ final class WelcomeViewController: ViewController {
             }.centerInSuperview()
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-    }
-}
-
-extension WelcomeViewController {
-    static var _mock: WelcomeViewController {
-        WelcomeViewController()
     }
 }
 
@@ -45,7 +39,7 @@ import SwiftUI
 struct WelcomeViewController_Preview: PreviewProvider, DeclarativePreview {
     static var preview: Preview {
         Preview {
-            WelcomeViewController._mock
+            WelcomeViewController()
         }
         .colorScheme(.dark)
         .device(.iPhoneX)
