@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UView = View
-open class View: UIView, UIViewable, DeclarativeProtocolInternal {
+open class View: UIView, UIViewable, DeclarativeProtocolInternal, _Toucheable {
     public var declarativeView: View { self }
     public lazy var properties = Properties<View>()
     lazy var _properties = PropertiesInternal()
@@ -67,38 +67,12 @@ open class View: UIView, UIViewable, DeclarativeProtocolInternal {
     
     open func buildView() {}
     
-    // MARK: Touches
+    // MARK: Toucheable
     
-    public typealias TouchClosure = (Set<UITouch>, UIEvent?) -> Void
-    
-    private var _touchesBegan: TouchClosure?
-    private var _touchesMoved: TouchClosure?
-    private var _touchesEnded: TouchClosure?
-    private var _touchesCancelled: TouchClosure?
-    
-    @discardableResult
-    public func touchesBegan(_ closure: @escaping TouchClosure) -> Self {
-        _touchesBegan = closure
-        return self
-    }
-    
-    @discardableResult
-    public func touchesMoved(_ closure: @escaping TouchClosure) -> Self {
-        _touchesBegan = closure
-        return self
-    }
-    
-    @discardableResult
-    public func touchesEnded(_ closure: @escaping TouchClosure) -> Self {
-        _touchesBegan = closure
-        return self
-    }
-    
-    @discardableResult
-    public func touchesCancelled(_ closure: @escaping TouchClosure) -> Self {
-        _touchesBegan = closure
-        return self
-    }
+    var _touchesBegan: TouchClosure?
+    var _touchesMoved: TouchClosure?
+    var _touchesEnded: TouchClosure?
+    var _touchesCancelled: TouchClosure?
     
     override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
