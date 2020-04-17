@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UView = View
-open class View: UIView, UIViewable, DeclarativeProtocolInternal, _Toucheable {
+open class View: UIView, UIViewable, DeclarativeProtocolInternal {
     public var declarativeView: View { self }
     public lazy var properties = Properties<View>()
     lazy var _properties = PropertiesInternal()
@@ -67,7 +67,9 @@ open class View: UIView, UIViewable, DeclarativeProtocolInternal, _Toucheable {
     
     open func buildView() {}
     
-    // MARK: Toucheable
+    // MARK: Touches
+    
+    typealias TouchClosure = (Set<UITouch>, UIEvent?) -> Void
     
     var _touchesBegan: TouchClosure?
     var _touchesMoved: TouchClosure?
@@ -133,5 +135,125 @@ extension View {
     
     public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> View {
         View(block: block)
+    }
+}
+
+// MARK: Touches
+
+extension View {
+    /// Began
+    @discardableResult
+    public func touchesBegan(_ closure: @escaping () -> Void) -> Self {
+        _touchesBegan = { _,_ in closure() }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesBegan(_ closure: @escaping (Self) -> Void) -> Self {
+        _touchesBegan = { _,_ in closure(self) }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesBegan(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
+        _touchesBegan = { set, _ in
+            closure(self, set)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesBegan(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
+        _touchesBegan = { set, event in
+            closure(self, set, event)
+        }
+        return self
+    }
+    
+    /// Moved
+    @discardableResult
+    public func touchesMoved(_ closure: @escaping () -> Void) -> Self {
+        _touchesMoved = { _,_ in closure() }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesMoved(_ closure: @escaping (Self) -> Void) -> Self {
+        _touchesMoved = { _,_ in closure(self) }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesMoved(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
+        _touchesMoved = { set, _ in
+            closure(self, set)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesMoved(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
+        _touchesMoved = { set, event in
+            closure(self, set, event)
+        }
+        return self
+    }
+    
+    /// Ended
+    @discardableResult
+    public func touchesEnded(_ closure: @escaping () -> Void) -> Self {
+        _touchesEnded = { _,_ in closure() }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesEnded(_ closure: @escaping (Self) -> Void) -> Self {
+        _touchesEnded = { _,_ in closure(self) }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesEnded(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
+        _touchesEnded = { set, _ in
+            closure(self, set)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesEnded(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
+        _touchesEnded = { set, event in
+            closure(self, set, event)
+        }
+        return self
+    }
+    
+    /// Cancelled
+    @discardableResult
+    public func touchesCancelled(_ closure: @escaping () -> Void) -> Self {
+        _touchesCancelled = { _,_ in closure() }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesCancelled(_ closure: @escaping (Self) -> Void) -> Self {
+        _touchesCancelled = { _,_ in closure(self) }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesCancelled(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
+        _touchesCancelled = { set, _ in
+            closure(self, set)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesCancelled(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
+        _touchesCancelled = { set, event in
+            closure(self, set, event)
+        }
+        return self
     }
 }
