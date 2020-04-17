@@ -1,12 +1,10 @@
 import Foundation
 import UIKit
 
-open class ViewController: UIViewController {
+open class ViewController: UIViewController, DeclarativeProtocol, DeclarativeProtocolInternal, _Toucheable {
     open override var preferredStatusBarStyle: UIStatusBarStyle { statusBarStyle.rawValue }
     /// UIKitPlus reimplementation of `preferredStatusBarStyle`
-    open var statusBarStyle: StatusBarStyle { .default }
-    
-    @State public var keyboardHeight: CGFloat = 0
+    open var statusBarStyle: StatusBarStyle { _statusBarStyle ?? .default }
     
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(nibName: nil, bundle: nil)
@@ -35,9 +33,70 @@ open class ViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    open func buildUI() {
-        view.backgroundColor = .white
+    // MARK: DeclarativeProtocol
+    
+    public var declarativeView: View { _view }
+    public lazy var properties = Properties<View>()
+    lazy var _properties = PropertiesInternal()
+    
+    @State public var height: CGFloat = 0
+    @State public var width: CGFloat = 0
+    @State public var top: CGFloat = 0
+    @State public var leading: CGFloat = 0
+    @State public var left: CGFloat = 0
+    @State public var trailing: CGFloat = 0
+    @State public var right: CGFloat = 0
+    @State public var bottom: CGFloat = 0
+    @State public var centerX: CGFloat = 0
+    @State public var centerY: CGFloat = 0
+    
+    var __height: State<CGFloat> { _height }
+    var __width: State<CGFloat> { _width }
+    var __top: State<CGFloat> { _top }
+    var __leading: State<CGFloat> { _leading }
+    var __left: State<CGFloat> { _left }
+    var __trailing: State<CGFloat> { _trailing }
+    var __right: State<CGFloat> { _right }
+    var __bottom: State<CGFloat> { _bottom }
+    var __centerX: State<CGFloat> { _centerX }
+    var __centerY: State<CGFloat> { _centerY }
+    
+    lazy var _view = View().background(.white).edgesToSuperview()
+    
+    open override func loadView() {
+        view = _view
     }
+    
+    // MARK: Toucheable
+    
+    var _touchesBegan: TouchClosure?
+    var _touchesMoved: TouchClosure?
+    var _touchesEnded: TouchClosure?
+    var _touchesCancelled: TouchClosure?
+    
+    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        _touchesBegan?(touches, event)
+    }
+    
+    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+        _touchesMoved?(touches, event)
+    }
+    
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        _touchesEnded?(touches, event)
+    }
+    
+    open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        _touchesCancelled?(touches, event)
+    }
+    
+    // MARK: Lifecycle
+    
+    open func buildUI() {}
     
     public var isAppearedOnce = false
     
@@ -60,6 +119,8 @@ open class ViewController: UIViewController {
     }
     
     open func viewDidAppearFirstTime(_ animated: Bool) {}
+    
+    @State public var keyboardHeight: CGFloat = 0
     
     private var isSubscribedToKeyboardNotifications = false
     
@@ -111,6 +172,14 @@ open class ViewController: UIViewController {
         if #available(iOS 13.0, *) {
             isModalInPresentation = value
         }
+        return self
+    }
+    
+    var _statusBarStyle: StatusBarStyle?
+    
+    @discardableResult
+    public func statusBarStyle(_ value: StatusBarStyle) -> Self {
+        _statusBarStyle = value
         return self
     }
 }
