@@ -676,7 +676,7 @@ centerView.declarativeConstraints.outer[.bottom, secondView]?.constant = 32 // c
 <details>
 <summary>Root View Controller 🍀</summary>
 
-[Detailed instruction](Readme/RootViewController.md)
+[Detailed instruction](Docs/RootViewController.md)
 </details>
 
 <details>
@@ -1767,9 +1767,7 @@ View().tag(0)
 <details>
 <summary>Gestures</summary>
 
-```swift
-// implemented. to be described
-```
+[Detailed instruction](Docs/Gestures.md)
 </details>
 
 <details>
