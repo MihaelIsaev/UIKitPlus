@@ -28,4 +28,10 @@ final public class PinchGestureRecognizer: UIPinchGestureRecognizer, _GestureTra
     public func scale<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
         scale(expressable.unwrap())
     }
+    
+    var _tag: Int = 0
+    public override var tag: Int {
+        get { _tag }
+        set { _tag = newValue }
+    }
 }

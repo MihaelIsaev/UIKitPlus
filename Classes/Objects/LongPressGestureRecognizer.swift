@@ -88,4 +88,10 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
     public func allowableMovement<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
         allowableMovement(expressable.unwrap())
     }
+    
+    var _tag: Int = 0
+    public override var tag: Int {
+        get { _tag }
+        set { _tag = newValue }
+    }
 }

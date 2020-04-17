@@ -9,4 +9,10 @@ final public class HoverGestureRecognizer: UIHoverGestureRecognizer, _GestureTra
         super.init(target: _tracker, action: #selector(_tracker.handle))
         delegate = _delegator
     }
+    
+    var _tag: Int = 0
+    public override var tag: Int {
+        get { _tag }
+        set { _tag = newValue }
+    }
 }

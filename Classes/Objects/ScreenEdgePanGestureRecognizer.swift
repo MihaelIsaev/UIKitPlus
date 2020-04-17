@@ -26,4 +26,10 @@ final public class ScreenEdgePanGestureRecognizer: UIScreenEdgePanGestureRecogni
     public func edges<V>(_ expressable: ExpressableState<V, UIRectEdge>) -> Self {
         edges(expressable.unwrap())
     }
+    
+    var _tag: Int = 0
+    public override var tag: Int {
+        get { _tag }
+        set { _tag = newValue }
+    }
 }

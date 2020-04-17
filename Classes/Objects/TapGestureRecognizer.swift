@@ -44,4 +44,10 @@ final public class TapGestureRecognizer: UITapGestureRecognizer, _GestureTrackab
     public func numberOfTouchesRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
         numberOfTouchesRequired(expressable.unwrap())
     }
+    
+    var _tag: Int = 0
+    public override var tag: Int {
+        get { _tag }
+        set { _tag = newValue }
+    }
 }

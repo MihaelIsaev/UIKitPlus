@@ -49,4 +49,10 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
     public func maximumNumberOfTouches<V>(_ expressable: ExpressableState<V, Int>) -> Self {
         maximumNumberOfTouches(expressable.unwrap())
     }
+    
+    var _tag: Int = 0
+    public override var tag: Int {
+        get { _tag }
+        set { _tag = newValue }
+    }
 }

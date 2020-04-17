@@ -46,4 +46,10 @@ final public class SwipeGestureRecognizer: UISwipeGestureRecognizer, _GestureTra
     public func direction<V>(_ expressable: ExpressableState<V, UISwipeGestureRecognizer.Direction>) -> Self {
         direction(expressable.unwrap())
     }
+    
+    var _tag: Int = 0
+    public override var tag: Int {
+        get { _tag }
+        set { _tag = newValue }
+    }
 }

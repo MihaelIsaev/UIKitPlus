@@ -28,4 +28,10 @@ final public class RotationGestureRecognizer: UIRotationGestureRecognizer, _Gest
     public func rotation<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
         rotation(expressable.unwrap())
     }
+    
+    var _tag: Int = 0
+    public override var tag: Int {
+        get { _tag }
+        set { _tag = newValue }
+    }
 }
