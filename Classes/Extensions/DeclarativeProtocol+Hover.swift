@@ -3,7 +3,7 @@ import UIKit
 extension DeclarativeProtocol {
     @discardableResult
     public func onHoverGesture(_ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
-        if #available(iOSApplicationExtension 13.0, *) {
+        if #available(iOS 13.0, *) {
             declarativeView.addGestureRecognizer(HoverGestureRecognizer().trackState(action))
         }
         return self
@@ -11,7 +11,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onHoverGesture(_ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
-        if #available(iOSApplicationExtension 13.0, *) {
+        if #available(iOS 13.0, *) {
             declarativeView.addGestureRecognizer(HoverGestureRecognizer().trackState {
                 action(self, $0)
             })
@@ -21,7 +21,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onHoverGesture(_ action: @escaping (Self, UIGestureRecognizer.State, UIGestureRecognizer) -> Void) -> Self {
-        if #available(iOSApplicationExtension 13.0, *) {
+        if #available(iOS 13.0, *) {
             let recognizer = HoverGestureRecognizer()
             declarativeView.addGestureRecognizer(recognizer.trackState {
                 action(self, $0, recognizer)
@@ -32,7 +32,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onHoverGesture(_ state: State<UIGestureRecognizer.State>) -> Self {
-        if #available(iOSApplicationExtension 13.0, *) {
+        if #available(iOS 13.0, *) {
             declarativeView.addGestureRecognizer(HoverGestureRecognizer().trackState {
                 state.wrappedValue = $0
             })
@@ -47,7 +47,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func hovered(_ action: @escaping (Bool) -> Void) -> Self {
-        if #available(iOSApplicationExtension 13.0, *) {
+        if #available(iOS 13.0, *) {
             declarativeView.addGestureRecognizer(HoverGestureRecognizer().trackState {
                 let hovered = [.began, .changed].contains($0)
                 guard hovered != self.properties.hovered else { return }
