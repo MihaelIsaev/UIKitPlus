@@ -36,6 +36,12 @@ extension SpokenNumberable {
 public struct SpokenNumber {
     let one, two, ten: String
     
+    public init (one: String, many: String) {
+        self.one = one
+        self.two = many
+        self.ten = many
+    }
+    
     public init (one: String, two: String? = nil, ten: String? = nil) {
         self.one = one
         self.two = two ?? ten ?? one
@@ -61,7 +67,7 @@ public struct SpokenNumber {
         if y == 1 {
             return one
         }
-        if let _ = [2,3,4].firstIndex(of: y) {
+        if let _ = [2, 3, 4].firstIndex(of: y) {
             return two
         }
         return ten
