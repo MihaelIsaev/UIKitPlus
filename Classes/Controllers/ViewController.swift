@@ -100,27 +100,64 @@ open class ViewController: UIViewController, DeclarativeProtocol, DeclarativePro
     
     open func buildUI() {}
     
-    public var isAppearedOnce = false
+    public var isWillAppearedOnce = false
+    public var isDidAppearedOnce = false
+    
+    var _viewDidLoad = {}
+    var _viewDidLayoutSubviews = {}
+    var _viewDidAppear: (Bool) -> Void = { _ in }
+    var _viewDidAppearFirstTime: (Bool) -> Void = { _ in }
+    var _viewWillAppear: (Bool) -> Void = { _ in }
+    var _viewWillAppearFirstTime: (Bool) -> Void = { _ in }
+    var _viewWillDisappear: (Bool) -> Void = { _ in }
+    var _viewDidDisappear: (Bool) -> Void = { _ in }
+    
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        _viewDidLoad()
+    }
+    
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        _viewDidLayoutSubviews()
+    }
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !isAppearedOnce {
-            isAppearedOnce = true
+        if !isDidAppearedOnce {
+            isDidAppearedOnce = true
             viewDidAppearFirstTime(animated)
         }
+        _viewDidAppear(animated)
     }
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         isSubscribedToKeyboardNotifications = true
+        if !isWillAppearedOnce {
+            isWillAppearedOnce = true
+            viewWillAppearFirstTime(animated)
+        }
+        _viewWillAppear(animated)
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         isSubscribedToKeyboardNotifications = false
+        _viewWillDisappear(animated)
     }
     
-    open func viewDidAppearFirstTime(_ animated: Bool) {}
+    open override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        _viewDidDisappear(animated)
+    }
+    
+    open func viewWillAppearFirstTime(_ animated: Bool) {
+        _viewDidAppearFirstTime(animated)
+    }
+    open func viewDidAppearFirstTime(_ animated: Bool) {
+        _viewWillAppearFirstTime(animated)
+    }
     
     @State public var keyboardHeight: CGFloat = 0
     
@@ -183,6 +220,210 @@ open class ViewController: UIViewController, DeclarativeProtocol, DeclarativePro
     public func statusBarStyle(_ value: StatusBarStyle) -> Self {
         _statusBarStyle = value
         return self
+    }
+    
+    @discardableResult
+    public func navigationItem(_ closure: (Self, UINavigationItem) -> Void) -> Self {
+        closure(self, navigationItem)
+        return self
+    }
+    
+    @discardableResult
+    public func navigationController(_ closure: (Self, UINavigationController?) -> Void) -> Self {
+        closure(self, navigationController)
+        return self
+    }
+}
+
+// MARK: Lifecycle
+
+extension ViewController {
+    /// didLoad
+    @discardableResult
+    public func onViewDidLoad(_ closure: @escaping () -> Void) -> Self {
+        _viewDidLoad = closure
+        return self
+    }
+    
+    @discardableResult
+    public func onViewDidLoad(_ closure: @escaping (Self) -> Void) -> Self {
+        _viewDidLoad = {
+            closure(self)
+        }
+        return self
+    }
+    
+    /// didLayoutSubviews
+    @discardableResult
+    public func onViewDidLayoutSubviews(_ closure: @escaping () -> Void) -> Self {
+        _viewDidLayoutSubviews = closure
+        return self
+    }
+    
+    @discardableResult
+    public func onViewDidLayoutSubviews(_ closure: @escaping (Self) -> Void) -> Self {
+        _viewDidLayoutSubviews = {
+            closure(self)
+        }
+        return self
+    }
+    
+    /// didAppear
+    @discardableResult
+    public func onViewDidAppear(_ closure: @escaping () -> Void) -> Self {
+        _viewDidAppear = { a in
+            closure()
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewDidAppear(_ closure: @escaping (Self) -> Void) -> Self {
+        _viewDidAppear = { a in
+            closure(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewDidAppear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
+        _viewDidAppear = { a in
+            closure(self, a)
+        }
+        return self
+    }
+    
+    /// didAppearFirstTime
+    @discardableResult
+    public func onViewDidAppearFirstTime(_ closure: @escaping () -> Void) -> Self {
+        _viewDidAppearFirstTime = { a in
+            closure()
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewDidAppearFirstTime(_ closure: @escaping (Self) -> Void) -> Self {
+        _viewDidAppearFirstTime = { a in
+            closure(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewDidAppearFirstTime(_ closure: @escaping (Self, Bool) -> Void) -> Self {
+        _viewDidAppearFirstTime = { a in
+            closure(self, a)
+        }
+        return self
+    }
+    
+    /// willAppear
+    @discardableResult
+    public func onViewWillAppear(_ closure: @escaping () -> Void) -> Self {
+        _viewWillAppear = { a in
+            closure()
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewWillAppear(_ closure: @escaping (Self) -> Void) -> Self {
+        _viewWillAppear = { a in
+            closure(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewWillAppear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
+        _viewWillAppear = { a in
+            closure(self, a)
+        }
+        return self
+    }
+    
+    /// willAppearFirstTime
+    @discardableResult
+    public func onViewWillAppearFirstTime(_ closure: @escaping () -> Void) -> Self {
+        _viewWillAppearFirstTime = { a in
+            closure()
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewWillAppearFirstTime(_ closure: @escaping (Self) -> Void) -> Self {
+        _viewWillAppearFirstTime = { a in
+            closure(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewWillAppearFirstTime(_ closure: @escaping (Self, Bool) -> Void) -> Self {
+        _viewWillAppearFirstTime = { a in
+            closure(self, a)
+        }
+        return self
+    }
+    
+    /// willDisappear
+    @discardableResult
+    public func onViewWillDisappear(_ closure: @escaping () -> Void) -> Self {
+        _viewWillDisappear = { a in
+            closure()
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewWillDisappear(_ closure: @escaping (Self) -> Void) -> Self {
+        _viewWillDisappear = { a in
+            closure(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewWillDisappear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
+        _viewWillDisappear = { a in
+            closure(self, a)
+        }
+        return self
+    }
+    
+    /// didDisappear
+    @discardableResult
+    public func onViewDidDisappear(_ closure: @escaping () -> Void) -> Self {
+        _viewDidDisappear = { a in
+            closure()
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewDidDisappear(_ closure: @escaping (Self) -> Void) -> Self {
+        _viewDidDisappear = { a in
+            closure(self)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onViewDidDisappear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
+        _viewDidDisappear = { a in
+            closure(self, a)
+        }
+        return self
+    }
+}
+
+// MARK: Titleable
+
+extension ViewController: _Titleable {
+    func _setTitle(_ v: String?) {
+        title = v
     }
 }
 
