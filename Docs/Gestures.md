@@ -240,6 +240,23 @@ Additionally you can use these convenient methods below and even combine them wi
 }
 ```
 
+### Tags
+
+You can set `tag` for any gesture recognizer
+
+```swift
+TapGestureRecognizer().tag(777)
+```
+
+and then you can read it easily somewhere, e.g.
+
+```swift
+.shouldRecognizeSimultaneouslyWithOtherGestureRecognizer { otherRecognizer in
+    print("shouldRecognizeSimultaneouslyWith: \(otherRecognizer.tag)")
+    return true
+}
+```
+
 ### How to add a gesture to view
 
 ```swift
