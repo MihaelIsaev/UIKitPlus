@@ -8,6 +8,13 @@ open class ViewController: UIViewController {
     
     @State public var keyboardHeight: CGFloat = 0
     
+    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+        super.init(nibName: nil, bundle: nil)
+        subscribeToKeyboardNotifications()
+        buildUI()
+        body { block().viewBuilderItems }
+    }
+    
     public init () {
         super.init(nibName: nil, bundle: nil)
         subscribeToKeyboardNotifications()
