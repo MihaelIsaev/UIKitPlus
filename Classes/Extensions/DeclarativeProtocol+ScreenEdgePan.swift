@@ -2,17 +2,33 @@ import UIKit
 
 extension DeclarativeProtocol {
     @discardableResult
-    public func onSwipeGesture(edges: UIRectEdge = .all, _ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
-        declarativeView.addGestureRecognizer(ScreenEdgePanGestureRecognizer(edges: edges).trackState(action))
-        return self
+    public func onScreenEdgePanGesture(edges: UIRectEdge = .all, on state: UIGestureRecognizer.State, _ action: @escaping () -> Void) -> Self {
+        onScreenEdgePanGesture(edges: edges, on: state) { v, r in
+            action()
+        }
     }
     
     @discardableResult
-    public func onSwipeGesture(edges: UIRectEdge = .all, _ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
-        declarativeView.addGestureRecognizer(ScreenEdgePanGestureRecognizer(edges: edges).trackState {
-            action(self, $0)
-        })
-        return self
+    public func onScreenEdgePanGesture(edges: UIRectEdge = .all, on state: UIGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
+        onScreenEdgePanGesture(edges: edges, on: state) { v, r in
+            action(self)
+        }
+    }
+    
+    @discardableResult
+    public func onScreenEdgePanGesture(edges: UIRectEdge = .all, on state: UIGestureRecognizer.State, _ action: @escaping (Self, ScreenEdgePanGestureRecognizer) -> Void) -> Self {
+        onScreenEdgePanGesture(edges: edges) { v, s, r in
+            if s == state {
+                action(v, r)
+            }
+        }
+    }
+    
+    @discardableResult
+    public func onScreenEdgePanGesture(edges: UIRectEdge = .all, _ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
+        onScreenEdgePanGesture(edges: edges) { v, s, r in
+            action(v, s)
+        }
     }
     
     @discardableResult
@@ -25,15 +41,14 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func onScreenEdgePanGesture(_ state: State<UIGestureRecognizer.State>, edges: UIRectEdge = .all) -> Self {
-        declarativeView.addGestureRecognizer(ScreenEdgePanGestureRecognizer(edges: edges).trackState {
-            state.wrappedValue = $0
-        })
-        return self
+    public func onScreenEdgePanGesture(edges: UIRectEdge = .all, _ state: State<UIGestureRecognizer.State>) -> Self {
+        onScreenEdgePanGesture(edges: edges) { v, s, r in
+            state.wrappedValue = s
+        }
     }
 
     @discardableResult
-    public func onScreenEdgePanGesture<V>(_ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
-        onPanGesture(expressable.unwrap())
+    public func onScreenEdgePanGesture<V>(edges: UIRectEdge = .all, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
+        onScreenEdgePanGesture(edges: edges, expressable.unwrap())
     }
 }

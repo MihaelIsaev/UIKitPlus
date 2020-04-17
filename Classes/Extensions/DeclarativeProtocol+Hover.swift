@@ -2,21 +2,17 @@ import UIKit
 
 extension DeclarativeProtocol {
     @discardableResult
-    public func onHoverGesture(_ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
-        if #available(iOS 13.0, *) {
-            declarativeView.addGestureRecognizer(HoverGestureRecognizer().trackState(action))
+    public func onHoverGesture(_ action: @escaping (Self) -> Void) -> Self {
+        onHoverGesture { v, s, r in
+            action(v)
         }
-        return self
     }
     
     @discardableResult
     public func onHoverGesture(_ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
-        if #available(iOS 13.0, *) {
-            declarativeView.addGestureRecognizer(HoverGestureRecognizer().trackState {
-                action(self, $0)
-            })
+        onHoverGesture { v, s, r in
+            action(v, s)
         }
-        return self
     }
     
     @discardableResult
@@ -32,12 +28,9 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onHoverGesture(_ state: State<UIGestureRecognizer.State>) -> Self {
-        if #available(iOS 13.0, *) {
-            declarativeView.addGestureRecognizer(HoverGestureRecognizer().trackState {
-                state.wrappedValue = $0
-            })
+        onHoverGesture { v, s, r in
+            state.wrappedValue = s
         }
-        return self
     }
 
     @discardableResult
@@ -47,15 +40,12 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func hovered(_ action: @escaping (Bool) -> Void) -> Self {
-        if #available(iOS 13.0, *) {
-            declarativeView.addGestureRecognizer(HoverGestureRecognizer().trackState {
-                let hovered = [.began, .changed].contains($0)
-                guard hovered != self.properties.hovered else { return }
-                self.properties.hovered = hovered
-                action(hovered)
-            })
+        onHoverGesture { v, s, r in
+            let hovered = [.began, .changed].contains(s)
+            guard hovered != self.properties.hovered else { return }
+            self.properties.hovered = hovered
+            action(hovered)
         }
-        return self
     }
     
     @discardableResult

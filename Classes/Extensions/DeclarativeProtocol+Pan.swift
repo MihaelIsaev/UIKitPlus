@@ -2,17 +2,40 @@ import UIKit
 
 extension DeclarativeProtocol {
     @discardableResult
-    public func onPanGesture(minTouches: Int? = nil, maxTouches: Int? = nil, _ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
-        declarativeView.addGestureRecognizer(PanGestureRecognizer(minTouches: minTouches, maxTouches: maxTouches).trackState(action))
-        return self
+    public func onPanGesture(minTouches: Int? = nil, maxTouches: Int? = nil, on state: UIGestureRecognizer.State, _ action: @escaping () -> Void) -> Self {
+        onPanGesture(minTouches: minTouches, maxTouches: maxTouches, on: state) { v, r in
+            action()
+        }
+    }
+    
+    @discardableResult
+    public func onPanGesture(minTouches: Int? = nil, maxTouches: Int? = nil, on state: UIGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
+        onPanGesture(minTouches: minTouches, maxTouches: maxTouches, on: state) { v, r in
+            action(self)
+        }
+    }
+    
+    @discardableResult
+    public func onPanGesture(minTouches: Int? = nil, maxTouches: Int? = nil, on state: UIGestureRecognizer.State, _ action: @escaping (Self, PanGestureRecognizer) -> Void) -> Self {
+        onPanGesture(minTouches: minTouches, maxTouches: maxTouches) { v, s, r in
+            if s == state {
+                action(v, r)
+            }
+        }
+    }
+    
+    @discardableResult
+    public func onPanGesture(minTouches: Int? = nil, maxTouches: Int? = nil, _ action: @escaping (Self) -> Void) -> Self {
+        onPanGesture(minTouches: minTouches, maxTouches: maxTouches) { v, s, r in
+            action(v)
+        }
     }
     
     @discardableResult
     public func onPanGesture(minTouches: Int? = nil, maxTouches: Int? = nil, _ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
-        declarativeView.addGestureRecognizer(PanGestureRecognizer(minTouches: minTouches, maxTouches: maxTouches).trackState {
-            action(self, $0)
-        })
-        return self
+        onPanGesture(minTouches: minTouches, maxTouches: maxTouches) { v, s, r in
+            action(v, s)
+        }
     }
     
     @discardableResult
@@ -25,15 +48,14 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func onPanGesture(_ state: State<UIGestureRecognizer.State>, minTouches: Int? = nil, maxTouches: Int? = nil) -> Self {
-        declarativeView.addGestureRecognizer(PanGestureRecognizer(minTouches: minTouches, maxTouches: maxTouches).trackState {
-            state.wrappedValue = $0
-        })
-        return self
+    public func onPanGesture(minTouches: Int? = nil, maxTouches: Int? = nil, _ state: State<UIGestureRecognizer.State>) -> Self {
+        onPanGesture(minTouches: minTouches, maxTouches: maxTouches) { v, s, r in
+            state.wrappedValue = s
+        }
     }
 
     @discardableResult
-    public func onPanGesture<V>(_ expressable: ExpressableState<V, UIGestureRecognizer.State>, minTouches: Int? = nil, maxTouches: Int? = nil) -> Self {
-        onPanGesture(expressable.unwrap(), minTouches: minTouches, maxTouches: maxTouches)
+    public func onPanGesture<V>(minTouches: Int? = nil, maxTouches: Int? = nil, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
+        onPanGesture(minTouches: minTouches, maxTouches: maxTouches, expressable.unwrap())
     }
 }

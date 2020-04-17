@@ -2,17 +2,40 @@ import UIKit
 
 extension DeclarativeProtocol {
     @discardableResult
-    public func onPinchGesture(scale: CGFloat? = nil, _ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
-        declarativeView.addGestureRecognizer(PinchGestureRecognizer(scale: scale).trackState(action))
-        return self
+    public func onPinchGesture(scale: CGFloat? = nil, on state: UIGestureRecognizer.State, _ action: @escaping () -> Void) -> Self {
+        onPinchGesture(scale: scale, on: state) { v, r in
+            action()
+        }
+    }
+    
+    @discardableResult
+    public func onPinchGesture(scale: CGFloat? = nil, on state: UIGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
+        onPinchGesture(scale: scale, on: state) { v, r in
+            action(self)
+        }
+    }
+    
+    @discardableResult
+    public func onPinchGesture(scale: CGFloat? = nil, on state: UIGestureRecognizer.State, _ action: @escaping (Self, PinchGestureRecognizer) -> Void) -> Self {
+        onPinchGesture(scale: scale) { v, s, r in
+            if s == state {
+                action(v, r)
+            }
+        }
+    }
+    
+    @discardableResult
+    public func onPinchGesture(scale: CGFloat? = nil, _ action: @escaping (Self) -> Void) -> Self {
+        onPinchGesture(scale: scale) { v, s, r in
+            action(v)
+        }
     }
     
     @discardableResult
     public func onPinchGesture(scale: CGFloat? = nil, _ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
-        declarativeView.addGestureRecognizer(PinchGestureRecognizer(scale: scale).trackState {
-            action(self, $0)
-        })
-        return self
+        onPinchGesture(scale: scale) { v, s, r in
+            action(v, s)
+        }
     }
     
     @discardableResult
@@ -25,15 +48,14 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func onPinchGesture(_ state: State<UIGestureRecognizer.State>, scale: CGFloat? = nil) -> Self {
-        declarativeView.addGestureRecognizer(PinchGestureRecognizer(scale: scale).trackState {
-            state.wrappedValue = $0
-        })
-        return self
+    public func onPinchGesture(scale: CGFloat? = nil, _ state: State<UIGestureRecognizer.State>) -> Self {
+        onPinchGesture(scale: scale) { v, s, r in
+            state.wrappedValue = s
+        }
     }
 
     @discardableResult
-    public func onPinchGesture<V>(_ expressable: ExpressableState<V, UIGestureRecognizer.State>, scale: CGFloat? = nil) -> Self {
-        onPinchGesture(expressable.unwrap(), scale: scale)
+    public func onPinchGesture<V>(scale: CGFloat? = nil, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
+        onPinchGesture(scale: scale, expressable.unwrap())
     }
 }

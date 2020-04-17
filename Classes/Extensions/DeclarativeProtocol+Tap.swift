@@ -2,17 +2,26 @@ import UIKit
 
 extension DeclarativeProtocol where V: UIView {
     @discardableResult
-    public func onTapGesture(taps: Int = 1, touches: Int = 1, _ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
-        declarativeView.addGestureRecognizer(TapGestureRecognizer(taps: taps, touches: touches).trackState(action))
-        return self
+    public func onTapGesture(taps: Int = 1, touches: Int = 1, on state: UIGestureRecognizer.State = .ended, _ action: @escaping () -> Void) -> Self {
+        onTapGesture(on: state) { v in
+            action()
+        }
+    }
+    
+    @discardableResult
+    public func onTapGesture(taps: Int = 1, touches: Int = 1, on state: UIGestureRecognizer.State = .ended, _ action: @escaping (Self) -> Void) -> Self {
+        onTapGesture(taps: taps, touches: touches) { v, s, r in
+            if s == state {
+                action(v)
+            }
+        }
     }
     
     @discardableResult
     public func onTapGesture(taps: Int = 1, touches: Int = 1, _ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
-        declarativeView.addGestureRecognizer(TapGestureRecognizer(taps: taps, touches: touches).trackState {
-            action(self, $0)
-        })
-        return self
+        onTapGesture(taps: taps, touches: touches) { v, s, r in
+            action(v, s)
+        }
     }
     
     @discardableResult
@@ -25,38 +34,15 @@ extension DeclarativeProtocol where V: UIView {
     }
     
     @discardableResult
-    public func onTapGesture(on state: UIGestureRecognizer.State = .ended, taps: Int = 1, touches: Int = 1, _ action: @escaping () -> Void) -> Self {
-        declarativeView.addGestureRecognizer(TapGestureRecognizer(taps: taps, touches: touches).trackState {
-            switch $0 {
-            case state: action()
-            default: break
-            }
-        })
-        return self
-    }
-    
-    @discardableResult
-    public func onTapGesture(on state: UIGestureRecognizer.State = .ended, taps: Int = 1, touches: Int = 1, _ action: @escaping (Self) -> Void) -> Self {
-        declarativeView.addGestureRecognizer(TapGestureRecognizer(taps: taps, touches: touches).trackState {
-            switch $0 {
-            case state: action(self)
-            default: break
-            }
-        })
-        return self
-    }
-    
-    @discardableResult
-    public func onTapGesture(_ state: State<UIGestureRecognizer.State>, taps: Int = 1, touches: Int = 1) -> Self {
-        declarativeView.addGestureRecognizer(TapGestureRecognizer(taps: taps, touches: touches).trackState {
-            state.wrappedValue = $0
-        })
-        return self
+    public func onTapGesture(taps: Int = 1, touches: Int = 1, _ state: State<UIGestureRecognizer.State>) -> Self {
+        onTapGesture(taps: taps, touches: touches) { v, s, r in
+            state.wrappedValue = s
+        }
     }
 
     @discardableResult
-    public func onTapGesture<V>(_ expressable: ExpressableState<V, UIGestureRecognizer.State>, taps: Int = 1, touches: Int = 1) -> Self {
-        onTapGesture(expressable.unwrap(), taps: taps, touches: touches)
+    public func onTapGesture<V>(taps: Int = 1, touches: Int = 1, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
+        onTapGesture(taps: taps, touches: touches, expressable.unwrap())
     }
 }
 
