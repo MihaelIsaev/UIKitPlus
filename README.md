@@ -84,7 +84,7 @@ Together with project template you will get the file template 👍
 
 ### 1. Delayed constraints
 
-Declare all the constraints in advance before adding view to superview.
+Declare all the constraints in advance before adding view to superview. Even by tags.
 ```swift
 Button("Click me").width(300).centerInSuperview()
 ```
@@ -617,6 +617,74 @@ View().equalSize(to: otherView)
 ```
 
 > 💡 TIP: Feel free to use `State`, `ExpressableState`, and values based on device type everywhere
+
+#### Relative constraints by tags 🔥
+
+<p align="center">
+<img width="375" alt="Screenshot 2020-04-18 at 05 47 57" src="https://user-images.githubusercontent.com/1272610/79625178-2bba4200-8138-11ea-959b-f7487a45cee5.png">
+</p>
+
+Really often we have to create some views with constraints related to each other 😃
+
+The classic way is to create a variable with view somewhere outside, like this
+
+```swift
+let someView = UView()
+```
+
+then we used it with other views to make relative constraints
+
+```swift
+UView {
+    someView.size(200).background(.red).centerInSuperview()
+    UView().size(100).background(.cyan).centerXInSuperview().top(to: someView)
+    UView().size(100).background(.purple).centerXInSuperview().bottom(to: someView)
+    UView().size(100).background(.yellow).centerYInSuperview().right(to: someView)
+    UView().size(100).background(.green).centerYInSuperview().left(to: someView)
+}
+```
+
+But if it's not necessary to declare view outside the you can use tag! And easily rely to it from other views!
+
+```swift
+UView {
+    UView().size(200).background(.red).centerInSuperview().tag(7)
+    UView().size(100).background(.cyan).centerXInSuperview().top(to: 7)
+    UView().size(100).background(.purple).centerXInSuperview().bottom(to: 7)
+    UView().size(100).background(.yellow).centerYInSuperview().right(to: 7)
+    UView().size(100).background(.green).centerYInSuperview().left(to: 7)
+}
+```
+
+Even order doesn't matter 🤗
+
+```swift
+UView {
+    UView().size(100).background(.cyan).centerXInSuperview().top(to: 7)
+    UView().size(100).background(.purple).centerXInSuperview().bottom(to: 7)
+    UView().size(100).background(.yellow).centerYInSuperview().right(to: 7)
+    UView().size(100).background(.green).centerYInSuperview().left(to: 7)
+    UView().size(200).background(.red).centerInSuperview().tag(7)
+}
+```
+
+You even can add view later and all related views will immediately stick to it once it's added 🚀
+
+```swift
+let v = UView {
+    UView().size(100).background(.cyan).centerXInSuperview().top(to: 7)
+    UView().size(100).background(.purple).centerXInSuperview().bottom(to: 7)
+    UView().size(100).background(.yellow).centerYInSuperview().right(to: 7)
+    UView().size(100).background(.green).centerYInSuperview().left(to: 7)
+}
+DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+    UIView.animate(withDuration: 1) {
+        v.body {
+            UView().size(200).background(.red).centerInSuperview().tag(7)
+        }
+    }
+}
+```
 
 #### Extra
 
