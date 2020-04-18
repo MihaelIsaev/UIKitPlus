@@ -2,13 +2,13 @@ import UIKit
 
 extension DeclarativeProtocol {
     private func _createRelative(value: State<CGFloat>,
-                                                    relation: NSLayoutConstraint.Relation,
-                                                    multiplier: CGFloat,
-                                                    priority: UILayoutPriority,
-                                                    attribute1: NSLayoutConstraint.Attribute,
-                                                    attribute2: NSLayoutConstraint.Attribute?,
-                                                    toSafe: Bool,
-                                                    destinationView: UIView?) -> Self {
+                                              relation: NSLayoutConstraint.Relation,
+                                              multiplier: CGFloat,
+                                              priority: UILayoutPriority,
+                                              attribute1: NSLayoutConstraint.Attribute,
+                                              attribute2: NSLayoutConstraint.Attribute?,
+                                              toSafe: Bool,
+                                              destinationView: PreConstraintViewable?) -> Self {
         let pc = PreConstraint(value: value,
                                         relation: relation,
                                         multiplier: multiplier,
@@ -26,33 +26,16 @@ extension DeclarativeProtocol {
         return self
     }
     
-    private func _createRelative<V>(expressable: ExpressableState<V, CGFloat>,
-                                                    relation: NSLayoutConstraint.Relation,
-                                                    multiplier: CGFloat,
-                                                    priority: UILayoutPriority,
-                                                    attribute1: NSLayoutConstraint.Attribute,
-                                                    attribute2: NSLayoutConstraint.Attribute?,
-                                                    toSafe: Bool,
-                                                    destinationView: UIView?) -> Self {
-        _createRelative(value: expressable.unwrap(),
-                                                relation: relation,
-                                                multiplier: multiplier,
-                                                priority: priority,
-                                                attribute1: attribute1,
-                                                attribute2: attribute2,
-                                                toSafe: toSafe,
-                                                destinationView: destinationView)
-    }
-    
     // MARK: - top
     
     @discardableResult
-    public func top(to side: DeclarativeConstraintYSide, of view: UIView,
-                               _ state: State<CGFloat>,
-                               relation: NSLayoutConstraint.Relation = .equal,
-                               multiplier: CGFloat = 1,
-                               priority: UILayoutPriority = .defaultHigh,
-                               safeArea: Bool = false) -> Self {
+    public func top(to side: DeclarativeConstraintYSide,
+                          of view: PreConstraintViewable,
+                          _ state: State<CGFloat>,
+                          relation: NSLayoutConstraint.Relation = .equal,
+                          multiplier: CGFloat = 1,
+                          priority: UILayoutPriority = .defaultHigh,
+                          safeArea: Bool = false) -> Self {
         _createRelative(value: state,
                         relation: relation,
                         multiplier: multiplier,
@@ -65,162 +48,169 @@ extension DeclarativeProtocol {
     
     /// By default to `bottom` of destination view
     @discardableResult
-    public func top(to view: UIView,
-                    _ state: State<CGFloat>,
-                    relation: NSLayoutConstraint.Relation = .equal,
-                    multiplier: CGFloat = 1,
-                    priority: UILayoutPriority = .defaultHigh,
-                    safeArea: Bool = false) -> Self {
+    public func top(to view: PreConstraintViewable,
+                          _ state: State<CGFloat>,
+                          relation: NSLayoutConstraint.Relation = .equal,
+                          multiplier: CGFloat = 1,
+                          priority: UILayoutPriority = .defaultHigh,
+                          safeArea: Bool = false) -> Self {
         top(to: .bottom, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func top<V>(to side: DeclarativeConstraintYSide, of view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func top<V>(to side: DeclarativeConstraintYSide,
+                                 of view: PreConstraintViewable,
+                                 _ expressable: ExpressableState<V, CGFloat>,
+                                 relation: NSLayoutConstraint.Relation = .equal,
+                                 multiplier: CGFloat = 1,
+                                 priority: UILayoutPriority = .defaultHigh,
+                                 safeArea: Bool = false) -> Self {
         top(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     /// By default to `bottom` of destination view
     @discardableResult
-    public func top<V>(to view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func top<V>(to view: PreConstraintViewable,
+                                 _ expressable: ExpressableState<V, CGFloat>,
+                                 relation: NSLayoutConstraint.Relation = .equal,
+                                 multiplier: CGFloat = 1,
+                                 priority: UILayoutPriority = .defaultHigh,
+                                 safeArea: Bool = false) -> Self {
         top(to: .bottom, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func top(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        top(to: side, of: view,
-            .init(wrappedValue: value.constraintValue.value),
-            relation: value.constraintValue.relation,
-            multiplier: value.constraintValue.multiplier,
-            priority: value.constraintValue.priority,
-            safeArea: safeArea)
+    public func top(to side: DeclarativeConstraintYSide, of view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        top(to: side,
+              of: view,
+              .init(wrappedValue: value.constraintValue.value),
+              relation: value.constraintValue.relation,
+              multiplier: value.constraintValue.multiplier,
+              priority: value.constraintValue.priority,
+              safeArea: safeArea)
     }
     
     /// By default to `bottom` of destination view
     @discardableResult
-    public func top(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+    public func top(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         top(to: .bottom, of: view, value, safeArea: safeArea)
     }
     
     // MARK: - leading
     
     @discardableResult
-    public func leading(to side: DeclarativeConstraintXSide, of view: UIView,
-                               _ state: State<CGFloat>,
-                               relation: NSLayoutConstraint.Relation = .equal,
-                               multiplier: CGFloat = 1,
-                               priority: UILayoutPriority = .defaultHigh,
-                               safeArea: Bool = false) -> Self {
+    public func leading(to side: DeclarativeConstraintXSide,
+                                of view: PreConstraintViewable,
+                                _ state: State<CGFloat>,
+                                relation: NSLayoutConstraint.Relation = .equal,
+                                multiplier: CGFloat = 1,
+                                priority: UILayoutPriority = .defaultHigh,
+                                safeArea: Bool = false) -> Self {
         _createRelative(value: state,
-                        relation: relation,
-                        multiplier: multiplier,
-                        priority: priority,
-                        attribute1: .leading,
-                        attribute2: side.side,
-                        toSafe: safeArea,
-                        destinationView: view)
+                                relation: relation,
+                                multiplier: multiplier,
+                                priority: priority,
+                                attribute1: .leading,
+                                attribute2: side.side,
+                                toSafe: safeArea,
+                                destinationView: view)
     }
     
     /// By default to `trailing` of destination view
     @discardableResult
-    public func leading(to view: UIView,
-                    _ state: State<CGFloat>,
-                    relation: NSLayoutConstraint.Relation = .equal,
-                    multiplier: CGFloat = 1,
-                    priority: UILayoutPriority = .defaultHigh,
-                    safeArea: Bool = false) -> Self {
+    public func leading(to view: PreConstraintViewable,
+                                _ state: State<CGFloat>,
+                                relation: NSLayoutConstraint.Relation = .equal,
+                                multiplier: CGFloat = 1,
+                                priority: UILayoutPriority = .defaultHigh,
+                                safeArea: Bool = false) -> Self {
         leading(to: .trailing, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func leading<V>(to side: DeclarativeConstraintXSide, of view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func leading<V>(to side: DeclarativeConstraintXSide,
+                                       of view: PreConstraintViewable,
+                                       _ expressable: ExpressableState<V, CGFloat>,
+                                       relation: NSLayoutConstraint.Relation = .equal,
+                                       multiplier: CGFloat = 1,
+                                       priority: UILayoutPriority = .defaultHigh,
+                                       safeArea: Bool = false) -> Self {
         leading(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     /// By default to `trailing` of destination view
     @discardableResult
-    public func leading<V>(to view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func leading<V>(to view: PreConstraintViewable,
+                                      _ expressable: ExpressableState<V, CGFloat>,
+                                      relation: NSLayoutConstraint.Relation = .equal,
+                                      multiplier: CGFloat = 1,
+                                      priority: UILayoutPriority = .defaultHigh,
+                                      safeArea: Bool = false) -> Self {
         leading(to: .trailing, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func leading(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        leading(to: side, of: view,
-            .init(wrappedValue: value.constraintValue.value),
-            relation: value.constraintValue.relation,
-            multiplier: value.constraintValue.multiplier,
-            priority: value.constraintValue.priority,
-            safeArea: safeArea)
+    public func leading(to side: DeclarativeConstraintXSide, of view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        leading(to: side,
+                   of: view,
+                   .init(wrappedValue: value.constraintValue.value),
+                   relation: value.constraintValue.relation,
+                   multiplier: value.constraintValue.multiplier,
+                   priority: value.constraintValue.priority,
+                   safeArea: safeArea)
     }
     
     /// By default to `trailing` of destination view
     @discardableResult
-    public func leading(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+    public func leading(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         leading(to: .trailing, of: view, value, safeArea: safeArea)
     }
     
     // MARK: - left
     
     @discardableResult
-    public func left(to side: DeclarativeConstraintXSide, of view: UIView,
-                               _ state: State<CGFloat>,
-                               relation: NSLayoutConstraint.Relation = .equal,
-                               multiplier: CGFloat = 1,
-                               priority: UILayoutPriority = .defaultHigh,
-                               safeArea: Bool = false) -> Self {
+    public func left(to side: DeclarativeConstraintXSide,
+                          of view: PreConstraintViewable,
+                          _ state: State<CGFloat>,
+                          relation: NSLayoutConstraint.Relation = .equal,
+                          multiplier: CGFloat = 1,
+                          priority: UILayoutPriority = .defaultHigh,
+                          safeArea: Bool = false) -> Self {
         _createRelative(value: state,
-                        relation: relation,
-                        multiplier: multiplier,
-                        priority: priority,
-                        attribute1: .left,
-                        attribute2: side.side,
-                        toSafe: safeArea,
-                        destinationView: view)
+                                relation: relation,
+                                multiplier: multiplier,
+                                priority: priority,
+                                attribute1: .left,
+                                attribute2: side.side,
+                                toSafe: safeArea,
+                                destinationView: view)
     }
     
     /// By default to `right` of destination view
     @discardableResult
-    public func left(to view: UIView,
-                    _ state: State<CGFloat>,
-                    relation: NSLayoutConstraint.Relation = .equal,
-                    multiplier: CGFloat = 1,
-                    priority: UILayoutPriority = .defaultHigh,
-                    safeArea: Bool = false) -> Self {
+    public func left(to view: PreConstraintViewable,
+                          _ state: State<CGFloat>,
+                          relation: NSLayoutConstraint.Relation = .equal,
+                          multiplier: CGFloat = 1,
+                          priority: UILayoutPriority = .defaultHigh,
+                          safeArea: Bool = false) -> Self {
         left(to: .right, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func left<V>(to side: DeclarativeConstraintXSide, of view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func left<V>(to side: DeclarativeConstraintXSide,
+                                 of view: PreConstraintViewable,
+                                 _ expressable: ExpressableState<V, CGFloat>,
+                                 relation: NSLayoutConstraint.Relation = .equal,
+                                 multiplier: CGFloat = 1,
+                                 priority: UILayoutPriority = .defaultHigh,
+                                 safeArea: Bool = false) -> Self {
         left(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     /// By default to `right` of destination view
     @discardableResult
-    public func left<V>(to view: UIView,
+    public func left<V>(to view: PreConstraintViewable,
                                   _ expressable: ExpressableState<V, CGFloat>,
                                   relation: NSLayoutConstraint.Relation = .equal,
                                   multiplier: CGFloat = 1,
@@ -230,614 +220,636 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func left(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        left(to: side, of: view,
-            .init(wrappedValue: value.constraintValue.value),
-            relation: value.constraintValue.relation,
-            multiplier: value.constraintValue.multiplier,
-            priority: value.constraintValue.priority,
-            safeArea: safeArea)
+    public func left(to side: DeclarativeConstraintXSide, of view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        left(to: side,
+              of: view,
+              .init(wrappedValue: value.constraintValue.value),
+              relation: value.constraintValue.relation,
+              multiplier: value.constraintValue.multiplier,
+              priority: value.constraintValue.priority,
+              safeArea: safeArea)
     }
     
     /// By default to `right` of destination view
     @discardableResult
-    public func left(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+    public func left(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         left(to: .right, of: view, value, safeArea: safeArea)
     }
     
     // MARK: - trailing
     
     @discardableResult
-    public func trailing(to side: DeclarativeConstraintXSide, of view: UIView,
-                               _ state: State<CGFloat>,
-                               relation: NSLayoutConstraint.Relation = .equal,
-                               multiplier: CGFloat = 1,
-                               priority: UILayoutPriority = .defaultHigh,
-                               safeArea: Bool = false) -> Self {
+    public func trailing(to side: DeclarativeConstraintXSide,
+                                of view: PreConstraintViewable,
+                                _ state: State<CGFloat>,
+                                relation: NSLayoutConstraint.Relation = .equal,
+                                multiplier: CGFloat = 1,
+                                priority: UILayoutPriority = .defaultHigh,
+                                safeArea: Bool = false) -> Self {
         _createRelative(value: state,
-                        relation: relation,
-                        multiplier: multiplier,
-                        priority: priority,
-                        attribute1: .trailing,
-                        attribute2: side.side,
-                        toSafe: safeArea,
-                        destinationView: view)
+                                relation: relation,
+                                multiplier: multiplier,
+                                priority: priority,
+                                attribute1: .trailing,
+                                attribute2: side.side,
+                                toSafe: safeArea,
+                                destinationView: view)
     }
     
     /// By default to `leading` of destination view
     @discardableResult
-    public func trailing(to view: UIView,
-                    _ state: State<CGFloat>,
-                    relation: NSLayoutConstraint.Relation = .equal,
-                    multiplier: CGFloat = 1,
-                    priority: UILayoutPriority = .defaultHigh,
-                    safeArea: Bool = false) -> Self {
+    public func trailing(to view: PreConstraintViewable,
+                                _ state: State<CGFloat>,
+                                relation: NSLayoutConstraint.Relation = .equal,
+                                multiplier: CGFloat = 1,
+                                priority: UILayoutPriority = .defaultHigh,
+                                safeArea: Bool = false) -> Self {
         trailing(to: .leading, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func trailing<V>(to side: DeclarativeConstraintXSide, of view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func trailing<V>(to side: DeclarativeConstraintXSide,
+                                      of view: PreConstraintViewable,
+                                      _ expressable: ExpressableState<V, CGFloat>,
+                                      relation: NSLayoutConstraint.Relation = .equal,
+                                      multiplier: CGFloat = 1,
+                                      priority: UILayoutPriority = .defaultHigh,
+                                      safeArea: Bool = false) -> Self {
         trailing(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     /// By default to `leading` of destination view
     @discardableResult
-    public func trailing<V>(to view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func trailing<V>(to view: PreConstraintViewable,
+                                      _ expressable: ExpressableState<V, CGFloat>,
+                                      relation: NSLayoutConstraint.Relation = .equal,
+                                      multiplier: CGFloat = 1,
+                                      priority: UILayoutPriority = .defaultHigh,
+                                      safeArea: Bool = false) -> Self {
         trailing(to: .leading, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func trailing(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        trailing(to: side, of: view,
-            .init(wrappedValue: value.constraintValue.value),
-            relation: value.constraintValue.relation,
-            multiplier: value.constraintValue.multiplier,
-            priority: value.constraintValue.priority,
-            safeArea: safeArea)
+    public func trailing(to side: DeclarativeConstraintXSide, of view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        trailing(to: side,
+                   of: view,
+                   .init(wrappedValue: value.constraintValue.value),
+                   relation: value.constraintValue.relation,
+                   multiplier: value.constraintValue.multiplier,
+                   priority: value.constraintValue.priority,
+                   safeArea: safeArea)
     }
     
     /// By default to `leading` of destination view
     @discardableResult
-    public func trailing(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+    public func trailing(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         trailing(to: .leading, of: view, value, safeArea: safeArea)
     }
     
     // MARK: - right
     
     @discardableResult
-    public func right(to side: DeclarativeConstraintXSide, of view: UIView,
-                               _ state: State<CGFloat>,
-                               relation: NSLayoutConstraint.Relation = .equal,
-                               multiplier: CGFloat = 1,
-                               priority: UILayoutPriority = .defaultHigh,
-                               safeArea: Bool = false) -> Self {
+    public func right(to side: DeclarativeConstraintXSide,
+                            of view: PreConstraintViewable,
+                            _ state: State<CGFloat>,
+                            relation: NSLayoutConstraint.Relation = .equal,
+                            multiplier: CGFloat = 1,
+                            priority: UILayoutPriority = .defaultHigh,
+                            safeArea: Bool = false) -> Self {
         _createRelative(value: state,
-                        relation: relation,
-                        multiplier: multiplier,
-                        priority: priority,
-                        attribute1: .right,
-                        attribute2: side.side,
-                        toSafe: safeArea,
-                        destinationView: view)
+                                relation: relation,
+                                multiplier: multiplier,
+                                priority: priority,
+                                attribute1: .right,
+                                attribute2: side.side,
+                                toSafe: safeArea,
+                                destinationView: view)
     }
     
     /// By default to `left` of destination view
     @discardableResult
-    public func right(to view: UIView,
-                    _ state: State<CGFloat>,
-                    relation: NSLayoutConstraint.Relation = .equal,
-                    multiplier: CGFloat = 1,
-                    priority: UILayoutPriority = .defaultHigh,
-                    safeArea: Bool = false) -> Self {
+    public func right(to view: PreConstraintViewable,
+                            _ state: State<CGFloat>,
+                            relation: NSLayoutConstraint.Relation = .equal,
+                            multiplier: CGFloat = 1,
+                            priority: UILayoutPriority = .defaultHigh,
+                            safeArea: Bool = false) -> Self {
         right(to: .left, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func right<V>(to side: DeclarativeConstraintXSide, of view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func right<V>(to side: DeclarativeConstraintXSide,
+                                   of view: PreConstraintViewable,
+                                   _ expressable: ExpressableState<V, CGFloat>,
+                                   relation: NSLayoutConstraint.Relation = .equal,
+                                   multiplier: CGFloat = 1,
+                                   priority: UILayoutPriority = .defaultHigh,
+                                   safeArea: Bool = false) -> Self {
         right(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     /// By default to `left` of destination view
     @discardableResult
-    public func right<V>(to view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func right<V>(to view: PreConstraintViewable,
+                                   _ expressable: ExpressableState<V, CGFloat>,
+                                   relation: NSLayoutConstraint.Relation = .equal,
+                                   multiplier: CGFloat = 1,
+                                   priority: UILayoutPriority = .defaultHigh,
+                                   safeArea: Bool = false) -> Self {
         right(to: .left, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func right(to side: DeclarativeConstraintXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        right(to: side, of: view,
-            .init(wrappedValue: value.constraintValue.value),
-            relation: value.constraintValue.relation,
-            multiplier: value.constraintValue.multiplier,
-            priority: value.constraintValue.priority,
-            safeArea: safeArea)
+    public func right(to side: DeclarativeConstraintXSide, of view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        right(to: side,
+                of: view,
+                .init(wrappedValue: value.constraintValue.value),
+                relation: value.constraintValue.relation,
+                multiplier: value.constraintValue.multiplier,
+                priority: value.constraintValue.priority,
+                safeArea: safeArea)
     }
     
     /// By default to `left` of destination view
     @discardableResult
-    public func right(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+    public func right(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         right(to: .left, of: view, value, safeArea: safeArea)
     }
     
     // MARK: - bottom
     
     @discardableResult
-    public func bottom(to side: DeclarativeConstraintYSide, of view: UIView,
-                               _ state: State<CGFloat>,
-                               relation: NSLayoutConstraint.Relation = .equal,
-                               multiplier: CGFloat = 1,
-                               priority: UILayoutPriority = .defaultHigh,
-                               safeArea: Bool = false) -> Self {
+    public func bottom(to side: DeclarativeConstraintYSide,
+                                of view: PreConstraintViewable,
+                                _ state: State<CGFloat>,
+                                relation: NSLayoutConstraint.Relation = .equal,
+                                multiplier: CGFloat = 1,
+                                priority: UILayoutPriority = .defaultHigh,
+                                safeArea: Bool = false) -> Self {
         _createRelative(value: state,
-                        relation: relation,
-                        multiplier: multiplier,
-                        priority: priority,
-                        attribute1: .bottom,
-                        attribute2: side.side,
-                        toSafe: safeArea,
-                        destinationView: view)
+                                relation: relation,
+                                multiplier: multiplier,
+                                priority: priority,
+                                attribute1: .bottom,
+                                attribute2: side.side,
+                                toSafe: safeArea,
+                                destinationView: view)
     }
     
     /// By default to `top` of destination view
     @discardableResult
-    public func bottom(to view: UIView,
-                    _ state: State<CGFloat>,
-                    relation: NSLayoutConstraint.Relation = .equal,
-                    multiplier: CGFloat = 1,
-                    priority: UILayoutPriority = .defaultHigh,
-                    safeArea: Bool = false) -> Self {
+    public func bottom(to view: PreConstraintViewable,
+                                _ state: State<CGFloat>,
+                                relation: NSLayoutConstraint.Relation = .equal,
+                                multiplier: CGFloat = 1,
+                                priority: UILayoutPriority = .defaultHigh,
+                                safeArea: Bool = false) -> Self {
         bottom(to: .top, of: view, state, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func bottom<V>(to side: DeclarativeConstraintYSide, of view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func bottom<V>(to side: DeclarativeConstraintYSide,
+                                      of view: PreConstraintViewable,
+                                      _ expressable: ExpressableState<V, CGFloat>,
+                                      relation: NSLayoutConstraint.Relation = .equal,
+                                      multiplier: CGFloat = 1,
+                                      priority: UILayoutPriority = .defaultHigh,
+                                      safeArea: Bool = false) -> Self {
         bottom(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     /// By default to `top` of destination view
     @discardableResult
-    public func bottom<V>(to view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh,
-                                  safeArea: Bool = false) -> Self {
+    public func bottom<V>(to view: PreConstraintViewable,
+                                      _ expressable: ExpressableState<V, CGFloat>,
+                                      relation: NSLayoutConstraint.Relation = .equal,
+                                      multiplier: CGFloat = 1,
+                                      priority: UILayoutPriority = .defaultHigh,
+                                      safeArea: Bool = false) -> Self {
         bottom(to: .top, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
     }
     
     @discardableResult
-    public func bottom(to side: DeclarativeConstraintYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
-        bottom(to: side, of: view,
-            .init(wrappedValue: value.constraintValue.value),
-            relation: value.constraintValue.relation,
-            multiplier: value.constraintValue.multiplier,
-            priority: value.constraintValue.priority,
-            safeArea: safeArea)
+    public func bottom(to side: DeclarativeConstraintYSide, of view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+        bottom(to: side,
+                   of: view,
+                   .init(wrappedValue: value.constraintValue.value),
+                   relation: value.constraintValue.relation,
+                   multiplier: value.constraintValue.multiplier,
+                   priority: value.constraintValue.priority,
+                   safeArea: safeArea)
     }
     
     /// By default to `top` of destination view
     @discardableResult
-    public func bottom(to view: UIView, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
+    public func bottom(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         bottom(to: .top, of: view, value, safeArea: safeArea)
     }
     
     // MARK: - center x
     
     @discardableResult
-    public func centerX(to side: DeclarativeConstraintCXSide, of view: UIView,
-                               _ state: State<CGFloat>,
-                               relation: NSLayoutConstraint.Relation = .equal,
-                               multiplier: CGFloat = 1,
-                               priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func centerX(to side: DeclarativeConstraintCXSide,
+                                 of view: PreConstraintViewable,
+                                 _ state: State<CGFloat>,
+                                 relation: NSLayoutConstraint.Relation = .equal,
+                                 multiplier: CGFloat = 1,
+                                 priority: UILayoutPriority = .defaultHigh) -> Self {
         _createRelative(value: state,
-                        relation: relation,
-                        multiplier: multiplier,
-                        priority: priority,
-                        attribute1: .centerX,
-                        attribute2: side.side,
-                        toSafe: false,
-                        destinationView: view)
+                                relation: relation,
+                                multiplier: multiplier,
+                                priority: priority,
+                                attribute1: .centerX,
+                                attribute2: side.side,
+                                toSafe: false,
+                                destinationView: view)
     }
     
     /// By default to `centerX` of destination view
     @discardableResult
-    public func centerX(to view: UIView,
-                    _ state: State<CGFloat>,
-                    relation: NSLayoutConstraint.Relation = .equal,
-                    multiplier: CGFloat = 1,
-                    priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func centerX(to view: PreConstraintViewable,
+                                _ state: State<CGFloat>,
+                                relation: NSLayoutConstraint.Relation = .equal,
+                                multiplier: CGFloat = 1,
+                                priority: UILayoutPriority = .defaultHigh) -> Self {
         centerX(to: .x, of: view, state, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func centerX<V>(to side: DeclarativeConstraintCXSide, of view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func centerX<V>(to side: DeclarativeConstraintCXSide,
+                                       of view: PreConstraintViewable,
+                                       _ expressable: ExpressableState<V, CGFloat>,
+                                       relation: NSLayoutConstraint.Relation = .equal,
+                                       multiplier: CGFloat = 1,
+                                       priority: UILayoutPriority = .defaultHigh) -> Self {
         centerX(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
     }
     
     /// By default to `centerX` of destination view
     @discardableResult
-    public func centerX<V>(to view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func centerX<V>(to view: PreConstraintViewable,
+                                       _ expressable: ExpressableState<V, CGFloat>,
+                                       relation: NSLayoutConstraint.Relation = .equal,
+                                       multiplier: CGFloat = 1,
+                                       priority: UILayoutPriority = .defaultHigh) -> Self {
         centerX(to: .x, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func centerX(to side: DeclarativeConstraintCXSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        centerX(to: side, of: view,
-            .init(wrappedValue: value.constraintValue.value),
-            relation: value.constraintValue.relation,
-            multiplier: value.constraintValue.multiplier,
-            priority: value.constraintValue.priority)
+    public func centerX(to side: DeclarativeConstraintCXSide, of view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        centerX(to: side,
+                    of: view,
+                    .init(wrappedValue: value.constraintValue.value),
+                    relation: value.constraintValue.relation,
+                    multiplier: value.constraintValue.multiplier,
+                    priority: value.constraintValue.priority)
     }
     
     /// By default to `centerX` of destination view
     @discardableResult
-    public func centerX(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func centerX(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0)) -> Self {
         centerX(to: .x, of: view, value)
     }
     
     // MARK: - center y
     
     @discardableResult
-    public func centerY(to side: DeclarativeConstraintCYSide, of view: UIView,
-                               _ state: State<CGFloat>,
-                               relation: NSLayoutConstraint.Relation = .equal,
-                               multiplier: CGFloat = 1,
-                               priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func centerY(to side: DeclarativeConstraintCYSide,
+                                 of view: PreConstraintViewable,
+                                 _ state: State<CGFloat>,
+                                 relation: NSLayoutConstraint.Relation = .equal,
+                                 multiplier: CGFloat = 1,
+                                 priority: UILayoutPriority = .defaultHigh) -> Self {
         _createRelative(value: state,
-                        relation: relation,
-                        multiplier: multiplier,
-                        priority: priority,
-                        attribute1: .centerY,
-                        attribute2: side.side,
-                        toSafe: false,
-                        destinationView: view)
+                                relation: relation,
+                                multiplier: multiplier,
+                                priority: priority,
+                                attribute1: .centerY,
+                                attribute2: side.side,
+                                toSafe: false,
+                                destinationView: view)
     }
     
     /// By default to `centerY` of destination view
     @discardableResult
-    public func centerY(to view: UIView,
-                    _ state: State<CGFloat>,
-                    relation: NSLayoutConstraint.Relation = .equal,
-                    multiplier: CGFloat = 1,
-                    priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func centerY(to view: PreConstraintViewable,
+                                _ state: State<CGFloat>,
+                                relation: NSLayoutConstraint.Relation = .equal,
+                                multiplier: CGFloat = 1,
+                                priority: UILayoutPriority = .defaultHigh) -> Self {
         centerY(to: .y, of: view, state, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func centerY<V>(to side: DeclarativeConstraintCYSide, of view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func centerY<V>(to side: DeclarativeConstraintCYSide,
+                                       of view: PreConstraintViewable,
+                                       _ expressable: ExpressableState<V, CGFloat>,
+                                       relation: NSLayoutConstraint.Relation = .equal,
+                                       multiplier: CGFloat = 1,
+                                       priority: UILayoutPriority = .defaultHigh) -> Self {
         centerY(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
     }
     
     /// By default to `centerY` of destination view
     @discardableResult
-    public func centerY<V>(to view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func centerY<V>(to view: PreConstraintViewable,
+                                       _ expressable: ExpressableState<V, CGFloat>,
+                                       relation: NSLayoutConstraint.Relation = .equal,
+                                       multiplier: CGFloat = 1,
+                                       priority: UILayoutPriority = .defaultHigh) -> Self {
         centerY(to: .y, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func centerY(to side: DeclarativeConstraintCYSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        centerY(to: side, of: view,
-            .init(wrappedValue: value.constraintValue.value),
-            relation: value.constraintValue.relation,
-            multiplier: value.constraintValue.multiplier,
-            priority: value.constraintValue.priority)
+    public func centerY(to side: DeclarativeConstraintCYSide, of view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        centerY(to: side,
+                    of: view,
+                    .init(wrappedValue: value.constraintValue.value),
+                    relation: value.constraintValue.relation,
+                    multiplier: value.constraintValue.multiplier,
+                    priority: value.constraintValue.priority)
     }
     
     /// By default to `centerY` of destination view
     @discardableResult
-    public func centerY(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func centerY(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0)) -> Self {
         centerY(to: .y, of: view, value)
     }
     
     // MARK: - center both
     
     @discardableResult
-    public func center(to view: UIView,
-                       _ value: State<CGFloat>,
-                       relation: NSLayoutConstraint.Relation = .equal,
-                       multiplier: CGFloat = 1,
-                       priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func center(to view: PreConstraintViewable,
+                               _ value: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh) -> Self {
         centerX(to: view, value, relation: relation, multiplier: multiplier, priority: priority)
         .centerY(to: view, value, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func center<V>(to view: UIView,
-                       _ value: ExpressableState<V, CGFloat>,
-                       relation: NSLayoutConstraint.Relation = .equal,
-                       multiplier: CGFloat = 1,
-                       priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func center<V>(to view: PreConstraintViewable,
+                                     _ value: ExpressableState<V, CGFloat>,
+                                     relation: NSLayoutConstraint.Relation = .equal,
+                                     multiplier: CGFloat = 1,
+                                     priority: UILayoutPriority = .defaultHigh) -> Self {
         centerX(to: view, value, relation: relation, multiplier: multiplier, priority: priority)
         .centerY(to: view, value, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func center(to view: UIView, _ value: ConstraintValue) -> Self {
+    public func center(to view: PreConstraintViewable, _ value: ConstraintValue) -> Self {
         centerX(to: view, value).centerY(to: view, value)
     }
     
     @discardableResult
-    public func center(to view: UIView,
-                       x: State<CGFloat>,
-                       y: State<CGFloat>,
-                       relation: NSLayoutConstraint.Relation = .equal,
-                       multiplier: CGFloat = 1,
-                       priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func center(to view: PreConstraintViewable,
+                              x: State<CGFloat>,
+                              y: State<CGFloat>,
+                              relation: NSLayoutConstraint.Relation = .equal,
+                              multiplier: CGFloat = 1,
+                              priority: UILayoutPriority = .defaultHigh) -> Self {
         centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
         .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func center<V>(to view: UIView,
-                       x: State<CGFloat>,
-                       y: ExpressableState<V, CGFloat>,
-                       relation: NSLayoutConstraint.Relation = .equal,
-                       multiplier: CGFloat = 1,
-                       priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func center<V>(to view: PreConstraintViewable,
+                                     x: State<CGFloat>,
+                                     y: ExpressableState<V, CGFloat>,
+                                     relation: NSLayoutConstraint.Relation = .equal,
+                                     multiplier: CGFloat = 1,
+                                     priority: UILayoutPriority = .defaultHigh) -> Self {
         centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
         .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func center<V>(to view: UIView,
-                       x: ExpressableState<V, CGFloat>,
-                       y: State<CGFloat>,
-                       relation: NSLayoutConstraint.Relation = .equal,
-                       multiplier: CGFloat = 1,
-                       priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func center<V>(to view: PreConstraintViewable,
+                                     x: ExpressableState<V, CGFloat>,
+                                     y: State<CGFloat>,
+                                     relation: NSLayoutConstraint.Relation = .equal,
+                                     multiplier: CGFloat = 1,
+                                     priority: UILayoutPriority = .defaultHigh) -> Self {
         centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
         .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func center(to view: UIView,
-                       x: State<CGFloat>,
-                       y: ConstraintValue,
-                       relation: NSLayoutConstraint.Relation = .equal,
-                       multiplier: CGFloat = 1,
-                       priority: UILayoutPriority = .defaultHigh) -> Self {
-        centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
-        .centerY(to: view, y)
-    }
-    
-    @discardableResult
-    public func center(to view: UIView,
-                       x: ConstraintValue,
-                       y: State<CGFloat>,
-                       relation: NSLayoutConstraint.Relation = .equal,
-                       multiplier: CGFloat = 1,
-                       priority: UILayoutPriority = .defaultHigh) -> Self {
-        centerX(to: view, x)
-        .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
-    }
-    
-    @discardableResult
-    public func center<V>(to view: UIView,
-                       x: ConstraintValue,
-                       y: ExpressableState<V, CGFloat>,
-                       relation: NSLayoutConstraint.Relation = .equal,
-                       multiplier: CGFloat = 1,
-                       priority: UILayoutPriority = .defaultHigh) -> Self {
-        centerX(to: view, x)
-        .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
-    }
-    
-    @discardableResult
-    public func center<V>(to view: UIView,
-                       x: ExpressableState<V, CGFloat>,
-                       y: ConstraintValue,
-                       relation: NSLayoutConstraint.Relation = .equal,
-                       multiplier: CGFloat = 1,
-                       priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func center(to view: PreConstraintViewable,
+                               x: State<CGFloat>,
+                               y: ConstraintValue,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh) -> Self {
         centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
         .centerY(to: view, y)
     }
     
     @discardableResult
-    public func center<A, B>(to view: UIView,
-                       x: ExpressableState<A, CGFloat>,
-                       y: ExpressableState<B, CGFloat>,
-                       relation: NSLayoutConstraint.Relation = .equal,
-                       multiplier: CGFloat = 1,
-                       priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func center(to view: PreConstraintViewable,
+                              x: ConstraintValue,
+                              y: State<CGFloat>,
+                              relation: NSLayoutConstraint.Relation = .equal,
+                              multiplier: CGFloat = 1,
+                              priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x)
+        .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func center<V>(to view: PreConstraintViewable,
+                                     x: ConstraintValue,
+                                     y: ExpressableState<V, CGFloat>,
+                                     relation: NSLayoutConstraint.Relation = .equal,
+                                     multiplier: CGFloat = 1,
+                                     priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x)
+        .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
+    }
+    
+    @discardableResult
+    public func center<V>(to view: PreConstraintViewable,
+                                     x: ExpressableState<V, CGFloat>,
+                                     y: ConstraintValue,
+                                     relation: NSLayoutConstraint.Relation = .equal,
+                                     multiplier: CGFloat = 1,
+                                     priority: UILayoutPriority = .defaultHigh) -> Self {
+        centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
+        .centerY(to: view, y)
+    }
+    
+    @discardableResult
+    public func center<A, B>(to view: PreConstraintViewable,
+                                         x: ExpressableState<A, CGFloat>,
+                                         y: ExpressableState<B, CGFloat>,
+                                         relation: NSLayoutConstraint.Relation = .equal,
+                                         multiplier: CGFloat = 1,
+                                         priority: UILayoutPriority = .defaultHigh) -> Self {
         centerX(to: view, x, relation: relation, multiplier: multiplier, priority: priority)
         .centerY(to: view, y, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func center(to view: UIView, x: ConstraintValue = CGFloat(0), y: ConstraintValue = CGFloat(0)) -> Self {
+    public func center(to view: PreConstraintViewable, x: ConstraintValue = CGFloat(0), y: ConstraintValue = CGFloat(0)) -> Self {
         centerX(to: view, x).centerY(to: view, y)
     }
     
     // MARK: - width
     
     @discardableResult
-    public func width(to side: DeclarativeConstraintDSide, of view: UIView,
-                               _ state: State<CGFloat>,
-                               relation: NSLayoutConstraint.Relation = .equal,
-                               multiplier: CGFloat = 1,
-                               priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func width(to side: DeclarativeConstraintDSide,
+                              of view: PreConstraintViewable,
+                              _ state: State<CGFloat>,
+                              relation: NSLayoutConstraint.Relation = .equal,
+                              multiplier: CGFloat = 1,
+                              priority: UILayoutPriority = .defaultHigh) -> Self {
         _createRelative(value: state,
-                        relation: relation,
-                        multiplier: multiplier,
-                        priority: priority,
-                        attribute1: .width,
-                        attribute2: side.side,
-                        toSafe: false,
-                        destinationView: view)
+                                relation: relation,
+                                multiplier: multiplier,
+                                priority: priority,
+                                attribute1: .width,
+                                attribute2: side.side,
+                                toSafe: false,
+                                destinationView: view)
     }
     
     /// By default to `width` of destination view
     @discardableResult
-    public func width(to view: UIView,
-                    _ state: State<CGFloat>,
-                    relation: NSLayoutConstraint.Relation = .equal,
-                    multiplier: CGFloat = 1,
-                    priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func width(to view: PreConstraintViewable,
+                             _ state: State<CGFloat>,
+                             relation: NSLayoutConstraint.Relation = .equal,
+                             multiplier: CGFloat = 1,
+                             priority: UILayoutPriority = .defaultHigh) -> Self {
         width(to: .width, of: view, state, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func width<V>(to side: DeclarativeConstraintDSide, of view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func width<V>(to side: DeclarativeConstraintDSide,
+                                    of view: PreConstraintViewable,
+                                    _ expressable: ExpressableState<V, CGFloat>,
+                                    relation: NSLayoutConstraint.Relation = .equal,
+                                    multiplier: CGFloat = 1,
+                                    priority: UILayoutPriority = .defaultHigh) -> Self {
         width(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
     }
     
     /// By default to `width` of destination view
     @discardableResult
-    public func width<V>(to view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func width<V>(to view: PreConstraintViewable,
+                                    _ expressable: ExpressableState<V, CGFloat>,
+                                    relation: NSLayoutConstraint.Relation = .equal,
+                                    multiplier: CGFloat = 1,
+                                    priority: UILayoutPriority = .defaultHigh) -> Self {
         width(to: .width, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func width(to side: DeclarativeConstraintDSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        width(to: side, of: view,
-            .init(wrappedValue: value.constraintValue.value),
-            relation: value.constraintValue.relation,
-            multiplier: value.constraintValue.multiplier,
-            priority: value.constraintValue.priority)
+    public func width(to side: DeclarativeConstraintDSide, of view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        width(to: side,
+                 of: view,
+                 .init(wrappedValue: value.constraintValue.value),
+                 relation: value.constraintValue.relation,
+                 multiplier: value.constraintValue.multiplier,
+                 priority: value.constraintValue.priority)
     }
     
     /// By default to `width` of destination view
     @discardableResult
-    public func width(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func width(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0)) -> Self {
         width(to: .width, of: view, value)
     }
     
     // MARK: - height
     
     @discardableResult
-    public func height(to side: DeclarativeConstraintDSide, of view: UIView,
-                               _ state: State<CGFloat>,
-                               relation: NSLayoutConstraint.Relation = .equal,
-                               multiplier: CGFloat = 1,
-                               priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func height(to side: DeclarativeConstraintDSide,
+                              of view: PreConstraintViewable,
+                              _ state: State<CGFloat>,
+                              relation: NSLayoutConstraint.Relation = .equal,
+                              multiplier: CGFloat = 1,
+                              priority: UILayoutPriority = .defaultHigh) -> Self {
         _createRelative(value: state,
-                        relation: relation,
-                        multiplier: multiplier,
-                        priority: priority,
-                        attribute1: .height,
-                        attribute2: side.side,
-                        toSafe: false,
-                        destinationView: view)
+                                relation: relation,
+                                multiplier: multiplier,
+                                priority: priority,
+                                attribute1: .height,
+                                attribute2: side.side,
+                                toSafe: false,
+                                destinationView: view)
     }
     
     /// By default to `height` of destination view
     @discardableResult
-    public func height(to view: UIView,
-                    _ state: State<CGFloat>,
-                    relation: NSLayoutConstraint.Relation = .equal,
-                    multiplier: CGFloat = 1,
-                    priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func height(to view: PreConstraintViewable,
+                               _ state: State<CGFloat>,
+                               relation: NSLayoutConstraint.Relation = .equal,
+                               multiplier: CGFloat = 1,
+                               priority: UILayoutPriority = .defaultHigh) -> Self {
         height(to: .height, of: view, state, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func height<V>(to side: DeclarativeConstraintDSide, of view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func height<V>(to side: DeclarativeConstraintDSide,
+                                     of view: PreConstraintViewable,
+                                     _ expressable: ExpressableState<V, CGFloat>,
+                                     relation: NSLayoutConstraint.Relation = .equal,
+                                     multiplier: CGFloat = 1,
+                                     priority: UILayoutPriority = .defaultHigh) -> Self {
         height(to: side, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
     }
     
     /// By default to `height` of destination view
     @discardableResult
-    public func height<V>(to view: UIView,
-                                  _ expressable: ExpressableState<V, CGFloat>,
-                                  relation: NSLayoutConstraint.Relation = .equal,
-                                  multiplier: CGFloat = 1,
-                                  priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func height<V>(to view: PreConstraintViewable,
+                                     _ expressable: ExpressableState<V, CGFloat>,
+                                     relation: NSLayoutConstraint.Relation = .equal,
+                                     multiplier: CGFloat = 1,
+                                     priority: UILayoutPriority = .defaultHigh) -> Self {
         height(to: .height, of: view, expressable.unwrap(), relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func height(to side: DeclarativeConstraintDSide, of view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        height(to: side, of: view,
-            .init(wrappedValue: value.constraintValue.value),
-            relation: value.constraintValue.relation,
-            multiplier: value.constraintValue.multiplier,
-            priority: value.constraintValue.priority)
+    public func height(to side: DeclarativeConstraintDSide, of view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0)) -> Self {
+        height(to: side,
+                  of: view,
+                  .init(wrappedValue: value.constraintValue.value),
+                  relation: value.constraintValue.relation,
+                  multiplier: value.constraintValue.multiplier,
+                  priority: value.constraintValue.priority)
     }
     
     /// By default to `height` of destination view
     @discardableResult
-    public func height(to view: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func height(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0)) -> Self {
         width(to: .width, of: view, value)
     }
     
     // MARK: - equal
     
     @discardableResult
-    public func equalSize(to: UIView, _ value: ConstraintValue = CGFloat(0)) -> Self {
+    public func equalSize(to: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0)) -> Self {
         width(to: to, value)
         .height(to: to, value)
     }
     
     @discardableResult
-    public func equalSize(to: UIView,
-                          _ state: State<CGFloat>,
-                          relation: NSLayoutConstraint.Relation = .equal,
-                          multiplier: CGFloat = 1,
-                          priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func equalSize(to: PreConstraintViewable,
+                                   _ state: State<CGFloat>,
+                                   relation: NSLayoutConstraint.Relation = .equal,
+                                   multiplier: CGFloat = 1,
+                                   priority: UILayoutPriority = .defaultHigh) -> Self {
         width(to: to, state, relation: relation, multiplier: multiplier, priority: priority)
         .height(to: to, state, relation: relation, multiplier: multiplier, priority: priority)
     }
     
     @discardableResult
-    public func equalSize<V>(to: UIView,
-                          _ state: ExpressableState<V, CGFloat>,
-                          relation: NSLayoutConstraint.Relation = .equal,
-                          multiplier: CGFloat = 1,
-                          priority: UILayoutPriority = .defaultHigh) -> Self {
+    public func equalSize<V>(to: PreConstraintViewable,
+                                         _ state: ExpressableState<V, CGFloat>,
+                                         relation: NSLayoutConstraint.Relation = .equal,
+                                         multiplier: CGFloat = 1,
+                                         priority: UILayoutPriority = .defaultHigh) -> Self {
         width(to: to, state, relation: relation, multiplier: multiplier, priority: priority)
         .height(to: to, state, relation: relation, multiplier: multiplier, priority: priority)
     }
@@ -846,9 +858,16 @@ extension DeclarativeProtocol {
     
     func activateRelative(_ pc: PreConstraint) {
         guard let superview = declarativeView.superview else { return }
-        guard let destinationView = pc.destinationView else { return }
+        guard let preConstraintView = pc.destinationView?.preConstraintView else { return }
         guard let _self = self as? DeclarativeProtocolInternal else { return }
-        guard let _destinationView = pc.destinationView as? DeclarativeProtocolInternal else { return }
+        guard let destinationView = preConstraintView.unwrapWithSuperview(superview) else {
+            guard let tag = preConstraintView.tag else { return }
+            NotificationCenter.default.addObserver(for: AddedViewWithTag(tag)) { [weak self] in
+                self?.activateRelative(pc)
+            }
+            return
+        }
+        guard let _destinationView = destinationView as? DeclarativeProtocolInternal else { return }
         // Deactivate duplicate constraints and remove them from array
         _self._properties.appliedPreConstraintsRelative.removeAll {
             $0 != pc
@@ -856,22 +875,22 @@ extension DeclarativeProtocol {
                 &&  $0.attribute2 == pc.attribute2
                 && $0.relation == pc.relation
                 && $0.fromView === pc.fromView
-                &&  $0.destinationView === pc.destinationView
+                &&  $0.destinationView?.preConstraintView?.unwrapWithSuperview(superview) === destinationView
         }
         _destinationView._properties.appliedPreConstraintsRelative.removeAll {
             $0 != pc
                 && $0.attribute1 == pc.attribute2
                 &&  $0.attribute2 == pc.attribute1
                 && $0.relation == pc.relation
-                && $0.fromView === pc.destinationView
-                &&  $0.destinationView === pc.fromView
+                && $0.fromView === destinationView
+                &&  $0.destinationView?.preConstraintView?.unwrapWithSuperview(superview) === pc.fromView
         }
         if let index = _self._properties.appliedPreConstraintsRelative.firstIndex(where: {
             $0.attribute1 == pc.attribute1
                 &&  $0.attribute2 == pc.attribute2
                 && $0.relation == pc.relation
                 && $0.fromView === pc.fromView
-                &&  $0.destinationView === pc.destinationView
+                &&  $0.destinationView?.preConstraintView?.unwrapWithSuperview(superview) === destinationView
         }) {
             _self._properties.appliedPreConstraintsRelative[index].constraint?.isActive = false
             _self._properties.appliedPreConstraintsRelative[index].constraint?.shouldBeArchived = true

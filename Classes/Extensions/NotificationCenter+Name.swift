@@ -8,6 +8,16 @@ extension String: CustomNotification {
     public var notificationType: NotificationCenter.NotificationType { .init(self) }
 }
 
+struct AddedViewWithTag: CustomNotification {
+    var notificationType: NotificationCenter.NotificationType { .init("\(tag)") }
+    
+    var tag: Int
+    
+    init (_ tag: Int) {
+        self.tag = tag
+    }
+}
+
 extension Notification.Name: RawRepresentable {}
 extension NotificationCenter {
     public struct NotificationType {

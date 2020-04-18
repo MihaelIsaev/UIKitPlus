@@ -1,5 +1,46 @@
 import UIKit
 
+public enum PreConstraintView {
+    case view(UIView)
+    case tag(Int)
+}
+
+public protocol PreConstraintViewable {
+    var preConstraintView: PreConstraintView? { get }
+}
+
+extension PreConstraintView {
+    public func unwrapWithSuperview(_ superview: UIView) -> UIView? {
+        switch self {
+        case .view(let view):
+            return view
+        case .tag(let tag):
+            return superview.viewWithTagInSuperview(tag)
+        }
+    }
+    
+    public var tag: Int? {
+        switch self {
+        case .view:
+            return nil
+        case .tag(let tag):
+            return tag
+        }
+    }
+}
+
+extension UIView: PreConstraintViewable {
+    public var preConstraintView: PreConstraintView? {
+        .view(self)
+    }
+}
+
+extension Int: PreConstraintViewable {
+    public var preConstraintView: PreConstraintView? {
+        .tag(self)
+    }
+}
+
 class PreConstraint: Equatable {
     static func == (lhs: PreConstraint, rhs: PreConstraint) -> Bool {
         lhs.id == rhs.id
@@ -14,7 +55,7 @@ class PreConstraint: Equatable {
     let attribute1: NSLayoutConstraint.Attribute
     let attribute2: NSLayoutConstraint.Attribute?
     let toSafe: Bool
-    weak var destinationView: UIView?
+    var destinationView: PreConstraintViewable?
     var constraint: NSLayoutConstraint?
     
     init (value: State<CGFloat>,
@@ -25,7 +66,7 @@ class PreConstraint: Equatable {
           attribute2: NSLayoutConstraint.Attribute?,
           toSafe: Bool,
           fromView: UIView,
-          destinationView: UIView?) {
+          destinationView: PreConstraintViewable?) {
         self.value = value
         self.relation = relation
         self.multiplier = multiplier
@@ -42,7 +83,14 @@ class PreConstraint: Equatable {
     }
     
     func inverted() -> PreConstraint? {
-        guard let attribute2 = attribute2, let destinationView = destinationView else { return nil }
+        guard let attribute2 = attribute2, let destinationView = destinationView?.preConstraintView else { return nil }
+        let unwrappedDestinationView: UIView
+        switch destinationView {
+        case .view(let v):
+            unwrappedDestinationView = v
+        default:
+            return nil
+        }
         return PreConstraint(value: value,
                   relation: relation,
                   multiplier: multiplier,
@@ -50,7 +98,7 @@ class PreConstraint: Equatable {
                   attribute1: attribute2,
                   attribute2: attribute1,
                   toSafe: toSafe,
-                  fromView: destinationView,
+                  fromView: unwrappedDestinationView,
                   destinationView: fromView)
     }
 }
