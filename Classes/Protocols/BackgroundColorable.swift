@@ -12,9 +12,6 @@ public protocol BackgroundColorable {
     
     @discardableResult
     func background<V>(_ expressable: ExpressableState<V, UIColor>) -> Self
-    
-    @discardableResult
-    func background(_ identifier: FontIdentifier, _ size: CGFloat) -> Self
 }
 
 protocol _BackgroundColorable: BackgroundColorable {

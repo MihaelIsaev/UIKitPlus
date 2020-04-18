@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-open class ViewController: UIViewController, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class ViewController: UIViewController {
     open override var preferredStatusBarStyle: UIStatusBarStyle { statusBarStyle.rawValue }
     /// UIKitPlus reimplementation of `preferredStatusBarStyle`
     open var statusBarStyle: StatusBarStyle { _statusBarStyle ?? .default }
@@ -31,40 +31,6 @@ open class ViewController: UIViewController, DeclarativeProtocol, DeclarativePro
     
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    // MARK: DeclarativeProtocol
-    
-    public var declarativeView: View { _view }
-    public lazy var properties = Properties<View>()
-    lazy var _properties = PropertiesInternal()
-    
-    @State public var height: CGFloat = 0
-    @State public var width: CGFloat = 0
-    @State public var top: CGFloat = 0
-    @State public var leading: CGFloat = 0
-    @State public var left: CGFloat = 0
-    @State public var trailing: CGFloat = 0
-    @State public var right: CGFloat = 0
-    @State public var bottom: CGFloat = 0
-    @State public var centerX: CGFloat = 0
-    @State public var centerY: CGFloat = 0
-    
-    var __height: State<CGFloat> { _height }
-    var __width: State<CGFloat> { _width }
-    var __top: State<CGFloat> { _top }
-    var __leading: State<CGFloat> { _leading }
-    var __left: State<CGFloat> { _left }
-    var __trailing: State<CGFloat> { _trailing }
-    var __right: State<CGFloat> { _right }
-    var __bottom: State<CGFloat> { _bottom }
-    var __centerX: State<CGFloat> { _centerX }
-    var __centerY: State<CGFloat> { _centerY }
-    
-    lazy var _view = View().background(.white).edgesToSuperview()
-    
-    open override func loadView() {
-        view = _view
     }
     
     // MARK: Touches
@@ -98,7 +64,9 @@ open class ViewController: UIViewController, DeclarativeProtocol, DeclarativePro
     
     // MARK: Lifecycle
     
-    open func buildUI() {}
+    open func buildUI() {
+        view.backgroundColor = .white
+    }
     
     public var isWillAppearedOnce = false
     public var isDidAppearedOnce = false
@@ -424,6 +392,12 @@ extension ViewController {
 extension ViewController: _Titleable {
     func _setTitle(_ v: String?) {
         title = v
+    }
+}
+
+extension ViewController: _BackgroundColorable {
+    func _setBackgroundColor(_ v: UIColor) {
+        view.backgroundColor = v
     }
 }
 

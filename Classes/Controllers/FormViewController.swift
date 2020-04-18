@@ -1,15 +1,20 @@
 import UIKit
 
 open class FormViewController: ViewController {
-    public lazy var scrollView = ScrollView().edgesToSuperview(top: 0, leading: 0, trailing: 0).bottomToSuperview($bottom)
-    public lazy var stackView = VStack().edgesToSuperview().width(to: .width, of: scrollView)
+    public lazy var scrollView = ScrollView()
+    public lazy var stackView = VStack()
     
     open override func buildUI() {
         super.buildUI()
-        _view.body { scrollView }
-        scrollView.body { stackView }
-        $keyboardHeight.listen { height in
-            self.bottom = -1 * height
+        view.body {
+            scrollView
+                .edgesToSuperview(top: 0, leading: 0, trailing: 0)
+                .bottomToSuperview($keyboardHeight.map { -1 * $0 })
+        }
+        scrollView.body {
+            stackView
+                .edgesToSuperview()
+                .width(to: .width, of: scrollView)
         }
     }
 }
