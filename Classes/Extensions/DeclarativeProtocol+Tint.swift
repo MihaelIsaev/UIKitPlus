@@ -6,22 +6,24 @@ extension DeclarativeProtocol {
     @discardableResult
     public func tint(_ color: UIColor) -> Self {
         declarativeView.tintColor = color
+        properties.tint = color
+        #if targetEnvironment(macCatalyst)
+        let textInputTraits = declarativeView.value(forKey: "textInputTraits") as? NSObject
+        textInputTraits?.setValue(color, forKey: "insertionPointColor")
+        #endif
         return self
     }
     
     @discardableResult
     public func tint(_ number: Int) -> Self {
-        declarativeView.tintColor = number.color
-        return self
+        tint(number.color)
     }
     
     @discardableResult
     public func tint(_ state: State<UIColor>) -> Self {
-        declarativeView.tintColor = state.wrappedValue
-        properties.tint = state.wrappedValue
+        tint(state.wrappedValue)
         state.listen { [weak self] old, new in
-            self?.declarativeView.tintColor = new
-            self?.properties.tint = new
+            self?.tint(new)
         }
         return self
     }
@@ -31,8 +33,7 @@ extension DeclarativeProtocol {
         declarativeView.tintColor = expressable.value()
         properties.tint = expressable.value()
         expressable.state.listen { [weak self] old, new in
-            self?.declarativeView.tintColor = expressable.value()
-            self?.properties.tint = expressable.value()
+            self?.tint(expressable.value())
         }
         return self
     }
