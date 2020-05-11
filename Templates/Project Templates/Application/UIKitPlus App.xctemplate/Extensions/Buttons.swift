@@ -3,6 +3,9 @@
 import UIKitPlus
 
 extension UButton {
+    static var back: UButton {
+        UButton()//.image("back")
+    }
     static var gray: UButton {
         UButton()
             .circle()
