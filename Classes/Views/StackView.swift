@@ -1,11 +1,68 @@
 import UIKit
 
+extension Array where Element == UIView {
+    func removeFromSuperview(at indexes: [Int]) {
+        guard indexes.count > 0 else { return }
+        var filtered: [UIView] = []
+        enumerated().forEach { i, v in
+            guard indexes.contains(i) else { return }
+            filtered.append(v)
+        }
+        filtered.forEach { $0.removeFromSuperview() }
+    }
+}
+
 public typealias UStackView = StackView
 open class StackView: _StackView {
-    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+    var listables: [Listable] = []
+    
+    public init (@ListableBuilder block: ListableBuilder.SingleView) {
+        self.listables = block().listableBuilderItems
         super.init(frame: .zero)
-        block().viewBuilderItems.forEach { addArrangedSubview($0) }
+        listables.enumerated().forEach { i, listable in
+            if let l = listable as? ListableForEach {
+                l.subscribeToChanges({}, { [weak self] deletions, insertions, _ in
+                    self?.arrangedSubviews.removeFromSuperview(at: deletions)
+                    insertions.forEach { n in
+                        let views = listable.item(at: i)
+                        guard views.count > n else { return }
+                        let view = views[n]
+                        self?.add(arrangedView: view, at: n)
+                    }
+                }) {}
+            }
+        }
     }
+    
+    public init (@ListableBuilder block: (StackView) -> ListableBuilderItem) {
+        super.init(frame: .zero)
+        self.listables = block(self).listableBuilderItems
+        listables.enumerated().forEach { i, listable in
+            if let l = listable as? ListableForEach {
+                l.subscribeToChanges({}, { [weak self] deletions, insertions, _ in
+                    self?.arrangedSubviews.removeFromSuperview(at: deletions)
+                    insertions.forEach { n in
+                        let views = listable.item(at: i)
+                        guard views.count > n else { return }
+                        let view = views[n]
+                        self?.add(arrangedView: view, at: n)
+                    }
+                }) {}
+            }
+        }
+    }
+    
+    fileprivate func add(arrangedView: UIView, at index: Int) {
+        let nextViews = arrangedSubviews.dropFirst(index + 1)
+        nextViews.forEach { $0.removeFromSuperview() }
+        addArrangedSubview(arrangedView)
+        nextViews.forEach { self.addArrangedSubview($0) }
+    }
+    
+//    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+//        super.init(frame: .zero)
+//        block().viewBuilderItems.forEach { addArrangedSubview($0) }
+//    }
     
     required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
