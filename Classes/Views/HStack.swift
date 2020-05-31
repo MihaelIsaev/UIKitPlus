@@ -25,7 +25,7 @@ open class HStack: _StackView {
         return self
     }
     
-    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> VStack {
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> HStack {
         .init(block: block)
     }
 }
