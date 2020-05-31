@@ -143,15 +143,15 @@ open class _StackView: UIStackView, AnyDeclarativeProtocol, DeclarativeProtocolI
             case .multiple(let views):
                 views.forEach { addArrangedSubview($0) }
             case .forEach(let fr):
-                let vStack = VStack()
+                let stack = StackView().axis(fr.axis ?? axis)
                 fr.allItems().forEach {
-                    vStack.addArrangedSubview([$0].flatten(fr.axis ?? axis))
+                    stack.addArrangedSubview([$0].flatten(fr.axis ?? axis))
                 }
-                addArrangedSubview(vStack)
+                addArrangedSubview(stack)
                 fr.subscribeToChanges({}, { deletions, insertions, _ in
-                    vStack.arrangedSubviews.removeFromSuperview(at: deletions)
+                    stack.arrangedSubviews.removeFromSuperview(at: deletions)
                     insertions.forEach {
-                        vStack.add(arrangedView: [fr.items(at: $0)].flatten(fr.axis ?? self.axis), at: $0)
+                        stack.add(arrangedView: [fr.items(at: $0)].flatten(fr.axis ?? self.axis), at: $0)
                     }
                 }) {}
             case .nested(let items):
