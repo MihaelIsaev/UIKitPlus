@@ -99,7 +99,7 @@ open class State<Value>: Stateable {
     public func and<V>(_ state: State<V>) -> State<CombinedStateResult<Value, V>> {
         let stateA = self
         let stateB = state
-        var combinedValue = {
+        let combinedValue = {
             return CombinedStateResult(left: stateA.wrappedValue, right: stateB.wrappedValue)
         }
         let resultState = State<CombinedStateResult<Value, V>>(wrappedValue: combinedValue())

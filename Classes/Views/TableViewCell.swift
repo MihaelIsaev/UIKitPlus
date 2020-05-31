@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UTableViewCell = TableViewCell
-open class TableViewCell: UITableViewCell, DeclarativeProtocol, DeclarativeProtocolInternal, Cellable {
+open class TableViewCell: UITableViewCell, AnyDeclarativeProtocol, DeclarativeProtocolInternal, Cellable {
     public var declarativeView: TableViewCell { self }
     public lazy var properties = Properties<TableViewCell>()
     lazy var _properties = PropertiesInternal()

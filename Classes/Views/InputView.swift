@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UInputView = InputView
-open class InputView: UIInputView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class InputView: UIInputView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public static var defaultKeyboardHeight: CGFloat = 216
     
     public var declarativeView: InputView { self }
@@ -45,7 +45,7 @@ open class InputView: UIInputView, DeclarativeProtocol, DeclarativeProtocolInter
     public init (_ inputViewStyle: UIInputView.Style = .default, @ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero, inputViewStyle: inputViewStyle)
         _setup()
-        body { block().viewBuilderItems }
+        body { block() }
         buildView()
     }
     
@@ -124,7 +124,7 @@ extension InputView {
     
     @discardableResult
     public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
-        body { block().viewBuilderItems }
+        body { block() }
     }
     
     public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> InputView {

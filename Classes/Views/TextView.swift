@@ -2,7 +2,7 @@ import UIKit
 
 public typealias UTextView = TextView
 /// aka `UITextView`
-open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class TextView: UITextView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: TextView { self }
     public lazy var properties = Properties<TextView>()
     lazy var _properties = PropertiesInternal()
@@ -28,9 +28,6 @@ open class TextView: UITextView, DeclarativeProtocol, DeclarativeProtocolInterna
     var __bottom: State<CGFloat> { _bottom }
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     public init (_ text: String, textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)

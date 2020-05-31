@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UImage = Image
-open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class Image: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Image { self }
     public lazy var properties = Properties<Image>()
     lazy var _properties = PropertiesInternal()
@@ -27,9 +27,6 @@ open class Image: UIImageView, DeclarativeProtocol, DeclarativeProtocolInternal 
     var __bottom: State<CGFloat> { _bottom }
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     var _imageLoader: ImageLoader = .defaultRelease
     

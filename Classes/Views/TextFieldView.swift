@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 public typealias UTextField = TextField
-open class TextField: UITextField, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class TextField: UITextField, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: TextField { self }
     public typealias P = Properties<TextField>
     public lazy var properties = P()
@@ -29,9 +29,6 @@ open class TextField: UITextField, DeclarativeProtocol, DeclarativeProtocolInter
     var __bottom: UIKitPlus.State<CGFloat> { $bottom }
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     fileprivate weak var outsideDelegate: TextFieldDelegate?
     

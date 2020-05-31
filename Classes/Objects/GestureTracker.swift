@@ -22,6 +22,8 @@ class _GestureTracker {
         case .ended: ended?()
         case .cancelled: cancelled?()
         case .failed: failed?()
+        @unknown default:
+            assertionFailure("GestureTracker case not supported")
         }
     }
 }

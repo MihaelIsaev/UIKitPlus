@@ -1,80 +1,37 @@
 import UIKit
 
-extension Array where Element == UIView {
-    func removeFromSuperview(at indexes: [Int]) {
-        guard indexes.count > 0 else { return }
-        var filtered: [UIView] = []
-        enumerated().forEach { i, v in
-            guard indexes.contains(i) else { return }
-            filtered.append(v)
-        }
-        filtered.forEach { $0.removeFromSuperview() }
-    }
-}
-
 public typealias UStackView = StackView
 open class StackView: _StackView {
-    var listables: [Listable] = []
+    public override init () {
+        super.init()
+    }
     
-    public init (@ListableBuilder block: ListableBuilder.SingleView) {
-        self.listables = block().listableBuilderItems
+    public init (_ viewBuilderItem: ViewBuilderItemable) {
         super.init(frame: .zero)
-        listables.enumerated().forEach { i, listable in
-            if let l = listable as? ListableForEach {
-                l.subscribeToChanges({}, { [weak self] deletions, insertions, _ in
-                    self?.arrangedSubviews.removeFromSuperview(at: deletions)
-                    insertions.forEach { n in
-                        let views = listable.item(at: i)
-                        guard views.count > n else { return }
-                        let view = views[n]
-                        self?.add(arrangedView: view, at: n)
-                    }
-                }) {}
-            }
-        }
+        add(item: viewBuilderItem)
     }
     
-    public init (@ListableBuilder block: (StackView) -> ListableBuilderItem) {
+    public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
-        self.listables = block(self).listableBuilderItems
-        listables.enumerated().forEach { i, listable in
-            if let l = listable as? ListableForEach {
-                l.subscribeToChanges({}, { [weak self] deletions, insertions, _ in
-                    self?.arrangedSubviews.removeFromSuperview(at: deletions)
-                    insertions.forEach { n in
-                        let views = listable.item(at: i)
-                        guard views.count > n else { return }
-                        let view = views[n]
-                        self?.add(arrangedView: view, at: n)
-                    }
-                }) {}
-            }
-        }
+        add(item: block())
     }
     
-    fileprivate func add(arrangedView: UIView, at index: Int) {
-        let nextViews = arrangedSubviews.dropFirst(index + 1)
-        nextViews.forEach { $0.removeFromSuperview() }
-        addArrangedSubview(arrangedView)
-        nextViews.forEach { self.addArrangedSubview($0) }
+    public init (@ViewBuilder block: (StackView) -> ViewBuilder.Result) {
+        super.init(frame: .zero)
+        add(item: block(self))
     }
-    
-//    public init (@ViewBuilder block: ViewBuilder.SingleView) {
-//        super.init(frame: .zero)
-//        block().viewBuilderItems.forEach { addArrangedSubview($0) }
-//    }
     
     required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> StackView {
-        block().viewBuilderItems.forEach { addArrangedSubview($0) }
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+        add(item: block())
         return self
     }
     
-    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> StackView {
-        StackView(block: block)
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> VStack {
+        .init(block: block)
     }
     
     // Mask: Axis
@@ -86,7 +43,7 @@ open class StackView: _StackView {
     }
 }
 
-open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class _StackView: UIStackView, AnyDeclarativeProtocol, DeclarativeProtocolInternal, EditableStackView {
     public var declarativeView: _StackView { self }
     public lazy var properties = Properties<_StackView>()
     lazy var _properties = PropertiesInternal()
@@ -112,9 +69,6 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
     var __bottom: State<CGFloat> { _bottom }
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     public init () {
         super.init(frame: .zero)
@@ -180,5 +134,38 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
         }
         self.spacing = expressable.value()
         return self
+    }
+    
+    func add(item: ViewBuilderItemable) {
+        switch item.viewBuilderItem {
+            case .single(let view):
+                addArrangedSubview(view)
+            case .multiple(let views):
+                views.forEach { addArrangedSubview($0) }
+            case .forEach(let fr):
+                let vStack = VStack()
+                fr.allItems().forEach {
+                    vStack.addArrangedSubview([$0].flatten(fr.axis ?? axis))
+                }
+                addArrangedSubview(vStack)
+                fr.subscribeToChanges({}, { deletions, insertions, _ in
+                    vStack.arrangedSubviews.removeFromSuperview(at: deletions)
+                    insertions.forEach {
+                        vStack.add(arrangedView: [fr.items(at: $0)].flatten(fr.axis ?? self.axis), at: $0)
+                    }
+                }) {}
+            case .nested(let items):
+                items.forEach { add(item: $0) }
+            case .none:
+                break
+            }
+    }
+}
+
+extension Array where Element == ViewBuilderItemable {
+    fileprivate func flatten(_ axis: NSLayoutConstraint.Axis) -> UIView {
+        let stackView = StackView().axis(axis)
+        forEach { stackView.add(item: $0) }
+        return stackView
     }
 }

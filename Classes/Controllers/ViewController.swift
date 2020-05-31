@@ -10,7 +10,7 @@ open class ViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         subscribeToKeyboardNotifications()
         buildUI()
-        body { block().viewBuilderItems }
+        body { block() }
     }
     
     public init () {

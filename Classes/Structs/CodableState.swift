@@ -1,7 +1,7 @@
 @propertyWrapper
-public class CodableState<Value>: Stateable, Codable, Equatable, Hashable where Value: Codable, Value: Equatable, Value: Hashable {
+public class CodableState<Value>: Stateable, Codable, Equatable, Hashable where Value: Codable, Value: Hashable {
     public static func == (lhs: CodableState<Value>, rhs: CodableState<Value>) -> Bool {
-        lhs == rhs
+        lhs.wrappedValue == rhs.wrappedValue
     }
     
     public func hash(into hasher: inout Hasher) {

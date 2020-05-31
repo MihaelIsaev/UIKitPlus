@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UStepper = Stepper
-open class Stepper: UIStepper, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class Stepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Stepper { self }
     public lazy var properties = Properties<Stepper>()
     lazy var _properties = PropertiesInternal()
@@ -28,9 +28,6 @@ open class Stepper: UIStepper, DeclarativeProtocol, DeclarativeProtocolInternal 
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
     
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
-
     public init(_ value: Double) {
         super.init(frame: .zero)
         self.value = value

@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UButton = Button
-open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Button { self }
     public lazy var properties = Properties<Button>()
     lazy var _properties = PropertiesInternal()
@@ -27,9 +27,6 @@ open class Button: UIButton, DeclarativeProtocol, DeclarativeProtocolInternal {
     var __bottom: UIKitPlus.State<CGFloat> { $bottom }
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     // MARK: States
     

@@ -1,19 +1,29 @@
 import UIKit
 
-public protocol ViewBuilderItem {
-    var viewBuilderItems: [UIView] { get }
+public enum ViewBuilderItem {
+    case none
+    case single(UIView)
+    case multiple([UIView])
+    case nested([ViewBuilderItemable])
+    case forEach(AnyForEach)
 }
-extension UIView: ViewBuilderItem {
-    public var viewBuilderItems: [UIView] { [self] }
+public protocol ViewBuilderItemable {
+    var viewBuilderItem: ViewBuilderItem { get }
 }
-extension Array: ViewBuilderItem where Element: UIView {
-    public var viewBuilderItems: [UIView] { self }
+public struct EmptyViewBuilderItem: ViewBuilderItemable {
+    public var viewBuilderItem: ViewBuilderItem { .none }
 }
-extension Optional: ViewBuilderItem where Wrapped: UIView {
-    public var viewBuilderItems: [UIView] {
+extension UIView: ViewBuilderItemable {
+    public var viewBuilderItem: ViewBuilderItem { .single(self) }
+}
+extension Array: ViewBuilderItemable where Element: UIView {
+    public var viewBuilderItem: ViewBuilderItem { .multiple(self) }
+}
+extension Optional: ViewBuilderItemable where Wrapped: UIView {
+    public var viewBuilderItem: ViewBuilderItem {
         switch self {
-        case .none: return []
-        case .some(let value): return [value]
+        case .none: return .none
+        case .some(let value): return .single(value)
         }
     }
 }

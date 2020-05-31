@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UScrollView = ScrollView
-open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class ScrollView: UIScrollView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: ScrollView { self }
     public lazy var properties = Properties<ScrollView>()
     lazy var _properties = PropertiesInternal()
@@ -28,15 +28,12 @@ open class ScrollView: UIScrollView, DeclarativeProtocol, DeclarativeProtocolInt
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
     
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
-    
     var scrollPosition: State<CGPoint>?
     
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
         _setup()
-        body { block().viewBuilderItems }
+        body { block() }
     }
     
     public init () {
@@ -168,9 +165,7 @@ extension ScrollView {
     
     @discardableResult
     public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
-        body {
-            block().viewBuilderItems
-        }
+        body { block() }
     }
     
     public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> ScrollView {

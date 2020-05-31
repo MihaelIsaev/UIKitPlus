@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UPickerView = PickerView
-open class PickerView: UIPickerView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class PickerView: UIPickerView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: PickerView { self }
     public lazy var properties = Properties<PickerView>()
     lazy var _properties = PropertiesInternal()
@@ -27,9 +27,6 @@ open class PickerView: UIPickerView, DeclarativeProtocol, DeclarativeProtocolInt
     var __bottom: State<CGFloat> { _bottom }
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     public override init(frame: CGRect) {
         super.init(frame: frame)

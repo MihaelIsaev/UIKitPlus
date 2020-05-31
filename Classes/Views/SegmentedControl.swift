@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias USegmentedControl = SegmentedControl
-open class SegmentedControl: UISegmentedControl, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class SegmentedControl: UISegmentedControl, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: SegmentedControl { self }
     public lazy var properties = Properties<SegmentedControl>()
     lazy var _properties = PropertiesInternal()

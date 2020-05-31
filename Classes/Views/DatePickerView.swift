@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UDatePicker = DatePicker
-open class DatePicker: UIDatePicker, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class DatePicker: UIDatePicker, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: DatePicker { self }
     public lazy var properties = Properties<DatePicker>()
     lazy var _properties = PropertiesInternal()
@@ -27,9 +27,6 @@ open class DatePicker: UIDatePicker, DeclarativeProtocol, DeclarativeProtocolInt
     var __bottom: UIKitPlus.State<CGFloat> { $bottom }
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     public override init(frame: CGRect) {
         super.init(frame: frame)

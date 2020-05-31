@@ -1,11 +1,9 @@
 import UIKit
 
-public struct ViewBuilderItems: ViewBuilderItem {
-    public let items: [UIView]
+public struct ViewBuilderItems: ViewBuilderItemable {
+    var items: [ViewBuilderItemable] = []
     
-    public init (items: [UIView]) {
-        self.items = items
+    public var viewBuilderItem: ViewBuilderItem {
+        .nested(items)
     }
-    
-    public var viewBuilderItems: [UIView] { items }
 }

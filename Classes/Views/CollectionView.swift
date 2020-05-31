@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UCollectionView = CollectionView
-open class CollectionView: UICollectionView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class CollectionView: UICollectionView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: CollectionView { self }
     public lazy var properties = Properties<CollectionView>()
     lazy var _properties = PropertiesInternal()

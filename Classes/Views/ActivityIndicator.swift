@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UActivityIndicator = ActivityIndicator
-open class ActivityIndicator: UIActivityIndicatorView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class ActivityIndicator: UIActivityIndicatorView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: ActivityIndicator { self }
     public lazy var properties = Properties<ActivityIndicator>()
     lazy var _properties = PropertiesInternal()
@@ -27,9 +27,6 @@ open class ActivityIndicator: UIActivityIndicatorView, DeclarativeProtocol, Decl
     var __bottom: State<CGFloat> { _bottom }
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     public override init(style: UIActivityIndicatorView.Style) {
         super.init(style: style)

@@ -57,7 +57,7 @@ extension UIDevice {
             case .iPhone6PlusVirtual, .iPhone6PlusReal: return .iPhone6Plus
             case .iPhoneXr: return .iPhoneXr
             case .iPhoneX: return .iPhoneX
-            case .iPhoneXMax, .iPhoneXr: return .iPhoneXMax
+            case .iPhoneXMax: return .iPhoneXMax
             case .iPad1stGen, .iPad6thGen: return .iPad
             case .iPad10: return .iPad10
             case .iPad12: return .iPad12
