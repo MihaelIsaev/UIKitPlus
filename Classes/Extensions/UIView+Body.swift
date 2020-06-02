@@ -7,8 +7,12 @@ extension UIView {
         return self
     }
     
-    private func addItem(_ item: ViewBuilderItemable, at index: Int? = nil) {
-        switch item.viewBuilderItem {
+    func addItem(_ item: ViewBuilderItemable, at index: Int? = nil) {
+        addItem(item.viewBuilderItem, at: index)
+    }
+    
+    func addItem(_ item: ViewBuilderItem, at index: Int? = nil) {
+        switch item {
         case .single(let view):
             add(views: [view], at: index)
         case .multiple(let views):
