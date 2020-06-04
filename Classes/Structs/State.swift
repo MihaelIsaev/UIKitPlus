@@ -42,6 +42,12 @@ open class State<Value>: Stateable {
         endTriggers.forEach { $0() }
     }
     
+    public func removeAllListeners() {
+        beginTriggers.removeAll()
+        endTriggers.removeAll()
+        listeners.removeAll()
+    }
+    
     public typealias Trigger = () -> Void
     public typealias Listener = (_ old: Value, _ new: Value) -> Void
     public typealias SimpleListener = (_ value: Value) -> Void
