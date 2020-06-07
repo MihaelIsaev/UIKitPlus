@@ -13,7 +13,7 @@
         <img src="https://img.shields.io/cocoapods/v/UIKit-Plus.svg" alt="Cocoapod">
     </a>
     <a href="https://discord.gg/q5wCPYv">
-        <img src="https://img.shields.io/badge/CLICK_HERE_TO_DISCUSS_THIS_LIB-SWIFT.STREAM-FD6F32.svg" alt="Swift.Stream">
+        <img src="https://img.shields.io/discord/612561840765141005" alt="Swift.Stream">
     </a>
 </p>
 <p align="center">🚀❤️ YOU WILL LOVE <b>UIKIT</b> MORE THAN EVER ❤️🚀</p>
