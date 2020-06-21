@@ -165,23 +165,23 @@ public class UCollection: View, UICollectionViewDataSource {
         case .single(let view):
             cell.setRootView(view)
         case .multiple(let views):
-            cell.setRootView(StackView { views }.axis(section.axis))
+            cell.setRootView(StackView(views).axis(section.axis).edgesToSuperview())
         case .forEach(let fr):
             let item = fr.items(at: indexPath.row).viewBuilderItem
             switch item {
             case .single(let view):
-                cell.setRootView(StackView { view }.axis(section.axis))
+                cell.setRootView(StackView(view).axis(section.axis).edgesToSuperview())
             case .multiple(let views):
-                cell.setRootView(StackView { views }.axis(section.axis))
+                cell.setRootView(StackView(views).axis(section.axis).edgesToSuperview())
             case .forEach(let fr):
-                cell.setRootView(StackView(ViewBuilderItems(items: fr.allItems())).axis(section.axis))
+                cell.setRootView(StackView(ViewBuilderItems(items: fr.allItems())).axis(section.axis).edgesToSuperview())
             case .nested(let items):
-                cell.setRootView(StackView(ViewBuilderItems(items: items)).axis(section.axis))
+                cell.setRootView(StackView(ViewBuilderItems(items: items)).axis(section.axis).edgesToSuperview())
             case .none:
-                cell.setRootView(View())
+                cell.setRootView(View().edgesToSuperview())
             }
         case .nested, .none:
-            cell.setRootView(View())
+            cell.setRootView(View().edgesToSuperview())
         }
         cell.transform = CGAffineTransform(rotationAngle: reversed ? CGFloat(Double.pi) : 0)
         return cell

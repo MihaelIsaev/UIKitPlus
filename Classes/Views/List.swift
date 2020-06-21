@@ -203,23 +203,18 @@ public class List: View, UITableViewDataSource {
             let item = fr.items(at: indexPath.row).viewBuilderItem
             switch item {
             case .single(let view):
-                cell.setRootViews(view)
+                cell.setRootViews(StackView(view).axis(section.axis).edgesToSuperview())
             case .multiple(let views):
-                cell.setRootViews(views)
+                cell.setRootViews(StackView(views).axis(section.axis).edgesToSuperview())
             case .forEach(let fr):
-                if fr.axis != nil {
-                    cell.setRootViews(StackView(ViewBuilderItems(items: fr.allItems())).axis(section.axis))
-                } else {
-                    cell.contentView.subviews.forEach {  $0.removeFromSuperview() }
-                    cell.contentView.addItem(section.item)
-                }
+                cell.setRootViews(StackView(ViewBuilderItems(items: fr.allItems())).axis(section.axis).edgesToSuperview())
             case .nested(let items):
                 cell.setRootViews([StackView(ViewBuilderItems(items: items)).axis(section.axis).edgesToSuperview()])
             case .none:
-                cell.setRootViews(View())
+                cell.setRootViews(View().edgesToSuperview())
             }
         case .nested, .none:
-            cell.setRootViews(View())
+            cell.setRootViews(View().edgesToSuperview())
         }
         cell.transform = CGAffineTransform(rotationAngle: reversed ? CGFloat(Double.pi) : 0)
         return cell
