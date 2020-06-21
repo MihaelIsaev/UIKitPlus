@@ -1,7 +1,7 @@
 import UIKit
 
 class CollectionDynamicCell: CollectionViewCell {
-    func setRootView(_ rootView: UIView) {
+    func setRootView(_ rootView: StackView) {
         contentView.subviews.forEach { $0.removeFromSuperview() }
         rootView.translatesAutoresizingMaskIntoConstraints = false
         contentView.body { rootView }

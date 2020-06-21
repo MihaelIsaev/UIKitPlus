@@ -1,12 +1,15 @@
 import UIKit
 
 class ListDynamicCell: TableViewCell {
-    func setRootViews(_ views: UIView...) {
-        setRootViews(views)
-    }
-    
-    func setRootViews(_ views: [UIView]) {
+    func setRootView(_ rootView: StackView) {
         contentView.subviews.forEach { $0.removeFromSuperview() }
-        contentView.body { views }
+        rootView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.body { rootView }
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: rootView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: rootView.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: rootView.topAnchor),
+            contentView.bottomAnchor.constraint(equalTo: rootView.bottomAnchor)
+        ])
     }
 }

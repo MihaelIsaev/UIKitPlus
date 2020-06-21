@@ -196,25 +196,25 @@ public class List: View, UITableViewDataSource {
         let section = items[indexPath.section]
         switch section.item {
         case .single(let view):
-            cell.setRootViews(view)
+            cell.setRootView(StackView(view).axis(section.axis))
         case .multiple(let views):
-            cell.setRootViews(views.filter { !$0.isHidden }[indexPath.row])
+            cell.setRootView(StackView(views.filter { !$0.isHidden }[indexPath.row]).axis(section.axis))
         case .forEach(let fr):
             let item = fr.items(at: indexPath.row).viewBuilderItem
             switch item {
             case .single(let view):
-                cell.setRootViews(StackView(view).axis(section.axis).edgesToSuperview())
+                cell.setRootView(StackView(view).axis(section.axis))
             case .multiple(let views):
-                cell.setRootViews(StackView(views).axis(section.axis).edgesToSuperview())
+                cell.setRootView(StackView(views).axis(section.axis))
             case .forEach(let fr):
-                cell.setRootViews(StackView(ViewBuilderItems(items: fr.allItems())).axis(section.axis).edgesToSuperview())
+                cell.setRootView(StackView(ViewBuilderItems(items: fr.allItems())).axis(section.axis))
             case .nested(let items):
-                cell.setRootViews([StackView(ViewBuilderItems(items: items)).axis(section.axis).edgesToSuperview()])
+                cell.setRootView(StackView(ViewBuilderItems(items: items)).axis(section.axis))
             case .none:
-                cell.setRootViews(View().edgesToSuperview())
+                cell.setRootView(.init())
             }
         case .nested, .none:
-            cell.setRootViews(View().edgesToSuperview())
+            cell.setRootView(.init())
         }
         cell.transform = CGAffineTransform(rotationAngle: reversed ? CGFloat(Double.pi) : 0)
         return cell
