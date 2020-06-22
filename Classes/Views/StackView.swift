@@ -2,22 +2,36 @@ import UIKit
 
 public typealias UStackView = StackView
 open class StackView: _StackView {
+    public override init () {
+        super.init()
+    }
+    
+    public init (_ viewBuilderItem: ViewBuilderItemable) {
+        super.init(frame: .zero)
+        add(item: viewBuilderItem)
+    }
+    
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
-        block().viewBuilderItems.forEach { addArrangedSubview($0) }
+        add(item: block())
+    }
+    
+    public init (@ViewBuilder block: (StackView) -> ViewBuilder.Result) {
+        super.init(frame: .zero)
+        add(item: block(self))
     }
     
     required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> StackView {
-        block().viewBuilderItems.forEach { addArrangedSubview($0) }
+    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+        add(item: block())
         return self
     }
     
-    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> StackView {
-        StackView(block: block)
+    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> VStack {
+        .init(block: block)
     }
     
     // Mask: Axis
@@ -29,7 +43,7 @@ open class StackView: _StackView {
     }
 }
 
-open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class _StackView: UIStackView, AnyDeclarativeProtocol, DeclarativeProtocolInternal, EditableStackView {
     public var declarativeView: _StackView { self }
     public lazy var properties = Properties<_StackView>()
     lazy var _properties = PropertiesInternal()
@@ -55,9 +69,6 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
     var __bottom: State<CGFloat> { _bottom }
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     public init () {
         super.init(frame: .zero)
@@ -123,5 +134,38 @@ open class _StackView: UIStackView, DeclarativeProtocol, DeclarativeProtocolInte
         }
         self.spacing = expressable.value()
         return self
+    }
+    
+    func add(item: ViewBuilderItemable) {
+        switch item.viewBuilderItem {
+            case .single(let view):
+                addArrangedSubview(view)
+            case .multiple(let views):
+                views.forEach { addArrangedSubview($0) }
+            case .forEach(let fr):
+                let stack = StackView().axis(fr.axis ?? axis)
+                fr.allItems().forEach {
+                    stack.addArrangedSubview([$0].flatten(fr.axis ?? axis))
+                }
+                addArrangedSubview(stack)
+                fr.subscribeToChanges({}, { deletions, insertions, _ in
+                    stack.arrangedSubviews.removeFromSuperview(at: deletions)
+                    insertions.forEach {
+                        stack.add(arrangedView: [fr.items(at: $0)].flatten(fr.axis ?? self.axis), at: $0)
+                    }
+                }) {}
+            case .nested(let items):
+                items.forEach { add(item: $0) }
+            case .none:
+                break
+            }
+    }
+}
+
+extension Array where Element == ViewBuilderItemable {
+    fileprivate func flatten(_ axis: NSLayoutConstraint.Axis) -> UIView {
+        let stackView = StackView().axis(axis)
+        forEach { stackView.add(item: $0) }
+        return stackView
     }
 }

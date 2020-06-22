@@ -44,6 +44,7 @@ public class AnyStates {
         self._expression()
     }
     
+    @discardableResult
     init (_ states: [AnyState], expression: @escaping () -> Void) {
         _expression = expression
         states.forEach { $0.listen(expression) }

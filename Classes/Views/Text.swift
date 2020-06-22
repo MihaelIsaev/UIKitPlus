@@ -4,7 +4,7 @@ public typealias Label = Text
 public typealias UText = Text
 
 /// aka `UILabel`
-open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class Text: UILabel, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Text { self }
     public lazy var properties = Properties<Text>()
     lazy var _properties = PropertiesInternal()
@@ -30,9 +30,6 @@ open class Text: UILabel, DeclarativeProtocol, DeclarativeProtocolInternal {
     var __bottom: State<CGFloat> { _bottom }
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     public init (_ text: String) {
         super.init(frame: .zero)

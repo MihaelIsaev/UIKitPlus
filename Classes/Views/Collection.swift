@@ -1,11 +1,20 @@
 import UIKit
 
+class CollectionSection {
+    var item: ViewBuilderItem
+    let axis: NSLayoutConstraint.Axis
+    
+    init (_ item: ViewBuilderItem, axis: NSLayoutConstraint.Axis? = nil) {
+        self.item = item
+        self.axis = axis ?? .vertical
+    }
+}
+
 public typealias Collection = UCollection
 public class UCollection: View, UICollectionViewDataSource {
-    @State
-    var reversed = false
+    @State var reversed = false
     
-    var listables: [Listable]
+    var items: [CollectionSection] = []
     
     let layout: UICollectionViewLayout
     
@@ -31,7 +40,7 @@ public class UCollection: View, UICollectionViewDataSource {
             return
         }
         isChanging = true
-        collectionView.performBatchUpdates({ [weak self] in
+        collectionView.performBatchUpdates({
             collectionView.deleteItems(at: changes.deletions.map { IndexPath(row: $0, section: changes.section)})
             collectionView.insertItems(at: changes.insertions.map { IndexPath(row: $0, section: changes.section) })
             collectionView.reloadItems(at: changes.modifications.map { IndexPath(row: $0, section: changes.section) })
@@ -43,26 +52,11 @@ public class UCollection: View, UICollectionViewDataSource {
         }
     }
     
-    public init (_ layout: UICollectionViewLayout = CollectionView.defaultLayout, @ListableBuilder block: ListableBuilder.SingleView) {
+    public init (_ layout: UICollectionViewLayout = CollectionView.defaultLayout, @ViewBuilder block: ViewBuilder.SingleView) {
         self.layout = layout
-        self.listables = block().listableBuilderItems
         super.init(frame: .zero)
-        listables.enumerated().forEach { [weak self] i, listable in
-            if let l = listable as? ListableForEach {
-                let changes = SectionChanges(section: i)
-                l.subscribeToChanges({
-                    changes.deletions.removeAll()
-                    changes.insertions.removeAll()
-                    changes.modifications.removeAll()
-                }, { [weak self] d, i, m in
-                    d.forEach { changes.deletions.insert($0) }
-                    i.forEach { changes.insertions.insert($0) }
-                    m.forEach { changes.modifications.insert($0) }
-                }) { [weak self] in
-                    self?.applyChanges(changes)
-                }
-            }
-        }
+        process(block())
+        collectionView.reloadData()
         $reversed.listen { [weak self] old, new in
             self?.collectionView.transform = CGAffineTransform(rotationAngle: new ? -(CGFloat)(Double.pi) : 0)
             if let collectionView = self?.collectionView {
@@ -76,6 +70,43 @@ public class UCollection: View, UICollectionViewDataSource {
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func process(_ item: ViewBuilderItemable, sectionIndex: Int = 0) {
+        let item = item.viewBuilderItem
+        switch item {
+        case .single:
+            items.append(.init(item))
+        case .multiple:
+            items.append(.init(item))
+        case .forEach(let fr):
+            var direction: NSLayoutConstraint.Axis? = nil
+            if let axis = fr.axis {
+                direction = axis
+            } else if let fl = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+                direction = fl.scrollDirection == .horizontal ? .horizontal : .vertical
+            }
+            let collectionSection = CollectionSection(item, axis: direction)
+            items.append(collectionSection)
+            let changes = SectionChanges(section: sectionIndex)
+            fr.subscribeToChanges({
+                changes.deletions.removeAll()
+                changes.insertions.removeAll()
+                changes.modifications.removeAll()
+            }, { d, i, m in
+                d.forEach { changes.deletions.insert($0) }
+                i.forEach { changes.insertions.insert($0) }
+                m.forEach { changes.modifications.insert($0) }
+            }) { [weak self] in
+                self?.applyChanges(changes)
+            }
+        case .nested(let items):
+            items.enumerated().forEach { i, v in
+                process(v, sectionIndex: sectionIndex + i)
+            }
+        case .none:
+            break
+        }
     }
     
     lazy var collectionView = CollectionView(layout)
@@ -111,17 +142,47 @@ public class UCollection: View, UICollectionViewDataSource {
     // MARK: - UITableViewDataSource
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        listables.count
+        items.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        listables[section].count
+        switch items[section].item {
+        case .single:
+            return 1
+        case .multiple(let views):
+            return views.count
+        case .forEach(let fr):
+            return fr.count
+        case .nested, .none:
+            return 0
+        }
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(with: CollectionDynamicCell.self, for: indexPath)
-        let rootView = listables[indexPath.section].item(at: indexPath.row)
-        cell.setRootView(VStack { rootView })
+        let section = items[indexPath.section]
+        switch section.item {
+        case .single(let view):
+            cell.setRootView(StackView(view).axis(section.axis))
+        case .multiple(let views):
+            cell.setRootView(StackView(views).axis(section.axis))
+        case .forEach(let fr):
+            let item = fr.items(at: indexPath.row).viewBuilderItem
+            switch item {
+            case .single(let view):
+                cell.setRootView(StackView(view).axis(section.axis))
+            case .multiple(let views):
+                cell.setRootView(StackView(views).axis(section.axis))
+            case .forEach(let fr):
+                cell.setRootView(StackView(ViewBuilderItems(items: fr.allItems())).axis(section.axis))
+            case .nested(let items):
+                cell.setRootView(StackView(ViewBuilderItems(items: items)).axis(section.axis))
+            case .none:
+                cell.setRootView(.init())
+            }
+        case .nested, .none:
+            cell.setRootView(.init())
+        }
         cell.transform = CGAffineTransform(rotationAngle: reversed ? CGFloat(Double.pi) : 0)
         return cell
     }

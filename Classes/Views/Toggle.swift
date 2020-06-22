@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UToggle = Toggle
-open class Toggle: UISwitch, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Toggle { self }
     public lazy var properties = Properties<Toggle>()
     lazy var _properties = PropertiesInternal()
@@ -27,9 +27,6 @@ open class Toggle: UISwitch, DeclarativeProtocol, DeclarativeProtocolInternal {
     var __bottom: UIKitPlus.State<CGFloat> { $bottom }
     var __centerX: UIKitPlus.State<CGFloat> { $centerX }
     var __centerY: UIKitPlus.State<CGFloat> { $centerY }
-    
-    /// See `AnyForeacheableView`
-    public lazy var isVisibleInList: Bool = !isHidden
     
     var binding: UIKitPlus.State<Bool>?
     

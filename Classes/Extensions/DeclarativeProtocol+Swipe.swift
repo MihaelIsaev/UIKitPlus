@@ -3,7 +3,7 @@ import UIKit
 extension DeclarativeProtocol {
     @discardableResult
     public func onSwipeGesture(direction: UISwipeGestureRecognizer.Direction, touches: Int = 1, on state: UIGestureRecognizer.State, _ action: @escaping () -> Void) -> Self {
-        onSwipeGesture(direction: direction, touches: touches, on: state) { action() }
+        onSwipeGesture(direction: direction, touches: touches, on: state) { _ in action() }
     }
     
     @discardableResult

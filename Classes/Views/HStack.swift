@@ -8,9 +8,9 @@ open class HStack: _StackView {
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
         axis = .horizontal
-        block().viewBuilderItems.forEach { addArrangedSubview($0) }
+        add(item: block())
     }
-        
+    
     public override init () {
         super.init(frame: .zero)
         axis = .horizontal
@@ -21,7 +21,7 @@ open class HStack: _StackView {
     }
     
     public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
-        block().viewBuilderItems.forEach { addArrangedSubview($0) }
+        add(item: block())
         return self
     }
     

@@ -50,8 +50,7 @@ extension Enableable {
 extension _Enableable {
     @discardableResult
     public func enabled(_ value: Bool) -> Self {
-        guard let s = self as? _Enableable else { return self }
-        s._setEnabled(value)
+        _setEnabled(value)
         return self
     }
 }

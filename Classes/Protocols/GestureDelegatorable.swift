@@ -18,7 +18,7 @@ extension GestureDelegatorable {
     
     @discardableResult
     public func shouldBegin(_ action: @escaping () -> Bool) -> Self {
-        shouldBegin(action)
+        shouldBegin { _ in action() }
     }
     
     @discardableResult

@@ -1,29 +1,26 @@
 import UIKit
 
+class ListSection {
+    var item: ViewBuilderItem
+    let axis: NSLayoutConstraint.Axis
+    
+    init (_ item: ViewBuilderItem, axis: NSLayoutConstraint.Axis? = nil) {
+        self.item = item
+        self.axis = axis ?? .vertical
+    }
+}
+
 public typealias UList = List
 public class List: View, UITableViewDataSource {
     @State var reversed = false
     
     var scrollPosition: State<CGPoint>?
     
-    var listables: [Listable] = []
+    var items: [ListSection] = []
     
-    public init (@ListableBuilder block: ListableBuilder.SingleView) {
-        self.listables = block().listableBuilderItems
+    public override init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
-        listables.enumerated().forEach { i, listable in
-            if let l = listable as? ListableForEach {
-                l.subscribeToChanges({ [weak self] in
-                    self?.tableView.beginUpdates()
-                }, { [weak self] deletions, insertions, modifications in
-                    self?.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: i)}, with: .automatic)
-                    self?.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: i) }, with: .automatic)
-                    self?.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: i) }, with: .automatic)
-                }) { [weak self] in
-                    self?.tableView.endUpdates()
-                }
-            }
-        }
+        process(block())
         $reversed.listen { [weak self] old, new in
             self?.tableView.transform = CGAffineTransform(rotationAngle: new ? -(CGFloat)(Double.pi) : 0)
             if let tableView = self?.tableView {
@@ -36,22 +33,9 @@ public class List: View, UITableViewDataSource {
         setup()
     }
     
-    public init (@ListableBuilder block: (List) -> ListableBuilderItem) {
+    public init (@ViewBuilder block: (List) -> ViewBuilder.Result) {
         super.init(frame: .zero)
-        self.listables = block(self).listableBuilderItems
-        listables.enumerated().forEach { i, listable in
-            if let l = listable as? ListableForEach {
-                l.subscribeToChanges({ [weak self] in
-                    self?.tableView.beginUpdates()
-                }, { [weak self] deletions, insertions, modifications in
-                    self?.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: i)}, with: .automatic)
-                    self?.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: i) }, with: .automatic)
-                    self?.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: i) }, with: .automatic)
-                }) { [weak self] in
-                    self?.tableView.endUpdates()
-                }
-            }
-        }
+        process(block(self))
         $reversed.listen { [weak self] old, new in
             self?.tableView.transform = CGAffineTransform(rotationAngle: new ? -(CGFloat)(Double.pi) : 0)
             if let tableView = self?.tableView {
@@ -66,6 +50,62 @@ public class List: View, UITableViewDataSource {
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func process(_ item: ViewBuilderItemable, sectionIndex: Int = 0) {
+        let item = item.viewBuilderItem
+        switch item {
+        case .single(let view):
+            handleHiddency(view, at: sectionIndex)
+            items.append(.init(item))
+        case .multiple(let views):
+            views.forEach { handleHiddency($0, at: sectionIndex) }
+            items.append(.init(item))
+        case .forEach(let fr):
+            let direction = fr.axis ?? .vertical
+            let listSection = ListSection(item, axis: direction)
+            items.append(listSection)
+            fr.subscribeToChanges({ [weak self] in
+                self?.tableView.beginUpdates()
+            }, { [weak self] deletions, insertions, modifications in
+                self?.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: sectionIndex)}, with: .automatic)
+                self?.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: sectionIndex) }, with: .automatic)
+                self?.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: sectionIndex) }, with: .automatic)
+            }) { [weak self] in
+                self?.tableView.endUpdates()
+            }
+        case .nested(let items):
+            items.enumerated().forEach { i, v in
+                process(v, sectionIndex: sectionIndex + i)
+            }
+        case .none:
+            break
+        }
+    }
+    
+    private func handleHiddency(_ view: UIView, at sectionIndex: Int) {
+        if let v = view as? Hiddenable {
+            var isVisibleInList = !v.hiddenState.wrappedValue
+            v.hiddenState.beginTrigger { [weak self] in
+                self?.tableView.beginUpdates()
+            }
+            v.hiddenState.listen { [weak self] old, new in
+                guard old != new else { return }
+                switch new {
+                case true:
+                   guard isVisibleInList else { return }
+                   isVisibleInList = false
+                    self?.tableView.deleteRows(at: [0].map { IndexPath(row: $0, section: sectionIndex)}, with: .automatic)
+                case false:
+                   guard !isVisibleInList else { return }
+                   isVisibleInList = true
+                   self?.tableView.insertRows(at: [0].map { IndexPath(row: $0, section: sectionIndex) }, with: .automatic)
+                }
+            }
+            v.hiddenState.endTrigger { [weak self] in
+                self?.tableView.endUpdates()
+            }
+        }
     }
     
     /// Applies some defaults to the list
@@ -135,17 +175,47 @@ public class List: View, UITableViewDataSource {
     // MARK: - UITableViewDataSource
     
     public func numberOfSections(in tableView: UITableView) -> Int {
-        listables.count
+        items.count
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        listables[section].count
+        switch items[section].item {
+        case .single(let view):
+            return view.isHidden ? 0 : 1
+        case .multiple(let views):
+            return views.filter { !$0.isHidden }.count
+        case .forEach(let fr):
+            return fr.count
+        case .nested, .none:
+            return 0
+        }
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(with: ListDynamicCell.self, for: indexPath)
-        let rootView = listables[indexPath.section].item(at: indexPath.row)
-        cell.setRootView(VStack { rootView })
+        let section = items[indexPath.section]
+        switch section.item {
+        case .single(let view):
+            cell.setRootView(StackView(view).axis(section.axis))
+        case .multiple(let views):
+            cell.setRootView(StackView(views.filter { !$0.isHidden }[indexPath.row]).axis(section.axis))
+        case .forEach(let fr):
+            let item = fr.items(at: indexPath.row).viewBuilderItem
+            switch item {
+            case .single(let view):
+                cell.setRootView(StackView(view).axis(section.axis))
+            case .multiple(let views):
+                cell.setRootView(StackView(views).axis(section.axis))
+            case .forEach(let fr):
+                cell.setRootView(StackView(ViewBuilderItems(items: fr.allItems())).axis(section.axis))
+            case .nested(let items):
+                cell.setRootView(StackView(ViewBuilderItems(items: items)).axis(section.axis))
+            case .none:
+                cell.setRootView(.init())
+            }
+        case .nested, .none:
+            cell.setRootView(.init())
+        }
         cell.transform = CGAffineTransform(rotationAngle: reversed ? CGFloat(Double.pi) : 0)
         return cell
     }

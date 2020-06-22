@@ -19,3 +19,9 @@ public protocol DeclarativeProtocol: class {
     var centerX: CGFloat { get set }
     var centerY: CGFloat { get set }
 }
+protocol AnyDeclarativeProtocol: DeclarativeProtocol, Hiddenable {}
+
+/// See `Hiddenable`
+extension DeclarativeProtocol {
+    var hiddenState: State<Bool> { properties.hiddenState }
+}

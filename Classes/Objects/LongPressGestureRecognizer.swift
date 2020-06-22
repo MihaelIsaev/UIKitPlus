@@ -18,7 +18,7 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
     }
     
     deinit {
-        print("LongPressGestureRecognizer deinit")
+//        debugPrint("LongPressGestureRecognizer deinit")
     }
     
     @discardableResult

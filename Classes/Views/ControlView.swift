@@ -1,7 +1,7 @@
 import UIKit
 
 public typealias UControlView = ControlView
-open class ControlView: UIControl, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class ControlView: UIControl, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: ControlView { self }
     public lazy var properties = Properties<ControlView>()
     lazy var _properties = PropertiesInternal()

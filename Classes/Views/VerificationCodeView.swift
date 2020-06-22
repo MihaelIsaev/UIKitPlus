@@ -1,6 +1,6 @@
 import UIKit
 
-open class VerificationCodeView: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
+open class VerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: VerificationCodeView { self }
     public lazy var properties = Properties<VerificationCodeView>()
     lazy var _properties = PropertiesInternal()
@@ -263,7 +263,7 @@ extension VerificationCodeView: _Fontable {
 }
 
 extension VerificationCodeView {
-    class DigitView: UIView, DeclarativeProtocol, DeclarativeProtocolInternal {
+    class DigitView: UIView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
         public var declarativeView: DigitView { self }
         public lazy var properties = Properties<DigitView>()
         lazy var _properties = PropertiesInternal()

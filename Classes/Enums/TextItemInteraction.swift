@@ -9,6 +9,9 @@ public enum TextItemInteraction : Int {
         case .invokeDefaultAction: return .invokeDefaultAction
         case .presentActions: return .presentActions
         case .preview: return .preview
+        @unknown default:
+            assertionFailure("TextItemInteraction case not supported")
+            return .invokeDefaultAction
         }
     }
 }
