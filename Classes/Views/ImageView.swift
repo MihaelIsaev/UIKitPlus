@@ -70,7 +70,7 @@ open class Image: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolIntern
         self._imageLoader.load(url.wrappedValue, imageView: self, defaultImage: defaultImage)
         url.listen { [weak self] old, new in
             guard let self = self else { return }
-            self._imageLoader.load(new, imageView: self)
+            self._imageLoader.load(new, imageView: self, defaultImage: defaultImage)
         }
     }
     
@@ -82,7 +82,7 @@ open class Image: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolIntern
         self._imageLoader.load(url.wrappedValue, imageView: self, defaultImage: defaultImage)
         url.listen { [weak self] old, new in
             guard let self = self else { return }
-            self._imageLoader.load(new, imageView: self)
+            self._imageLoader.load(new, imageView: self, defaultImage: defaultImage)
         }
     }
     
@@ -91,10 +91,10 @@ open class Image: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolIntern
         _setup()
         self.image = defaultImage
         self._imageLoader = loader
-        self._imageLoader.load(expressable.value(), imageView: self)
+        self._imageLoader.load(expressable.value(), imageView: self, defaultImage: defaultImage)
         expressable.state.listen { [weak self] old, new in
             guard let self = self else { return }
-            self._imageLoader.load(expressable.value(), imageView: self)
+            self._imageLoader.load(expressable.value(), imageView: self, defaultImage: defaultImage)
         }
     }
     
@@ -103,7 +103,7 @@ open class Image: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolIntern
         _setup()
         self.image = defaultImage
         self._imageLoader = loader
-        self._imageLoader.load(url, imageView: self)
+        self._imageLoader.load(url, imageView: self, defaultImage: defaultImage)
     }
     
     public init (url: String, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
@@ -111,7 +111,7 @@ open class Image: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolIntern
         _setup()
         self.image = defaultImage
         self._imageLoader = loader
-        self._imageLoader.load(url, imageView: self)
+        self._imageLoader.load(url, imageView: self, defaultImage: defaultImage)
     }
     
     public override init(frame: CGRect) {
@@ -161,7 +161,7 @@ open class Image: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolIntern
     public func load(url: URL, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) -> Self {
         image = defaultImage
         _imageLoader = loader
-        _imageLoader.load(url, imageView: self)
+        _imageLoader.load(url, imageView: self, defaultImage: defaultImage)
         return self
     }
     
@@ -169,7 +169,7 @@ open class Image: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolIntern
     public func load(url: String, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) -> Self {
         image = defaultImage
         _imageLoader = loader
-        _imageLoader.load(url, imageView: self)
+        _imageLoader.load(url, imageView: self, defaultImage: defaultImage)
         return self
     }
 }
