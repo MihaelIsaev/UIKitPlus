@@ -1697,9 +1697,9 @@ View().corners($cornerRadiusState)
 ```
 To set custom radius for specific corner
 ```swift
-View().corners(10, .topLeft, topRight)
+View().corners(10, .topLeft, .topRight)
 View().corners(10, .topLeft, .bottomRight)
-View().corners(10, .topLeft, topRight, .bottomLeft, .bottomRight)
+View().corners(10, .topLeft, .topRight, .bottomLeft, .bottomRight)
 ```
 To make your view's corners round automatically by smaller side
 ```swift
