@@ -70,7 +70,7 @@ open class CollectionView: UICollectionView, AnyDeclarativeProtocol, Declarative
     }
     
     // MARK: - Refresh Control
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
         if #available(iOS 10.0, *) {
@@ -93,7 +93,7 @@ open class CollectionView: UICollectionView, AnyDeclarativeProtocol, Declarative
     }
     
     // MARK: Paging
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func paging(_ enabled: Bool) -> Self {
         isPagingEnabled = enabled

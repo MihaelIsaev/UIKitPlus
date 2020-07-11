@@ -6,7 +6,7 @@ public typealias RootBeforeTransition = (UIViewController) -> Void
 public typealias SimpleRootController = RootController<Never>
 
 open class RootController<DeeplinkType>: ViewController, RootControllerable {
-    #if os(iOS)
+    #if !os(tvOS)
     open override var preferredStatusBarStyle: UIStatusBarStyle { current.preferredStatusBarStyle }
     #endif
     public internal(set) var current: UIViewController = NotImplementedViewController("nothing")
@@ -148,7 +148,7 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
         current.removeFromParent()
         
         current = new
-        #if os(iOS)
+        #if !os(tvOS)
         setNeedsStatusBarAppearanceUpdate()
         #endif
     }
@@ -163,7 +163,7 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
             new.didMove(toParent: self)
             self.current = new
             completion?()
-            #if os(iOS)
+            #if !os(tvOS)
             self.setNeedsStatusBarAppearanceUpdate()
             #endif
         }
@@ -181,7 +181,7 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
             new.didMove(toParent: self)
             self.current = new
             completion?()
-            #if os(iOS)
+            #if !os(tvOS)
             self.setNeedsStatusBarAppearanceUpdate()
             #endif
         }

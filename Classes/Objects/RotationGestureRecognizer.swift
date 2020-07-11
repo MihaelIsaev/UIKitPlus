@@ -1,6 +1,6 @@
 import UIKit
 
-#if os(iOS)
+#if !os(tvOS)
 final public class RotationGestureRecognizer: UIRotationGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
     var _tracker = _GestureTracker()
     var _delegator = _GestureDelegator()

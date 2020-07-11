@@ -1,5 +1,5 @@
 import UIKit
-#if os(iOS)
+#if !os(tvOS)
 public typealias UPickerView = PickerView
 open class PickerView: UIPickerView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: PickerView { self }

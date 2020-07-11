@@ -1,7 +1,7 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func onHoverGesture(_ action: @escaping (Self) -> Void) -> Self {
         onHoverGesture { v, s, r in

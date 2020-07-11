@@ -1,5 +1,5 @@
 import UIKit
-#if os(iOS)
+#if !os(tvOS)
 public typealias UToggle = Toggle
 open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Toggle { self }

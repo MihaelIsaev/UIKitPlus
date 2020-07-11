@@ -66,7 +66,7 @@ open class ScrollView: UIScrollView, AnyDeclarativeProtocol, DeclarativeProtocol
     }
     
     // MARK: - Refresh Control
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
         if #available(iOS 10.0, *) {
