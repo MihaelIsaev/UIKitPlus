@@ -110,7 +110,7 @@ public class List: View, UITableViewDataSource {
     
     /// Applies some defaults to the list
     public func setup() {
-        #if os(iOS)
+        #if !os(tvOS)
         tableView.separatorStyle(.none)
         #endif
     }
@@ -167,7 +167,7 @@ public class List: View, UITableViewDataSource {
     }
     
     // MARK: - Refresh Control
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
         tableView.refreshControl(refreshControl)
@@ -224,7 +224,7 @@ public class List: View, UITableViewDataSource {
     }
     
     // MARK: - Separator
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func separatorColor(_ value: UIColor) -> Self {
         tableView.separatorColor(value)

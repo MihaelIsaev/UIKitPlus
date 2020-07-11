@@ -1,6 +1,6 @@
 import UIKit
 
-#if os(iOS)
+#if !os(tvOS)
 extension DeclarativeProtocol {
     @discardableResult
     public func onPinchGesture(scale: CGFloat? = nil, on state: UIGestureRecognizer.State, _ action: @escaping () -> Void) -> Self {

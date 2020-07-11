@@ -1,6 +1,6 @@
 import UIKit
 
-#if os(iOS)
+#if !os(tvOS)
 @available(iOS 13.0, *)
 final public class HoverGestureRecognizer: UIHoverGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
     var _tracker = _GestureTracker()

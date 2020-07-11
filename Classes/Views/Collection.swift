@@ -132,7 +132,7 @@ public class UCollection: View, UICollectionViewDataSource {
     }
     
     // MARK: - Refresh Control
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
         collectionView.refreshControl(refreshControl)

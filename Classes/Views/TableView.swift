@@ -67,7 +67,7 @@ open class TableView: UITableView, AnyDeclarativeProtocol, DeclarativeProtocolIn
     }
     
     // MARK: - Refresh Control
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
         if #available(iOS 10.0, *) {
@@ -168,7 +168,7 @@ open class TableView: UITableView, AnyDeclarativeProtocol, DeclarativeProtocolIn
         dataSource = value
         return self
     }
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func separatorColor(_ value: UIColor) -> Self {
         separatorColor = value

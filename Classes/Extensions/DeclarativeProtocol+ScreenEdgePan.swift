@@ -1,6 +1,6 @@
 import UIKit
 
-#if os(iOS)
+#if !os(tvOS)
 extension DeclarativeProtocol {
     @discardableResult
     public func onScreenEdgePanGesture(edges: UIRectEdge = .all, on state: UIGestureRecognizer.State, _ action: @escaping () -> Void) -> Self {

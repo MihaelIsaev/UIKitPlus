@@ -1,5 +1,5 @@
 import UIKit
-#if os(iOS)
+#if !os(tvOS)
 extension UIRefreshControl {
     public static var `default`: RefreshControl { .init() }
 }

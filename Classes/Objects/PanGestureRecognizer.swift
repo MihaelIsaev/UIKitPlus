@@ -6,7 +6,7 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
     
     public init(minTouches: Int? = nil, maxTouches: Int? = nil) {
         super.init(target: nil, action: nil)
-        #if os(iOS)
+        #if !os(tvOS)
         if let minTouches = minTouches {
             minimumNumberOfTouches = minTouches
         }
@@ -17,7 +17,7 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
         addTarget(_tracker, action: #selector(_tracker.handle))
         delegate = _delegator
     }
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func minimumNumberOfTouches(_ v: Int) -> Self {
         minimumNumberOfTouches = v

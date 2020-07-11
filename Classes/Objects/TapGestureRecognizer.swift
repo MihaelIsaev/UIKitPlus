@@ -7,7 +7,7 @@ final public class TapGestureRecognizer: UITapGestureRecognizer, _GestureTrackab
     public init(taps: Int = 1, touches: Int = 1) {
         super.init(target: _tracker, action: #selector(_tracker.handle))
         numberOfTapsRequired = taps
-        #if os(iOS)
+        #if !os(tvOS)
         numberOfTouchesRequired = touches
         #endif
         delegate = _delegator
@@ -29,7 +29,7 @@ final public class TapGestureRecognizer: UITapGestureRecognizer, _GestureTrackab
     public func numberOfTapsRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
         numberOfTapsRequired(expressable.unwrap())
     }
-    #if os(iOS)
+    #if !os(tvOS)
     @discardableResult
     public func numberOfTouchesRequired(_ v: Int) -> Self {
         numberOfTouchesRequired = v

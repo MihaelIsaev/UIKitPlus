@@ -5,7 +5,7 @@ public class ImpactFeedback {
     public enum FeedbackStyle: Int {
         case light, medium, heavy
     }
-    #if os(iOS)
+    #if !os(tvOS)
     public static func bzz(_ style: FeedbackStyle = .light) {
         if #available(iOS 10.0, *) {
             guard let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: style.rawValue) else { return }
