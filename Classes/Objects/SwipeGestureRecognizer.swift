@@ -7,12 +7,14 @@ final public class SwipeGestureRecognizer: UISwipeGestureRecognizer, _GestureTra
     public init(direction d: UISwipeGestureRecognizer.Direction, touches: Int? = nil) {
         super.init(target: _tracker, action: #selector(_tracker.handle))
         if let touches = touches {
+            #if os(iOS)
             numberOfTouchesRequired = touches
+            #endif
         }
         direction = d
         delegate = _delegator
     }
-    
+    #if os(iOS)
     @discardableResult
     public func numberOfTouchesRequired(_ v: Int) -> Self {
         numberOfTouchesRequired = v
@@ -29,7 +31,7 @@ final public class SwipeGestureRecognizer: UISwipeGestureRecognizer, _GestureTra
     public func numberOfTouchesRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
         numberOfTouchesRequired(expressable.unwrap())
     }
-    
+    #endif
     @discardableResult
     public func direction(_ v: UISwipeGestureRecognizer.Direction) -> Self {
         direction = v

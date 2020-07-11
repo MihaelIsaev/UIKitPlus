@@ -1,5 +1,5 @@
 import UIKit
-
+#if os(iOS)
 public typealias UStepper = Stepper
 open class Stepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Stepper { self }
@@ -249,3 +249,4 @@ open class Stepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolIntern
         return self
     }
 }
+#endif

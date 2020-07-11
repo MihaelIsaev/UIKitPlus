@@ -1,5 +1,6 @@
 import UIKit
 
+#if os(iOS)
 final public class RotationGestureRecognizer: UIRotationGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
     var _tracker = _GestureTracker()
     var _delegator = _GestureDelegator()
@@ -35,3 +36,4 @@ final public class RotationGestureRecognizer: UIRotationGestureRecognizer, _Gest
         set { _tag = newValue }
     }
 }
+#endif

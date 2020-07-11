@@ -7,7 +7,7 @@ public enum StatusBarStyle {
     case light
     /// Black color
     case dark
-    
+    #if os(iOS)
     public var rawValue: UIStatusBarStyle {
         switch self {
         case .default: return .default
@@ -29,4 +29,5 @@ public enum StatusBarStyle {
         @unknown default: return .default
         }
     }
+    #endif
 }

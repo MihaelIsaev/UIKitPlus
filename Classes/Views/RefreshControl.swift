@@ -1,5 +1,5 @@
 import UIKit
-
+#if os(iOS)
 extension UIRefreshControl {
     public static var `default`: RefreshControl { .init() }
 }
@@ -104,3 +104,4 @@ open class RefreshControl: UIRefreshControl {
         return self
     }
 }
+#endif

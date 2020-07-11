@@ -1,5 +1,5 @@
 import UIKit
-
+#if os(iOS)
 public typealias UDatePicker = DatePicker
 open class DatePicker: UIDatePicker, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: DatePicker { self }
@@ -283,3 +283,4 @@ open class DatePicker: UIDatePicker, AnyDeclarativeProtocol, DeclarativeProtocol
         return self
     }
 }
+#endif

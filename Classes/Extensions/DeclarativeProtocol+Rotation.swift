@@ -1,5 +1,6 @@
 import UIKit
 
+#if os(iOS)
 extension DeclarativeProtocol {
     @discardableResult
     public func onRotationGesture(rotation: CGFloat? = nil, on state: UIGestureRecognizer.State, _ action: @escaping () -> Void) -> Self {
@@ -59,3 +60,4 @@ extension DeclarativeProtocol {
         onRotationGesture(rotation: rotation, expressable.unwrap())
     }
 }
+#endif

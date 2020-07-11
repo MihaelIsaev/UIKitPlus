@@ -2,7 +2,9 @@ import Foundation
 import UIKit
 
 open class ViewController: UIViewController {
+    #if os(iOS)
     open override var preferredStatusBarStyle: UIStatusBarStyle { statusBarStyle.rawValue }
+    #endif
     /// UIKitPlus reimplementation of `preferredStatusBarStyle`
     open var statusBarStyle: StatusBarStyle { _statusBarStyle ?? .default }
     
@@ -132,8 +134,10 @@ open class ViewController: UIViewController {
     private var isSubscribedToKeyboardNotifications = false
     
     private func subscribeToKeyboardNotifications() {
+        #if os(iOS)
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillAppear(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector:#selector(keyboardWillDisappear(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        #endif
     }
     
     var keyboardWasShownAtLeastOnce = false
@@ -402,7 +406,7 @@ extension ViewController: _BackgroundColorable {
 }
 
 // MARK: Keyboard Notifications
-
+#if os(iOS)
 extension ViewController {
     @objc
     private func keyboardWillAppear(notification: NSNotification) {
@@ -427,6 +431,7 @@ extension ViewController {
         _ = keyboardDisappeared(animationDuration, animationCurve, animationOptions, isSubscribedToKeyboardNotifications)
     }
 }
+#endif
 
 // MARK: Touches
 

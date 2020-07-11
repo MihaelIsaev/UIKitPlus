@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 open class NavigationController<T: UIViewController>: UINavigationController, UIGestureRecognizerDelegate, NavigationControllerable {
+    #if os(iOS)
     open override var preferredStatusBarStyle: UIStatusBarStyle {
         if let last = viewControllers.last {
             if let last = last as? ViewController {
@@ -11,6 +12,7 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
         }
         return statusBarStyle.rawValue
     }
+    #endif
     /// UIKitPlus reimplementation of `preferredStatusBarStyle`
     open var statusBarStyle: StatusBarStyle { _statusBarStyle ?? .default }
     private var _statusBarStyle: StatusBarStyle?
@@ -51,7 +53,9 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
     }
     
     private func setup() {
+        #if os(iOS)
         interactivePopGestureRecognizer?.delegate = self
+        #endif
     }
     
     private func setupAppearance() {
@@ -82,10 +86,11 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return viewControllers.count > 1 && isSwipeBackEnabled
     }
-    
+    #if os(iOS)
     override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .all
     }
+    #endif
     
     // MARK: Style
     
@@ -117,7 +122,9 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
     @discardableResult
     public func statusBarStyle(_ style: StatusBarStyle) -> NavigationController {
         _statusBarStyle = style
+        #if os(iOS)
         setNeedsStatusBarAppearanceUpdate()
+        #endif
         return self
     }
     
