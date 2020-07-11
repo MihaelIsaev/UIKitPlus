@@ -7,7 +7,9 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
     public init(taps: Int = 0, touches: Int = 1, minDuration: TimeInterval? = nil, allowableMovement: CGFloat? = nil) {
         super.init(target: _tracker, action: #selector(_tracker.handle))
         numberOfTapsRequired = taps
+        #if os(iOS)
         numberOfTouchesRequired = touches
+        #endif
         if let minDuration = minDuration {
             minimumPressDuration = minDuration
         }
@@ -38,6 +40,7 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
         numberOfTapsRequired(expressable.unwrap())
     }
     
+    #if os(iOS)
     @discardableResult
     public func numberOfTouchesRequired(_ v: Int) -> Self {
         numberOfTouchesRequired = v
@@ -49,11 +52,12 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
         state.listen { self.numberOfTouchesRequired = $0 }
         return self
     }
-
+    
     @discardableResult
     public func numberOfTouchesRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
         numberOfTouchesRequired(expressable.unwrap())
     }
+    #endif
     
     @discardableResult
     public func minimumPressDuration(_ v: TimeInterval) -> Self {

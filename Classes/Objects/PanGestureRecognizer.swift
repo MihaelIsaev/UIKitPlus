@@ -6,16 +6,18 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
     
     public init(minTouches: Int? = nil, maxTouches: Int? = nil) {
         super.init(target: nil, action: nil)
+        #if os(iOS)
         if let minTouches = minTouches {
             minimumNumberOfTouches = minTouches
         }
         if let maxTouches = maxTouches {
             maximumNumberOfTouches = maxTouches
         }
+        #endif
         addTarget(_tracker, action: #selector(_tracker.handle))
         delegate = _delegator
     }
-    
+    #if os(iOS)
     @discardableResult
     public func minimumNumberOfTouches(_ v: Int) -> Self {
         minimumNumberOfTouches = v
@@ -49,7 +51,7 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
     public func maximumNumberOfTouches<V>(_ expressable: ExpressableState<V, Int>) -> Self {
         maximumNumberOfTouches(expressable.unwrap())
     }
-    
+    #endif
     var _tag: Int = 0
     public override var tag: Int {
         get { _tag }

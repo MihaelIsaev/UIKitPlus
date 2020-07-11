@@ -1,5 +1,6 @@
 import UIKit
 
+#if os(iOS)
 final public class ScreenEdgePanGestureRecognizer: UIScreenEdgePanGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
     var _tracker = _GestureTracker()
     var _delegator = _GestureDelegator()
@@ -33,3 +34,4 @@ final public class ScreenEdgePanGestureRecognizer: UIScreenEdgePanGestureRecogni
         set { _tag = newValue }
     }
 }
+#endif

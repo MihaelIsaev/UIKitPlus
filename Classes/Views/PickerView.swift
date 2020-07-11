@@ -1,5 +1,5 @@
 import UIKit
-
+#if os(iOS)
 public typealias UPickerView = PickerView
 open class PickerView: UIPickerView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: PickerView { self }
@@ -113,3 +113,4 @@ extension PickerView: UIPickerViewDelegate {
         _changed(row, component)
     }
 }
+#endif

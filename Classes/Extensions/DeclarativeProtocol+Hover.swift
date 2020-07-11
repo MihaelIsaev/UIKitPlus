@@ -1,6 +1,7 @@
 import UIKit
 
 extension DeclarativeProtocol {
+    #if os(iOS)
     @discardableResult
     public func onHoverGesture(_ action: @escaping (Self) -> Void) -> Self {
         onHoverGesture { v, s, r in
@@ -59,4 +60,5 @@ extension DeclarativeProtocol {
     public func hovered<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
         hovered(expressable.unwrap())
     }
+    #endif
 }

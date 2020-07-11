@@ -132,13 +132,13 @@ public class UCollection: View, UICollectionViewDataSource {
     }
     
     // MARK: - Refresh Control
-    
+    #if os(iOS)
     @discardableResult
     public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
         collectionView.refreshControl(refreshControl)
         return self
     }
-    
+    #endif
     // MARK: - UITableViewDataSource
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {

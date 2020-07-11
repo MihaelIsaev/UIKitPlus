@@ -1,5 +1,5 @@
 import UIKit
-
+#if os(iOS)
 public typealias UToggle = Toggle
 open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Toggle { self }
@@ -188,3 +188,4 @@ open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal
         return offImage(expressable.value())
     }
 }
+#endif

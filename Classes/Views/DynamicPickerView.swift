@@ -249,9 +249,11 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
             self.containerView.bottom = 0
             self.layoutIfNeeded()
         }
+        #if os(iOS)
         if allowImpactFeedback {
             ImpactFeedback.bzz(.heavy)
         }
+        #endif
     }
     
     @objc
@@ -274,23 +276,28 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     fileprivate func cancel() {
         onCancel()
         _hide()
+        #if os(iOS)
         if allowImpactFeedback {
             ImpactFeedback.bzz(.light)
         }
+        #endif
     }
     
     @objc
     fileprivate func done() {
         onDone(pickerView.value)
         _hide()
+        #if os(iOS)
         if allowImpactFeedback {
             ImpactFeedback.success()
         }
+        #endif
     }
 }
 
 // MARK: PickerPopup + UIDatePicker
 
+#if os(iOS)
 public typealias DatePickerPopup = DynamicPickerView<DatePicker>
 
 extension UIDatePicker: DynamicPickerableView {
@@ -376,6 +383,7 @@ extension DynamicPickerView where V == DatePicker {
         _show(in: view)
     }
 }
+#endif
 
 //// MARK: PickerPopup + WeekdayPickerView
 //

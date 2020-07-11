@@ -6,8 +6,9 @@ public typealias RootBeforeTransition = (UIViewController) -> Void
 public typealias SimpleRootController = RootController<Never>
 
 open class RootController<DeeplinkType>: ViewController, RootControllerable {
+    #if os(iOS)
     open override var preferredStatusBarStyle: UIStatusBarStyle { current.preferredStatusBarStyle }
-    
+    #endif
     public internal(set) var current: UIViewController = NotImplementedViewController("nothing")
     
     @State public internal(set) var currentType: RootScreenType = .nothing
@@ -147,8 +148,9 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
         current.removeFromParent()
         
         current = new
-        
+        #if os(iOS)
         setNeedsStatusBarAppearanceUpdate()
+        #endif
     }
     
     private func animateFadeTransition(to new: UIViewController, completion: RootSimpleCompletion? = nil) {
@@ -161,7 +163,9 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
             new.didMove(toParent: self)
             self.current = new
             completion?()
+            #if os(iOS)
             self.setNeedsStatusBarAppearanceUpdate()
+            #endif
         }
     }
     
@@ -177,7 +181,9 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
             new.didMove(toParent: self)
             self.current = new
             completion?()
+            #if os(iOS)
             self.setNeedsStatusBarAppearanceUpdate()
+            #endif
         }
     }
     

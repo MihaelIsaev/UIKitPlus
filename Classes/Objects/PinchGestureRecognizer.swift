@@ -1,5 +1,6 @@
 import UIKit
 
+#if os(iOS)
 final public class PinchGestureRecognizer: UIPinchGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
     var _tracker = _GestureTracker()
     var _delegator = _GestureDelegator()
@@ -35,3 +36,4 @@ final public class PinchGestureRecognizer: UIPinchGestureRecognizer, _GestureTra
         set { _tag = newValue }
     }
 }
+#endif

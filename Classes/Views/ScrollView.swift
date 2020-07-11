@@ -66,7 +66,7 @@ open class ScrollView: UIScrollView, AnyDeclarativeProtocol, DeclarativeProtocol
     }
     
     // MARK: - Refresh Control
-    
+    #if os(iOS)
     @discardableResult
     public func refreshControl(_ refreshControl: UIRefreshControl) -> Self {
         if #available(iOS 10.0, *) {
@@ -84,7 +84,7 @@ open class ScrollView: UIScrollView, AnyDeclarativeProtocol, DeclarativeProtocol
         isPagingEnabled = enabled
         return self
     }
-    
+    #endif
     // MARK: Scrolling
     
     @discardableResult

@@ -1,5 +1,6 @@
 import UIKit
 
+#if os(iOS)
 extension DeclarativeProtocol {
     @discardableResult
     public func onScreenEdgePanGesture(edges: UIRectEdge = .all, on state: UIGestureRecognizer.State, _ action: @escaping () -> Void) -> Self {
@@ -30,7 +31,7 @@ extension DeclarativeProtocol {
             action(v, s)
         }
     }
-    
+   
     @discardableResult
     public func onScreenEdgePanGesture(edges: UIRectEdge = .all, _ action: @escaping (Self, UIGestureRecognizer.State, ScreenEdgePanGestureRecognizer) -> Void) -> Self {
         let recognizer = ScreenEdgePanGestureRecognizer(edges: edges)
@@ -46,9 +47,10 @@ extension DeclarativeProtocol {
             state.wrappedValue = s
         }
     }
-
+    
     @discardableResult
     public func onScreenEdgePanGesture<V>(edges: UIRectEdge = .all, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
         onScreenEdgePanGesture(edges: edges, expressable.unwrap())
     }
 }
+#endif

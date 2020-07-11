@@ -1,5 +1,5 @@
 import UIKit
-
+#if os(iOS)
 public typealias USliderView = SliderView
 open class SliderView: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: SliderView { self }
@@ -363,3 +363,4 @@ open class SliderView: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInte
         return self
     }
 }
+#endif
