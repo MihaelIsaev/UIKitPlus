@@ -341,6 +341,12 @@ extension TextField: Refreshable {
     }
 }
 
+extension TextField: _Enableable {
+    func _setEnabled(_ v: Bool) {
+        isEnabled = v
+    }
+}
+
 extension TextField: _Fontable {
     func _setFont(_ v: UIFont?) {
         font = v

@@ -545,3 +545,9 @@ extension TextView: _Scrollable {
         showsVerticalScrollIndicator = v
     }
 }
+
+extension TextView: _Enableable {
+    func _setEnabled(_ v: Bool) {
+        self.isEditable = v
+    }
+}
