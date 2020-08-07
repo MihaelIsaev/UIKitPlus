@@ -61,4 +61,21 @@ extension DeclarativeProtocol where V: UIControl {
         }
         return self
     }
+    
+    #if os(tvOS)
+    @discardableResult
+    public func onClickGesture(_ event: UIControl.Event = .primaryActionTriggered, _ action: @escaping () -> Void) -> Self {
+        declarativeView.actionHandler(controlEvents: event, forAction: action)
+        return self
+    }
+    
+    @discardableResult
+    public func onClickGesture(_ event: UIControl.Event = .primaryActionTriggered, _ action: @escaping (V) -> Void) -> Self {
+        declarativeView.actionHandler(controlEvents: event) { [weak self] in
+            guard let self = self as? V else { return }
+            action(self)
+        }
+        return self
+    }
+    #endif
 }
