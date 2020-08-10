@@ -1,5 +1,9 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 protocol SideViewProtocol {
-    var view: UIView { get }
+    var view: BaseView { get }
 }

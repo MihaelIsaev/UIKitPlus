@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 #if !os(tvOS)
 public typealias UStepper = Stepper
@@ -249,4 +250,5 @@ open class Stepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolIntern
         return self
     }
 }
+#endif
 #endif

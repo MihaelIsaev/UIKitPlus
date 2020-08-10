@@ -1,4 +1,7 @@
 import Foundation
+#if os(macOS)
+import AppKit
+#else
 import UIKit
 
 extension UIImage {
@@ -26,3 +29,4 @@ extension UIImage {
         return result
     }
 }
+#endif

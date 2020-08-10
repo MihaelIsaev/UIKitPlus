@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 extension DeclarativeProtocol {
@@ -8,3 +9,4 @@ extension DeclarativeProtocol {
         return self
     }
 }
+#endif

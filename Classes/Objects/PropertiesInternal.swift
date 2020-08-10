@@ -1,10 +1,18 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public class PropertiesInternal {
     var circleCorners: Bool = false
+    #if !os(macOS)
     var customCorners: CustomCorners?
+    #endif
     lazy var borders = Borders()
+    #if !os(macOS)
     var textChangeTransition: UIView.AnimationOptions?
+    #endif
     var stateString: StateStringBuilder.Handler?
     var stateAttrString: StateAttrStringBuilder.Handler?
     
@@ -30,4 +38,12 @@ public class PropertiesInternal {
     
     var notAppliedPreConstraintsRelative: [PreConstraint] = []
     var appliedPreConstraintsRelative: [PreConstraint] = []
+    
+    func moveAppliedToNotApplied() {
+        appliedPreConstraintsSuper.forEach {
+            $0.value.removeAllListeners()
+            notAppliedPreConstraintsSuper.append($0)
+        }
+        appliedPreConstraintsSuper.removeAll()
+    }
 }

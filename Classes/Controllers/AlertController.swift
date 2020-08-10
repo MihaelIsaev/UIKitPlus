@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 open class ActionSheet: UIAlertController, _Titleable, _Messageable, _UIAlertViewControllerable {
@@ -34,6 +35,12 @@ open class AlertController: UIAlertController, _Titleable, _Messageable, _UIAler
     
     func _present(in vc: UIViewController, animated: Bool, completion: (() -> Void)?) -> Self {
         vc.present(self, animated: true, completion: completion)
+        return self
+    }
+    
+    @discardableResult
+    public func sourceView(_ view: UIView) -> Self {
+        popoverPresentationController?.sourceView = view
         return self
     }
 }
@@ -177,3 +184,4 @@ extension UIAlertViewControllerable {
         present(in: vc) {}
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol TextLineBreakModeable {
@@ -27,3 +28,4 @@ extension _TextLineBreakModeable {
         return self
     }
 }
+#endif

@@ -1,3 +1,6 @@
+#if os(macOS)
+
+#else
 import UIKit
 
 extension UIControl {
@@ -19,3 +22,4 @@ extension UIControl {
         addTarget(self, action: #selector(triggerActionHandler), for: control)
     }
 }
+#endif

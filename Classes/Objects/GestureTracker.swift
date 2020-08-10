@@ -1,7 +1,11 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 class _GestureTracker {
-    var change: ((UIGestureRecognizer.State) -> Void)?
+    var change: ((UGestureRecognizer.State) -> Void)?
     var possible: (() -> Void)?
     var began: (() -> Void)?
     var changed: (() -> Void)?
@@ -9,21 +13,22 @@ class _GestureTracker {
     var cancelled: (() -> Void)?
     var failed: (() -> Void)?
     
-    weak var outerDelegate: UIGestureRecognizerDelegate?
+    weak var outerDelegate: UGestureRecognizerDelegate?
     
     init () {}
     
-    @objc func handle(_ gesture: UILongPressGestureRecognizer) {
-        change?(gesture.state)
-        switch gesture.state {
-        case .possible: possible?()
-        case .began: began?()
-        case .changed: changed?()
-        case .ended: ended?()
-        case .cancelled: cancelled?()
-        case .failed: failed?()
-        @unknown default:
-            assertionFailure("GestureTracker case not supported")
-        }
-    }
+    // TODO: remove?
+//    @objc func handle(_ gesture: UILongPressGestureRecognizer) {
+//        change?(gesture.state)
+//        switch gesture.state {
+//        case .possible: possible?()
+//        case .began: began?()
+//        case .changed: changed?()
+//        case .ended: ended?()
+//        case .cancelled: cancelled?()
+//        case .failed: failed?()
+//        @unknown default:
+//            assertionFailure("GestureTracker case not supported")
+//        }
+//    }
 }

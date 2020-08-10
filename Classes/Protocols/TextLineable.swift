@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol TextLineable {
@@ -43,3 +44,4 @@ extension _TextLineable {
         return self
     }
 }
+#endif

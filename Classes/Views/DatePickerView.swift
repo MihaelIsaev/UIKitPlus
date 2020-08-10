@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 #if !os(tvOS)
 public typealias UDatePicker = DatePicker
@@ -283,4 +284,5 @@ open class DatePicker: UIDatePicker, AnyDeclarativeProtocol, DeclarativeProtocol
         return self
     }
 }
+#endif
 #endif

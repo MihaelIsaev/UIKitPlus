@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 extension DeclarativeProtocol where V: UIView {
@@ -62,3 +63,4 @@ extension DeclarativeProtocol where V: UIControl {
         return self
     }
 }
+#endif

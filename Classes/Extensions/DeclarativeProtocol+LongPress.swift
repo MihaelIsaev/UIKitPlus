@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 extension DeclarativeProtocol {
@@ -59,3 +60,4 @@ extension DeclarativeProtocol {
         onLongPressGesture(taps: taps, touches: touches, expressable.unwrap())
     }
 }
+#endif

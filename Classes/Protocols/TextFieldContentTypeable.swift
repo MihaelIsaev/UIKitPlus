@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol TextFieldContentTypeable {
@@ -26,3 +27,4 @@ extension _TextFieldContentTypeable {
         return self
     }
 }
+#endif

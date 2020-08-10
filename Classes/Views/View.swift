@@ -1,7 +1,11 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public typealias UView = View
-open class View: UIView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: View { self }
     public lazy var properties = Properties<View>()
     lazy var _properties = PropertiesInternal()
@@ -28,6 +32,15 @@ open class View: UIView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtocol
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
     
+    open override var tag: Int {
+        get {
+            properties.tag
+        }
+        set {
+            properties.tag = newValue
+        }
+    }
+    
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
         _setup()
@@ -52,18 +65,28 @@ open class View: UIView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtocol
         fatalError("init(coder:) has not been implemented")
     }
 
+    #if !os(macOS)
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
     }
+    #endif
     
+    #if os(macOS)
+    open override func viewDidMoveToSuperview() {
+        super.viewDidMoveToSuperview()
+        movedToSuperview()
+    }
+    #else
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         movedToSuperview()
     }
+    #endif
     
     open func buildView() {}
     
+    #if !os(macOS)
     // MARK: Touches
     
     typealias TouchClosure = (Set<UITouch>, UIEvent?) -> Void
@@ -92,21 +115,22 @@ open class View: UIView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtocol
         super.touchesCancelled(touches, with: event)
         _touchesCancelled?(touches, event)
     }
+    #endif
 }
 
 // MARK: Convenience Initializers
 
 extension View {
-    public static func inline(_ v: () -> UIView) -> View {
+    public static func inline(_ v: () -> BaseView) -> View {
         .init(inline: v())
     }
     
-    public convenience init (_ innerView: UIView) {
+    public convenience init (_ innerView: BaseView) {
         self.init()
         body { innerView }
     }
     
-    public convenience init (inline inlineView: UIView) {
+    public convenience init (inline inlineView: BaseView) {
         self.init()
         inlineView.translatesAutoresizingMaskIntoConstraints = false
         body { inlineView }
@@ -133,6 +157,7 @@ extension View {
     }
 }
 
+#if !os(macOS)
 // MARK: Touches
 
 extension View {
@@ -252,3 +277,4 @@ extension View {
         return self
     }
 }
+#endif

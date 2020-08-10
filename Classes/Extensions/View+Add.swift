@@ -1,11 +1,15 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
-extension UIView {
-    public func addSubview(_ views: [UIView]) {
+extension BaseView {
+    public func addSubview(_ views: [BaseView]) {
         views.forEach { self.addSubview($0) }
     }
     
-    public func addSubview(_ views: UIView...) {
+    public func addSubview(_ views: BaseView...) {
         addSubview(views)
     }
     
@@ -13,3 +17,5 @@ extension UIView {
         body { view().declarativeView }
     }
 }
+
+

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UScrollView = ScrollView
@@ -196,3 +197,4 @@ extension ScrollView: UIScrollViewDelegate {
         scrollPosition?.wrappedValue = scrollView.contentOffset
     }
 }
+#endif

@@ -5,7 +5,11 @@
 //  Created by Mihael Isaev on 17.04.2020.
 //
 
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public protocol Taggable: class {
     var tag: Int { get set }
@@ -22,7 +26,7 @@ extension Taggable {
     }
 }
 
-extension UIGestureRecognizer: Taggable {
+extension UGestureRecognizer: Taggable {
     @objc
     public var tag: Int {
         get { 0 }

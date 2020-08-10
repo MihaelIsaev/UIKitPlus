@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public struct ViewBuilderItems: ViewBuilderItemable {
     var items: [ViewBuilderItemable] = []

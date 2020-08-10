@@ -1,5 +1,9 @@
 import Foundation
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 prefix operator >=
 public prefix func >=(rhs: CGFloat) -> ConstraintValueType {

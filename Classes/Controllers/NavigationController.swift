@@ -1,3 +1,4 @@
+#if !os(macOS)
 import Foundation
 import UIKit
 
@@ -13,6 +14,7 @@ open class NavigationController<T: UIViewController>: UINavigationController, UI
         return statusBarStyle.rawValue
     }
     #endif
+    
     /// UIKitPlus reimplementation of `preferredStatusBarStyle`
     open var statusBarStyle: StatusBarStyle { _statusBarStyle ?? .default }
     private var _statusBarStyle: StatusBarStyle?
@@ -153,3 +155,4 @@ extension NavigationController: _Fontable {
         setupAppearance()
     }
 }
+#endif

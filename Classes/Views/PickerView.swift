@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 #if !os(tvOS)
 public typealias UPickerView = PickerView
@@ -113,4 +114,5 @@ extension PickerView: UIPickerViewDelegate {
         _changed(row, component)
     }
 }
+#endif
 #endif

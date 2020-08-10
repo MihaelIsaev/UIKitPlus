@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UBarButtonItem = BarButtonItem
@@ -130,3 +131,4 @@ open class BarButtonItem: UIBarButtonItem {
         return tint(expressable.value())
     }
 }
+#endif

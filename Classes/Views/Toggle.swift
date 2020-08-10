@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 #if !os(tvOS)
 public typealias UToggle = Toggle
@@ -188,4 +189,5 @@ open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal
         return offImage(expressable.value())
     }
 }
+#endif
 #endif

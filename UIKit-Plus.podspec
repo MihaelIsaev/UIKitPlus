@@ -30,6 +30,7 @@ Pod::Spec.new do |s|
   s.social_media_url = 'https://twitter.com/MihaelIsaev'
 
   s.ios.deployment_target = '9.0'
+  s.macos.deployment_target = '10.15'
 
   s.source_files = 'Classes/**/*'
 
@@ -38,7 +39,7 @@ Pod::Spec.new do |s|
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'UIKit'
+  # s.frameworks = 'UIKit'
 
   # SwiftUI fix for <iOS13
   s.xcconfig = { "OTHER_LDFLAGS" => "-weak_framework SwiftUI" }

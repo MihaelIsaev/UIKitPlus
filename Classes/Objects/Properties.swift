@@ -1,6 +1,14 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public class Properties<V> {
+    #if os(macOS)
+    var tag: Int = -1
+    #endif
+    
     @State var alpha: CGFloat = 1
     var alphaState: State<CGFloat> { _alpha }
     
@@ -13,17 +21,17 @@ public class Properties<V> {
     @State var userInteraction: Bool = false
     var userInteractionState: State<Bool> { _userInteraction }
     
-    @State var tint: UIColor = .clear
-    var tintState: State<UIColor> { _tint }
+    @State var tint: UColor = .clear
+    var tintState: State<UColor> { _tint }
     
-    @State var background: UIColor = .clear
-    var backgroundState: State<UIColor> { _background }
+    @State var background: UColor = .clear
+    var backgroundState: State<UColor> { _background }
     
-    @State var color: UIColor = .clear
-    var colorState: State<UIColor> { _color }
+    @State var color: UColor = .clear
+    var colorState: State<UColor> { _color }
     
-    @State var textColor: UIColor = .clear
-    var textColorState: State<UIColor> { _textColor }
+    @State var textColor: UColor = .clear
+    var textColorState: State<UColor> { _textColor }
     
     var hovered: Bool = false
     

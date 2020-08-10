@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UActivityIndicator = ActivityIndicator
@@ -128,4 +129,4 @@ open class ActivityIndicator: UIActivityIndicatorView, AnyDeclarativeProtocol, D
         return self
     }
 }
-
+#endif

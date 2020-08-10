@@ -1,5 +1,5 @@
 // Credits to https://github.com/mischa-hildebrand/AlignedCollectionViewFlowLayout
-
+#if !os(macOS)
 import UIKit
 
 // MARK: - 🦆 Type definitions
@@ -472,3 +472,4 @@ fileprivate extension UICollectionViewLayoutAttributes {
         align(toAlignmentAxis: alignmentAxis)
     }
 }
+#endif

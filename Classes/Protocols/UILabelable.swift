@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol UILabelable: UIViewable {
@@ -7,3 +8,4 @@ public protocol UILabelable: UIViewable {
 extension UILabelable {
     public var _view: UIView { _label }
 }
+#endif

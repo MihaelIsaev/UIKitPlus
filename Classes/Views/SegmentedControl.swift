@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias USegmentedControl = SegmentedControl
@@ -311,3 +312,4 @@ open class SegmentedControl: UISegmentedControl, AnyDeclarativeProtocol, Declara
         addAttribute(.writingDirection, direction, for: state)
     }
 }
+#endif

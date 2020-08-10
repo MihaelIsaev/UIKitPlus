@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 open class VerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
@@ -334,3 +335,4 @@ extension VerificationCodeView {
         }
     }
 }
+#endif

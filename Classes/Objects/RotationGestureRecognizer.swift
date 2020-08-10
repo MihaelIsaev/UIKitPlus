@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 #if !os(tvOS)
@@ -36,4 +37,5 @@ final public class RotationGestureRecognizer: UIRotationGestureRecognizer, _Gest
         set { _tag = newValue }
     }
 }
+#endif
 #endif

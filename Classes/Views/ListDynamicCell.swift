@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 class ListDynamicCell: TableViewCell {
@@ -13,3 +14,4 @@ class ListDynamicCell: TableViewCell {
         ])
     }
 }
+#endif

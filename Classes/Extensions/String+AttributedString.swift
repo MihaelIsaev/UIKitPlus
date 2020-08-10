@@ -1,10 +1,14 @@
 import Foundation
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension String {
-    /// UIColor, default nil: no background
+    /// UColor, default nil: no background
     @discardableResult
-    public func background(_ value: UIColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+    public func background(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).background(value, at: range)
     }
     
@@ -14,9 +18,9 @@ extension String {
         AttrStr(self).background(value, at: range)
     }
     
-    /// UIColor, default blackColor
+    /// UColor, default blackColor
     @discardableResult
-    public func foreground(_ value: UIColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+    public func foreground(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).foreground(value, at: range)
     }
     
@@ -27,7 +31,7 @@ extension String {
     }
     
     @discardableResult
-    public func font(v: UIFont, at range: ClosedRange<Int>? = nil) -> AttributedString {
+    public func font(v: UFont, at range: ClosedRange<Int>? = nil) -> AttributedString {
         guard let range = range else {
             return AttrStr(self).font(v: v)
         }
@@ -72,9 +76,9 @@ extension String {
         AttrStr(self).underlineStyle(value, at: range)
     }
     
-    /// UIColor, default nil: same as foreground color
+    /// UColor, default nil: same as foreground color
     @discardableResult
-    public func strokeColor(_ value: UIColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+    public func strokeColor(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).strokeColor(value, at: range)
     }
     
@@ -92,7 +96,7 @@ extension String {
     
     /// Shadow, default nil: no shadow
     @discardableResult
-    public func shadow(offset: CGSize = .zero, blur: CGFloat = 0, color: UIColor = .clear, at range: ClosedRange<Int>? = nil) -> AttributedString {
+    public func shadow(offset: CGSize = .zero, blur: CGFloat = 0, color: UColor = .clear, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).shadow(offset: offset, blur: blur, color: color, at: range)
     }
     
@@ -132,7 +136,7 @@ extension String {
     
     /// UIColor, default nil: same as foreground color
     @discardableResult
-    public func underlineColor(_ value: UIColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+    public func underlineColor(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).underlineColor(value, at: range)
     }
     
@@ -144,7 +148,7 @@ extension String {
     
     /// UIColor, default nil: same as foreground color
     @discardableResult
-    public func strikethroughColor(_ value: UIColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+    public func strikethroughColor(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).strikethroughColor(value, at: range)
     }
     

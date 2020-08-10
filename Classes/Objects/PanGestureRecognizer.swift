@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
@@ -58,3 +59,4 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
         set { _tag = newValue }
     }
 }
+#endif

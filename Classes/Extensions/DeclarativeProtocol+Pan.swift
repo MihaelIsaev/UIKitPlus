@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 extension DeclarativeProtocol {
@@ -59,3 +60,4 @@ extension DeclarativeProtocol {
         onPanGesture(minTouches: minTouches, maxTouches: maxTouches, expressable.unwrap())
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 class CollectionSection {
@@ -286,4 +287,4 @@ extension UCollection {
         scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
     }
 }
-
+#endif

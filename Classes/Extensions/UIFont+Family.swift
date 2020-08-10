@@ -1,6 +1,16 @@
-import UIKit
+#if os(macOS)
+public typealias UFont = NSFont
+#else
+public typealias UFont = UIFont
+#endif
 
-extension UIFont {
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
+extension UFont {
     public convenience init? (_ identifier: FontIdentifier, size: CGFloat) {
         self.init(name: identifier.fontName, size: size)
     }

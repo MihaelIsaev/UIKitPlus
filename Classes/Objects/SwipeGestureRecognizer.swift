@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 final public class SwipeGestureRecognizer: UISwipeGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
@@ -55,3 +56,4 @@ final public class SwipeGestureRecognizer: UISwipeGestureRecognizer, _GestureTra
         set { _tag = newValue }
     }
 }
+#endif

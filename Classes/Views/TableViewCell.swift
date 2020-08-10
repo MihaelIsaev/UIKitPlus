@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UTableViewCell = TableViewCell
@@ -52,3 +53,4 @@ open class TableViewCell: UITableViewCell, AnyDeclarativeProtocol, DeclarativePr
         movedToSuperview()
     }
 }
+#endif

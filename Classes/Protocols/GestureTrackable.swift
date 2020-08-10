@@ -1,17 +1,21 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public protocol GestureTrackable {
     @discardableResult
-    func trackState(_ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self
+    func trackState(_ action: @escaping (UGestureRecognizer.State) -> Void) -> Self
     
     @discardableResult
-    func trackState(_ action: @escaping (UIGestureRecognizer.State, Self) -> Void) -> Self
+    func trackState(_ action: @escaping (UGestureRecognizer.State, Self) -> Void) -> Self
     
     @discardableResult
-    func trackState(_ state: State<UIGestureRecognizer.State>) -> Self
+    func trackState(_ state: State<UGestureRecognizer.State>) -> Self
     
     @discardableResult
-    func trackState<V>(_ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self
+    func trackState<V>(_ expressable: ExpressableState<V, UGestureRecognizer.State>) -> Self
     
     @discardableResult
     func onPossible(_ action: @escaping () -> Void) -> Self
@@ -50,7 +54,7 @@ protocol _GestureTrackable: GestureTrackable {
 
 extension GestureTrackable {
     @discardableResult
-    public func trackState<V>(_ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
+    public func trackState<V>(_ expressable: ExpressableState<V, UGestureRecognizer.State>) -> Self {
         trackState(expressable.unwrap())
     }
     
@@ -88,14 +92,14 @@ extension GestureTrackable {
 @available(iOS 13.0, *)
 extension GestureTrackable {
     @discardableResult
-    public func trackState(_ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
+    public func trackState(_ action: @escaping (UGestureRecognizer.State) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
         s._tracker.change = action
         return self
     }
     
     @discardableResult
-    public func trackState(_ action: @escaping (UIGestureRecognizer.State, Self) -> Void) -> Self {
+    public func trackState(_ action: @escaping (UGestureRecognizer.State, Self) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
         s._tracker.change = {
             action($0, self)
@@ -104,14 +108,14 @@ extension GestureTrackable {
     }
     
     @discardableResult
-    public func trackState(_ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
+    public func trackState(_ action: @escaping (Self, UGestureRecognizer.State) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
         s._tracker.change = { action(self, $0) }
         return self
     }
     
     @discardableResult
-    public func trackState(_ state: State<UIGestureRecognizer.State>) -> Self {
+    public func trackState(_ state: State<UGestureRecognizer.State>) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
         s._tracker.change = {
             state.wrappedValue = $0
@@ -162,7 +166,7 @@ extension GestureTrackable {
     }
     
     @discardableResult
-    public func delegate(_ object: UIGestureRecognizerDelegate) -> Self {
+    public func delegate(_ object: UGestureRecognizerDelegate) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
         s._tracker.outerDelegate = object
         return self
@@ -172,13 +176,13 @@ extension GestureTrackable {
 // for iOS lower than 13
 extension _GestureTrackable {
     @discardableResult
-    public func trackState(_ action: @escaping (UIGestureRecognizer.State) -> Void) -> Self {
+    public func trackState(_ action: @escaping (UGestureRecognizer.State) -> Void) -> Self {
         _tracker.change = action
         return self
     }
     
     @discardableResult
-    public func trackState(_ action: @escaping (UIGestureRecognizer.State, Self) -> Void) -> Self {
+    public func trackState(_ action: @escaping (UGestureRecognizer.State, Self) -> Void) -> Self {
         _tracker.change = {
             action($0, self)
         }
@@ -186,13 +190,13 @@ extension _GestureTrackable {
     }
     
     @discardableResult
-    public func trackState(_ action: @escaping (Self, UIGestureRecognizer.State) -> Void) -> Self {
+    public func trackState(_ action: @escaping (Self, UGestureRecognizer.State) -> Void) -> Self {
         _tracker.change = { action(self, $0) }
         return self
     }
     
     @discardableResult
-    public func trackState(_ state: State<UIGestureRecognizer.State>) -> Self {
+    public func trackState(_ state: State<UGestureRecognizer.State>) -> Self {
         _tracker.change = {
             state.wrappedValue = $0
         }
@@ -236,7 +240,7 @@ extension _GestureTrackable {
     }
     
     @discardableResult
-    public func delegate(_ object: UIGestureRecognizerDelegate) -> Self {
+    public func delegate(_ object: UGestureRecognizerDelegate) -> Self {
         _tracker.outerDelegate = object
         return self
     }

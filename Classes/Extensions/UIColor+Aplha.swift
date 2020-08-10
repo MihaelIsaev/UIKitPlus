@@ -1,11 +1,15 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
-extension UIColor {
-    public func alpha(_ value: CGFloat) -> UIColor {
+extension UColor {
+    public func alpha(_ value: CGFloat) -> UColor {
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
         getRed(&red, green: &green, blue: &blue, alpha: nil)
-        return UIColor(red: red, green: green, blue: blue, alpha: value)
+        return UColor(red: red, green: green, blue: blue, alpha: value)
     }
 }

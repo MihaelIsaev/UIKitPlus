@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UVisualEffectView = VisualEffectView
@@ -106,3 +107,4 @@ extension UIVisualEffect {
         VisualEffectView(effect)
     }
 }
+#endif

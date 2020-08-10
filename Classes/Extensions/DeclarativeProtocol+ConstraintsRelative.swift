@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension DeclarativeProtocol {
     private func _createRelative(value: State<CGFloat>,
@@ -1103,6 +1107,10 @@ extension DeclarativeProtocol {
         // Activate constraint
         constraint?.isActive = true
         // Redraw itself
+        #if os(macOS)
+        superview.layoutSubtreeIfNeeded() // TODO: check layoutSubtreeIfNeeded!
+        #else
         superview.layoutIfNeeded()
+        #endif
     }
 }

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol TextFieldLeftViewable {
@@ -49,3 +50,4 @@ extension _TextFieldLeftViewable {
         return self
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 @objc
@@ -26,3 +27,4 @@ public protocol TextFieldDelegate: NSObjectProtocol {
     @objc @available(iOS 2.0, *)
     optional func textFieldShouldReturn(_ textField: TextField) -> Bool
 }
+#endif

@@ -3,6 +3,24 @@ import SwiftUI
 
 @_exported import protocol SwiftUI.PreviewProvider
 
+#if os(macOS)
+@available(macOS 10.15, *)
+public struct LiveView: NSViewRepresentable {
+    let view: NSView
+    
+    public init (_ vc: NSViewController) {
+        self.view = vc.view
+    }
+    
+    public init (_ view: NSView) {
+        self.view = view
+    }
+    
+    public func makeNSView(context: Context) -> NSView { view }
+    
+    public func updateNSView(_ view: NSView, context: Context) {}
+}
+#else
 @available(iOS 13.0, *)
 public struct LiveView: UIViewRepresentable {
     let view: UIView
@@ -19,10 +37,11 @@ public struct LiveView: UIViewRepresentable {
     
     public func updateUIView(_ view: UIView, context: Context) {}
 }
+#endif
 
 public enum PreviewColorScheme {
     case light, dark
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, macOS 10.15, *)
     fileprivate var val: SwiftUI.ColorScheme {
         switch self {
         case .light: return .light
@@ -42,6 +61,7 @@ public struct UIKitPreviewDevice {
     public static var none: Self { .init("none") }
     ///     "Mac"
     public static var mac: Self { .init("Mac") }
+    #if !os(macOS)
     ///     "iPhone 7"
     public static var iPhone7: Self { .init("iPhone 7") }
     ///     "iPhone 7 Plus"
@@ -102,17 +122,24 @@ public struct UIKitPreviewDevice {
     public static var AppleWatchSeries4_40mm: Self { .init("Apple Watch Series 4 - 40mm") }
     ///     "Apple Watch Series 4 - 44mm"
     public static var AppleWatchSeries4_44mm: Self { .init("Apple Watch Series 4 - 44mm") }
+    #endif
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
 public class Preview {
-    let view: UIView
+    let view: BaseView
     var colorScheme: PreviewColorScheme = .light
+    #if os(macOS)
+    var device: UIKitPreviewDevice = .mac
+    #else
     var device: UIKitPreviewDevice = .iPhoneX
+    #endif
     var layout: PreviewLayout = .device
     var title: String = "Preview"
     var language: Language = Localization().detectCurrentLanguage()
+    #if !os(macOS)
     var semanticContentAttribute: UISemanticContentAttribute = .unspecified
+    #endif
     
     public init(@ViewBuilder block: ViewBuilder.SingleView) {
         view = View(block: block).edgesToSuperview()
@@ -150,10 +177,22 @@ public class Preview {
     
     @discardableResult
     public func rtl(_ v: Bool) -> Self {
+        #if !os(macOS) // TODO: figure out
         semanticContentAttribute = v ? .forceRightToLeft : .forceLeftToRight
+        #endif
         return self
     }
     
+    #if os(macOS)
+    fileprivate var liveView: some SwiftUI.View {
+        LiveView(view)
+            .previewLayout(layout)
+            .previewDisplayName(title)
+            .edgesIgnoringSafeArea(.all)
+            .previewDevice(device.name == "none" ? nil : PreviewDevice(rawValue: device.name))
+    }
+    
+    #else
     fileprivate var liveView: some SwiftUI.View {
         LiveView(view)
             .preferredColorScheme(colorScheme.val)
@@ -162,32 +201,37 @@ public class Preview {
             .edgesIgnoringSafeArea(.all)
             .previewDevice(device.name == "none" ? nil : PreviewDevice(rawValue: device.name))
     }
+    #endif
 }
 
 public protocol DeclarativePreview: SwiftUI.PreviewProvider {
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, macOS 10.15, *)
     static var preview: Preview { get }
 }
 
 extension DeclarativePreview {
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, macOS  10.15, *)
     public static var previews: some SwiftUI.View {
         Localization.current = preview.language
+        #if !os(macOS)
         UIView.appearance().semanticContentAttribute = preview.semanticContentAttribute
+        #endif
         return preview.liveView
     }
 }
 
 public protocol DeclarativePreviewGroup: SwiftUI.PreviewProvider {
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, macOS 10.15, *)
     static var previewGroup: PreviewGroup { get }
 }
 
 extension DeclarativePreviewGroup {
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, macOS 10.15, *)
     public static var previews: some SwiftUI.View {
         Localization.current = previewGroup.language
+        #if !os(macOS)
         UIView.appearance().semanticContentAttribute = previewGroup.semanticContentAttribute
+        #endif
         return SwiftUI.Group {
             if previewGroup.previews.count > 0 {
                 previewGroup.previews[0].liveView

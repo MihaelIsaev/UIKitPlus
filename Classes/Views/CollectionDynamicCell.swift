@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 class CollectionDynamicCell: CollectionViewCell {
@@ -13,3 +14,4 @@ class CollectionDynamicCell: CollectionViewCell {
         ])
     }
 }
+#endif

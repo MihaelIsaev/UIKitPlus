@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UWrapperView = WrapperView
@@ -101,3 +102,4 @@ open class WrapperView<V>: View where V: UIView {
         return self
     }
 }
+#endif

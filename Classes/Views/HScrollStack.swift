@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UHScrollStack = HScrollStack
@@ -101,3 +102,4 @@ open class HScrollStack: ScrollView {
         return self
     }
 }
+#endif

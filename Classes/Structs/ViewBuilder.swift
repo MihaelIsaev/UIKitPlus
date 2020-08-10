@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 @_functionBuilder public struct ViewBuilder {
     public typealias Result = ViewBuilderItemable
@@ -37,7 +41,7 @@ import UIKit
     }
 }
 
-extension UIViewController: ViewBuilderItemable {
+extension BaseViewController: ViewBuilderItemable {
     public var viewBuilderItem: ViewBuilderItem {
         .single(View(inline: view).edgesToSuperview())
     }

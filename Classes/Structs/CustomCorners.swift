@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public class CustomCorners {
@@ -10,3 +11,4 @@ public class CustomCorners {
         self.corners = corners
     }
 }
+#endif

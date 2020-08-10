@@ -1,17 +1,26 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension DeclarativeProtocol {
     @discardableResult
     public func border(_ width: CGFloat, _ color: CGColor) -> Self {
         _declarativeView._properties.borders.views.forEach { $0.value.removeFromSuperview() }
         _declarativeView._properties.borders.views.removeAll()
+        #if os(macOS)
+        declarativeView.layer?.borderWidth = width
+        declarativeView.layer?.borderColor = color
+        #else
         declarativeView.layer.borderWidth = width
         declarativeView.layer.borderColor = color
+        #endif
         return self
     }
     
     @discardableResult
-    public func border(_ width: CGFloat, _ color: UIColor) -> Self {
+    public func border(_ width: CGFloat, _ color: UColor) -> Self {
         border(width, color.cgColor)
     }
     
@@ -21,7 +30,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func border(_ side: Borders.Side, _ width: CGFloat, _ color: UIColor) -> Self {
+    public func border(_ side: Borders.Side, _ width: CGFloat, _ color: UColor) -> Self {
         let border = View().background(color)
         declarativeView.body { border }
         switch side {

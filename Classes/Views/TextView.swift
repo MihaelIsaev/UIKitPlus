@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UTextView = TextView
@@ -551,3 +552,4 @@ extension TextView: _Enableable {
         self.isEditable = v
     }
 }
+#endif

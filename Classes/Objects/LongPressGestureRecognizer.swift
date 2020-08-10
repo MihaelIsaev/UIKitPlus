@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
@@ -99,3 +100,4 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
         set { _tag = newValue }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UCollectionView = CollectionView
@@ -196,3 +197,4 @@ extension CollectionView: UIScrollViewDelegate {
         scrollPosition?.wrappedValue = scrollView.contentOffset
     }
 }
+#endif

@@ -1,37 +1,45 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension DeclarativeProtocol {
-    public var background: State<UIColor> { properties.$background }
+    public var background: State<UColor> { properties.$background }
     
     @discardableResult
-    public func background(_ color: UIColor) -> Self {
+    public func background(_ color: UColor) -> Self {
+        #if os(macOS)
+        declarativeView.wantsLayer = true
+        declarativeView.layer?.backgroundColor = color.cgColor
+        #else
         declarativeView.backgroundColor = color
+        #endif
         return self
     }
     
     @discardableResult
     public func background(_ number: Int) -> Self {
-        declarativeView.backgroundColor = number.color
-        return self
+        background(number.color)
     }
     
     @discardableResult
-    public func background(_ state: State<UIColor>) -> Self {
-        declarativeView.backgroundColor = state.wrappedValue
+    public func background(_ state: State<UColor>) -> Self {
+        background(state.wrappedValue)
         properties.background = state.wrappedValue
         state.listen { [weak self] old, new in
-            self?.declarativeView.backgroundColor = new
+            self?.background(new)
             self?.properties.background = new
         }
         return self
     }
     
     @discardableResult
-    public func background<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        declarativeView.backgroundColor = expressable.value()
+    public func background<V>(_ expressable: ExpressableState<V, UColor>) -> Self {
+        declarativeView.background(expressable.value())
         properties.background = expressable.value()
         expressable.state.listen { [weak self] old, new in
-            self?.declarativeView.backgroundColor = expressable.value()
+            self?.declarativeView.background(expressable.value())
             self?.properties.background = expressable.value()
         }
         return self

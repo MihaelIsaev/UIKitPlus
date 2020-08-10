@@ -1,3 +1,4 @@
+#if !os(macOS)
 import Foundation
 import UIKit
 
@@ -474,3 +475,4 @@ extension DynamicPickerView where V == DatePicker {
 //        onChange(day)
 //    }
 //}
+#endif

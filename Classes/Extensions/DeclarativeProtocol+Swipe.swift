@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 extension DeclarativeProtocol {
@@ -58,3 +59,4 @@ extension DeclarativeProtocol {
         onSwipeGesture(direction: direction, touches: touches, expressable.unwrap())
     }
 }
+#endif

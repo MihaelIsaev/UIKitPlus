@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 extension UIVisualEffect {
@@ -9,3 +10,4 @@ extension UIVisualEffect {
     @available(iOS 10.0, *)
     public static var regularBlur: UIVisualEffect { UIBlurEffect(style: .regular) }
 }
+#endif

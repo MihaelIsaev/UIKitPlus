@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 #if !os(tvOS)
 public typealias USliderView = SliderView
@@ -363,4 +364,5 @@ open class SliderView: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInte
         return self
     }
 }
+#endif
 #endif

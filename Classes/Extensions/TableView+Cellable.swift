@@ -1,4 +1,7 @@
 import Foundation
+#if os(macOS)
+
+#else
 import UIKit
 
 extension UITableView {
@@ -12,3 +15,4 @@ extension UITableView {
         dequeueReusableCell(withIdentifier: `class`.reuseIdentifier, for: indexPath) as! T
     }
 }
+#endif

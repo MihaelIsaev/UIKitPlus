@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias RootSimpleCompletion = () -> Void
@@ -276,3 +277,4 @@ extension UIApplicationDelegate {
         return rootController
     }
 }
+#endif

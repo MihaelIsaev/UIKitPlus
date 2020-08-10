@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UControlView = ControlView
@@ -50,3 +51,4 @@ open class ControlView: UIControl, AnyDeclarativeProtocol, DeclarativeProtocolIn
         movedToSuperview()
     }
 }
+#endif

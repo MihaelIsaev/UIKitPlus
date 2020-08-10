@@ -1,6 +1,7 @@
+#if !os(macOS)
 import UIKit
 
-open class FormViewController: ViewController {
+open class FormViewController: BaseViewController {
     public lazy var scrollView = ScrollView()
     public lazy var stackView = VStack()
     
@@ -18,3 +19,4 @@ open class FormViewController: ViewController {
         }
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 open class HUD: View {
@@ -267,3 +268,4 @@ open class HUD: View {
     }
 }
 
+#endif

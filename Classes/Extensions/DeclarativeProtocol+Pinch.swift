@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 #if !os(tvOS)
@@ -60,4 +61,5 @@ extension DeclarativeProtocol {
         onPinchGesture(scale: scale, expressable.unwrap())
     }
 }
+#endif
 #endif

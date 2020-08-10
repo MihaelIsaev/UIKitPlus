@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UButton = Button
@@ -422,3 +423,4 @@ extension Button: _Fontable {
         titleLabel?.font = v
     }
 }
+#endif

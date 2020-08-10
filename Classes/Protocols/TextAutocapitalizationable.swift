@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol TextAutocapitalizationable {
@@ -27,3 +28,4 @@ extension _TextAutocapitalizationable {
         return self
     }
 }
+#endif

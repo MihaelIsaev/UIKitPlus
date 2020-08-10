@@ -1,8 +1,14 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public protocol Textable: class {
+    #if !os(macOS)
     @discardableResult
     func textChangeTransition(_ value: UIView.AnimationOptions) -> Self
+    #endif
     
     @discardableResult
     func text(_ text: String) -> Self
@@ -43,7 +49,9 @@ public protocol Textable: class {
 protocol _Textable: Textable {
     var _stateString: StateStringBuilder.Handler? { get set }
     var _stateAttrString: StateAttrStringBuilder.Handler? { get set }
+    #if !os(macOS)
     var _textChangeTransition: UIView.AnimationOptions? { get set }
+    #endif
     
     func _setText(_ v: String?)
     func _setText(_ v: NSMutableAttributedString?)
@@ -51,6 +59,9 @@ protocol _Textable: Textable {
 
 extension _Textable {
     func _changeText(to newValue: String) {
+        #if os(macOS)
+        _setText(newValue)
+        #else
         guard let transition = _textChangeTransition else {
             _setText(newValue)
             return
@@ -62,9 +73,13 @@ extension _Textable {
         } else {
             _setText(newValue)
         }
+        #endif
     }
     
     func _changeText(to newValue: NSMutableAttributedString) {
+        #if os(macOS)
+        _setText(newValue)
+        #else
         guard let transition = _textChangeTransition else {
             _setText(newValue)
             return
@@ -76,6 +91,7 @@ extension _Textable {
         } else {
             _setText(newValue)
         }
+        #endif
     }
 }
 
@@ -116,12 +132,14 @@ extension Textable {
 
 @available(iOS 13.0, *)
 extension Textable {
+    #if !os(macOS)
     @discardableResult
     public func textChangeTransition(_ value: UIView.AnimationOptions) -> Self {
         guard let s = self as? _Textable else { return self }
         s._textChangeTransition = value
         return self
     }
+    #endif
     
     @discardableResult
     public func text(_ text: String) -> Self {
@@ -181,11 +199,13 @@ extension Textable {
 
 // for iOS lower than 13
 extension _Textable {
+    #if !os(macOS)
     @discardableResult
     public func textChangeTransition(_ value: UIView.AnimationOptions) -> Self {
         _textChangeTransition = value
         return self
     }
+    #endif
     
     @discardableResult
     public func text(_ text: String) -> Self {

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 open class CollectionViewFlowLayout: UICollectionViewFlowLayout {
@@ -80,3 +81,4 @@ open class CollectionViewFlowLayout: UICollectionViewFlowLayout {
         sectionInset(.init(top: value, left: value, bottom: value, right: value))
     }
 }
+#endif

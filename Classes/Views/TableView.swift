@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UTableView = TableView
@@ -217,3 +218,4 @@ extension TableView: UIScrollViewDelegate {
         scrollPosition?.wrappedValue = scrollView.contentOffset
     }
 }
+#endif

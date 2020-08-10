@@ -1,6 +1,24 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
-extension UIView {
+extension BaseView {
+    #if os(macOS)
+    public struct ViewEdgeInsets {
+        public var top: CGFloat = 0
+        public var left: CGFloat = 0
+        public var bottom: CGFloat = 0
+        public var right: CGFloat = 0
+
+        public init() {}
+    }
+    
+    public var safeInsets: ViewEdgeInsets {
+        ViewEdgeInsets()
+    }
+    #else
     public var safeInsets: UIEdgeInsets {
         var insets = UIEdgeInsets()
         if #available(iOS 11.0, *) {
@@ -17,81 +35,102 @@ extension UIView {
         }
         return insets
     }
+    #endif
     
     public class SafeAnchors {
-        let view: UIView
+        let view: BaseView
         
-        init (_ view: UIView) {
+        init (_ view: BaseView) {
             self.view = view
         }
         
         public var leadingAnchor: NSLayoutXAxisAnchor {
+            #if !os(macOS)
             if #available(iOS 11.0, *) {
                 return view.safeAreaLayoutGuide.leadingAnchor
             }
+            #endif
             return view.leadingAnchor
         }
         
         public var trailingAnchor: NSLayoutXAxisAnchor {
+            #if !os(macOS)
             if #available(iOS 11.0, *) {
                 return view.safeAreaLayoutGuide.trailingAnchor
             }
+            #endif
             return view.trailingAnchor
         }
         
         public var leftAnchor: NSLayoutXAxisAnchor {
+            #if !os(macOS)
             if #available(iOS 11.0, *) {
                 return view.safeAreaLayoutGuide.leftAnchor
             }
+            #endif
             return view.leftAnchor
         }
         
         public var rightAnchor: NSLayoutXAxisAnchor {
+            #if !os(macOS)
             if #available(iOS 11.0, *) {
                 return view.safeAreaLayoutGuide.rightAnchor
             }
+            #endif
             return view.rightAnchor
         }
         
         public var topAnchor: NSLayoutYAxisAnchor {
+            #if !os(macOS)
             if #available(iOS 11.0, *) {
                 return view.safeAreaLayoutGuide.topAnchor
             }
+            #endif
             return view.topAnchor
         }
         
         public var bottomAnchor: NSLayoutYAxisAnchor {
+            #if !os(macOS)
             if #available(iOS 11.0, *) {
                 return view.safeAreaLayoutGuide.bottomAnchor
             }
+            #endif
             return view.bottomAnchor
         }
         
         public var widthAnchor: NSLayoutDimension {
+            #if !os(macOS)
             if #available(iOS 11.0, *) {
                 return view.safeAreaLayoutGuide.widthAnchor
             }
+            #endif
             return view.widthAnchor
         }
         
         public var heightAnchor: NSLayoutDimension {
+            #if !os(macOS)
             if #available(iOS 11.0, *) {
                 return view.safeAreaLayoutGuide.heightAnchor
             }
+            #endif
             return view.heightAnchor
         }
         
         public var centerXAnchor: NSLayoutXAxisAnchor {
+            #if !os(macOS)
             if #available(iOS 11.0, *) {
                 return view.safeAreaLayoutGuide.centerXAnchor
             }
+            #endif
             return view.centerXAnchor
         }
         
         public var centerYAnchor: NSLayoutYAxisAnchor {
+            #if !os(macOS)
             if #available(iOS 11.0, *) {
                 return view.safeAreaLayoutGuide.centerYAnchor
             }
+            #endif
             return view.centerYAnchor
         }
     }

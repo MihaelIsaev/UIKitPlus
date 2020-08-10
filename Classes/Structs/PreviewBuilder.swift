@@ -1,11 +1,17 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 #if canImport(SwiftUI) && DEBUG
-@available(iOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
 public class PreviewGroup {
     let previews: [Preview]
     var language: Language = Localization().detectCurrentLanguage()
+    #if !os(macOS)
     var semanticContentAttribute: UISemanticContentAttribute = .unspecified
+    #endif
     
     public init (@PreviewBuilder block: PreviewBuilder.Block) {
         previews = block().previewBuilderItems
@@ -19,7 +25,9 @@ public class PreviewGroup {
     
     @discardableResult
     public func rtl(_ v: Bool) -> Self {
+        #if !os(macOS) // TODO: findout
         semanticContentAttribute = v ? .forceRightToLeft : .forceLeftToRight
+        #endif
         return self
     }
 }

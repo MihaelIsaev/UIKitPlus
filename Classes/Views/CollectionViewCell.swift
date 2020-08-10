@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias CollectionCell = CollectionViewCell
@@ -55,3 +56,4 @@ open class CollectionViewCell: UICollectionViewCell, AnyDeclarativeProtocol, Dec
         movedToSuperview()
     }
 }
+#endif

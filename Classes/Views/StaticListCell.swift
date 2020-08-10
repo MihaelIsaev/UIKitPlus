@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 class StaticListCell: TableViewCell {
@@ -16,3 +17,4 @@ class StaticListCell: TableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+#endif

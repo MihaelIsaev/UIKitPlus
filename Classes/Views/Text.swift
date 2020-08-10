@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias Label = Text
@@ -206,3 +207,4 @@ extension Text: _TextScaleable {
         minimumScaleFactor = v
     }
 }
+#endif

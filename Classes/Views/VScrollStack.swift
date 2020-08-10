@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UVScrollStack = VScrollStack
@@ -109,3 +110,4 @@ open class VScrollStack: ScrollView {
         return self
     }
 }
+#endif

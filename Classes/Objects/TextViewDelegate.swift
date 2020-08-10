@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 class TextViewDelegate: NSObject, UITextViewDelegate {
@@ -100,3 +101,4 @@ class TextViewDelegate: NSObject, UITextViewDelegate {
         return bool1 ?? bool2 ?? bool3 ?? bool4 ?? true
     }
 }
+#endif

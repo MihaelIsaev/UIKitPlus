@@ -1,5 +1,12 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
+#if os(macOS)
+
+#else
 extension UIFont {
     public static func printAll() {
         let familyNames = UIFont.familyNames
@@ -12,3 +19,4 @@ extension UIFont {
         }
     }
 }
+#endif

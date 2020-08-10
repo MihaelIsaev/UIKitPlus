@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public typealias UStackView = StackView
 open class StackView: _StackView {
@@ -36,14 +40,28 @@ open class StackView: _StackView {
     
     // Mask: Axis
     
+    #if os(macOS)
+    @discardableResult
+    public func orientation(_ orientation: NSUserInterfaceLayoutOrientation) -> StackView {
+        self.orientation = orientation
+        return self
+    }
+    #else
     @discardableResult
     public func axis(_ axis: NSLayoutConstraint.Axis) -> StackView {
         self.axis = axis
         return self
     }
+    #endif
 }
 
-open class _StackView: UIStackView, AnyDeclarativeProtocol, DeclarativeProtocolInternal, EditableStackView {
+#if os(macOS)
+public typealias _STV = NSStackView
+#else
+public typealias _STV = UIStackView
+#endif
+
+open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal, EditableStackView {
     public var declarativeView: _StackView { self }
     public lazy var properties = Properties<_StackView>()
     lazy var _properties = PropertiesInternal()
@@ -70,6 +88,11 @@ open class _StackView: UIStackView, AnyDeclarativeProtocol, DeclarativeProtocolI
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
     
+    open override var tag: Int {
+        get { properties.tag }
+        set { properties.tag = newValue }
+    }
+    
     public init () {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -84,6 +107,17 @@ open class _StackView: UIStackView, AnyDeclarativeProtocol, DeclarativeProtocolI
         fatalError("init(coder:) has not been implemented")
     }
     
+    #if os(macOS)
+//    open override func layoutSubviews() {
+//        super.layoutSubviews()
+//        onLayoutSubviews()
+//    }
+    
+    open override func viewDidMoveToSuperview() {
+        super.viewDidMoveToSuperview()
+        movedToSuperview()
+    }
+    #else
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
@@ -93,19 +127,28 @@ open class _StackView: UIStackView, AnyDeclarativeProtocol, DeclarativeProtocolI
         super.didMoveToSuperview()
         movedToSuperview()
     }
+    #endif
     
     // Mask: Alignment
     
+    #if os(macOS)
+    @discardableResult
+    public func alignment(_ alignment: NSLayoutConstraint.Attribute) -> Self {
+        self.alignment = alignment
+        return self
+    }
+    #else
     @discardableResult
     public func alignment(_ alignment: UIStackView.Alignment) -> Self {
         self.alignment = alignment
         return self
     }
+    #endif
     
     // Mask: Distribution
     
     @discardableResult
-    public func distribution(_ distribution: UIStackView.Distribution) -> Self {
+    public func distribution(_ distribution: _STV.Distribution) -> Self {
         self.distribution = distribution
         return self
     }
@@ -143,15 +186,27 @@ open class _StackView: UIStackView, AnyDeclarativeProtocol, DeclarativeProtocolI
             case .multiple(let views):
                 views.forEach { addArrangedSubview($0) }
             case .forEach(let fr):
+                #if os(macOS)
+                let stack = StackView().orientation(fr.orientation ?? orientation)
+                #else
                 let stack = StackView().axis(fr.axis ?? axis)
+                #endif
                 fr.allItems().forEach {
+                    #if os(macOS)
+                    stack.addArrangedSubview([$0].flatten(fr.orientation ?? orientation))
+                    #else
                     stack.addArrangedSubview([$0].flatten(fr.axis ?? axis))
+                    #endif
                 }
                 addArrangedSubview(stack)
                 fr.subscribeToChanges({}, { deletions, insertions, _ in
                     stack.arrangedSubviews.removeFromSuperview(at: deletions)
                     insertions.forEach {
+                        #if os(macOS)
+                        stack.add(arrangedView: [fr.items(at: $0)].flatten(fr.orientation ?? self.orientation), at: $0)
+                        #else
                         stack.add(arrangedView: [fr.items(at: $0)].flatten(fr.axis ?? self.axis), at: $0)
+                        #endif
                     }
                 }) {}
             case .nested(let items):
@@ -163,9 +218,17 @@ open class _StackView: UIStackView, AnyDeclarativeProtocol, DeclarativeProtocolI
 }
 
 extension Array where Element == ViewBuilderItemable {
-    fileprivate func flatten(_ axis: NSLayoutConstraint.Axis) -> UIView {
+    #if os(macOS)
+    fileprivate func flatten(_ orientation: NSUserInterfaceLayoutOrientation) -> BaseView {
+        let stackView = StackView().orientation(orientation)
+        forEach { stackView.add(item: $0) }
+        return stackView
+    }
+    #else
+    fileprivate func flatten(_ axis: NSLayoutConstraint.Axis) -> BaseView {
         let stackView = StackView().axis(axis)
         forEach { stackView.add(item: $0) }
         return stackView
     }
+    #endif
 }

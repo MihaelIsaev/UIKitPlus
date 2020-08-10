@@ -1,29 +1,53 @@
 import Foundation
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
-open class ViewController: UIViewController {
-    #if !os(tvOS)
+#if os(macOS)
+public typealias BaseViewController = NSViewController
+#else
+public typealias BaseViewController = UIViewController
+#endif
+
+open class ViewController: BaseViewController {
+    #if !os(tvOS) && !os(macOS)
     open override var preferredStatusBarStyle: UIStatusBarStyle { statusBarStyle.rawValue }
     #endif
+    #if !os(macOS)
     /// UIKitPlus reimplementation of `preferredStatusBarStyle`
     open var statusBarStyle: StatusBarStyle { _statusBarStyle ?? .default }
+    #endif
+    
+    #if os(macOS)
+    open override func loadView() {
+        self.view = NSView()
+    }
+    #endif
     
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(nibName: nil, bundle: nil)
+        #if !os(macOS)
         subscribeToKeyboardNotifications()
+        #endif
         buildUI()
         body { block() }
     }
     
     public init () {
         super.init(nibName: nil, bundle: nil)
+        #if !os(macOS)
         subscribeToKeyboardNotifications()
+        #endif
         buildUI()
     }
     
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        #if !os(macOS)
         subscribeToKeyboardNotifications()
+        #endif
         buildUI()
     }
     
@@ -35,6 +59,7 @@ open class ViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    #if !os(macOS)
     // MARK: Touches
     
     typealias TouchClosure = (Set<UITouch>, UIEvent?) -> Void
@@ -63,16 +88,29 @@ open class ViewController: UIViewController {
         super.touchesCancelled(touches, with: event)
         _touchesCancelled?(touches, event)
     }
+    #endif
     
     // MARK: Lifecycle
     
     open func buildUI() {
+        #if !os(macOS)
         view.backgroundColor = .white
+        #endif
     }
     
     public var isWillAppearedOnce = false
     public var isDidAppearedOnce = false
     
+    #if os(macOS)
+    var _viewDidLoad = {}
+    var _viewDidLayout = {}
+    var _viewDidAppear = {}
+    var _viewDidAppearFirstTime = {}
+    var _viewWillAppear = {}
+    var _viewWillAppearFirstTime = {}
+    var _viewWillDisappear = {}
+    var _viewDidDisappear = {}
+    #else
     var _viewDidLoad = {}
     var _viewDidLayoutSubviews = {}
     var _viewDidAppear: (Bool) -> Void = { _ in }
@@ -81,12 +119,60 @@ open class ViewController: UIViewController {
     var _viewWillAppearFirstTime: (Bool) -> Void = { _ in }
     var _viewWillDisappear: (Bool) -> Void = { _ in }
     var _viewDidDisappear: (Bool) -> Void = { _ in }
+    #endif
     
     open override func viewDidLoad() {
         super.viewDidLoad()
         _viewDidLoad()
     }
     
+    #if os(macOS)
+    open override func viewDidLayout() {
+        super.viewDidLayout()
+        _viewDidLayout()
+    }
+    
+    open override func viewDidAppear() {
+        super.viewDidAppear()
+        if !isDidAppearedOnce {
+            isDidAppearedOnce = true
+            viewDidAppearFirstTime()
+        }
+        _viewDidAppear()
+    }
+    
+    open override func viewWillAppear() {
+        super.viewWillAppear()
+        #if !os(macOS)
+        isSubscribedToKeyboardNotifications = true
+        #endif
+        if !isWillAppearedOnce {
+            isWillAppearedOnce = true
+            viewWillAppearFirstTime()
+        }
+        _viewWillAppear()
+    }
+    
+    open override func viewWillDisappear() {
+        super.viewWillDisappear()
+        #if !os(macOS)
+        isSubscribedToKeyboardNotifications = false
+        #endif
+        _viewWillDisappear()
+    }
+    
+    open override func viewDidDisappear() {
+        super.viewDidDisappear()
+        _viewDidDisappear()
+    }
+    
+    open func viewWillAppearFirstTime() {
+        _viewDidAppearFirstTime()
+    }
+    open func viewDidAppearFirstTime() {
+        _viewWillAppearFirstTime()
+    }
+    #else
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         _viewDidLayoutSubviews()
@@ -205,6 +291,7 @@ open class ViewController: UIViewController {
         closure(self, navigationController)
         return self
     }
+    #endif
 }
 
 // MARK: Lifecycle
@@ -225,6 +312,22 @@ extension ViewController {
         return self
     }
     
+    #if os(macOS)
+    /// didLayout
+    @discardableResult
+    public func onViewDidLayout(_ closure: @escaping () -> Void) -> Self {
+        _viewDidLayout = closure
+        return self
+    }
+    
+    @discardableResult
+    public func onViewDidLayout(_ closure: @escaping (Self) -> Void) -> Self {
+        _viewDidLayout = {
+            closure(self)
+        }
+        return self
+    }
+    #else
     /// didLayoutSubviews
     @discardableResult
     public func onViewDidLayoutSubviews(_ closure: @escaping () -> Void) -> Self {
@@ -239,49 +342,39 @@ extension ViewController {
         }
         return self
     }
+    #endif
     
-    /// didAppear
-    @discardableResult
-    public func onViewDidAppear(_ closure: @escaping () -> Void) -> Self {
-        _viewDidAppear = { a in
-            closure()
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func onViewDidAppear(_ closure: @escaping (Self) -> Void) -> Self {
-        _viewDidAppear = { a in
-            closure(self)
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func onViewDidAppear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
-        _viewDidAppear = { a in
-            closure(self, a)
-        }
-        return self
-    }
     
     /// didAppearFirstTime
     @discardableResult
     public func onViewDidAppearFirstTime(_ closure: @escaping () -> Void) -> Self {
+        #if os(macOS)
+        _viewDidAppearFirstTime = {
+            closure()
+        }
+        #else
         _viewDidAppearFirstTime = { a in
             closure()
         }
+        #endif
         return self
     }
     
     @discardableResult
     public func onViewDidAppearFirstTime(_ closure: @escaping (Self) -> Void) -> Self {
+        #if os(macOS)
+        _viewDidAppearFirstTime = {
+            closure(self)
+        }
+        #else
         _viewDidAppearFirstTime = { a in
             closure(self)
         }
+        #endif
         return self
     }
     
+    #if !os(macOS)
     @discardableResult
     public func onViewDidAppearFirstTime(_ closure: @escaping (Self, Bool) -> Void) -> Self {
         _viewDidAppearFirstTime = { a in
@@ -289,24 +382,38 @@ extension ViewController {
         }
         return self
     }
+    #endif
     
     /// willAppear
     @discardableResult
     public func onViewWillAppear(_ closure: @escaping () -> Void) -> Self {
+        #if os(macOS)
+        _viewWillAppear = {
+            closure()
+        }
+        #else
         _viewWillAppear = { a in
             closure()
         }
+        #endif
         return self
     }
     
     @discardableResult
     public func onViewWillAppear(_ closure: @escaping (Self) -> Void) -> Self {
+        #if os(macOS)
+        _viewWillAppear = {
+            closure(self)
+        }
+        #else
         _viewWillAppear = { a in
             closure(self)
         }
+        #endif
         return self
     }
     
+    #if !os(macOS)
     @discardableResult
     public func onViewWillAppear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
         _viewWillAppear = { a in
@@ -314,24 +421,38 @@ extension ViewController {
         }
         return self
     }
+    #endif
     
     /// willAppearFirstTime
     @discardableResult
     public func onViewWillAppearFirstTime(_ closure: @escaping () -> Void) -> Self {
+        #if os(macOS)
+        _viewWillAppearFirstTime = {
+            closure()
+        }
+        #else
         _viewWillAppearFirstTime = { a in
             closure()
         }
+        #endif
         return self
     }
     
     @discardableResult
     public func onViewWillAppearFirstTime(_ closure: @escaping (Self) -> Void) -> Self {
+        #if os(macOS)
+        _viewWillAppearFirstTime = {
+            closure(self)
+        }
+        #else
         _viewWillAppearFirstTime = { a in
             closure(self)
         }
+        #endif
         return self
     }
     
+    #if !os(macOS)
     @discardableResult
     public func onViewWillAppearFirstTime(_ closure: @escaping (Self, Bool) -> Void) -> Self {
         _viewWillAppearFirstTime = { a in
@@ -339,24 +460,38 @@ extension ViewController {
         }
         return self
     }
+    #endif
     
     /// willDisappear
     @discardableResult
     public func onViewWillDisappear(_ closure: @escaping () -> Void) -> Self {
+        #if os(macOS)
+        _viewWillDisappear = {
+            closure()
+        }
+        #else
         _viewWillDisappear = { a in
             closure()
         }
+        #endif
         return self
     }
     
     @discardableResult
     public func onViewWillDisappear(_ closure: @escaping (Self) -> Void) -> Self {
+        #if os(macOS)
+        _viewWillDisappear = {
+            closure(self)
+        }
+        #else
         _viewWillDisappear = { a in
             closure(self)
         }
+        #endif
         return self
     }
     
+    #if !os(macOS)
     @discardableResult
     public func onViewWillDisappear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
         _viewWillDisappear = { a in
@@ -364,24 +499,38 @@ extension ViewController {
         }
         return self
     }
+    #endif
     
     /// didDisappear
     @discardableResult
     public func onViewDidDisappear(_ closure: @escaping () -> Void) -> Self {
+        #if os(macOS)
+        _viewDidDisappear = {
+            closure()
+        }
+        #else
         _viewDidDisappear = { a in
             closure()
         }
+        #endif
         return self
     }
     
     @discardableResult
     public func onViewDidDisappear(_ closure: @escaping (Self) -> Void) -> Self {
+        #if os(macOS)
+        _viewDidDisappear = {
+            closure(self)
+        }
+        #else
         _viewDidDisappear = { a in
             closure(self)
         }
+        #endif
         return self
     }
     
+    #if !os(macOS)
     @discardableResult
     public func onViewDidDisappear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
         _viewDidDisappear = { a in
@@ -389,24 +538,27 @@ extension ViewController {
         }
         return self
     }
+    #endif
 }
 
 // MARK: Titleable
 
-extension ViewController: _Titleable {
+extension BaseViewController: _Titleable {
     func _setTitle(_ v: String?) {
         title = v
     }
 }
 
-extension ViewController: _BackgroundColorable {
-    func _setBackgroundColor(_ v: UIColor) {
+#if !os(macOS)
+extension BaseViewController: _BackgroundColorable {
+    func _setBackgroundColor(_ v: UColor) {
         view.backgroundColor = v
     }
 }
+#endif
 
 // MARK: Keyboard Notifications
-#if !os(tvOS)
+#if !os(tvOS) && !os(macOS)
 extension ViewController {
     @objc
     private func keyboardWillAppear(notification: NSNotification) {
@@ -433,6 +585,7 @@ extension ViewController {
 }
 #endif
 
+#if !os(macOS)
 // MARK: Touches
 
 extension ViewController {
@@ -552,3 +705,4 @@ extension ViewController {
         return self
     }
 }
+#endif

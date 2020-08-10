@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UImage = Image
@@ -173,3 +174,4 @@ open class Image: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolIntern
         return self
     }
 }
+#endif

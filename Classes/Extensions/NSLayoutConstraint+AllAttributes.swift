@@ -1,6 +1,25 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension NSLayoutConstraint.Attribute {
+    #if os(macOS)
+    static var all: [NSLayoutConstraint.Attribute] = [.width,
+                                                                          .height,
+                                                                          .top,
+                                                                          .leading,
+                                                                          .trailing,
+                                                                          .bottom,
+                                                                          .centerX,
+                                                                          .centerY,
+                                                                          .right,
+                                                                          .left,
+                                                                          .firstBaseline,
+                                                                          .lastBaseline,
+                                                                          .notAnAttribute]
+    #else
     static var all: [NSLayoutConstraint.Attribute] = [.width,
                                                                           .height,
                                                                           .top,
@@ -22,4 +41,5 @@ extension NSLayoutConstraint.Attribute {
                                                                           .firstBaseline,
                                                                           .lastBaseline,
                                                                           .notAnAttribute]
+    #endif
 }

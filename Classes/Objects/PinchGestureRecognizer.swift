@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 #if !os(tvOS)
@@ -36,4 +37,5 @@ final public class PinchGestureRecognizer: UIPinchGestureRecognizer, _GestureTra
         set { _tag = newValue }
     }
 }
+#endif
 #endif

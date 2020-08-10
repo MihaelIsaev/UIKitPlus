@@ -1,7 +1,11 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public protocol DeclarativeProtocol: class {
-    associatedtype V: UIView, DeclarativeProtocol = Self
+    associatedtype V: BaseView, DeclarativeProtocol = Self
     
     var declarativeView: V { get }
     var properties: Properties<V> { get set }
@@ -18,6 +22,8 @@ public protocol DeclarativeProtocol: class {
     var bottom: CGFloat { get set }
     var centerX: CGFloat { get set }
     var centerY: CGFloat { get set }
+    
+    var tag: Int { get set }
 }
 protocol AnyDeclarativeProtocol: DeclarativeProtocol, Hiddenable {}
 

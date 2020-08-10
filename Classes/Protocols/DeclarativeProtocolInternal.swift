@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 internal protocol DeclarativeProtocolInternal: class {
     var _properties: PropertiesInternal { get set }

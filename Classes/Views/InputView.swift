@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public typealias UInputView = InputView
@@ -131,3 +132,4 @@ extension InputView {
         InputView(block: block)
     }
 }
+#endif

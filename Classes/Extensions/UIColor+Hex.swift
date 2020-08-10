@@ -1,6 +1,16 @@
-import UIKit
+#if os(macOS)
+public typealias UColor = NSColor
+#else
+public typealias UColor = UIColor
+#endif
 
-extension UIColor {
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
+extension UColor {
     public convenience init(red: Int, green: Int, blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")
         assert(green >= 0 && green <= 255, "Invalid green component")
@@ -15,7 +25,7 @@ extension UIColor {
 }
 
 extension Int {
-    public var color: UIColor {
-        UIColor(netHex: self)
+    public var color: UColor {
+        UColor(netHex: self)
     }
 }

@@ -1,3 +1,6 @@
+#if os(macOS)
+
+#else
 import UIKit
 
 extension UIDevice {
@@ -125,3 +128,4 @@ extension UIDevice {
         isPadIdiom && minHeight == ScreenNativeHeight.iPad12.rawValue
     }
 }
+#endif

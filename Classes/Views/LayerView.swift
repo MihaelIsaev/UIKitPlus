@@ -2,6 +2,7 @@
 //  Credits to Florian Friedrich https://gist.github.com/ffried/2e1176e302f8f37100b1eb00cb5f2b7d
 //
 
+#if !os(macOS)
 import UIKit
 
 class LayerView<Layer: CALayer>: View {
@@ -13,3 +14,4 @@ class LayerView<Layer: CALayer>: View {
         layer as! Layer
     }
 }
+#endif

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol TextScaleable {
@@ -27,3 +28,4 @@ extension _TextScaleable {
         return self
     }
 }
+#endif

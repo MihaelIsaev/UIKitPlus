@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol RootControllerable {
@@ -76,3 +77,4 @@ extension RootControllerable {
         }
     }
 }
+#endif

@@ -1,7 +1,15 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public protocol AnyForEach {
+    #if os(macOS)
+    var orientation: NSUserInterfaceLayoutOrientation? { get }
+    #else
     var axis: NSLayoutConstraint.Axis? { get }
+    #endif
     var count: Int { get }
     func allItems() -> [ViewBuilder.Result]
     func items(at index: Int) -> ViewBuilder.Result
@@ -17,7 +25,11 @@ public class ForEach<Item> where Item: Hashable {
     let items: State<[Item]>
     let block: BuildViewHandler
     
+    #if os(macOS)
+    public var orientation: NSUserInterfaceLayoutOrientation? { nil }
+    #else
     public var axis: NSLayoutConstraint.Axis? { nil }
+    #endif
     
     public init (_ items: [Item], @ViewBuilder block: @escaping BuildViewHandler) {
         self.items = State(wrappedValue: items)
@@ -107,9 +119,17 @@ extension ForEach where Item == Int {
 }
 
 public class VForEach<Item>: ForEach<Item> where Item: Hashable {
+    #if os(macOS)
+    public override var orientation: NSUserInterfaceLayoutOrientation? { .horizontal }
+    #else
     public override var axis: NSLayoutConstraint.Axis? { .vertical }
+    #endif
 }
 
 public class HForEach<Item>: ForEach<Item> where Item: Hashable {
+    #if os(macOS)
+    public override var orientation: NSUserInterfaceLayoutOrientation? { .horizontal }
+    #else
     public override var axis: NSLayoutConstraint.Axis? { .horizontal }
+    #endif
 }

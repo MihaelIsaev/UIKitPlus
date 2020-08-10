@@ -1,13 +1,18 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public protocol GestureRecognizerable {
     @discardableResult
-    func delegate(_ v: UIGestureRecognizerDelegate) -> Self
+    func delegate(_ v: UGestureRecognizerDelegate) -> Self
 }
 
 protocol _GestureRecognizerable: GestureRecognizerable {
-    func _setDelegate(_ v: UIGestureRecognizerDelegate)
+    func _setDelegate(_ v: UGestureRecognizerDelegate)
     func _setEnabled(_ v: Bool)
+    #if !os(macOS)
     func _setCancelsTouchesInView(_ v: Bool)
     func _setDelaysTouchesBegan(_ v: Bool)
     func _setDelaysTouchesEnded(_ v: Bool)
@@ -15,13 +20,14 @@ protocol _GestureRecognizerable: GestureRecognizerable {
     func _setRequiresExclusiveTouchType(_ v: Bool)
     func _setAllowedTouchTypes(_ v: [NSNumber])
     func _setAllowedPressTypes(_ v: [NSNumber])
-    func _setRequireToFailOtherGestureRecognizer(_ v: UIGestureRecognizer)
+    #endif
+    func _setRequireToFailOtherGestureRecognizer(_ v: UGestureRecognizer)
 }
 
 @available(iOS 13.0, *)
 extension GestureRecognizerable {
     @discardableResult
-    public func delegate(_ v: UIGestureRecognizerDelegate) -> Self {
+    public func delegate(_ v: UGestureRecognizerDelegate) -> Self {
         guard let s = self as? _GestureRecognizerable else { return self }
         s._setDelegate(v)
         return self
@@ -52,6 +58,7 @@ extension GestureRecognizerable {
         enabled(expressable.unwrap())
     }
     
+    #if !os(macOS)
     // MARK: cancelsTouchesInView
     
     @discardableResult
@@ -180,15 +187,6 @@ extension GestureRecognizerable {
         return self
     }
     
-    // MARK: require toFail
-    
-    @discardableResult
-    public func require(toFail otherGestureRecognizer: UIGestureRecognizer) -> Self {
-        guard let s = self as? _GestureRecognizerable else { return self }
-        s._setRequireToFailOtherGestureRecognizer(otherGestureRecognizer)
-        return self
-    }
-    
     // MARK: debugName
 
     @discardableResult
@@ -197,12 +195,22 @@ extension GestureRecognizerable {
         s._setName(value)
         return self
     }
+    #endif
+    
+    // MARK: require toFail
+    
+    @discardableResult
+    public func require(toFail otherGestureRecognizer: UGestureRecognizer) -> Self {
+        guard let s = self as? _GestureRecognizerable else { return self }
+        s._setRequireToFailOtherGestureRecognizer(otherGestureRecognizer)
+        return self
+    }
 }
 
 // for iOS lower than 13
 extension _GestureRecognizerable {
     @discardableResult
-    public func delegate(_ v: UIGestureRecognizerDelegate) -> Self {
+    public func delegate(_ v: UGestureRecognizerDelegate) -> Self {
         _setDelegate(v)
         return self
     }
@@ -231,6 +239,7 @@ extension _GestureRecognizerable {
         enabled(expressable.unwrap())
     }
     
+    #if !os(macOS)
     // MARK: cancelsTouchesInView
     
     @discardableResult
@@ -353,19 +362,20 @@ extension _GestureRecognizerable {
         return self
     }
     
-    // MARK: require toFail
-    
-    @discardableResult
-    public func require(toFail otherGestureRecognizer: UIGestureRecognizer) -> Self {
-        _setRequireToFailOtherGestureRecognizer(otherGestureRecognizer)
-        return self
-    }
-    
     // MARK: debugName
 
     @discardableResult
     public func debugName(_ value: String) -> Self {
         _setName(value)
+        return self
+    }
+    #endif
+    
+    // MARK: require toFail
+    
+    @discardableResult
+    public func require(toFail otherGestureRecognizer: UGestureRecognizer) -> Self {
+        _setRequireToFailOtherGestureRecognizer(otherGestureRecognizer)
         return self
     }
 }

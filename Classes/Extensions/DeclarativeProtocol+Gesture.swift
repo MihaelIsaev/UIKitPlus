@@ -1,18 +1,22 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension DeclarativeProtocol {
     @discardableResult
-    public func gesture(_ recognizer: UIGestureRecognizer) -> Self {
+    public func gesture(_ recognizer: UGestureRecognizer) -> Self {
         gestures(recognizer)
     }
     
     @discardableResult
-    public func gestures(_ recognizers: UIGestureRecognizer...) -> Self {
+    public func gestures(_ recognizers: UGestureRecognizer...) -> Self {
         gestures(recognizers)
     }
     
     @discardableResult
-    public func gestures(_ recognizers: [UIGestureRecognizer]) -> Self {
+    public func gestures(_ recognizers: [UGestureRecognizer]) -> Self {
         recognizers.forEach { declarativeView.addGestureRecognizer($0) }
         return self
     }

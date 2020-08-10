@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 open class WrappedViewControllerView<V>: View, WrappedViewControllerable where V: UIViewController {
@@ -36,3 +37,4 @@ open class WrappedViewControllerView<V>: View, WrappedViewControllerable where V
         inner.view.layer.mask = layer.sublayers?.first
     }
 }
+#endif

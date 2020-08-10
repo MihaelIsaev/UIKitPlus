@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 #if !os(tvOS)
 extension UIRefreshControl {
@@ -104,4 +105,5 @@ open class RefreshControl: UIRefreshControl {
         return self
     }
 }
+#endif
 #endif

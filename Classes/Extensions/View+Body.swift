@@ -1,6 +1,10 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
-extension UIView {
+extension BaseView {
     @discardableResult
     open func body(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
         addItem(block())
@@ -38,7 +42,7 @@ extension UIView {
         }
     }
     
-    func add(views: [UIView], at index: Int?) {
+    func add(views: [BaseView], at index: Int?) {
         guard let index = index else {
             addSubview(views)
             return

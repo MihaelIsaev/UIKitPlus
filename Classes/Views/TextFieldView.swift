@@ -1,3 +1,4 @@
+#if !os(macOS)
 import Foundation
 import UIKit
 
@@ -521,3 +522,4 @@ extension TextField: _TextFieldRightViewable {
         rightView(mode: mode) { view(self) }
     }
 }
+#endif

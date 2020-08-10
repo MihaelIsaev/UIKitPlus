@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 final public class TapGestureRecognizer: UITapGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
@@ -53,3 +54,4 @@ final public class TapGestureRecognizer: UITapGestureRecognizer, _GestureTrackab
         set { _tag = newValue }
     }
 }
+#endif
