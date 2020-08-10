@@ -3,7 +3,7 @@ import UIKit
 
 extension DeclarativeProtocol {
     @discardableResult
-    public func onLongPressGesture(taps: Int = 0, touches: Int = 1, on state: UIGestureRecognizer.State, _ action: @escaping () -> Void) -> Self {
+    public func onLongPressGesture(taps: Int = 0, touches: Int = 1, on state: UIGestureRecognizer.State = .began, _ action: @escaping () -> Void) -> Self {
         onLongPressGesture(taps: taps, touches: touches, on: state) { v, r in
             action()
         }

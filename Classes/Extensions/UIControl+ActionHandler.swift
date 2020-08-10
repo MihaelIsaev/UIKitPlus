@@ -1,6 +1,4 @@
-#if os(macOS)
-
-#else
+#if !os(macOS)
 import UIKit
 
 extension UIControl {
