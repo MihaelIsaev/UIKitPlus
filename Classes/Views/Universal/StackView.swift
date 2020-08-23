@@ -108,11 +108,6 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     #if os(macOS)
-//    open override func layoutSubviews() {
-//        super.layoutSubviews()
-//        onLayoutSubviews()
-//    }
-    
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()

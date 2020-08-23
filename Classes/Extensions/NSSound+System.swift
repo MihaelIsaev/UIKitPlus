@@ -1,3 +1,4 @@
+#if os(macOS)
 import AppKit
 
 extension NSSound {
@@ -33,3 +34,4 @@ extension NSSound.Name {
     public static let submarine = NSSound.Name("Submarine")
     public static let tink = NSSound.Name("Tink")
 }
+#endif

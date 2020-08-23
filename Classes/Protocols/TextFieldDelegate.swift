@@ -1,6 +1,3 @@
-#if !os(macOS)
-import UIKit
-
 @objc
 public protocol TextFieldDelegate: NSObjectProtocol {
     @objc @available(iOS 2.0, *)
@@ -15,8 +12,10 @@ public protocol TextFieldDelegate: NSObjectProtocol {
     @objc @available(iOS 2.0, *)
     optional func textFieldDidEndEditing(_ textField: TextField)
     
+    #if !os(macOS)
     @objc @available(iOS 10.0, *)
     optional func textFieldDidEndEditing(_ textField: TextField, reason: TextField.DidEndEditingReason)
+    #endif
     
     @objc @available(iOS 2.0, *)
     optional func textField(_ textField: TextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
@@ -27,4 +26,3 @@ public protocol TextFieldDelegate: NSObjectProtocol {
     @objc @available(iOS 2.0, *)
     optional func textFieldShouldReturn(_ textField: TextField) -> Bool
 }
-#endif
