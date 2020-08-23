@@ -85,7 +85,7 @@ public class List: View, UITableViewDataSource {
     }
     
     private func handleHiddency(_ view: UIView, at sectionIndex: Int) {
-        if let v = view as? Hiddenable {
+        if let v = view as? _Hiddenable {
             var isVisibleInList = !v.hiddenState.wrappedValue
             v.hiddenState.beginTrigger { [weak self] in
                 self?.tableView.beginUpdates()

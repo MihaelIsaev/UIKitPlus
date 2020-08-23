@@ -33,43 +33,46 @@ open class TextField: UITextField, AnyDeclarativeProtocol, DeclarativeProtocolIn
     
     fileprivate weak var outsideDelegate: TextFieldDelegate?
     
-    public init (_ text: String?) {
+    public init (_ string: AnyString...) {
         super.init(frame: .zero)
-        self.text(text ?? "")
         _setup()
+        text(string)
+    }
+    
+    public init (_ strings: [AnyString]) {
+        super.init(frame: .zero)
+        _setup()
+        text(strings)
     }
     
     public init (_ localized: LocalizedString...) {
         super.init(frame: .zero)
-        self.text(text ?? "")
         _setup()
+        text(localized)
     }
     
     public init (_ localized: [LocalizedString]) {
         super.init(frame: .zero)
-        self.text(text ?? "")
         _setup()
+        text(localized)
     }
     
-    public init (_ state: UIKitPlus.State<String>) {
+    public init<A: AnyString>(_ state: UIKitPlus.State<A>) {
         super.init(frame: .zero)
+        _setup()
         text(state)
-        _setTextBind(state)
-        _setup()
     }
     
-    public init <V>(_ expressable: ExpressableState<V, String>) {
+    public init<V, A: AnyString>(_ expressable: ExpressableState<V, A>) {
         super.init(frame: .zero)
-        let state = expressable.unwrap()
-        text(state)
-        _setTextBind(state)
         _setup()
+        text(expressable)
     }
     
-    public init (@StateStringBuilder stateString: @escaping StateStringBuilder.Handler) {
+    public init (@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
         super.init(frame: .zero)
-        text(stateString())
         _setup()
+        text(stateString: stateString)
     }
     
     public override init(frame: CGRect) {
@@ -283,7 +286,9 @@ fileprivate class _InnerDelegate: NSObject, UITextFieldDelegate {
         parent._properties.typingTimer = Timer.scheduledTimer(timeInterval: parent._properties.typingInterval, target: self, selector: #selector(invalidateTimer), userInfo: nil, repeats: false)
         parent._properties.isTyping = true
         parent.properties._editingChanged.forEach { $0(self.parent) }
-        parent._properties.textBinding?.wrappedValue = parent.text ?? ""
+        parent._properties.textChangeListeners.forEach {
+            $0(.init(string: parent.text ?? ""))
+        }
     }
     
     @objc func editingDidEnd() {
@@ -336,8 +341,8 @@ fileprivate class _InnerDelegate: NSObject, UITextFieldDelegate {
 extension TextField: Refreshable {
     /// Refreshes using `RefreshHandler`
     public func refresh() {
-        if let stateString = _properties.stateString {
-            text = stateString()
+        if let statedText = _properties.statedText {
+            text(statedText())
         }
     }
 }
@@ -383,20 +388,17 @@ extension TextField: _Secureable {
 }
 
 extension TextField: _TextBindable {
-    func _setTextBind(_ binding: UIKitPlus.State<String>?) {
-        _properties.textBinding = binding
+    func _setTextBind<A: AnyString>(_ binding: UIKitPlus.State<A>?) {
+        _properties.textChangeListeners.append({ new in
+            binding?.wrappedValue = A.make(new)
+        })
     }
 }
 
 extension TextField: _Textable {
-    var _stateString: StateStringBuilder.Handler? {
-        get { _properties.stateString }
-        set { _properties.stateString = newValue }
-    }
-    
-    var _stateAttrString: StateAttrStringBuilder.Handler? {
-        get { _properties.stateAttrString }
-        set { _properties.stateAttrString = newValue }
+    var _statedText: AnyStringBuilder.Handler? {
+        get { _properties.statedText }
+        set { _properties.statedText = newValue }
     }
     
     var _textChangeTransition: UIView.AnimationOptions? {
@@ -404,11 +406,7 @@ extension TextField: _Textable {
         set { _properties.textChangeTransition = newValue }
     }
     
-    func _setText(_ v: String?) {
-        text = v
-    }
-    
-    func _setText(_ v: NSMutableAttributedString?) {
+    func _setText(_ v: NSAttributedString?) {
         attributedText = v
     }
 }
@@ -430,12 +428,19 @@ extension TextField: _Typeable {
 }
 
 extension TextField: _Placeholderable {
-    func _setPlaceholder(_ v: String) {
-        placeholder = v
+    var _statedPlaceholder: AnyStringBuilder.Handler? {
+        get { _properties.statedPlaceholder }
+        set { _properties.statedPlaceholder = newValue }
     }
     
-    func _setPlaceholder(_ v: AttrStr?) {
-        attributedPlaceholder = v?.attributedString
+    var _placeholderChangeTransition: UIView.AnimationOptions? {
+        get { _properties.placeholderChangeTransition }
+        set { _properties.placeholderChangeTransition = newValue }
+    }
+    
+    func _setPlaceholder(_ v: NSAttributedString?) {
+        attributedPlaceholder = v
+        _properties.placeholderAttrText = v
     }
 }
 

@@ -54,7 +54,7 @@ open class RefreshControl: UIRefreshControl {
     public func attributedTitle(_ attributedStrings: [AttributedString]) -> Self {
         let attrStr = NSMutableAttributedString(string: "")
         attributedStrings.forEach {
-            attrStr.append($0.attributedString)
+            attrStr.append($0._attributedString)
         }
         attributedTitle = attrStr
         return self

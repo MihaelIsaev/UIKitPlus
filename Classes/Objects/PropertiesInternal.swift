@@ -10,23 +10,31 @@ public class PropertiesInternal {
     var customCorners: CustomCorners?
     #endif
     lazy var borders = Borders()
+    
+    /// See `Textable`
+    
     #if !os(macOS)
     var textChangeTransition: UIView.AnimationOptions?
     #endif
-    var stateString: StateStringBuilder.Handler?
-    var stateAttrString: StateAttrStringBuilder.Handler?
+    var statedText: AnyStringBuilder.Handler?
+    var textChangeListeners: [(NSAttributedString) -> Void] = []
     
-    var textBinding: State<String>?
+    /// See `Placeholderable`
+    
+    #if !os(macOS)
+    var placeholderChangeTransition: UIView.AnimationOptions?
+    #endif
+    var statedPlaceholder: AnyStringBuilder.Handler?
+    var placeholderBinding: State<AnyString>?
+    @State var placeholderAttrText: NSAttributedString?
+    
+    /// See `Typeable`
     
     @State var isTyping = false
     var isTypingState: State<Bool> { _isTyping }
     
     var typingInterval: TimeInterval = 0.5
     var typingTimer: Timer?
-    
-    @State var placeholderText: String?
-    var placeholderAttrText: NSMutableAttributedString?
-    var generatedPlaceholderString: NSAttributedString?
     
     // MARK: - Internal Constraints
     

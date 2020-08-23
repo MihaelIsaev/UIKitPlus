@@ -1,41 +1,38 @@
 #if !os(macOS)
 import UIKit
 
-open class ActionSheet: UIAlertController, _Titleable, _Messageable, _UIAlertViewControllerable {
-    public convenience init() {
-        self.init(title: nil, message: nil, preferredStyle: .actionSheet)
+extension UIAlertController: _Messageable, _UIAlertViewControllerable {
+    /// See `_Messageable`
+    
+    var _statedMessage: AnyStringBuilder.Handler? {
+        get { nil }
+        set {}
     }
-
-    func _setTitle(_ v: String?) {
-        title = v
+    
+    var _messageChangeTransition: UIView.AnimationOptions? {
+        get { nil }
+        set {}
     }
-
-    func _setMessage(_ v: String?) {
-        message = v
+    
+    func _setMessage(_ v: NSAttributedString?) {
+        message = v?.string
     }
-
+    
     func _present(in vc: UIViewController, animated: Bool, completion: (() -> Void)?) -> Self {
         vc.present(self, animated: true, completion: completion)
         return self
     }
 }
 
-open class AlertController: UIAlertController, _Titleable, _Messageable, _UIAlertViewControllerable {
+open class ActionSheet: UIAlertController {
+    public convenience init() {
+        self.init(title: nil, message: nil, preferredStyle: .actionSheet)
+    }
+}
+
+open class AlertController: UIAlertController {
     public convenience init(_ style: UIAlertController.Style) {
         self.init(title: nil, message: nil, preferredStyle: style)
-    }
-    
-    func _setTitle(_ v: String?) {
-        title = v
-    }
-    
-    func _setMessage(_ v: String?) {
-        message = v
-    }
-    
-    func _present(in vc: UIViewController, animated: Bool, completion: (() -> Void)?) -> Self {
-        vc.present(self, animated: true, completion: completion)
-        return self
     }
     
     @discardableResult
@@ -45,7 +42,9 @@ open class AlertController: UIAlertController, _Titleable, _Messageable, _UIAler
     }
 }
 
-open class AlertAction: UIAlertAction, _Enableable {
+public typealias AlertAction = UIAlertAction
+
+extension UIAlertAction: _Enableable {
     func _setEnabled(_ v: Bool) {
         isEnabled = v
     }
@@ -108,7 +107,7 @@ extension UIAlertViewControllerable {
     @discardableResult
     public func action(_ title: String?, _ style: UIAlertAction.Style, _ handler: @escaping ((AlertAction) -> Void)) -> Self {
        addAction(AlertAction(title: title, style: style) {
-           handler($0 as! AlertAction)
+           handler($0)
        })
        return self
     }

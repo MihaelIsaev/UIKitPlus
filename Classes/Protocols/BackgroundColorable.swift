@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol BackgroundColorable {
+public protocol BackgroundColorable: class {
     @discardableResult
     func background(_ color: UColor) -> Self
     
@@ -12,14 +12,20 @@ public protocol BackgroundColorable {
     func background(_ number: Int) -> Self
     
     @discardableResult
-    func background(_ state: State<UColor>) -> Self
+    func background(_ color: State<UColor>) -> Self
     
     @discardableResult
     func background<V>(_ expressable: ExpressableState<V, UColor>) -> Self
 }
 
 protocol _BackgroundColorable: BackgroundColorable {
-    func _setBackgroundColor(_ v: UColor)
+    var _backgroundColorState: State<UColor> { get }
+    
+    #if os(macOS)
+    func _setBackgroundColor(_ v: NSColor?)
+    #else
+    func _setBackgroundColor(_ v: UColor?)
+    #endif
 }
 
 extension BackgroundColorable {
@@ -30,20 +36,13 @@ extension BackgroundColorable {
     
     @discardableResult
     public func background(_ state: State<UColor>) -> Self {
-        background(state.wrappedValue)
-        state.listen {
-            self.background($0)
-        }
-        return self
+        state.listen { self.background($0) }
+        return background(state.wrappedValue)
     }
     
     @discardableResult
     public func background<V>(_ expressable: ExpressableState<V, UColor>) -> Self {
-        background(expressable.value())
-        expressable.state.listen {
-            self.background(expressable.value())
-        }
-        return self
+        background(expressable.unwrap())
     }
 }
 
@@ -52,7 +51,7 @@ extension BackgroundColorable {
     @discardableResult
     public func background(_ color: UColor) -> Self {
         guard let s = self as? _BackgroundColorable else { return self }
-        s._setBackgroundColor(color)
+        _background(color, on: s)
         return self
     }
 }
@@ -61,7 +60,20 @@ extension BackgroundColorable {
 extension _BackgroundColorable {
     @discardableResult
     public func background(_ color: UColor) -> Self {
-        _setBackgroundColor(color)
+        _background(color, on: self)
         return self
     }
+}
+
+private func  _background(_ color: UColor, on s: _BackgroundColorable) {
+    #if os(macOS)
+    s._backgroundColorState.wrappedValue.changeHandler = nil
+    #endif
+    s._backgroundColorState.wrappedValue = color
+    s._setBackgroundColor(color.current)
+    #if os(macOS)
+    s._backgroundColorState.wrappedValue.onChange { [weak s] new in
+        s?._setBackgroundColor(new)
+    }
+    #endif
 }

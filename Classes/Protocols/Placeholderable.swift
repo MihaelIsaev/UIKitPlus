@@ -4,84 +4,135 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Placeholderable {
+public protocol Placeholderable: class {
+    #if !os(macOS)
     @discardableResult
-    func placeholder(_ text: String?) -> Self
+    func placeholderChangeTransition(_ value: UIView.AnimationOptions) -> Self
+    #endif
     
     @discardableResult
-    func placeholder(_ binding: UIKitPlus.State<String>) -> Self
+    func placeholder(_ value: LocalizedString...) -> Self
     
     @discardableResult
-    func placeholder<V>(_ expressable: ExpressableState<V, String>) -> Self
+    func placeholder(_ value: [LocalizedString]) -> Self
     
     @discardableResult
-    func placeholder(_ attributedStrings: AttributedString...) -> Self
+    func placeholder(_ value: AnyString...) -> Self
+    
+    @discardableResult
+    func placeholder(_ value: [AnyString]) -> Self
+    
+    @discardableResult
+    func placeholder<A: AnyString>(_ state: State<A>) -> Self
+    
+    @discardableResult
+    func placeholder<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self
+    
+    @discardableResult
+    func placeholder(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self
 }
 
 protocol _Placeholderable: Placeholderable {
-    func _setPlaceholder(_ v: String)
-    func _setPlaceholder(_ v: AttrStr?)
+    var _statedPlaceholder: AnyStringBuilder.Handler? { get set }
+    #if !os(macOS)
+    var _placeholderChangeTransition: UIView.AnimationOptions? { get set }
+    #endif
+    
+    func _setPlaceholder(_ v: NSAttributedString?)
+}
+
+extension _Placeholderable {
+    func _changePlaceholder(to newValue: NSAttributedString) {
+        #if os(macOS)
+        _setPlaceholder(newValue)
+        #else
+        guard let transition = _placeholderChangeTransition else {
+            _setPlaceholder(newValue)
+            return
+        }
+        if let view = self as? _ViewTransitionable {
+            view._transition(0.25, transition) {
+                self._setPlaceholder(newValue)
+            }
+        } else {
+            _setPlaceholder(newValue)
+        }
+        #endif
+    }
 }
 
 extension Placeholderable {
     @discardableResult
-    public func placeholder(_ localized: LocalizedString...) -> Self {
-        placeholder(String(localized))
+    public func placeholder(_ value: LocalizedString...) -> Self {
+        placeholder(String(value))
     }
     
     @discardableResult
-    public func placeholder(_ localized: [LocalizedString]) -> Self {
-        placeholder(String(localized))
+    public func placeholder(_ value: [LocalizedString]) -> Self {
+        placeholder(String(value))
     }
     
     @discardableResult
-    public func placeholder(_ binding: UIKitPlus.State<String>) -> Self {
-        binding.listen { self.placeholder($0) }
-        return placeholder(binding.wrappedValue)
+    public func placeholder(_ value: AnyString...) -> Self {
+        placeholder(value)
+    }
+
+    @discardableResult
+    public func placeholder<A: AnyString>(_ state: State<A>) -> Self {
+        placeholder(state.wrappedValue)
+        state.listen { self.placeholder($0) }
+        return self
     }
     
     @discardableResult
-    public func placeholder<V>(_ expressable: ExpressableState<V, String>) -> Self {
+    public func placeholder<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self {
         placeholder(expressable.unwrap())
     }
 }
 
 @available(iOS 13.0, *)
 extension Placeholderable {
+    #if !os(macOS)
     @discardableResult
-    public func placeholder(_ text: String?) -> Self {
+    public func placeholderChangeTransition(_ value: UIView.AnimationOptions) -> Self {
         guard let s = self as? _Placeholderable else { return self }
-        s._setPlaceholder(text ?? "")
+        s._placeholderChangeTransition = value
+        return self
+    }
+    #endif
+    
+    @discardableResult
+    public func placeholder(_ value: [AnyString]) -> Self {
+        (self as? _Placeholderable)?._changePlaceholder(to: value.attrString)
         return self
     }
     
     @discardableResult
-    public func placeholder(_ attributedStrings: AttributedString...) -> Self {
-        guard let s = self as? _Placeholderable else { return self }
-        guard !attributedStrings.isEmpty else {
-            s._setPlaceholder(nil)
-            return self
-        }
-        s._setPlaceholder(attributedStrings.joined())
-        return self
+    public func placeholder(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self {
+        (self as? _Placeholderable)?._statedPlaceholder = stateString
+        return placeholder(stateString())
     }
 }
 
 // for iOS lower than 13
 extension _Placeholderable {
+    #if !os(macOS)
     @discardableResult
-    public func placeholder(_ text: String?) -> Self {
-        _setPlaceholder(text ?? "")
+    public func placeholderChangeTransition(_ value: UIView.AnimationOptions) -> Self {
+        _placeholderChangeTransition = value
+        return self
+    }
+    #endif
+    
+    @discardableResult
+    public func placeholder(_ value: [AnyString]) -> Self {
+        _changePlaceholder(to: value.attrString)
         return self
     }
     
     @discardableResult
-    public func placeholder(_ attributedStrings: AttributedString...) -> Self {
-        guard !attributedStrings.isEmpty else {
-            _setPlaceholder(nil)
-            return self
-        }
-        _setPlaceholder(attributedStrings.joined())
-        return self
+    public func placeholder(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self {
+        _statedPlaceholder = stateString
+        return placeholder(stateString())
     }
 }

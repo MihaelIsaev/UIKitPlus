@@ -5,9 +5,7 @@ import UIKit
 #endif
 
 public class Properties<V> {
-    #if os(macOS)
     var tag: Int = -1
-    #endif
     
     @State var alpha: CGFloat = 1
     var alphaState: State<CGFloat> { _alpha }
@@ -26,6 +24,12 @@ public class Properties<V> {
     
     @State var background: UColor = .clear
     var backgroundState: State<UColor> { _background }
+    
+    @State var borderColor: UColor = .clear
+    var borderColorState: State<UColor> { _borderColor }
+    
+    @State var shadowColor: UColor = .clear
+    var shadowColorState: State<UColor> { _shadowColor }
     
     @State var color: UColor = .clear
     var colorState: State<UColor> { _color }

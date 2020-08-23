@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Colorable {
+public protocol Colorable: class {
     @discardableResult
     func color(_ color: UColor) -> Self
     
@@ -21,7 +21,11 @@ public protocol Colorable {
 protocol _Colorable: Colorable {
     var _colorState: State<UColor> { get }
     
+    #if os(macOS)
+    func _setColor(_ v: NSColor?)
+    #else
     func _setColor(_ v: UColor?)
+    #endif
 }
 
 extension Colorable {
@@ -47,7 +51,7 @@ extension Colorable {
     @discardableResult
     public func color(_ color: UColor) -> Self {
         guard let s = self as? _Colorable else { return self }
-        s._setColor(color)
+        _color(color, on: s)
         return self
     }
 }
@@ -56,7 +60,20 @@ extension Colorable {
 extension _Colorable {
     @discardableResult
     public func color(_ color: UColor) -> Self {
-        _setColor(color)
+        _color(color, on: self)
         return self
     }
+}
+
+private func  _color(_ color: UColor, on s: _Colorable) {
+    #if os(macOS)
+    s._colorState.wrappedValue.changeHandler = nil
+    #endif
+    s._colorState.wrappedValue = color
+    s._setColor(color.current)
+    #if os(macOS)
+    s._colorState.wrappedValue.onChange { [weak s] new in
+        s?._setColor(new)
+    }
+    #endif
 }

@@ -19,7 +19,7 @@ class TextViewDelegate: NSObject, UITextViewDelegate {
     }
     
     public func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.textView.attributedText.string == self.textView._properties.placeholderText {
+        if self.textView.attributedText.string == self.textView._properties.placeholderAttrText?.string {
             self.textView.text = ""
         }
         self.textView.didBeginEditingHandler?()
@@ -27,8 +27,8 @@ class TextViewDelegate: NSObject, UITextViewDelegate {
     }
 
     public func textViewDidEndEditing(_ textView: UITextView) {
-        if self.textView.text.count == 0, let text = self.textView._properties.placeholderText {
-            self.textView.attributedText = self.textView._generatePlaceholderAttributedString(with: text)
+        if self.textView.text.count == 0, let text = self.textView._properties.placeholderAttrText?.string, text.count > 0 {
+            self.textView.attributedText = self.textView._properties.placeholderAttrText
         }
         self.textView.didEndEditingHandler?()
         self.textView.didEndEditingHandlerText?(self.textView)
@@ -53,11 +53,17 @@ class TextViewDelegate: NSObject, UITextViewDelegate {
         self.textView.didChangeTextHandler?()
         self.textView.didChangeTextHandlerText?(self.textView)
         if self.textView.text.count > 0 {
-            self.textView._properties.textBinding?.wrappedValue = self.textView.text
+            self.textView._properties.textChangeListeners.forEach {
+                $0(.init(string: self.textView.text))
+            }
         } else if self.textView.attributedText.string.count > 0 {
-            self.textView._properties.textBinding?.wrappedValue = self.textView.attributedText.string
+            self.textView._properties.textChangeListeners.forEach {
+                $0(self.textView.attributedText)
+            }
         } else {
-            self.textView._properties.textBinding?.wrappedValue = ""
+            self.textView._properties.textChangeListeners.forEach {
+                $0(.init())
+            }
         }
     }
     

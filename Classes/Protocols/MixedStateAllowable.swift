@@ -1,0 +1,62 @@
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
+public protocol MixedStateAllowable {
+    @discardableResult
+    func allowMixedState() -> Self
+    
+    @discardableResult
+    func allowMixedState(_ value: Bool) -> Self
+    
+    @discardableResult
+    func allowMixedState(_ binding: UIKitPlus.State<Bool>) -> Self
+    
+    @discardableResult
+    func allowMixedState<V>(_ expressable: ExpressableState<V, Bool>) -> Self
+}
+
+protocol _MixedStateAllowable: MixedStateAllowable {
+    var _allowMixedStateState: State<Bool> { get }
+    
+    func _setAllowMixedState(_ v: Bool)
+}
+
+extension MixedStateAllowable {
+    @discardableResult
+    public func allowMixedState() -> Self {
+        allowMixedState(true)
+    }
+    
+    @discardableResult
+    public func allowMixedState(_ binding: UIKitPlus.State<Bool>) -> Self {
+        binding.listen { self.allowMixedState($0) }
+        return allowMixedState(binding.wrappedValue)
+    }
+    
+    @discardableResult
+    public func allowMixedState<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
+        allowMixedState(expressable.unwrap())
+    }
+}
+
+@available(iOS 13.0, macOS 10.15, *)
+extension MixedStateAllowable {
+    @discardableResult
+    public func allowMixedState(_ value: Bool) -> Self {
+        guard let s = self as? _MixedStateAllowable else { return self }
+        s._setAllowMixedState(value)
+        return self
+    }
+}
+
+// for iOS lower than 13
+extension _MixedStateAllowable {
+    @discardableResult
+    public func allowMixedState(_ value: Bool) -> Self {
+        _setAllowMixedState(value)
+        return self
+    }
+}

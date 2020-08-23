@@ -1,8 +1,5 @@
-#if os(macOS)
-import AppKit
-#else
-import UIKit
-#endif
+#if !os(macOS)
+import UIKi
 
 extension UColor {
     public func alpha(_ value: CGFloat) -> UColor {
@@ -13,3 +10,4 @@ extension UColor {
         return UColor(red: red, green: green, blue: blue, alpha: value)
     }
 }
+#endif

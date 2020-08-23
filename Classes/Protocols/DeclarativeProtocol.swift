@@ -25,9 +25,4 @@ public protocol DeclarativeProtocol: class {
     
     var tag: Int { get set }
 }
-protocol AnyDeclarativeProtocol: DeclarativeProtocol, Hiddenable {}
-
-/// See `Hiddenable`
-extension DeclarativeProtocol {
-    var hiddenState: State<Bool> { properties.hiddenState }
-}
+protocol AnyDeclarativeProtocol: DeclarativeProtocol {}

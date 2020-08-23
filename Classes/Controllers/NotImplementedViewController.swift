@@ -31,7 +31,7 @@ class NotImplementedViewController: ViewController {
         #else
         view.backgroundColor = .darkGray
         body {
-            Text(attributed: AttrStr("`\(name)`").foreground(.red), AttrStr(" hasn't been implemented yet"))
+            Text(AttrStr("`\(name)`").foreground(.red), AttrStr(" hasn't been implemented yet"))
                 .color(.white)
                 .alignment(.center)
                 .centerYInSuperview()

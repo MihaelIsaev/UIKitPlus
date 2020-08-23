@@ -7,59 +7,103 @@ import UIKit
 
 public typealias AttrStr = AttributedString
 
-open class AttributedString {
-    public var attributedString: NSMutableAttributedString
+public protocol AnyString {
+    var attrString: NSAttributedString { get }
+    
+    static func make(_ v: NSAttributedString) -> Self
+}
+
+extension Optional: AnyString where Wrapped == AnyString {
+    public var attrString: NSAttributedString {
+        switch self {
+        case .none: return .init()
+        case .some(let str): return str.attrString
+        }
+    }
+    
+    public static func make(_ v: NSAttributedString) -> Self {
+        .init(v)
+    }
+}
+
+extension NSAttributedString: AnyString {
+    public var attrString: NSAttributedString { self }
+    
+    public static func make(_ v: NSAttributedString) -> Self {
+        .init(attributedString: v)
+    }
+}
+
+extension String: AnyString {
+    public var attrString: NSAttributedString { .init(string: self) }
+    
+    public static func make(_ v: NSAttributedString) -> Self {
+        v.string
+    }
+}
+
+open class AttributedString: AnyString {
+    public var attrString: NSAttributedString { _attributedString }
+    public var _attributedString: NSMutableAttributedString
+    
+    public static func make(_ v: NSAttributedString) -> Self {
+        .init(v)
+    }
+    
+    public required init (_ attrString: NSAttributedString) {
+        _attributedString = .init(attributedString: attrString)
+    }
     
     public init (_ string: String) {
-        attributedString = .init(string: string)
+        _attributedString = .init(string: string)
     }
     
     public init (_ localized: LocalizedString...) {
-        attributedString = .init(string: String(localized))
+        _attributedString = .init(string: String(localized))
     }
     
     public init (_ localized: [LocalizedString]) {
-        attributedString = .init(string: String(localized))
+        _attributedString = .init(string: String(localized))
     }
     
     @discardableResult
     func addAttribute(_ attr: NSAttributedString.Key, _ value: Any, at range: ClosedRange<Int>? = nil) -> AttributedString {
         // TODO: check range
-        let range = range ?? 0...attributedString.length
-        attributedString.addAttribute(attr, value: value, range: range.nsRange)
+        let range = range ?? 0..._attributedString.length
+        _attributedString.addAttribute(attr, value: value, range: range.nsRange)
         return self
     }
     
     @discardableResult
     func removeAttribute(_ attr: NSAttributedString.Key, at range: ClosedRange<Int>? = nil) -> AttributedString {
         // TODO: check range
-        let range = range ?? 0...attributedString.length
-        attributedString.removeAttribute(attr, range: range.nsRange)
+        let range = range ?? 0..._attributedString.length
+        _attributedString.removeAttribute(attr, range: range.nsRange)
         return self
     }
     
     /// UColor, default nil: no background
     @discardableResult
     public func background(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.backgroundColor, value, at: range)
+        addAttribute(.backgroundColor, value.current, at: range)
     }
     
     /// Hex color, default nil: no background
     @discardableResult
     public func background(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.backgroundColor, value.color, at: range)
+        addAttribute(.backgroundColor, value.color.current, at: range)
     }
     
     /// UColor, default blackColor
     @discardableResult
     public func foreground(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.foregroundColor, value, at: range)
+        addAttribute(.foregroundColor, value.current, at: range)
     }
     
     /// Hex color, default blackColor
     @discardableResult
     public func foreground(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.foregroundColor, value.color, at: range)
+        addAttribute(.foregroundColor, value.color.current, at: range)
     }
     
     /// NSParagraphStyle, default defaultParagraphStyle
@@ -95,13 +139,13 @@ open class AttributedString {
     /// UColor, default nil: same as foreground color
     @discardableResult
     public func strokeColor(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.strokeColor, value, at: range)
+        addAttribute(.strokeColor, value.current, at: range)
     }
     
     /// Hex color, default nil: same as foreground color
     @discardableResult
     public func strokeColor(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.strokeColor, value.color, at: range)
+        addAttribute(.strokeColor, value.color.current, at: range)
     }
     
     /// NSNumber containing floating point value, in percent of font point size, default 0: no stroke; positive for stroke alone, negative for stroke and fill (a typical value for outlined text would be 3.0)
@@ -116,7 +160,14 @@ open class AttributedString {
         let shadow = NSShadow()
         shadow.shadowOffset = offset
         shadow.shadowBlurRadius = blur
+        #if os(macOS)
+        shadow.shadowColor = color.current
+        color.onChange { [weak shadow] new in
+            shadow?.shadowColor = new
+        }
+        #else
         shadow.shadowColor = color
+        #endif
         return addAttribute(.shadow, shadow, at: range)
     }
     
@@ -157,25 +208,25 @@ open class AttributedString {
     /// UColor, default nil: same as foreground color
     @discardableResult
     public func underlineColor(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.underlineColor, value, at: range)
+        addAttribute(.underlineColor, value.current, at: range)
     }
     
     /// Hex color, default nil: same as foreground color
     @discardableResult
     public func underlineColor(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.underlineColor, value.color, at: range)
+        addAttribute(.underlineColor, value.color.current, at: range)
     }
     
     /// UColor, default nil: same as foreground color
     @discardableResult
     public func strikethroughColor(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.strikethroughColor, value, at: range)
+        addAttribute(.strikethroughColor, value.current, at: range)
     }
     
     /// Hex color, default nil: same as foreground color
     @discardableResult
     public func strikethroughColor(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.strikethroughColor, value.color, at: range)
+        addAttribute(.strikethroughColor, value.color.current, at: range)
     }
     
     /// NSNumber containing floating point value; skew to be applied to glyphs, default 0: no skew

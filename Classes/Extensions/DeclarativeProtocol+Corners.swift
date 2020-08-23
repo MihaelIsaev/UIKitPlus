@@ -1,4 +1,40 @@
-#if !os(macOS)
+#if os(macOS)
+import AppKit
+
+extension DeclarativeProtocol {
+    @discardableResult
+    public func circle() -> Self {
+        _declarativeView._properties.circleCorners = true
+        return self
+    }
+    
+    @discardableResult
+    public func corners(_ radius: CGFloat) -> Self {
+        _declarativeView._properties.circleCorners = false
+        declarativeView.wantsLayer = true
+        declarativeView.layer?.cornerRadius = radius
+        return self
+    }
+    
+    @discardableResult
+    public func corners(_ state: State<CGFloat>) -> Self {
+        corners(state.wrappedValue)
+        state.listen { [weak self] old, new in
+            self?.corners(state.wrappedValue)
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func corners<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        corners(expressable.value())
+        expressable.state.listen { [weak self] old, new in
+            self?.corners(expressable.value())
+        }
+        return self
+    }
+}
+#else
 import UIKit
 
 extension DeclarativeProtocol {

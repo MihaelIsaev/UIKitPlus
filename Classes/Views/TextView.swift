@@ -30,49 +30,52 @@ open class TextView: UITextView, AnyDeclarativeProtocol, DeclarativeProtocolInte
     var __centerX: State<CGFloat> { _centerX }
     var __centerY: State<CGFloat> { _centerY }
     
-    public init (_ text: String, textContainer: NSTextContainer? = nil) {
+    public init (_ string: AnyString..., textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)
-        self.text(text)
         _setup()
+        text(string)
     }
     
-    public init (_ localized: LocalizedString..., textContainer: NSTextContainer? = nil) {
+    public init (_ strings: [AnyString], textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)
-        self.text(String(localized))
         _setup()
+        text(strings)
+    }
+    
+    public init (_ localized: LocalizedString...) {
+        super.init(frame: .zero, textContainer: nil)
+        _setup()
+        text(localized)
+    }
+    
+    public init (_ localized: LocalizedString..., textContainer: NSTextContainer) {
+        super.init(frame: .zero, textContainer: textContainer)
+        _setup()
+        text(localized)
     }
     
     public init (_ localized: [LocalizedString], textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)
-        self.text(String(localized))
         _setup()
+        text(localized)
     }
     
-    public init (_ state: State<String>, textContainer: NSTextContainer? = nil) {
+    public init<A: AnyString>(_ state: State<A>, textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)
-        _properties.textBinding = state
+        _setup()
         text(state)
-        _setup()
     }
     
-    public init (_ attributedStrings: AttributedString..., textContainer: NSTextContainer? = nil) {
+    public init<V, A: AnyString>(_ expressable: ExpressableState<V, A>, textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)
-        attributedText(attributedStrings.joined())
         _setup()
+        text(expressable)
     }
     
-    public init<V>(_ expressable: ExpressableState<V, String>, textContainer: NSTextContainer? = nil) {
+    public init (textContainer: NSTextContainer? = nil, @AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
         super.init(frame: .zero, textContainer: textContainer)
-        let state = expressable.unwrap()
-        _properties.textBinding = state
-        text(state)
         _setup()
-    }
-    
-    public init (@StateStringBuilder stateString: @escaping StateStringBuilder.Handler, textContainer: NSTextContainer? = nil) {
-        super.init(frame: .zero, textContainer: textContainer)
-        text(stateString())
-        _setup()
+        text(stateString: stateString)
     }
     
     public override init(frame: CGRect, textContainer: NSTextContainer? = nil) {
@@ -382,8 +385,8 @@ open class TextView: UITextView, AnyDeclarativeProtocol, DeclarativeProtocolInte
 extension TextView: Refreshable {
     /// Refreshes using `RefreshHandler`
     public func refresh() {
-        if let stateString = _properties.stateString {
-            text = stateString()
+        if let statedText = _properties.statedText {
+            text(statedText())
         }
     }
 }
@@ -395,20 +398,17 @@ extension TextView: _Fontable {
 }
 
 extension TextView: _TextBindable {
-    func _setTextBind(_ binding: State<String>?) {
-        _properties.textBinding = binding
+    func _setTextBind<A: AnyString>(_ binding: State<A>?) {
+        _properties.textChangeListeners.append({ new in
+            binding?.wrappedValue = A.make(new)
+        })
     }
 }
 
 extension TextView: _Textable {
-    var _stateString: StateStringBuilder.Handler? {
-        get { _properties.stateString }
-        set { _properties.stateString = newValue }
-    }
-    
-    var _stateAttrString: StateAttrStringBuilder.Handler? {
-        get { _properties.stateAttrString }
-        set { _properties.stateAttrString = newValue }
+    var _statedText: AnyStringBuilder.Handler? {
+        get { _properties.statedText }
+        set { _properties.statedText = newValue }
     }
     
     var _textChangeTransition: UIView.AnimationOptions? {
@@ -416,11 +416,7 @@ extension TextView: _Textable {
         set { _properties.textChangeTransition = newValue }
     }
     
-    func _setText(_ v: String?) {
-        text = v
-    }
-    
-    func _setText(_ v: NSMutableAttributedString?) {
+    func _setText(_ v: NSAttributedString?) {
         attributedText = v
     }
 }
@@ -457,26 +453,19 @@ extension TextView: _TextAligmentable {
 }
 
 extension TextView: _Placeholderable {
-    func _setPlaceholder(_ v: String) {
-        _properties.placeholderText = v
-        if text.count == 0 && attributedText.string.count == 0 {
-            attributedText = _generatePlaceholderAttributedString(with: v)
-        }
-    }
-
-    func _setPlaceholder(_ v: AttrStr?) {
-        attributedText = v?.attributedString
-        _properties.placeholderText = attributedText?.string ?? ""
-        _properties.placeholderAttrText = v?.attributedString
+    var _statedPlaceholder: AnyStringBuilder.Handler? {
+        get { _properties.statedPlaceholder }
+        set { _properties.statedPlaceholder = newValue }
     }
     
-    func _generatePlaceholderAttributedString(with text: String) -> NSAttributedString {
-        guard let placeholderAttrText = _properties.placeholderAttrText else {
-            let str = AttrStr(text).foreground(.lightGray).font(v: font ?? .systemFont(ofSize: 14)).attributedString
-            _properties.generatedPlaceholderString = str
-            return str
-        }
-        return placeholderAttrText
+    var _placeholderChangeTransition: UIView.AnimationOptions? {
+        get { _properties.placeholderChangeTransition }
+        set { _properties.placeholderChangeTransition = newValue }
+    }
+    
+    func _setPlaceholder(_ v: NSAttributedString?) {
+        attributedText = v
+        _properties.placeholderAttrText = v
     }
 }
 

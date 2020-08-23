@@ -11,11 +11,19 @@ public typealias BaseViewController = NSViewController
 public typealias BaseViewController = UIViewController
 #endif
 
+#if os(macOS)
+extension ViewController: _Menuable {
+    func _setMenu(_ v: Menu) {
+        view.menu = v.menu
+    }
+}
+#endif
+
 open class ViewController: BaseViewController {
-    #if !os(tvOS) && !os(macOS)
+    #if !os(macOS)
+    #if !os(tvOS)
     open override var preferredStatusBarStyle: UIStatusBarStyle { statusBarStyle.rawValue }
     #endif
-    #if !os(macOS)
     /// UIKitPlus reimplementation of `preferredStatusBarStyle`
     open var statusBarStyle: StatusBarStyle { _statusBarStyle ?? .default }
     #endif
@@ -544,8 +552,19 @@ extension ViewController {
 // MARK: Titleable
 
 extension BaseViewController: _Titleable {
-    func _setTitle(_ v: String?) {
-        title = v
+    var _statedTitle: AnyStringBuilder.Handler? {
+        get { nil }
+        set {}
+    }
+    #if !os(macOS)
+    var _titleChangeTransition: UIView.AnimationOptions? {
+        get { nil }
+        set {}
+    }
+    #endif
+    
+    func _setTitle(_ v: NSAttributedString?) {
+        self.title = v?.string
     }
 }
 
