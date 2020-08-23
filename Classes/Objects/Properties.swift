@@ -42,6 +42,7 @@ public class Properties<V> {
     public typealias FormatCharactersClosure = (_ textField: V, _ range: NSRange, _ replacement: String) -> Void
     public typealias ChangeCharactersClosure = (_ textField: V, _ range: NSRange, _ replacement: String) -> Bool
     public typealias BoolClosure = (V) -> Bool
+    public typealias EmptyVoidClosure = () -> Void
     public typealias VoidClosure = (V) -> Void
     
     var _shouldBeginEditing: BoolClosure = { _ in return true }
@@ -56,4 +57,8 @@ public class Properties<V> {
     var _editingDidBegin: [VoidClosure] = []
     var _editingChanged: [VoidClosure] = []
     var _editingDidEnd: [VoidClosure] = []
+    #if os(macOS)
+    var _textFieldAction: [VoidClosure] = []
+    var _textFieldEmptyAction: [EmptyVoidClosure] = []
+    #endif
 }

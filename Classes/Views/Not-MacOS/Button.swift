@@ -1,4 +1,4 @@
-#if os(macOS)
+#if !os(macOS)
 import UIKit
 
 public typealias UButton = Button

@@ -25,4 +25,4 @@ public protocol DeclarativeProtocol: class {
     
     var tag: Int { get set }
 }
-protocol AnyDeclarativeProtocol: DeclarativeProtocol {}
+protocol AnyDeclarativeProtocol: DeclarativeProtocol, _BackgroundColorable {}
