@@ -30,7 +30,7 @@ open class ViewController: BaseViewController {
     
     #if os(macOS)
     open override func loadView() {
-        self.view = NSView()
+        self.view = View()
     }
     #endif
     

@@ -15,6 +15,8 @@ public class Window: AppBuilderContent {
     
     public let window: NSWindow
     
+    lazy var _backgroundColorState: State<UColor> = .init(wrappedValue: UColor.init(window.backgroundColor))
+    
 //    public init (_ viewController: () -> ViewController?) {
 //        if let viewController = viewController() {
 //            window = .init(contentViewController: viewController)
@@ -418,6 +420,12 @@ public class Window: AppBuilderContent {
     public func backingType(_ value: NSWindow.BackingStoreType) -> Self {
         window.backingType = value
         return self
+    }
+}
+
+extension Window: _BackgroundColorable {
+    func _setBackgroundColor(_ v: NSColor?) {
+        window.backgroundColor = v
     }
 }
 #endif

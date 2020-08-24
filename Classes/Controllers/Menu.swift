@@ -9,7 +9,7 @@
 import Cocoa
 
 public class Menu: NSObject, NSMenuDelegate {
-    let menu: NSMenu = .init(title: "")
+    public let menu: NSMenu = .init(title: "")
     var items: [MenuItem] = []
     
     public override init () {

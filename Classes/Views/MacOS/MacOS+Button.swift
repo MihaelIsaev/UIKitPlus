@@ -40,6 +40,12 @@ open class Button: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     
     // MARK: Initialization
     
+    init (_ cell: NSCell?) {
+        super.init(frame: .zero)
+        self.cell = cell
+        _setup()
+    }
+    
     public init (_ string: AnyString...) {
         super.init(frame: .zero)
         _setup()
@@ -90,11 +96,114 @@ open class Button: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
         translatesAutoresizingMaskIntoConstraints = false
         target = self
         action = #selector(pushHandler)
+        isHoveredByMouse.listen { [weak self] old, new in
+            guard old != new else { return }
+            guard let self = self else { return }
+            if new {
+                self._mouseEnteredHandler(self)
+            } else {
+                self._mouseExitedHandler(self)
+            }
+        }
+        updateTrackingAreas()
     }
     
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()
+    }
+    
+    // MARK: Window Buttons
+    
+    public static var windowClose: UButton = UButton(NSWindow.standardWindowButton(.closeButton, for: .closable)?.cell).onAction {
+        $0.superview?.window?.orderOut(nil)
+    }.onMouseHover {
+        $0.needsDisplay = true
+        $0.isHighlighted = true
+    }.onMouseUnhover {
+        $0.needsDisplay = true
+        $0.isHighlighted = false
+    }
+    
+    public static var windowMinimize: UButton = UButton(NSWindow.standardWindowButton(.miniaturizeButton, for: .closable)?.cell).onAction {
+        $0.superview?.window?.miniaturize(nil)
+    }.onMouseHover {
+        $0.needsDisplay = true
+        $0.isHighlighted = true
+    }.onMouseUnhover {
+        $0.needsDisplay = true
+        $0.isHighlighted = false
+    }
+    
+    public static var windowZoom: UButton = UButton(NSWindow.standardWindowButton(.zoomButton, for: .closable)?.cell).onAction {
+        $0.superview?.window?.zoom(nil)
+    }.onMouseHover {
+        $0.needsDisplay = true
+        $0.isHighlighted = true
+    }.onMouseUnhover {
+        $0.needsDisplay = true
+        $0.isHighlighted = false
+    }
+    
+    // MARK: Mouse Hover
+    
+    private lazy var area = makeTrackingArea()
+    
+    private func makeTrackingArea() -> NSTrackingArea {
+        .init(rect: bounds, options: [.mouseEnteredAndExited, .activeInKeyWindow, .activeAlways], owner: self, userInfo: nil)
+    }
+    
+    open override func updateTrackingAreas() {
+        removeTrackingArea(area)
+        area = makeTrackingArea()
+        addTrackingArea(area)
+    }
+    
+    lazy var isHoveredByMouse = UState<Bool>(wrappedValue: false)
+    var _mouseEnteredHandler: (UButton) -> Void = { _ in }
+    var _mouseExitedHandler: (UButton) -> Void = { _ in }
+    
+    public override func mouseEntered(with event: NSEvent) {
+        isHoveredByMouse.wrappedValue = true
+    }
+
+    public override func mouseExited(with event: NSEvent) {
+        isHoveredByMouse.wrappedValue = false
+    }
+    
+    /// Listens for mouse hover and pass it into state
+    @discardableResult
+    public func hoveredByMouse(_ state: State<Bool>) -> Self {
+        isHoveredByMouse.listen {
+            state.wrappedValue = $0
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func onMouseHover(_ closure: @escaping () -> Void) -> Self {
+        onMouseHover { _ in
+            closure()
+        }
+    }
+    
+    @discardableResult
+    public func onMouseHover(_ closure: @escaping (UButton) -> Void) -> Self {
+        _mouseEnteredHandler = closure
+        return self
+    }
+    
+    @discardableResult
+    public func onMouseUnhover(_ closure: @escaping () -> Void) -> Self {
+        onMouseUnhover { _ in
+            closure()
+        }
+    }
+    
+    @discardableResult
+    public func onMouseUnhover(_ closure: @escaping (UButton) -> Void) -> Self {
+        _mouseExitedHandler = closure
+        return self
     }
     
     // MARK: - Button Type
