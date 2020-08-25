@@ -85,6 +85,11 @@ open class TextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolIn
         fatalError("init(coder:) has not been implemented")
     }
     
+    open override func layout() {
+        super.layout()
+        onLayoutSubviews()
+    }
+    
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()
@@ -132,6 +137,45 @@ open class TextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolIn
     @discardableResult
     public func didEndEditing(_ closure: @escaping P.VoidClosure) -> Self {
         properties._didEndEditing.append(closure)
+        return self
+    }
+    
+    @State public var isFirstResponder = false
+    
+    open override func becomeFirstResponder() -> Bool {
+        guard super.becomeFirstResponder() else { return false }
+        isFirstResponder = true
+        _onFocusHandler?(self)
+        return true
+    }
+    
+    open override func textDidEndEditing(_ notification: Notification) { // best thing to catch loosing focus
+        super.textDidEndEditing(notification)
+        guard String(describing: notification.userInfo?["_NSFirstResponderReplacingFieldEditor"]).contains("NSWindow") == false else { return } // dirty hack
+        guard currentEditor() == nil else { return }
+        isFirstResponder = false
+        _onUnFocusHandler?(self)
+        properties._editingDidEnd.forEach { $0(self) }
+    }
+    
+    @discardableResult
+    public func dropFocus() -> Self {
+        window?.makeFirstResponder(nil)
+        return self
+    }
+    
+    private var _onFocusHandler: P.VoidClosure?
+    fileprivate var _onUnFocusHandler: P.VoidClosure?
+    
+    @discardableResult
+    public func onFocus(_ closure: @escaping P.VoidClosure) -> Self {
+        _onFocusHandler = closure
+        return self
+    }
+    
+    @discardableResult
+    public func onUnFocus(_ closure: @escaping P.VoidClosure) -> Self {
+        _onUnFocusHandler = closure
         return self
     }
     
@@ -238,6 +282,240 @@ open class TextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolIn
         return self
     }
     
+    // MARK: NewLine Action
+    
+    @discardableResult
+    public func onNewLineAction(pass: Bool = false, _ closure: @escaping P.EmptyVoidClosure) -> Self {
+        onNewLineAction { _ -> Bool in
+            closure()
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onNewLineAction(pass: Bool = false, _ closure: @escaping P.VoidClosure) -> Self {
+        onNewLineAction { _ -> Bool in
+            closure(self)
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onNewLineAction(_ closure: @escaping P.EmptyBoolClosure) -> Self {
+        onNewLineAction { _ in closure() }
+    }
+    
+    @discardableResult
+    public func onNewLineAction(_ closure: @escaping P.BoolClosure) -> Self {
+        _innerDelegate.newLineHandler = { !closure(self) }
+        return self
+    }
+    
+    // MARK: Cmd+Enter Action
+    
+    @discardableResult
+    public func onCmdEnterAction(pass: Bool = false, _ closure: @escaping P.EmptyVoidClosure) -> Self {
+        onCmdEnterAction { _ -> Bool in
+            closure()
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onCmdEnterAction(pass: Bool = false, _ closure: @escaping P.VoidClosure) -> Self {
+        onCmdEnterAction { _ -> Bool in
+            closure(self)
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onCmdEnterAction(_ closure: @escaping P.EmptyBoolClosure) -> Self {
+        onCmdEnterAction { _ in closure() }
+    }
+    
+    @discardableResult
+    public func onCmdEnterAction(_ closure: @escaping P.BoolClosure) -> Self {
+        _innerDelegate.cmdEnterHandler = { !closure(self) }
+        return self
+    }
+    
+    // MARK: Option+Enter Action
+    
+    @discardableResult
+    public func onOptionEnterAction(pass: Bool = false, _ closure: @escaping P.EmptyVoidClosure) -> Self {
+        onOptionEnterAction { _ -> Bool in
+            closure()
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onOptionEnterAction(pass: Bool = false, _ closure: @escaping P.VoidClosure) -> Self {
+        onOptionEnterAction { _ -> Bool in
+            closure(self)
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onOptionEnterAction(_ closure: @escaping P.EmptyBoolClosure) -> Self {
+        onOptionEnterAction { _ in closure() }
+    }
+    
+    @discardableResult
+    public func onOptionEnterAction(_ closure: @escaping P.BoolClosure) -> Self {
+        _innerDelegate.optionEnterHandler = { !closure(self) }
+        return self
+    }
+    
+    // MARK: Shift+Enter Action
+    
+    @discardableResult
+    public func onShiftEnterAction(pass: Bool = false, _ closure: @escaping P.EmptyVoidClosure) -> Self {
+        onShiftEnterAction { _ -> Bool in
+            closure()
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onShiftEnterAction(pass: Bool = false, _ closure: @escaping P.VoidClosure) -> Self {
+        onShiftEnterAction { _ -> Bool in
+            closure(self)
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onShiftEnterAction(_ closure: @escaping P.EmptyBoolClosure) -> Self {
+        onShiftEnterAction { _ in closure() }
+    }
+    
+    @discardableResult
+    public func onShiftEnterAction(_ closure: @escaping P.BoolClosure) -> Self {
+        _innerDelegate.shiftEnterHandler = { !closure(self) }
+        return self
+    }
+    
+    // MARK: DeleteForward Action
+    
+    @discardableResult
+    public func onDeleteForwardAction(pass: Bool = false, _ closure: @escaping P.EmptyVoidClosure) -> Self {
+        onDeleteForwardAction { _ -> Bool in
+            closure()
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onDeleteForwardAction(pass: Bool = false, _ closure: @escaping P.VoidClosure) -> Self {
+        onDeleteForwardAction { _ -> Bool in
+            closure(self)
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onDeleteForwardAction(_ closure: @escaping P.EmptyBoolClosure) -> Self {
+        onDeleteForwardAction { _ in closure() }
+    }
+    
+    @discardableResult
+    public func onDeleteForwardAction(_ closure: @escaping P.BoolClosure) -> Self {
+        _innerDelegate.deleteForwardHandler = { !closure(self) }
+        return self
+    }
+    
+    // MARK: DeleteBackward Action
+    
+    @discardableResult
+    public func onDeleteBackwardAction(pass: Bool = false, _ closure: @escaping P.EmptyVoidClosure) -> Self {
+        onDeleteBackwardAction { _ -> Bool in
+            closure()
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onDeleteBackwardAction(pass: Bool = false, _ closure: @escaping P.VoidClosure) -> Self {
+        onDeleteBackwardAction { _ -> Bool in
+            closure(self)
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onDeleteBackwardAction(_ closure: @escaping P.EmptyBoolClosure) -> Self {
+        onDeleteBackwardAction { _ in closure() }
+    }
+    
+    @discardableResult
+    public func onDeleteBackwardAction(_ closure: @escaping P.BoolClosure) -> Self {
+        _innerDelegate.deleteBackwardHandler = { !closure(self) }
+        return self
+    }
+    
+    // MARK: InsertTab Action
+    
+    @discardableResult
+    public func onInsertTabAction(pass: Bool = false, _ closure: @escaping P.EmptyVoidClosure) -> Self {
+        onInsertTabAction { _ -> Bool in
+            closure()
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onInsertTabAction(pass: Bool = false, _ closure: @escaping P.VoidClosure) -> Self {
+        onInsertTabAction { _ -> Bool in
+            closure(self)
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onInsertTabAction(_ closure: @escaping P.EmptyBoolClosure) -> Self {
+        onInsertTabAction { _ in closure() }
+    }
+    
+    @discardableResult
+    public func onInsertTabAction(_ closure: @escaping P.BoolClosure) -> Self {
+        _innerDelegate.insertTabHandler = { !closure(self) }
+        return self
+    }
+    
+    // MARK: Cancel Action
+    
+    @discardableResult
+    public func onCancelAction(pass: Bool = false, _ closure: @escaping P.EmptyVoidClosure) -> Self {
+        onCancelAction { _ -> Bool in
+            closure()
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onCancelAction(pass: Bool = false, _ closure: @escaping P.VoidClosure) -> Self {
+        onCancelAction { _ -> Bool in
+            closure(self)
+            return pass
+        }
+    }
+    
+    @discardableResult
+    public func onCancelAction(_ closure: @escaping P.EmptyBoolClosure) -> Self {
+        onCancelAction { _ in closure() }
+    }
+    
+    @discardableResult
+    public func onCancelAction(_ closure: @escaping P.BoolClosure) -> Self {
+        _innerDelegate.cancelOperationHandler = { !closure(self) }
+        return self
+    }
+    
+    // MARK:
+    
     func _setBackgroundColor(_ v: NSColor?) {
         guard v != .clear else {
             (cell as? NSTextFieldCell)?.drawsBackground = false
@@ -251,12 +529,13 @@ open class TextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolIn
         (cell as? NSTextFieldCell)?.backgroundColor = v
     }
     
-//    public func `return`() {
-//        _ = _innerDelegate.textFieldShouldReturn(self)
-//    }
+    public func `return`() {
+        _innerDelegate.action()
+        _innerDelegate.newLineHandler?()
+    }
 }
 
-fileprivate class _InnerDelegate: NSObject, NSTextFieldDelegate {
+fileprivate class _InnerDelegate: NSObject, NSTextFieldDelegate, NSTextDelegate {
     let parent: TextField
     
     init (_ textField: TextField) {
@@ -264,8 +543,16 @@ fileprivate class _InnerDelegate: NSObject, NSTextFieldDelegate {
         super.init()
         parent.target = self
         parent.action = #selector(action)
-        
     }
+    
+    var newLineHandler: (() -> Bool)?
+    var cmdEnterHandler: (() -> Bool)?
+    var optionEnterHandler: (() -> Bool)?
+    var shiftEnterHandler: (() -> Bool)?
+    var deleteForwardHandler: (() -> Bool)?
+    var deleteBackwardHandler: (() -> Bool)?
+    var insertTabHandler: (() -> Bool)?
+    var cancelOperationHandler: (() -> Bool)?
     
     @objc func action() {
         parent.properties._textFieldAction.forEach { $0(self.parent) }
@@ -291,7 +578,52 @@ fileprivate class _InnerDelegate: NSObject, NSTextFieldDelegate {
     }
     
     @objc func editingDidEnd() {
-        parent.properties._editingDidEnd.forEach { $0(self.parent) }
+        // almost useless...
+    }
+    
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        switch commandSelector {
+        case "noop:": // any unsupported combination
+            guard let event = NSApp.currentEvent else {
+                return false
+            }
+            if event.key == .enter, event.modifierFlags.contains(.command), let result = cmdEnterHandler?(), result {
+                return true
+            }
+            return false
+        case #selector(NSResponder.insertNewlineIgnoringFieldEditor(_:)):
+            guard let event = NSApp.currentEvent else {
+                return false
+            }
+            if event.key == .enter, event.modifierFlags.contains(.option), let result = optionEnterHandler?(), result {
+                return true
+            }
+            return false
+        case #selector(NSResponder.insertNewline(_:)):
+            // Do something against ENTER key
+            guard let event = NSApp.currentEvent else {
+                return newLineHandler?() ?? false
+            }
+            if event.modifierFlags.contains(.shift), let result = shiftEnterHandler?(), result {
+                return true
+            }
+            return newLineHandler?() ?? false
+        case #selector(NSResponder.deleteForward(_:)):
+            // Do something against DELETE key
+            return deleteForwardHandler?() ?? false
+        case #selector(NSResponder.deleteBackward(_:)):
+            // Do something against BACKSPACE key
+            return deleteBackwardHandler?() ?? false
+        case #selector(NSResponder.insertTab(_:)):
+            // Do something against TAB key
+            return insertTabHandler?() ?? false
+        case #selector(NSResponder.cancelOperation(_:)):
+            // Do something against ESCAPE key
+            return cancelOperationHandler?() ?? false
+        default: // TODO: add more cases
+            // return true if the action was handled; otherwise false
+            return false
+        }
     }
     
     // MARK: NSTextFieldDelegate
@@ -317,6 +649,9 @@ fileprivate class _InnerDelegate: NSObject, NSTextFieldDelegate {
     }
 
     public func controlTextDidEndEditing(_ obj: Notification) {
+        if parent.currentEditor() == nil {
+            print("YAAAAY3")
+        }
         editingDidEnd()
         parent.outsideDelegate?.textFieldDidEndEditing?(parent)
         parent.properties._didEndEditing.forEach { $0(self.parent) }
@@ -456,6 +791,24 @@ extension TextField: _Placeholderable {
     func _setPlaceholder(_ v: NSAttributedString?) {
         (cell as? NSTextFieldCell)?.placeholderAttributedString = v
         _properties.placeholderAttrText = v
+    }
+    
+    public var placeholder: AttrStr {
+        get {
+            guard let str = (cell as? NSTextFieldCell)?.placeholderAttributedString else {
+                return .init("")
+            }
+            let attrStr = AttrStr(str)
+            attrStr.onUpdate { [weak self] newValue in
+                (self?.cell as? NSTextFieldCell)?.placeholderAttributedString = newValue.attrString
+                self?._properties.placeholderAttrText = newValue.attrString
+            }
+            return attrStr
+        }
+        set {
+            (cell as? NSTextFieldCell)?.placeholderAttributedString = newValue.attrString
+            _properties.placeholderAttrText = newValue.attrString
+        }
     }
 }
 

@@ -90,6 +90,28 @@ open class App: NSApplication, NSApplicationDelegate {
         }
         super.sendEvent(event)
     }
+    
+    // MARK: Dock Menu
+    
+    var _dockMenu: Menu?
+    
+    public var currentDockMenu: Menu {
+        get {
+            if let menu = _dockMenu {
+                return menu
+            }
+            let menu = Menu()
+            menu.parseMenuBuilder(defaultDockMenu.menuBuilderContent)
+            return menu
+        }
+        set { _dockMenu = newValue }
+    }
+    
+    @MenuBuilder open var defaultDockMenu: MenuBuilderContent { _MenuContent(menuBuilderContent: .none) }
+    
+    public func applicationDockMenu(_ sender: NSApplication) -> NSMenu? {
+        currentDockMenu.menu
+    }
 }
 
 

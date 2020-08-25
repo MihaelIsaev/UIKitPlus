@@ -1,8 +1,11 @@
-#if !os(macOS)
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public typealias UWrapperView = WrapperView
-open class WrapperView<V>: View where V: UIView {
+open class WrapperView<V>: View where V: BaseView {
     public override var declarativeView: WrapperView { return self }
     
     public let innerView: V
@@ -14,7 +17,12 @@ open class WrapperView<V>: View where V: UIView {
         super.init(frame: .zero)
         innerView.translatesAutoresizingMaskIntoConstraints = false
         body { innerView }
+        #if os(macOS)
+        wantsLayer = true
+        layer?.backgroundColor = .clear
+        #else
         backgroundColor = .clear
+        #endif
         topConstraint = innerView.topAnchor.constraint(equalTo: topAnchor, constant: 0)
         leadingConstraint = innerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0)
         trailingConstraint = innerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
@@ -22,7 +30,7 @@ open class WrapperView<V>: View where V: UIView {
         NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, bottomConstraint])
     }
     
-    public convenience init (_ innerView: () -> (V)) {
+    public convenience init (_ innerView: () -> V) {
         self.init(innerView())
     }
     
@@ -30,6 +38,17 @@ open class WrapperView<V>: View where V: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    #if os(macOS)
+    open override func layout() {
+        super.layout()
+        onLayoutSubviews()
+    }
+    
+    open override func viewDidMoveToSuperview() {
+        super.viewDidMoveToSuperview()
+        movedToSuperview()
+    }
+    #else
     open override func layoutSubviews() {
         super.layoutSubviews()
         onLayoutSubviews()
@@ -39,6 +58,7 @@ open class WrapperView<V>: View where V: UIView {
         super.didMoveToSuperview()
         movedToSuperview()
     }
+    #endif
     
     @discardableResult
     open override func becomeFirstResponder() -> Bool {
@@ -102,4 +122,3 @@ open class WrapperView<V>: View where V: UIView {
         return self
     }
 }
-#endif

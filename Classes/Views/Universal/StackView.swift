@@ -96,18 +96,29 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     public init () {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        _setup()
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
+        _setup()
     }
     
     required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func _setup() {
+        spacing = 0
+    }
+    
     #if os(macOS)
+    open override func layout() {
+        super.layout()
+        onLayoutSubviews()
+    }
+    
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()

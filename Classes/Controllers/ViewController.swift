@@ -67,6 +67,14 @@ open class ViewController: BaseViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    #if os(macOS)
+    public func shakeWindow(numberOfShakes: Int = 4, intensity: CGFloat = 0.05, duration: Double = 0.6) {
+        window?.shake(numberOfShakes: numberOfShakes, intensity: intensity, duration: duration)
+    }
+    
+    public var window: NSWindow? { view.window }
+    #endif
+    
     #if !os(macOS)
     // MARK: Touches
     

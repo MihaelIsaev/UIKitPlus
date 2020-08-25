@@ -41,6 +41,7 @@ public class Properties<V> {
     
     public typealias FormatCharactersClosure = (_ textField: V, _ range: NSRange, _ replacement: String) -> Void
     public typealias ChangeCharactersClosure = (_ textField: V, _ range: NSRange, _ replacement: String) -> Bool
+    public typealias EmptyBoolClosure = () -> Bool
     public typealias BoolClosure = (V) -> Bool
     public typealias EmptyVoidClosure = () -> Void
     public typealias VoidClosure = (V) -> Void

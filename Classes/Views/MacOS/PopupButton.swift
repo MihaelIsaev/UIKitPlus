@@ -67,6 +67,11 @@ open class PopUpButton: NSPopUpButton, AnyDeclarativeProtocol, DeclarativeProtoc
         action = #selector(pushHandler)
     }
     
+    open override func layout() {
+        super.layout()
+        onLayoutSubviews()
+    }
+    
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()

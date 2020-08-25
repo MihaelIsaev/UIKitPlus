@@ -65,19 +65,28 @@ open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtoc
         fatalError("init(coder:) has not been implemented")
     }
 
-    #if !os(macOS)
-    open override func layoutSubviews() {
-        super.layoutSubviews()
+    #if os(macOS)
+    open override func layout() {
+        super.layout()
         onLayoutSubviews()
     }
-    #endif
     
-    #if os(macOS)
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()
     }
+    
+    @discardableResult
+    open override func resignFirstResponder() -> Bool {
+        window?.makeFirstResponder(nil)
+        return super.resignFirstResponder()
+    }
     #else
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        onLayoutSubviews()
+    }
+    
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
         movedToSuperview()

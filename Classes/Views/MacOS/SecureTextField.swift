@@ -4,9 +4,9 @@ import AppKit
 
 open class SecureTextField: TextField {
     override func _setup() {
-        super._setup()
         cell = NSSecureTextFieldCell(textCell: attributedStringValue.string)
         isEditable = true
+        super._setup()
     }
 }
 

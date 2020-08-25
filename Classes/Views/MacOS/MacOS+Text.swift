@@ -91,6 +91,11 @@ open class Text: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolInterna
         backgroundColor = .clear
     }
     
+    open override func layout() {
+        super.layout()
+        onLayoutSubviews()
+    }
+    
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()

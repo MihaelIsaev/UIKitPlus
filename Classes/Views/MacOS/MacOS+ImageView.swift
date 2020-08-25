@@ -165,6 +165,11 @@ open class Image: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolIntern
     
     open func buildView() {}
     
+    open override func layout() {
+        super.layout()
+        onLayoutSubviews()
+    }
+    
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()

@@ -43,7 +43,15 @@ public class Window: AppBuilderContent {
     // MARK: Size
     
     public func size(_ value: NSSize, display: Bool = true) -> Self {
-        window.setFrame(.init(origin: window.frame.origin, size: value), display: display)
+        size(value.width, value.height, display: display)
+    }
+    
+    public func size(_ value: CGFloat, display: Bool = true) -> Self {
+        size(value, value, display: display)
+    }
+    
+    public func size(_ width: CGFloat, _ height: CGFloat, display: Bool = true) -> Self {
+        window.setFrame(.init(origin: window.frame.origin, size: .init(width: width, height: height)), display: display)
         return self
     }
     
@@ -410,8 +418,8 @@ public class Window: AppBuilderContent {
     
     // MARK: Style Mask
     
-    public func styleMask(_ value: NSWindow.StyleMask) -> Self {
-        window.styleMask = value
+    public func styleMask(_ value: NSWindow.StyleMask...) -> Self {
+        window.styleMask = .init(value)
         return self
     }
     
@@ -419,6 +427,15 @@ public class Window: AppBuilderContent {
     
     public func backingType(_ value: NSWindow.BackingStoreType) -> Self {
         window.backingType = value
+        return self
+    }
+    
+    // MARK: Hide Standard Button
+    
+    public func hideStandardButtons(_ type: NSWindow.ButtonType..., hide: Bool = true) -> Self {
+        type.forEach {
+            window.standardWindowButton($0)?.isHidden = hide
+        }
         return self
     }
 }

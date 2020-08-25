@@ -108,6 +108,11 @@ open class Button: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
         updateTrackingAreas()
     }
     
+    open override func layout() {
+        super.layout()
+        onLayoutSubviews()
+    }
+    
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()

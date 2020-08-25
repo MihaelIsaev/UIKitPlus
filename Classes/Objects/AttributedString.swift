@@ -46,6 +46,12 @@ open class AttributedString: AnyString {
     public var attrString: NSAttributedString { _attributedString }
     public var _attributedString: NSMutableAttributedString
     
+    var _updateHandler: (AttributedString) -> Void = { _ in }
+    
+    public func onUpdate(_ handler: @escaping (AttributedString) -> Void) {
+        _updateHandler = handler
+    }
+    
     public static func make(_ v: NSAttributedString) -> Self {
         .init(v)
     }
@@ -71,6 +77,7 @@ open class AttributedString: AnyString {
         // TODO: check range
         let range = range ?? 0..._attributedString.length
         _attributedString.addAttribute(attr, value: value, range: range.nsRange)
+        _updateHandler(self)
         return self
     }
     
@@ -79,6 +86,7 @@ open class AttributedString: AnyString {
         // TODO: check range
         let range = range ?? 0..._attributedString.length
         _attributedString.removeAttribute(attr, range: range.nsRange)
+        _updateHandler(self)
         return self
     }
     

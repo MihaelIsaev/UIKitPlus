@@ -9,15 +9,23 @@
 import Cocoa
 
 public class Menu: NSObject, NSMenuDelegate {
-    public let menu: NSMenu = .init(title: "")
+    public let menu: NSMenu
     var items: [MenuItem] = []
     
+    public init (_ menu: NSMenu) {
+        self.menu = menu
+        super.init()
+        self.menu.delegate = self
+    }
+    
     public override init () {
+        menu = .init(title: "")
         super.init()
         menu.delegate = self
     }
     
     public init (_ title: String? = nil, @MenuBuilder content: @escaping MenuBuilder.Block) {
+        menu = .init(title: "")
         super.init()
         if let title = title {
             menu.title = title

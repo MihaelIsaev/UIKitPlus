@@ -51,6 +51,7 @@ open class VisualEffectView: NSVisualEffectView, AnyDeclarativeProtocol, Declara
     
     private func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
+        wantsLayer = true
     }
     
     /// A value indicating which material is shown by the NSVisualEffectView.
@@ -123,13 +124,14 @@ open class VisualEffectView: NSVisualEffectView, AnyDeclarativeProtocol, Declara
 //        translatesAutoresizingMaskIntoConstraints = false
 //    }
     
+    open override func layout() {
+        super.layout()
+        onLayoutSubviews()
+    }
+    
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()
-    }
-    
-    open override func viewDidMoveToWindow() {
-        super.viewDidMoveToWindow()
     }
 
     open override func viewWillMove(toWindow newWindow: NSWindow?) {
