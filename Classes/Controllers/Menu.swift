@@ -25,11 +25,8 @@ public class Menu: NSObject, NSMenuDelegate {
     }
     
     public init (_ title: String? = nil, @MenuBuilder content: @escaping MenuBuilder.Block) {
-        menu = .init(title: "")
+        menu = .init(title: title ?? "")
         super.init()
-        if let title = title {
-            menu.title = title
-        }
         menu.delegate = self
         menu.cancelTracking()
         parseMenuBuilder(content().menuBuilderContent)

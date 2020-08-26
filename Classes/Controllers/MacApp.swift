@@ -20,7 +20,16 @@ open class App: NSApplication, NSApplicationDelegate {
     
     public override init() {
         super.init()
+        let menu = Menu()
+        menu.parseMenuBuilder(topMenu.menuBuilderContent)
+        mainMenu = menu.menu
         delegate = self
+    }
+    
+    open override func run() {
+        NSApp.setActivationPolicy(.regular) // switches app appearance mode
+        NSApp.activate(ignoringOtherApps: true)
+        super.run()
     }
 
     required public init?(coder: NSCoder) {
@@ -91,6 +100,10 @@ open class App: NSApplication, NSApplicationDelegate {
         super.sendEvent(event)
     }
     
+    // MARK: Main Menu
+    
+    @MenuBuilder open var topMenu: MenuBuilderContent { _MenuContent(menuBuilderContent: .none) }
+    
     // MARK: Dock Menu
     
     var _dockMenu: Menu?
@@ -101,13 +114,13 @@ open class App: NSApplication, NSApplicationDelegate {
                 return menu
             }
             let menu = Menu()
-            menu.parseMenuBuilder(defaultDockMenu.menuBuilderContent)
+            menu.parseMenuBuilder(dockMenu.menuBuilderContent)
             return menu
         }
         set { _dockMenu = newValue }
     }
     
-    @MenuBuilder open var defaultDockMenu: MenuBuilderContent { _MenuContent(menuBuilderContent: .none) }
+    @MenuBuilder open var dockMenu: MenuBuilderContent { _MenuContent(menuBuilderContent: .none) }
     
     public func applicationDockMenu(_ sender: NSApplication) -> NSMenu? {
         currentDockMenu.menu

@@ -58,14 +58,18 @@ public class MenuItem {
     }
     
     public init (_ title: String? = nil) {
-        item = .init()
         if let title = title {
             item.title = title
         }
     }
     
+    public init (@MenuBuilder content: @escaping MenuBuilder.Block) {
+        submenu(content: content)
+    }
+    
     public func submenu(@MenuBuilder content: @escaping MenuBuilder.Block) -> Self {
         let menu = Menu()
+        menu.title(item.title)
         item.submenu = menu.menu
         menu.parseMenuBuilder(content().menuBuilderContent)
         return self
