@@ -1,17 +1,30 @@
-#if !os(macOS)
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 open class HUD: View {
     override public var declarativeView: HUD { return self }
     
     var imageHeight: CGFloat = 50
+    #if os(macOS)
+    lazy var imageView = Image(nil)
+        .mode(.resizeAspect)
+    #else
     lazy var imageView = Image(nil)
         .mode(.scaleAspectFit)
+    #endif
+    
     lazy var symbolLabel = Text()
         .font(v: .boldSystemFont(ofSize: 48))
         .color(.white)
         .alignment(.center)
+    #if os(macOS)
+    lazy var activityIndicator = ActivityIndicator()
+    #else
     lazy var activityIndicator = ActivityIndicator(style: .whiteLarge)
+    #endif
     lazy var titleLabel = Text()
         .font(v: .boldSystemFont(ofSize: 24))
         .color(.white)
@@ -21,6 +34,19 @@ open class HUD: View {
         .font(v: .systemFont(ofSize: 16))
         .color(.white)
         .alignment(.center)
+    #if os(macOS)
+    lazy var contentView = View()
+        .size(>=70)
+        .corners(10)
+        .background(.white(0, alpha: 0.7))
+        .centerInSuperview()
+        .topToSuperview(>=20)
+        .leadingToSuperview(>=20 ! 998)
+        .trailingToSuperview(<=-20 ! 998)
+        .bottomToSuperview(<=-20)
+    
+    lazy var backgroundOverlay = View().background(.white(0, alpha: 0.2)).edgesToSuperview().masksToBounds()
+    #else
     lazy var contentView = View()
         .size(>=100)
         .corners(10)
@@ -30,7 +56,9 @@ open class HUD: View {
         .leadingToSuperview(>=20 ! 998)
         .trailingToSuperview(<=-20 ! 998)
         .bottomToSuperview(<=-20)
+    
     lazy var backgroundOverlay = View().background(.init(red: 0, green: 0, blue: 0, alpha: 0.2)).edgesToSuperview().masksToBounds()
+    #endif
     
     open override func buildView() {
         super.buildView()
@@ -44,11 +72,19 @@ open class HUD: View {
     
     // MARK: - Setup
     
+    #if os(macOS)
+    @discardableResult
+    public func image(_ image: NSImage?) -> Self {
+        imageView.image = image
+        return self
+    }
+    #else
     @discardableResult
     public func image(_ image: UIImage?) -> Self {
         imageView.image = image
         return self
     }
+    #endif
     
     @discardableResult
     public func symbol(_ value: String) -> Self {
@@ -73,14 +109,25 @@ open class HUD: View {
     @discardableResult
     public func show(_ animated: Bool = false) -> Self {
         superview?.bringSubviewToFront(self)
+        #if os(macOS)
+        activityIndicator.startAnimation(nil)
+        #else
         activityIndicator.startAnimating()
+        #endif
         if !animated {
             hidden(false).alpha(1)
         } else {
             self.hidden(false).alpha(0)
+            #if os(macOS)
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.3
+                self.animator().alphaValue = 1
+            }
+            #else
             UIView.animate(withDuration: 0.3) {
                 self.alpha(1)
             }
+            #endif
         }
         return self
     }
@@ -91,6 +138,15 @@ open class HUD: View {
             hidden()
             completionHandler?()
         } else {
+            #if os(macOS)
+            NSAnimationContext.runAnimationGroup({ context in
+                context.duration = 0.3
+                self.animator().alphaValue = 0
+            }) {
+                self.hidden().alpha(1)
+                completionHandler?()
+            }
+            #else
             UIView.animate(withDuration: 0.3, animations: {
                 self.alpha(0)
             }) { _ in
@@ -98,6 +154,7 @@ open class HUD: View {
                 self.hidden().alpha(1)
                 completionHandler?()
             }
+            #endif
         }
         return self
     }
@@ -150,7 +207,7 @@ open class HUD: View {
         }
         // Add elements into content view
         var elements = elements
-        var topView: UIView?
+        var topView: BaseView?
         while elements.count > 0 {
             let element = elements.removeFirst()
             switch element {
@@ -231,20 +288,21 @@ open class HUD: View {
     
     // MARK: - Colors
     
+    #if !os(macOS)
     @discardableResult
-    public func indicatorColor(_ color: UIColor) -> Self {
+    public func indicatorColor(_ color: UColor) -> Self {
         activityIndicator.color = color
         return self
     }
     
     @discardableResult
     public func indicatorColor(_ number: Int) -> Self {
-        activityIndicator.color = number.color
-        return self
+        indicatorColor(number.color)
     }
+    #endif
     
     @discardableResult
-    public func contentViewColor(_ color: UIColor) -> Self {
+    public func contentViewColor(_ color: UColor) -> Self {
         contentView.background(color)
         return self
     }
@@ -256,7 +314,7 @@ open class HUD: View {
     }
     
     @discardableResult
-    public func dimColor(_ color: UIColor) -> Self {
+    public func dimColor(_ color: UColor) -> Self {
         backgroundOverlay.background(color)
         return self
     }
@@ -267,5 +325,3 @@ open class HUD: View {
         return self
     }
 }
-
-#endif
