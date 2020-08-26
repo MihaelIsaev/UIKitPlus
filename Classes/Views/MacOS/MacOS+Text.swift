@@ -137,7 +137,7 @@ extension Text: _Colorable {
         } else {
             str.removeAttribute(.foregroundColor, range: NSRange(location: 0, length: str.length))
         }
-        attributedStringValue = str.attrString
+        attributedStringValue = str
     }
 }
 
@@ -147,7 +147,7 @@ extension Text: _TextAligmentable {
         p.alignment = v
         let str = NSMutableAttributedString(attributedString: attributedStringValue)
         str.addAttribute(.paragraphStyle, value: p, range: NSRange(location: 0, length: str.length))
-        attributedStringValue = str.attrString
+        attributedStringValue = str
         alignment = v
     }
 }

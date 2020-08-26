@@ -104,7 +104,9 @@ extension Textable {
     
     @discardableResult
     public func text(_ value: [AnyString]) -> Self {
-        (self as? _Textable)?._changeText(to: value.attrString)
+        guard let s = self as? _Textable else { return self }
+        value.onUpdate(s._changeText)
+        s._changeText(to: value._as)
         return self
     }
     
@@ -127,7 +129,8 @@ extension _Textable {
     
     @discardableResult
     public func text(_ value: [AnyString]) -> Self {
-        _changeText(to: value.map { $0.attrString }.joined())
+        value.onUpdate(_changeText)
+        _changeText(to: value._as)
         return self
     }
     

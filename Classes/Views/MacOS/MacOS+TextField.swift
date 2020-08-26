@@ -732,7 +732,7 @@ extension TextField: _Colorable {
         } else {
             str.removeAttribute(.foregroundColor, range: NSRange(location: 0, length: str.length))
         }
-        attributedStringValue = str.attrString
+        attributedStringValue = str
     }
 }
 
@@ -742,7 +742,7 @@ extension TextField: _TextAligmentable {
         p.alignment = v
         let str = NSMutableAttributedString(attributedString: attributedStringValue)
         str.addAttribute(.paragraphStyle, value: p, range: NSRange(location: 0, length: str.length))
-        attributedStringValue = str.attrString
+        attributedStringValue = str
         alignment = v
     }
 }
@@ -800,14 +800,14 @@ extension TextField: _Placeholderable {
             }
             let attrStr = AttrStr(str)
             attrStr.onUpdate { [weak self] newValue in
-                (self?.cell as? NSTextFieldCell)?.placeholderAttributedString = newValue.attrString
-                self?._properties.placeholderAttrText = newValue.attrString
+                (self?.cell as? NSTextFieldCell)?.placeholderAttributedString = newValue
+                self?._properties.placeholderAttrText = newValue
             }
             return attrStr
         }
         set {
-            (cell as? NSTextFieldCell)?.placeholderAttributedString = newValue.attrString
-            _properties.placeholderAttrText = newValue.attrString
+            (cell as? NSTextFieldCell)?.placeholderAttributedString = newValue._as
+            _properties.placeholderAttrText = newValue._as
         }
     }
 }

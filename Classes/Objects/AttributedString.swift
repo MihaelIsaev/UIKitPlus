@@ -8,16 +8,24 @@ import UIKit
 public typealias AttrStr = AttributedString
 
 public protocol AnyString {
-    var attrString: NSAttributedString { get }
+    func onUpdate(_ handler: @escaping (NSAttributedString) -> Void)
+    var _as: NSAttributedString { get }
     
     static func make(_ v: NSAttributedString) -> Self
 }
 
 extension Optional: AnyString where Wrapped == AnyString {
-    public var attrString: NSAttributedString {
+    public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {
+        switch self {
+        case .none: break
+        case .some(let str): str.onUpdate(handler)
+        }
+    }
+    
+    public var _as: NSAttributedString {
         switch self {
         case .none: return .init()
-        case .some(let str): return str.attrString
+        case .some(let str): return str._as
         }
     }
     
@@ -27,7 +35,9 @@ extension Optional: AnyString where Wrapped == AnyString {
 }
 
 extension NSAttributedString: AnyString {
-    public var attrString: NSAttributedString { self }
+    public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {}
+    
+    public var _as: NSAttributedString { self }
     
     public static func make(_ v: NSAttributedString) -> Self {
         .init(attributedString: v)
@@ -35,7 +45,11 @@ extension NSAttributedString: AnyString {
 }
 
 extension String: AnyString {
-    public var attrString: NSAttributedString { .init(string: self) }
+    public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {}
+    
+    public var _as: NSAttributedString {
+        .init(string: self)
+    }
     
     public static func make(_ v: NSAttributedString) -> Self {
         v.string
@@ -43,14 +57,15 @@ extension String: AnyString {
 }
 
 open class AttributedString: AnyString {
-    public var attrString: NSAttributedString { _attributedString }
-    public var _attributedString: NSMutableAttributedString
-    
-    var _updateHandler: (AttributedString) -> Void = { _ in }
-    
-    public func onUpdate(_ handler: @escaping (AttributedString) -> Void) {
+    public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {
         _updateHandler = handler
     }
+    
+    public var _as: NSAttributedString { _attributedString }
+    
+    public var _attributedString: NSMutableAttributedString
+    
+    var _updateHandler: (NSAttributedString) -> Void = { _ in }
     
     public static func make(_ v: NSAttributedString) -> Self {
         .init(v)
@@ -77,7 +92,7 @@ open class AttributedString: AnyString {
         // TODO: check range
         let range = range ?? 0..._attributedString.length
         _attributedString.addAttribute(attr, value: value, range: range.nsRange)
-        _updateHandler(self)
+        _updateHandler(_attributedString)
         return self
     }
     
@@ -86,7 +101,7 @@ open class AttributedString: AnyString {
         // TODO: check range
         let range = range ?? 0..._attributedString.length
         _attributedString.removeAttribute(attr, range: range.nsRange)
-        _updateHandler(self)
+        _updateHandler(_attributedString)
         return self
     }
     
@@ -105,13 +120,16 @@ open class AttributedString: AnyString {
     /// UColor, default blackColor
     @discardableResult
     public func foreground(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.foregroundColor, value.current, at: range)
+        value.onChange { new in
+            self.addAttribute(.foregroundColor, new, at: range)
+        }
+        return addAttribute(.foregroundColor, value.current, at: range)
     }
     
     /// Hex color, default blackColor
     @discardableResult
     public func foreground(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.foregroundColor, value.color.current, at: range)
+        foreground(value.color, at: range)
     }
     
     /// NSParagraphStyle, default defaultParagraphStyle

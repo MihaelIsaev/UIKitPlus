@@ -13,7 +13,19 @@ import UIKit
 #endif
 
 extension Array: AnyString where Element == AnyString {
-    public var attrString: NSAttributedString { map { $0.attrString }.joined() }
+    public var _as: NSAttributedString {
+        var res: NSMutableAttributedString = .init()
+        forEach { res.append($0._as) }
+        return res
+    }
+    
+    public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {
+        forEach {
+            $0.onUpdate { _ in
+                handler(self._as)
+            }
+        }
+    }
     
     public static func make(_ v: NSAttributedString) -> Self {
         .init([v])

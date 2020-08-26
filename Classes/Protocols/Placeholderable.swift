@@ -103,7 +103,9 @@ extension Placeholderable {
     
     @discardableResult
     public func placeholder(_ value: [AnyString]) -> Self {
-        (self as? _Placeholderable)?._changePlaceholder(to: value.attrString)
+        guard let s = self as? _Placeholderable else { return self }
+        value.onUpdate(s._changePlaceholder)
+        s._changePlaceholder(to: value._as)
         return self
     }
     
@@ -126,7 +128,8 @@ extension _Placeholderable {
     
     @discardableResult
     public func placeholder(_ value: [AnyString]) -> Self {
-        _changePlaceholder(to: value.attrString)
+        value.onUpdate(_changePlaceholder)
+        _changePlaceholder(to: value._as)
         return self
     }
     

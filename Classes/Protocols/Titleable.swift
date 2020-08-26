@@ -102,7 +102,9 @@ extension Titleable {
     
     @discardableResult
     public func title(_ value: [AnyString]) -> Self {
-        (self as? _Titleable)?._changeTitle(to: value.attrString)
+        guard let s = self as? _Titleable else { return self }
+        value.onUpdate(s._changeTitle)
+        s._changeTitle(to: value._as)
         return self
     }
 
@@ -125,7 +127,8 @@ extension _Titleable {
     
     @discardableResult
     public func title(_ value: [AnyString]) -> Self {
-        _changeTitle(to: value.attrString)
+        value.onUpdate(_changeTitle)
+        _changeTitle(to: value._as)
         return self
     }
     

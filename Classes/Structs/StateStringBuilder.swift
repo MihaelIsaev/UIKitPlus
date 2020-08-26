@@ -10,7 +10,12 @@ import Foundation
     }
     
     public static func buildBlock(_ string: [AnyString]) -> AnyString {
-        string.map { $0.attrString }.joined()
+        let attrString = AttrStr()
+        string.onUpdate {
+            attrString._attributedString = .init(attributedString: $0)
+            attrString._updateHandler($0)
+        }
+        return attrString
     }
     
     public static func buildIf(_ content: AnyString?) -> AnyString {
