@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Tintable {
+public protocol Tintable: class {
     @discardableResult
     func tint(_ color: UColor) -> Self
     
@@ -21,7 +21,11 @@ public protocol Tintable {
 protocol _Tintable: Tintable {
     var _tintState: State<UColor> { get }
     
+    #if os(macOS)
+    func _setTint(_ v: NSColor?)
+    #else
     func _setTint(_ v: UColor?)
+    #endif
 }
 
 extension Tintable {
@@ -47,7 +51,7 @@ extension Tintable {
     @discardableResult
     public func tint(_ color: UColor) -> Self {
         guard let s = self as? _Tintable else { return self }
-        s._setTint(color)
+        _tint(color, on: s)
         return self
     }
 }
@@ -56,7 +60,20 @@ extension Tintable {
 extension _Tintable {
     @discardableResult
     public func tint(_ color: UColor) -> Self {
-        _setTint(color)
+        _tint(color, on: self)
         return self
     }
+}
+
+private func  _tint(_ color: UColor, on s: _Tintable) {
+    #if os(macOS)
+    s._tintState.wrappedValue.changeHandler = nil
+    #endif
+    s._tintState.wrappedValue = color
+    s._setTint(color.current)
+    #if os(macOS)
+    s._tintState.wrappedValue.onChange { [weak s] new in
+        s?._setTint(new)
+    }
+    #endif
 }

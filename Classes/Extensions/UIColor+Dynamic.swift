@@ -29,8 +29,12 @@ public class Color {
         _setup()
     }
     
-    public static func white(_ white: CGFloat, alpha: CGFloat) -> Color {
+    public static func white(_ white: CGFloat = 1, alpha: CGFloat = 1) -> Color {
         .init(NSColor(white: white, alpha: alpha))
+    }
+    
+    public static func black(_ black: CGFloat = 1, alpha: CGFloat = 1) -> Color {
+        .init(NSColor(white: 1 - black, alpha: alpha))
     }
     
     public init (light: Color, dark: Color) {

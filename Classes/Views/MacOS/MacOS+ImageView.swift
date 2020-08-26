@@ -204,4 +204,29 @@ open class Image: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolIntern
         return self
     }
 }
+
+extension UImage: _Tintable {
+    var _tintState: State<UColor> {
+        get { properties.tintState }
+        set {}
+    }
+    
+    func _setTint(_ v: NSColor?) {
+        guard let v = v else { return }
+        image = tintedImage(with: v)
+    }
+    
+    func tintedImage(with tintColor: NSColor) -> NSImage? {
+        guard let image = self.image else { return self.image }
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return self.image }
+        
+        return NSImage(size: image.size, flipped: false) { bounds in
+            guard let context = NSGraphicsContext.current?.cgContext else { return false }
+            tintColor.set()
+            context.clip(to: bounds, mask: cgImage)
+            context.fill(bounds)
+            return true
+        }
+    }
+}
 #endif

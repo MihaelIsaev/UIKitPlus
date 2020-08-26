@@ -168,11 +168,8 @@ public class StatusItem: AppBuilderContent {
 }
 
 extension StatusItem: _Tintable, Tintable {
-    func _setTint(_ v: UColor?) {
-        item.button?.contentTintColor = v?.current
-        v?.onChange { [weak self] new in
-            self?.item.button?.contentTintColor = new
-        }
+    func _setTint(_ v: NSColor?) {
+        item.button?.contentTintColor = v
     }
 }
 
