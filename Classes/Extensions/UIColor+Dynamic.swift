@@ -331,6 +331,14 @@ public class Color {
     }
 }
 
+public func /(lhs: Int, rhs: Color) -> Color {
+    Color(light: lhs.color, dark: rhs)
+}
+
+public func /(lhs: Color, rhs: Int) -> Color {
+    Color(light: lhs, dark: rhs.color)
+}
+
 public func /(lhs: Color, rhs: Color) -> Color {
     Color(light: lhs, dark: rhs)
 }
