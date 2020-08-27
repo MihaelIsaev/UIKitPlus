@@ -105,7 +105,7 @@ extension Placeholderable {
     public func placeholder(_ value: [AnyString]) -> Self {
         guard let s = self as? _Placeholderable else { return self }
         value.onUpdate(s._changePlaceholder)
-        s._changePlaceholder(to: value._as)
+        s._changePlaceholder(to: value.attributedString)
         return self
     }
     
@@ -129,7 +129,7 @@ extension _Placeholderable {
     @discardableResult
     public func placeholder(_ value: [AnyString]) -> Self {
         value.onUpdate(_changePlaceholder)
-        _changePlaceholder(to: value._as)
+        _changePlaceholder(to: value.attributedString)
         return self
     }
     

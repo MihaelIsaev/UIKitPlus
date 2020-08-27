@@ -9,7 +9,7 @@ public typealias AttrStr = AttributedString
 
 public protocol AnyString {
     func onUpdate(_ handler: @escaping (NSAttributedString) -> Void)
-    var _as: NSAttributedString { get }
+    var attributedString: NSAttributedString { get }
     
     static func make(_ v: NSAttributedString) -> Self
 }
@@ -22,10 +22,10 @@ extension Optional: AnyString where Wrapped == AnyString {
         }
     }
     
-    public var _as: NSAttributedString {
+    public var attributedString: NSAttributedString {
         switch self {
         case .none: return .init()
-        case .some(let str): return str._as
+        case .some(let str): return str.attributedString
         }
     }
     
@@ -37,7 +37,7 @@ extension Optional: AnyString where Wrapped == AnyString {
 extension NSAttributedString: AnyString {
     public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {}
     
-    public var _as: NSAttributedString { self }
+    public var attributedString: NSAttributedString { self }
     
     public static func make(_ v: NSAttributedString) -> Self {
         .init(attributedString: v)
@@ -47,7 +47,7 @@ extension NSAttributedString: AnyString {
 extension String: AnyString {
     public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {}
     
-    public var _as: NSAttributedString {
+    public var attributedString: NSAttributedString {
         .init(string: self)
     }
     
@@ -61,9 +61,9 @@ open class AttributedString: AnyString {
         _updateHandler = handler
     }
     
-    public var _as: NSAttributedString { _attributedString }
+    public var attributedString: NSAttributedString { _attributedString }
     
-    public var _attributedString: NSMutableAttributedString
+    var _attributedString: NSMutableAttributedString
     
     var _updateHandler: (NSAttributedString) -> Void = { _ in }
     

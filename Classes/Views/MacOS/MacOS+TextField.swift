@@ -827,8 +827,8 @@ extension TextField: _Placeholderable {
             return attrStr
         }
         set {
-            (cell as? NSTextFieldCell)?.placeholderAttributedString = newValue._as
-            _properties.placeholderAttrText = newValue._as
+            (cell as? NSTextFieldCell)?.placeholderAttributedString = newValue.attributedString
+            _properties.placeholderAttrText = newValue.attributedString
         }
     }
 }

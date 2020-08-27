@@ -13,16 +13,16 @@ import UIKit
 #endif
 
 extension Array: AnyString where Element == AnyString {
-    public var _as: NSAttributedString {
+    public var attributedString: NSAttributedString {
         var res: NSMutableAttributedString = .init()
-        forEach { res.append($0._as) }
+        forEach { res.append($0.attributedString) }
         return res
     }
     
     public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {
         forEach {
             $0.onUpdate { _ in
-                handler(self._as)
+                handler(self.attributedString)
             }
         }
     }
