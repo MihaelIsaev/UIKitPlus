@@ -146,6 +146,7 @@ open class TextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolIn
         guard super.becomeFirstResponder() else { return false }
         isFirstResponder = true
         _onFocusHandler?(self)
+        _updateCursorColor()
         return true
     }
     
@@ -157,6 +158,8 @@ open class TextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolIn
         _onUnFocusHandler?(self)
         properties._editingDidEnd.forEach { $0(self) }
     }
+    
+    // MARK: Focus
     
     @discardableResult
     public func dropFocus() -> Self {
@@ -177,6 +180,15 @@ open class TextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolIn
     public func onUnFocus(_ closure: @escaping P.VoidClosure) -> Self {
         _onUnFocusHandler = closure
         return self
+    }
+    
+    // MARK: Tint
+    
+    var _tintColor: NSColor?
+    
+    func _updateCursorColor() {
+        guard let editor = currentEditor() as? NSTextView, let color = _tintColor else { return }
+        editor.insertionPointColor = color
     }
     
     /// An alternative to `shouldChangeCharacters`
@@ -809,6 +821,15 @@ extension TextField: _Placeholderable {
             (cell as? NSTextFieldCell)?.placeholderAttributedString = newValue._as
             _properties.placeholderAttrText = newValue._as
         }
+    }
+}
+
+extension TextField: _Tintable {
+    var _tintState: State<UColor> { properties.tintState }
+    
+    func _setTint(_ v: NSColor?) {
+        _tintColor = v
+        _updateCursorColor()
     }
 }
 
