@@ -95,6 +95,8 @@ open class Button: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
         target = self
+        bezelStyle = .regularSquare
+        isBordered = false
         action = #selector(pushHandler)
         isHoveredByMouse.listen { [weak self] old, new in
             guard old != new else { return }
@@ -116,6 +118,44 @@ open class Button: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     open override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
         movedToSuperview()
+    }
+    
+    // MARK: Highlight
+    
+    open override var isHighlighted: Bool {
+        didSet {
+            guard isWaitingForHighlight else {
+                return
+            }
+            if isHighlighted {
+                _setBackgroundColor(backgroundHighlighted)
+            } else {
+                _setBackgroundColor(background.wrappedValue.current)
+            }
+        }
+    }
+    
+    // MARK: Background Highlighted
+    
+    var backgroundHighlighted: NSColor?
+    var isWaitingForHighlight = false
+    
+    @discardableResult
+    public func backgroundHighlighted(_ color: UColor) -> Self {
+        isWaitingForHighlight = true
+        backgroundHighlighted = color.current
+        color.onChange { [weak self] color in
+            self?.backgroundHighlighted = color
+            if self?.isHighlighted == true {
+                self?._setBackgroundColor(color)
+            }
+        }
+        return self
+    }
+    
+    @discardableResult
+    public func backgroundHighlighted(_ number: Int) -> Self {
+        backgroundHighlighted(number.color)
     }
     
     // MARK: Window Buttons
@@ -169,11 +209,19 @@ open class Button: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     var _mouseExitedHandler: (UButton) -> Void = { _ in }
     
     public override func mouseEntered(with event: NSEvent) {
+        super.mouseEntered(with: event)
         isHoveredByMouse.wrappedValue = true
     }
 
     public override func mouseExited(with event: NSEvent) {
+        super.mouseExited(with: event)
         isHoveredByMouse.wrappedValue = false
+    }
+    
+    open override func mouseDown(with event: NSEvent) {
+        isHighlighted = true
+        super.mouseDown(with: event)
+        isHighlighted = false
     }
     
     /// Listens for mouse hover and pass it into state
