@@ -58,12 +58,15 @@ open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtoc
     
     private func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
+        body { body }
         buildView()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    @ViewBuilder open var body: ViewBuilder.Result { [] }
 
     #if os(macOS)
     open override func layout() {

@@ -36,28 +36,29 @@ open class ViewController: BaseViewController {
     
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(nibName: nil, bundle: nil)
-        #if !os(macOS)
-        subscribeToKeyboardNotifications()
-        #endif
-        buildUI()
+        _setup()
         body { block() }
     }
     
     public init () {
         super.init(nibName: nil, bundle: nil)
-        #if !os(macOS)
-        subscribeToKeyboardNotifications()
-        #endif
-        buildUI()
+        _setup()
     }
     
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        _setup()
+    }
+    
+    private func _setup() {
         #if !os(macOS)
         subscribeToKeyboardNotifications()
         #endif
+        body { body }
         buildUI()
     }
+    
+    @ViewBuilder open var body: ViewBuilder.Result { [] }
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
