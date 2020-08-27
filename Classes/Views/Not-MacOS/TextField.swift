@@ -407,6 +407,7 @@ extension TextField: _Textable {
     }
     
     func _setText(_ v: NSAttributedString?) {
+        attributedText = nil // hack to update attributed string with changed paragraph style
         attributedText = v
     }
 }
@@ -439,6 +440,7 @@ extension TextField: _Placeholderable {
     }
     
     func _setPlaceholder(_ v: NSAttributedString?) {
+        attributedPlaceholder = nil // hack to update attributed string with changed paragraph style
         attributedPlaceholder = v
         _properties.placeholderAttrText = v
     }

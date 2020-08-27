@@ -417,6 +417,7 @@ extension TextView: _Textable {
     }
     
     func _setText(_ v: NSAttributedString?) {
+        attributedText = nil // hack to update attributed string with changed paragraph style
         attributedText = v
     }
 }
@@ -464,6 +465,7 @@ extension TextView: _Placeholderable {
     }
     
     func _setPlaceholder(_ v: NSAttributedString?) {
+        attributedText = nil // hack to update attributed string with changed paragraph style
         attributedText = v
         _properties.placeholderAttrText = v
     }

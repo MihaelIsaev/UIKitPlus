@@ -126,6 +126,7 @@ extension Text: _Textable {
     }
     
     func _setText(_ v: NSAttributedString?) {
+        attributedText = nil // hack to update attributed string with changed paragraph style
         attributedText = v
     }
 }

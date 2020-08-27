@@ -143,6 +143,7 @@ extension UPopUpButton: _Titleable {
     }
     
     func _setTitle(_ v: NSAttributedString?) {
+        attributedTitle = .init() // hack to update attributed string with changed paragraph style
         attributedTitle = v ?? .init()
     }
 }

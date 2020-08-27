@@ -774,7 +774,15 @@ extension TextField: _Textable {
     }
     
     func _setText(_ v: NSAttributedString?) {
+        let selection = currentEditor()?.selectedRange
+        let wasEmpty = attributedStringValue.string.count == 0
+        attributedStringValue = .init() // hack to update attributed string with changed paragraph style
         attributedStringValue = v ?? .init()
+        if wasEmpty {
+            currentEditor()?.selectedRange = .init(location: attributedStringValue.string.count, length: attributedStringValue.string.count)
+        } else if let selection = selection {
+            currentEditor()?.selectedRange = selection
+        }
     }
 }
 
@@ -801,6 +809,7 @@ extension TextField: _Placeholderable {
     }
 
     func _setPlaceholder(_ v: NSAttributedString?) {
+        (cell as? NSTextFieldCell)?.placeholderAttributedString = nil // hack to update attributed string with changed paragraph style
         (cell as? NSTextFieldCell)?.placeholderAttributedString = v
         _properties.placeholderAttrText = v
     }
