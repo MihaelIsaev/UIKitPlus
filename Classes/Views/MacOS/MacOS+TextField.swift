@@ -853,16 +853,17 @@ extension TextField: _Tintable {
 //        autocorrectionType = v
 //    }
 //}
-//
-//extension TextField: _TextFieldContentTypeable {
-//    func _setTextFieldContentType(v: TextFieldContentType) {
-//        if #available(iOS 10.0, *) {
-//            if let type = v.type {
-//                textContentType = type
-//            }
-//        }
-//    }
-//}
+
+extension TextField: _TextFieldContentTypeable {
+    /// Works only since macOS 10.16 or 11 (Big Sur and higher)
+    func _setTextFieldContentType(v: TextFieldContentType) {
+        #if swift(>=5.3)
+        if #available(macOS 10.16, *) {
+            contentType = v.nsType
+        }
+        #endif
+    }
+}
 
 fileprivate class _Formatter<TF>: NumberFormatter where TF: TextField {
     let tf: TF

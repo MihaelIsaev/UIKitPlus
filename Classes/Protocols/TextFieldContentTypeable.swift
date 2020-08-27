@@ -1,5 +1,8 @@
-#if !os(macOS)
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public protocol TextFieldContentTypeable {
     func content(_ content: TextFieldContentType) -> Self
@@ -9,7 +12,7 @@ protocol _TextFieldContentTypeable: TextFieldContentTypeable {
     func _setTextFieldContentType(v: TextFieldContentType)
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
 extension TextFieldContentTypeable {
     @discardableResult
     public func content(_ content: TextFieldContentType) -> Self {
@@ -27,4 +30,3 @@ extension _TextFieldContentTypeable {
         return self
     }
 }
-#endif
