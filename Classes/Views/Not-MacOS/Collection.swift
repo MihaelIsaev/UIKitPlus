@@ -2,10 +2,10 @@
 import UIKit
 
 class CollectionSection {
-    var item: ViewBuilderItem
+    var item: BodyBuilderItem
     let axis: NSLayoutConstraint.Axis
     
-    init (_ item: ViewBuilderItem, axis: NSLayoutConstraint.Axis? = nil) {
+    init (_ item: BodyBuilderItem, axis: NSLayoutConstraint.Axis? = nil) {
         self.item = item
         self.axis = axis ?? .vertical
     }
@@ -53,7 +53,7 @@ public class UCollection: View, UICollectionViewDataSource {
         }
     }
     
-    public init (_ layout: UICollectionViewLayout = CollectionView.defaultLayout, @ViewBuilder block: ViewBuilder.SingleView) {
+    public init (_ layout: UICollectionViewLayout = CollectionView.defaultLayout, @BodyBuilder block: BodyBuilder.SingleView) {
         self.layout = layout
         super.init(frame: .zero)
         process(block())
@@ -168,16 +168,16 @@ public class UCollection: View, UICollectionViewDataSource {
         case .multiple(let views):
             cell.setRootView(StackView(views).axis(section.axis))
         case .forEach(let fr):
-            let item = fr.items(at: indexPath.row).viewBuilderItem
+            let item = fr.items(at: indexPath.row).bodyBuilderItem
             switch item {
             case .single(let view):
                 cell.setRootView(StackView(view).axis(section.axis))
             case .multiple(let views):
                 cell.setRootView(StackView(views).axis(section.axis))
             case .forEach(let fr):
-                cell.setRootView(StackView(ViewBuilderItems(items: fr.allItems())).axis(section.axis))
+                cell.setRootView(StackView(BodyBuilderItems(items: fr.allItems())).axis(section.axis))
             case .nested(let items):
-                cell.setRootView(StackView(ViewBuilderItems(items: items)).axis(section.axis))
+                cell.setRootView(StackView(BodyBuilderItems(items: items)).axis(section.axis))
             case .none:
                 cell.setRootView(.init())
             }

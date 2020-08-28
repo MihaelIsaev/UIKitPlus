@@ -9,7 +9,7 @@ public typealias VStackView = VStack
 
 public typealias UVStack = VStack
 open class VStack: _StackView {
-    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+    public init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
         #if os(macOS)
         orientation = .vertical
@@ -32,12 +32,12 @@ open class VStack: _StackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+    public func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> Self {
         add(item: block())
         return self
     }
     
-    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> VStack {
+    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> VStack {
         .init(block: block)
     }
 }

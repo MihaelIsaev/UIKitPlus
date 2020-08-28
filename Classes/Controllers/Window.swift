@@ -33,6 +33,12 @@ public class Window: AppBuilderContent {
         }
     }
     
+    @discardableResult
+    open func body(@BodyBuilder block: BodyBuilder.SingleView) -> Self {
+        window.contentView?.body { block() }
+        return self
+    }
+    
     // MARK: Frame
     
     public func size(_ value: NSRect, display: Bool = true) -> Self {

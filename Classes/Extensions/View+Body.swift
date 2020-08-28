@@ -6,16 +6,16 @@ import UIKit
 
 extension BaseView {
     @discardableResult
-    open func body(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+    open func body(@BodyBuilder block: BodyBuilder.SingleView) -> Self {
         addItem(block())
         return self
     }
     
-    func addItem(_ item: ViewBuilderItemable, at index: Int? = nil) {
-        addItem(item.viewBuilderItem, at: index)
+    func addItem(_ item: BodyBuilderItemable, at index: Int? = nil) {
+        addItem(item.bodyBuilderItem, at: index)
     }
     
-    func addItem(_ item: ViewBuilderItem, at index: Int? = nil) {
+    func addItem(_ item: BodyBuilderItem, at index: Int? = nil) {
         switch item {
         case .single(let view):
             add(views: [view], at: index)

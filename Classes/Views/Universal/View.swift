@@ -41,7 +41,7 @@ open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtoc
         }
     }
     
-    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+    public init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
         _setup()
         body { block() }
@@ -66,7 +66,7 @@ open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtoc
         fatalError("init(coder:) has not been implemented")
     }
     
-    @ViewBuilder open var body: ViewBuilder.Result { [] }
+    @BodyBuilder open var body: BodyBuilder.Result { EmptyBodyBuilderItem() }
 
     #if os(macOS)
     open override func layout() {
@@ -273,11 +273,11 @@ extension View {
     }
     
     @discardableResult
-    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+    public func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> Self {
         body { block() }
     }
     
-    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> View {
+    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> View {
         View(block: block)
     }
 }

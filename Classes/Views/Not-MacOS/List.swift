@@ -2,10 +2,10 @@
 import UIKit
 
 class ListSection {
-    var item: ViewBuilderItem
+    var item: BodyBuilderItem
     let axis: NSLayoutConstraint.Axis
     
-    init (_ item: ViewBuilderItem, axis: NSLayoutConstraint.Axis? = nil) {
+    init (_ item: BodyBuilderItem, axis: NSLayoutConstraint.Axis? = nil) {
         self.item = item
         self.axis = axis ?? .vertical
     }
@@ -19,7 +19,7 @@ public class List: View, UITableViewDataSource {
     
     var items: [ListSection] = []
     
-    public override init (@ViewBuilder block: ViewBuilder.SingleView) {
+    public override init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
         process(block())
         $reversed.listen { [weak self] old, new in
@@ -34,7 +34,7 @@ public class List: View, UITableViewDataSource {
         setup()
     }
     
-    public init (@ViewBuilder block: (List) -> ViewBuilder.Result) {
+    public init (@BodyBuilder block: (List) -> BodyBuilder.Result) {
         super.init(frame: .zero)
         process(block(self))
         $reversed.listen { [weak self] old, new in
@@ -53,8 +53,8 @@ public class List: View, UITableViewDataSource {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func process(_ item: ViewBuilderItemable, sectionIndex: Int = 0) {
-        let item = item.viewBuilderItem
+    func process(_ item: BodyBuilderItemable, sectionIndex: Int = 0) {
+        let item = item.bodyBuilderItem
         switch item {
         case .single(let view):
             handleHiddency(view, at: sectionIndex)
@@ -204,16 +204,16 @@ public class List: View, UITableViewDataSource {
         case .multiple(let views):
             cell.setRootView(StackView(views.filter { !$0.isHidden }[indexPath.row]).axis(section.axis))
         case .forEach(let fr):
-            let item = fr.items(at: indexPath.row).viewBuilderItem
+            let item = fr.items(at: indexPath.row).bodyBuilderItem
             switch item {
             case .single(let view):
                 cell.setRootView(StackView(view).axis(section.axis))
             case .multiple(let views):
                 cell.setRootView(StackView(views).axis(section.axis))
             case .forEach(let fr):
-                cell.setRootView(StackView(ViewBuilderItems(items: fr.allItems())).axis(section.axis))
+                cell.setRootView(StackView(BodyBuilderItems(items: fr.allItems())).axis(section.axis))
             case .nested(let items):
-                cell.setRootView(StackView(ViewBuilderItems(items: items)).axis(section.axis))
+                cell.setRootView(StackView(BodyBuilderItems(items: items)).axis(section.axis))
             case .none:
                 cell.setRootView(.init())
             }

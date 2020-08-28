@@ -5,7 +5,7 @@ public typealias UVScrollStack = VScrollStack
 open class VScrollStack: ScrollView {
     lazy var stack = VStack().edgesToSuperview().widthToSuperview()
     
-    public override init (@ViewBuilder block: ViewBuilder.SingleView) {
+    public override init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
         body {
             stack.subviews(block: block)

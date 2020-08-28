@@ -4,45 +4,48 @@ import AppKit
 import UIKit
 #endif
 
-@_functionBuilder public struct ViewBuilder {
-    public typealias Result = ViewBuilderItemable
+@available(*, deprecated, renamed: "BodyBuilder")
+public typealias ViewBuilder = BodyBuilder
+
+@_functionBuilder public struct BodyBuilder {
+    public typealias Result = BodyBuilderItemable
     public typealias SingleView = () -> Result
     
     /// Builds an empty view from an block containing no statements, `{ }`.
     public static func buildBlock() -> Result { [] }
     
     /// Passes a single view written as a child view (e..g, `{ Text("Hello") }`) through unmodified.
-    public static func buildBlock(_ attrs: ViewBuilderItemable...) -> Result {
+    public static func buildBlock(_ attrs: BodyBuilderItemable...) -> Result {
         buildBlock(attrs)
     }
     
     /// Passes a single view written as a child view (e..g, `{ Text("Hello") }`) through unmodified.
-    public static func buildBlock(_ attrs: [ViewBuilderItemable]) -> Result {
-        ViewBuilderItems(items: attrs)
+    public static func buildBlock(_ attrs: [BodyBuilderItemable]) -> Result {
+        BodyBuilderItems(items: attrs)
     }
     
     /// Provides support for "if" statements in multi-statement closures, producing an `Optional` view
     /// that is visible only when the `if` condition evaluates `true`.
-    public static func buildIf(_ content: ViewBuilderItemable?) -> Result {
-        guard let content = content else { return EmptyViewBuilderItem() }
+    public static func buildIf(_ content: BodyBuilderItemable?) -> Result {
+        guard let content = content else { return EmptyBodyBuilderItem() }
         return content
     }
     
     /// Provides support for "if" statements in multi-statement closures, producing
     /// ConditionalContent for the "then" branch.
-    public static func buildEither(first: ViewBuilderItemable) -> Result {
+    public static func buildEither(first: BodyBuilderItemable) -> Result {
         first
     }
 
     /// Provides support for "if-else" statements in multi-statement closures, producing
     /// ConditionalContent for the "else" branch.
-    public static func buildEither(second: ViewBuilderItemable) -> Result {
+    public static func buildEither(second: BodyBuilderItemable) -> Result {
         second
     }
 }
 
-extension BaseViewController: ViewBuilderItemable {
-    public var viewBuilderItem: ViewBuilderItem {
+extension BaseViewController: BodyBuilderItemable {
+    public var bodyBuilderItem: BodyBuilderItem {
         .single(View(inline: view).edgesToSuperview())
     }
 }

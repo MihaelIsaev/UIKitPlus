@@ -5,7 +5,7 @@ public typealias UHScrollStack = HScrollStack
 open class HScrollStack: ScrollView {
     lazy var stack = HStack().edgesToSuperview().heightToSuperview()
     
-    public override init (@ViewBuilder block: ViewBuilder.SingleView) {
+    public override init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
         body {
             stack.subviews(block: block)

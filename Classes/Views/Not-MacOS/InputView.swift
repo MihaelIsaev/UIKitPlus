@@ -43,7 +43,7 @@ open class InputView: UIInputView, AnyDeclarativeProtocol, DeclarativeProtocolIn
         buildView()
     }
     
-    public init (_ inputViewStyle: UIInputView.Style = .default, @ViewBuilder block: ViewBuilder.SingleView) {
+    public init (_ inputViewStyle: UIInputView.Style = .default, @BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero, inputViewStyle: inputViewStyle)
         _setup()
         body { block() }
@@ -124,11 +124,11 @@ extension InputView {
     }
     
     @discardableResult
-    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+    public func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> Self {
         body { block() }
     }
     
-    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> InputView {
+    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> InputView {
         InputView(block: block)
     }
 }

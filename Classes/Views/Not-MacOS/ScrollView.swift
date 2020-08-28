@@ -31,7 +31,7 @@ open class ScrollView: UIScrollView, AnyDeclarativeProtocol, DeclarativeProtocol
     
     var scrollPosition: State<CGPoint>?
     
-    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+    public init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
         _setup()
         body { block() }
@@ -165,11 +165,11 @@ extension ScrollView {
     }
     
     @discardableResult
-    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+    public func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> Self {
         body { block() }
     }
     
-    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> ScrollView {
+    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> ScrollView {
         ScrollView(block: block)
     }
 }

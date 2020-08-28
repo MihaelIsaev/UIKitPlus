@@ -141,7 +141,7 @@ public class Preview {
     var semanticContentAttribute: UISemanticContentAttribute = .unspecified
     #endif
     
-    public init(@ViewBuilder block: ViewBuilder.SingleView) {
+    public init(@BodyBuilder block: BodyBuilder.SingleView) {
         view = View(block: block).edgesToSuperview()
     }
     

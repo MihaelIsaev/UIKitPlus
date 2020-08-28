@@ -10,17 +10,17 @@ open class StackView: _StackView {
         super.init()
     }
     
-    public init (_ viewBuilderItem: ViewBuilderItemable) {
+    public init (_ viewBuilderItem: BodyBuilderItemable) {
         super.init(frame: .zero)
         add(item: viewBuilderItem)
     }
     
-    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+    public init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
         add(item: block())
     }
     
-    public init (@ViewBuilder block: (StackView) -> ViewBuilder.Result) {
+    public init (@BodyBuilder block: (StackView) -> BodyBuilder.Result) {
         super.init(frame: .zero)
         add(item: block(self))
     }
@@ -29,12 +29,12 @@ open class StackView: _StackView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> Self {
+    public func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> Self {
         add(item: block())
         return self
     }
     
-    public static func subviews(@ViewBuilder block: ViewBuilder.SingleView) -> VStack {
+    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> VStack {
         .init(block: block)
     }
     
@@ -185,8 +185,8 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
         return self
     }
     
-    func add(item: ViewBuilderItemable) {
-        switch item.viewBuilderItem {
+    func add(item: BodyBuilderItemable) {
+        switch item.bodyBuilderItem {
             case .single(let view):
                 addArrangedSubview(view)
             case .multiple(let views):
@@ -223,7 +223,7 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
 }
 
-extension Array where Element == ViewBuilderItemable {
+extension Array where Element == BodyBuilderItemable {
     #if os(macOS)
     fileprivate func flatten(_ orientation: NSUserInterfaceLayoutOrientation) -> BaseView {
         let stackView = StackView().orientation(orientation)

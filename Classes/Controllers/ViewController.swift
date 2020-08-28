@@ -36,7 +36,7 @@ open class ViewController: BaseViewController {
     public var navigationController: NavigationController?
     #endif
     
-    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+    public init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(nibName: nil, bundle: nil)
         _setup()
         body { block() }
@@ -60,7 +60,7 @@ open class ViewController: BaseViewController {
         buildUI()
     }
     
-    @ViewBuilder open var body: ViewBuilder.Result { [] }
+    @BodyBuilder open var body: BodyBuilder.Result { EmptyBodyBuilderItem() }
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
