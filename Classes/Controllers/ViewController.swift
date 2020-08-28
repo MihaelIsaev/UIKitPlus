@@ -32,6 +32,8 @@ open class ViewController: BaseViewController {
     open override func loadView() {
         self.view = View()
     }
+    
+    public var navigationController: NavigationController?
     #endif
     
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
