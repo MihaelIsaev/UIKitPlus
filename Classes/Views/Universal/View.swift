@@ -142,6 +142,84 @@ open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtoc
         }
         _touchesCancelled?(event)
     }
+    
+    public enum TouchPanState: CustomStringConvertible {
+        case began, changed, ended, cancelled, swiped
+        
+        public var description: String {
+            switch self {
+            case .began: return "began"
+            case .changed: return "changed"
+            case .ended: return "ended"
+            case .cancelled: return "cancelled"
+            case .swiped: return "swiped"
+            }
+        }
+    }
+    
+    public typealias TouchPanHandler = (TouchPanState, CGPoint, CGPoint) -> Void
+    
+    var _touchPanHandler: TouchPanHandler?
+    var scrollBeganPoint: CGPoint?
+    var scrollLastDeltaPoint: CGPoint = .zero
+    
+    open override func scrollWheel(with event: NSEvent) {
+        super.scrollWheel(with: event)
+        switch event.phase {
+        case .began:
+            scrollBeganPoint = .init(x: event.scrollingDeltaX, y: event.scrollingDeltaY)
+            scrollLastDeltaPoint = scrollBeganPoint ?? .zero
+            _touchPanHandler?(.began, .zero, .zero)
+        case .changed:
+            if let scrollBeganPoint = scrollBeganPoint {
+                scrollLastDeltaPoint.x += event.scrollingDeltaX
+                scrollLastDeltaPoint.y += event.scrollingDeltaY
+                _touchPanHandler?(.changed, scrollLastDeltaPoint, .init(x: event.deltaX, y: event.deltaY))
+            }
+        case .ended:
+            if let scrollBeganPoint = scrollBeganPoint {
+                scrollLastDeltaPoint.x += event.scrollingDeltaX
+                scrollLastDeltaPoint.y += event.scrollingDeltaY
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
+                    guard let self = self else { return }
+                    if let _ = self.scrollBeganPoint {
+                        self._touchPanHandler?(.ended, self.scrollLastDeltaPoint, .init(x: event.deltaX, y: event.deltaY))
+                    }
+                }
+            }
+        case .cancelled:
+            if let scrollBeganPoint = scrollBeganPoint {
+                _touchPanHandler?(.cancelled, .zero, .zero)
+                self.scrollBeganPoint = nil
+            }
+        case .mayBegin:
+            break
+        case .stationary:
+            break
+        default:
+            if let scrollBeganPoint = scrollBeganPoint {
+                print(event)
+                scrollLastDeltaPoint.x += event.scrollingDeltaX
+                scrollLastDeltaPoint.y += event.scrollingDeltaY
+                _touchPanHandler?(.swiped, scrollLastDeltaPoint, .init(x: event.deltaX, y: event.deltaY))
+                self.scrollBeganPoint = nil
+            }
+        }
+    }
+    
+    /// Touch pan gesture handler
+    /// to handle touch pan on magic mouse with one finger
+    /// and on magic trackpad with two fingers
+    ///
+    /// Parameters:
+    /// - state
+    /// - scrollDelta: scroll position
+    /// - delta: to understand the way of moving (especially for swipe state)
+    @discardableResult
+    public func onTouchPanGesture(_ action: @escaping TouchPanHandler) -> Self {
+        _touchPanHandler = action
+        return self
+    }
     #else
     override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
