@@ -33,12 +33,8 @@ open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtoc
     var __centerY: State<CGFloat> { _centerY }
     
     open override var tag: Int {
-        get {
-            properties.tag
-        }
-        set {
-            properties.tag = newValue
-        }
+        get { properties.tag }
+        set { properties.tag = newValue }
     }
     
     public init (@BodyBuilder block: BodyBuilder.SingleView) {
