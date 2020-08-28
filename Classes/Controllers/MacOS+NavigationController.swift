@@ -159,7 +159,7 @@ public class NavigationController: ViewController {
 // MARK: - Push
 
 extension NavigationController {
-   public func pushViewControllerAnimated(_ viewController: ViewController) {
+   public func pushViewController(_ viewController: ViewController) {
       pushViewController(viewController, animated: true)
    }
 
