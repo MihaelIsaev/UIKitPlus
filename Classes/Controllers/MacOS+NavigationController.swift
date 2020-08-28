@@ -13,6 +13,7 @@ public class NavigationController: ViewController {
     
     public let rootViewController: ViewController
     
+    var transitionInProgress = false
     var touchPanHandler: TouchPanHandler?
     
     public init(rootViewController: ViewController) {
@@ -27,6 +28,8 @@ public class NavigationController: ViewController {
             switch s {
             case .began:
                 if self.viewControllers.count > 0 {
+                    guard self.transitionInProgress == false else { return }
+                    self.transitionInProgress = true
                     self.touchPanHandler = .init(p, nav: self)
                 }
             case .changed:
@@ -87,6 +90,7 @@ public class NavigationController: ViewController {
         func ended(at point: CGPoint) {
             guard !destinationHasBeenReached else {
                 nav.unembedChildViewController(currentVC)
+                
                 return
             }
             // check if point far enough to proceed or rollback
@@ -96,6 +100,7 @@ public class NavigationController: ViewController {
         func swiped(to point: CGPoint, delta: CGPoint) {
             guard !destinationHasBeenReached else {
                 nav.unembedChildViewController(currentVC)
+                nav.transitionInProgress = false
                 return
             }
             // check which way we're swiping and animate proceed or rollback this way
@@ -131,6 +136,7 @@ public class NavigationController: ViewController {
                previousVC.view.animator().bounds.origin.x = width * 0.2
                currentVC.view.animator().bounds.origin.x = 0
             }) {
+                self.nav.transitionInProgress = false
                 self.previousVC.view.removeFromSuperview()
             }
         }
@@ -143,6 +149,7 @@ public class NavigationController: ViewController {
                 currentVC.view.animator().bounds.origin.x = -endFrame.width
                 previousVC.view.animator().bounds.origin.x = 0
             }) {
+                self.nav.transitionInProgress = false
                 self.nav.unembedChildViewController(self.currentVC)
             }
         }
@@ -212,6 +219,7 @@ extension NavigationController {
             previousVC.view.animator().bounds.origin.x = 0
         }) {
             self.unembedChildViewController(currentVC)
+            self.transitionInProgress = false
         }
         return
     }
