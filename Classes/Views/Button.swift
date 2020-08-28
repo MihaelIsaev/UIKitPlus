@@ -365,6 +365,18 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
         return self
     }
     
+    @discardableResult
+    public func contentHorizontalAlignment(_ alignment: UIControl.ContentHorizontalAlignment) -> Self {
+        contentHorizontalAlignment = alignment
+        return self
+    }
+    
+    @discardableResult
+    public func contentVerticalAlignment(_ alignment: UIControl.ContentVerticalAlignment) -> Self {
+        contentVerticalAlignment = alignment
+        return self
+    }
+    
     // MARK: Mode
     
     @discardableResult

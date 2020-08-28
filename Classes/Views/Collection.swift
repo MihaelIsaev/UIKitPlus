@@ -19,6 +19,7 @@ public class UCollection: View, UICollectionViewDataSource {
     let layout: UICollectionViewLayout
     
     var scrollPosition: State<CGPoint>?
+    var contentSize: State<CGSize>?
     
     class SectionChanges {
         let section: Int
@@ -55,6 +56,7 @@ public class UCollection: View, UICollectionViewDataSource {
     public init (_ layout: UICollectionViewLayout = CollectionView.defaultLayout, @ViewBuilder block: ViewBuilder.SingleView) {
         self.layout = layout
         super.init(frame: .zero)
+        self.collectionView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         process(block())
         collectionView.reloadData()
         $reversed.listen { [weak self] old, new in
@@ -139,6 +141,31 @@ public class UCollection: View, UICollectionViewDataSource {
         return self
     }
     #endif
+    
+    // MARK: ContentSize
+    
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let obj = object as? UICollectionView {
+            if obj == self.collectionView && keyPath == "contentSize" {
+                if let newSize = change?[NSKeyValueChangeKey.newKey] as? CGSize {
+                    contentSize?.wrappedValue = newSize
+                }
+            }
+        }
+    }
+    
+    @discardableResult
+    public func contentSize(_ binding: UIKitPlus.State<CGSize>) -> Self {
+        contentSize = binding
+        return self
+    }
+    
+    @discardableResult
+    public func contentSize<V>(_ expressable: ExpressableState<V, CGSize>) -> Self {
+        contentSize = expressable.unwrap()
+        return self
+    }
+
     // MARK: - UITableViewDataSource
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
