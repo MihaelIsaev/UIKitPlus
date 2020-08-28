@@ -98,16 +98,51 @@ open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtoc
     
     open func buildView() {}
     
-    #if !os(macOS)
     // MARK: Touches
-    
+    #if os(macOS)
+    typealias TouchClosure = (NSEvent) -> Void
+    #else
     typealias TouchClosure = (Set<UITouch>, UIEvent?) -> Void
+    #endif
     
     var _touchesBegan: TouchClosure?
     var _touchesMoved: TouchClosure?
     var _touchesEnded: TouchClosure?
     var _touchesCancelled: TouchClosure?
     
+    #if os(macOS)
+    open override func touchesBegan(with event: NSEvent) {
+        super.touchesBegan(with: event)
+        gestureRecognizers.forEach {
+            ($0 as? USwipeGestureRecognizer)?.touchesBegan(with: event)
+        }
+        _touchesBegan?(event)
+    }
+    
+    open override func touchesMoved(with event: NSEvent) {
+        super.touchesMoved(with: event)
+        gestureRecognizers.forEach {
+            ($0 as? USwipeGestureRecognizer)?.touchesMoved(with: event)
+        }
+        _touchesMoved?(event)
+    }
+    
+    open override func touchesEnded(with event: NSEvent) {
+        super.touchesEnded(with: event)
+        gestureRecognizers.forEach {
+            ($0 as? USwipeGestureRecognizer)?.touchesEnded(with: event)
+        }
+        _touchesEnded?(event)
+    }
+    
+    open override func touchesCancelled(with event: NSEvent) {
+        super.touchesCancelled(with: event)
+        gestureRecognizers.forEach {
+            ($0 as? USwipeGestureRecognizer)?.touchesCancelled(with: event)
+        }
+        _touchesCancelled?(event)
+    }
+    #else
     override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         _touchesBegan?(touches, event)
@@ -169,9 +204,86 @@ extension View {
     }
 }
 
-#if !os(macOS)
 // MARK: Touches
-
+#if os(macOS)
+extension View {
+    /// Began
+    @discardableResult
+    public func touchesBegan(_ closure: @escaping () -> Void) -> Self {
+        _touchesBegan = { _ in closure() }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesBegan(_ closure: @escaping (Self) -> Void) -> Self {
+        _touchesBegan = { _ in closure(self) }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesBegan(_ closure: @escaping (Self, NSEvent) -> Void) -> Self {
+        _touchesBegan = { closure(self, $0) }
+        return self
+    }
+    
+    /// Moved
+    @discardableResult
+    public func touchesMoved(_ closure: @escaping () -> Void) -> Self {
+        _touchesMoved = { _ in closure() }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesMoved(_ closure: @escaping (Self) -> Void) -> Self {
+        _touchesMoved = { _ in closure(self) }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesMoved(_ closure: @escaping (Self, NSEvent) -> Void) -> Self {
+        _touchesMoved = { closure(self, $0) }
+        return self
+    }
+    
+    /// Ended
+    @discardableResult
+    public func touchesEnded(_ closure: @escaping () -> Void) -> Self {
+        _touchesEnded = { _ in closure() }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesEnded(_ closure: @escaping (Self) -> Void) -> Self {
+        _touchesEnded = { _ in closure(self) }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesEnded(_ closure: @escaping (Self, NSEvent) -> Void) -> Self {
+        _touchesEnded = { closure(self, $0) }
+        return self
+    }
+    
+    /// Cancelled
+    @discardableResult
+    public func touchesCancelled(_ closure: @escaping () -> Void) -> Self {
+        _touchesCancelled = { _ in closure() }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesCancelled(_ closure: @escaping (Self) -> Void) -> Self {
+        _touchesCancelled = { _ in closure(self) }
+        return self
+    }
+    
+    @discardableResult
+    public func touchesCancelled(_ closure: @escaping (Self, NSEvent) -> Void) -> Self {
+        _touchesCancelled = { closure(self, $0) }
+        return self
+    }
+}
+#else
 extension View {
     /// Began
     @discardableResult

@@ -1,14 +1,14 @@
-#if !os(macOS)
-import UIKit
+#if os(macOS)
+import AppKit
 
 extension DeclarativeProtocol {
     @discardableResult
-    public func onSwipeGesture(direction: UISwipeGestureRecognizer.Direction, touches: Int = 1, on state: UIGestureRecognizer.State, _ action: @escaping () -> Void) -> Self {
+    public func onSwipeGesture(direction: USwipeGestureRecognizer.Direction, touches: Int = 2, on state: GestureRecognizer.State, _ action: @escaping () -> Void) -> Self {
         onSwipeGesture(direction: direction, touches: touches, on: state) { _ in action() }
     }
     
     @discardableResult
-    public func onSwipeGesture(direction: UISwipeGestureRecognizer.Direction, touches: Int = 1, on state: UIGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
+    public func onSwipeGesture(direction: USwipeGestureRecognizer.Direction, touches: Int = 2, on state: GestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
         onSwipeGesture(direction: direction, touches: touches) { v, s, r in
             if s == state {
                 action(v)
