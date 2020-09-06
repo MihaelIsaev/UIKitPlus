@@ -1,8 +1,5 @@
 #if os(macOS)
 import AppKit
-#else
-import UIKit
-#endif
 
 public protocol Soundable {
     @discardableResult
@@ -50,3 +47,4 @@ extension _Soundable {
         return self
     }
 }
+#endif

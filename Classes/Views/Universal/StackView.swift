@@ -90,7 +90,12 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     
     open override var tag: Int {
         get { properties.tag }
-        set { properties.tag = newValue }
+        set {
+            #if !os(macOS)
+            super.tag = newValue
+            #endif
+            properties.tag = newValue
+        }
     }
     
     public init () {

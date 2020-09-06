@@ -6,7 +6,9 @@ import UIKit
 
 extension DeclarativeProtocol {
     private func _setBorderWidth(_ width: CGFloat) {
+        #if os(macOS)
         declarativeView.wantsLayer = true
+        #endif
         _declarativeView._properties.borders.views.forEach { $0.value.removeFromSuperview() }
         _declarativeView._properties.borders.views.removeAll()
         #if os(macOS)
@@ -26,7 +28,7 @@ extension DeclarativeProtocol {
         }
         #else
         properties.borderColor = color.wrappedValue
-        declarativeView.layer.borderColor = color.cgColor
+        declarativeView.layer.borderColor = color.wrappedValue.cgColor
         #endif
     }
     

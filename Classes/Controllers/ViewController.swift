@@ -581,7 +581,11 @@ extension BaseViewController: _Titleable {
 
 #if !os(macOS)
 extension BaseViewController: _BackgroundColorable {
-    func _setBackgroundColor(_ v: UColor) {
+    var _backgroundColorState: State<UColor> {
+        .init(wrappedValue: view.backgroundColor ?? .clear)
+    }
+    
+    func _setBackgroundColor(_ v: UColor?) {
         view.backgroundColor = v
     }
 }

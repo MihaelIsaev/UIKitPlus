@@ -73,8 +73,8 @@ public class UCollection: View, UICollectionViewDataSource {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func process(_ item: ViewBuilderItemable, sectionIndex: Int = 0) {
-        let item = item.viewBuilderItem
+    func process(_ item: BodyBuilderItemable, sectionIndex: Int = 0) {
+        let item = item.bodyBuilderItem
         switch item {
         case .single:
             items.append(.init(item))

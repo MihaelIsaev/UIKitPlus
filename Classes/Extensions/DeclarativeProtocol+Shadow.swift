@@ -29,7 +29,7 @@ extension DeclarativeProtocol {
         }
         #else
         properties.shadowColor = color.wrappedValue
-        declarativeView.layer.shadowColor = color.cgColor
+        declarativeView.layer.shadowColor = color.wrappedValue.cgColor
         #endif
     }
     

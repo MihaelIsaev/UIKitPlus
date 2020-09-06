@@ -1,8 +1,5 @@
 #if os(macOS)
 import AppKit
-#else
-import UIKit
-#endif
 
 public protocol ArrowPositionable {
     @discardableResult
@@ -50,3 +47,4 @@ extension _ArrowPositionable {
         return self
     }
 }
+#endif

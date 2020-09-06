@@ -148,9 +148,9 @@ extension Text: _TextAligmentable {
     func _setTextAlignment(v: NSTextAlignment) {
         let p = NSMutableParagraphStyle()
         p.alignment = v
-        let str = NSMutableAttributedString(attributedString: attributedText)
+        let str = NSMutableAttributedString(attributedString: attributedText ?? .init())
         str.addAttribute(.paragraphStyle, value: p, range: NSRange(location: 0, length: str.length))
-        attributedText = str.attrString
+        attributedText = str
         textAlignment = v
     }
 }

@@ -86,11 +86,11 @@ public class List: View, UITableViewDataSource {
     
     private func handleHiddency(_ view: UIView, at sectionIndex: Int) {
         if let v = view as? _Hiddenable {
-            var isVisibleInList = !v.hiddenState.wrappedValue
-            v.hiddenState.beginTrigger { [weak self] in
+            var isVisibleInList = !v._hiddenState.wrappedValue
+            v._hiddenState.beginTrigger { [weak self] in
                 self?.tableView.beginUpdates()
             }
-            v.hiddenState.listen { [weak self] old, new in
+            v._hiddenState.listen { [weak self] old, new in
                 guard old != new else { return }
                 switch new {
                 case true:
@@ -103,7 +103,7 @@ public class List: View, UITableViewDataSource {
                    self?.tableView.insertRows(at: [0].map { IndexPath(row: $0, section: sectionIndex) }, with: .automatic)
                 }
             }
-            v.hiddenState.endTrigger { [weak self] in
+            v._hiddenState.endTrigger { [weak self] in
                 self?.tableView.endUpdates()
             }
         }

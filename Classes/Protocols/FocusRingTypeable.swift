@@ -1,8 +1,5 @@
 #if os(macOS)
 import AppKit
-#else
-import UIKit
-#endif
 
 public protocol FocusRingTypeable {
     @discardableResult
@@ -50,3 +47,4 @@ extension _FocusRingTypeable {
         return self
     }
 }
+#endif

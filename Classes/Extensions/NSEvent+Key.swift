@@ -5,6 +5,7 @@
 //  Created by Mihael Isaev on 25.08.2020.
 //
 
+#if os(macOS)
 import Foundation
 
 extension NSEvent {
@@ -84,3 +85,4 @@ extension NSEvent {
         .parse(keyCode)
     }
 }
+#endif

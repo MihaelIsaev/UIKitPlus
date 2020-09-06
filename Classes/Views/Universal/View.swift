@@ -34,7 +34,12 @@ open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtoc
     
     open override var tag: Int {
         get { properties.tag }
-        set { properties.tag = newValue }
+        set {
+            #if !os(macOS)
+            super.tag = newValue
+            #endif
+            properties.tag = newValue
+        }
     }
     
     public init (@BodyBuilder block: BodyBuilder.SingleView) {

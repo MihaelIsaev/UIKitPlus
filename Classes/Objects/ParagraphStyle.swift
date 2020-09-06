@@ -44,15 +44,19 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         defaultTabInterval(obj.defaultTabInterval)
         paragraphSpacingBefore(obj.paragraphSpacingBefore)
         hyphenationFactor(obj.hyphenationFactor)
+        #if os(macOS)
         tighteningFactorForTruncation(obj.tighteningFactorForTruncation)
         headerLevel(obj.headerLevel)
         allowsDefaultTighteningForTruncation(obj.allowsDefaultTighteningForTruncation)
+        #endif
         alignment(obj.alignment)
         lineBreakMode(obj.lineBreakMode)
         baseWritingDirection(obj.baseWritingDirection)
         tabStops(obj.tabStops)
+        #if os(macOS)
         textBlocks(obj.textBlocks)
         textLists(obj.textLists)
+        #endif
     }
     
     func mergeWithParagraphStyle(_ v: ParagraphStyle) {
@@ -63,15 +67,19 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         defaultTabIntervalState.merge(with: v.defaultTabIntervalState)
         paragraphSpacingBeforeState.merge(with: v.paragraphSpacingBeforeState)
         hyphenationFactorState.merge(with: v.hyphenationFactorState)
+        #if os(macOS)
         tighteningFactorForTruncationState.merge(with: v.tighteningFactorForTruncationState)
         headerLevelState.merge(with: v.headerLevelState)
         allowsDefaultTighteningForTruncationState.merge(with: v.allowsDefaultTighteningForTruncationState)
+        #endif
         alignmentState.merge(with: v.alignmentState)
         lineBreakModeState.merge(with: v.lineBreakModeState)
         baseWritingDirectionState.merge(with: v.baseWritingDirectionState)
         tabStopsState.merge(with: v.tabStopsState)
+        #if os(macOS)
         textBlocksState.merge(with: v.textBlocksState)
         textListsState.merge(with: v.textListsState)
+        #endif
     }
     
     // MARK: Line Spacing
@@ -470,6 +478,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         hyphenationFactor(expressable.unwrap())
     }
     
+    #if os(macOS)
     // MARK: Tightening Factor For Truncation
     
     public override var tighteningFactorForTruncation: Float {
@@ -577,6 +586,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func allowsDefaultTighteningForTruncation<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
         allowsDefaultTighteningForTruncation(expressable.unwrap())
     }
+    #endif
     
     // MARK: Alignment
     
@@ -722,6 +732,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         tabStops(expressable.unwrap())
     }
     
+    #if os(macOS)
     // MARK: Text Blocks
     
     public override var textBlocks: [NSTextBlock] {
@@ -793,4 +804,5 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func textLists<V>(_ expressable: ExpressableState<V, [NSTextList]>) -> Self {
         textLists(expressable.unwrap())
     }
+    #endif
 }

@@ -133,9 +133,11 @@ open class AttributedString: AnyString {
     /// UColor, default blackColor
     @discardableResult
     public func foreground(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        #if os(macOS)
         value.onChange { new in
             self.addAttribute(.foregroundColor, new, at: range)
         }
+        #endif
         return addAttribute(.foregroundColor, value.current, at: range)
     }
     
@@ -535,6 +537,7 @@ extension AttrStr: _FontableAtRange {
         return self
     }
     
+    #if os(macOS)
     // MARK: Tightening Factor For Truncation
     
     @discardableResult
@@ -594,6 +597,7 @@ extension AttrStr: _FontableAtRange {
         _paragraphStyle.allowsDefaultTighteningForTruncation(expressable)
         return self
     }
+    #endif
     
     // MARK: Alignment
     
@@ -675,6 +679,7 @@ extension AttrStr: _FontableAtRange {
         return self
     }
     
+    #if os(macOS)
     // MARK: Text Blocks
     
     @discardableResult
@@ -714,4 +719,5 @@ extension AttrStr: _FontableAtRange {
         _paragraphStyle.textLists(expressable)
         return self
     }
+    #endif
 }

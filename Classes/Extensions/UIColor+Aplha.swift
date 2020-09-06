@@ -1,5 +1,5 @@
 #if !os(macOS)
-import UIKi
+import UIKit
 
 extension UColor {
     public func alpha(_ value: CGFloat) -> UColor {

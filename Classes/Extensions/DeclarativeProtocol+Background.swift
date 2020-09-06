@@ -16,7 +16,7 @@ extension AnyDeclarativeProtocol {
     }
     #else
     func _setBackgroundColor(_ v: UColor?) {
-        declarativeView.backgroundColor = color
+        declarativeView.backgroundColor = v
     }
     #endif
     

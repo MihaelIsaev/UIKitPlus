@@ -7,9 +7,6 @@
 
 #if os(macOS)
 import AppKit
-#else
-import UIKit
-#endif
 
 public protocol Menuable {
     @discardableResult
@@ -58,3 +55,4 @@ extension _Menuable {
         return self
     }
 }
+#endif
