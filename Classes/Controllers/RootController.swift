@@ -6,6 +6,36 @@ public typealias RootBeforeTransition = (UIViewController) -> Void
 
 public typealias SimpleRootController = RootController<Never>
 
+private var _rootController: AnyRootController?
+
+extension AnyRootController {
+    public static var shared: Self {
+        if let controller = _rootController as? Self {
+            return controller
+        }
+        let controller = Self.init()
+        _rootController = controller
+        return controller
+    }
+}
+
+extension UIViewController {
+    public func attach(to window: UIWindow?) {
+        window?.rootViewController = self
+        window?.makeKeyAndVisible()
+    }
+    
+    @available(iOS 13.0, *)
+    @discardableResult
+    public func attach(to scene: UIScene) -> UIWindow? {
+        guard let windowScene = scene as? UIWindowScene else { return nil }
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = self
+        window.makeKeyAndVisible()
+        return window
+    }
+}
+
 open class RootController<DeeplinkType>: ViewController, RootControllerable {
     #if !os(tvOS)
     open override var preferredStatusBarStyle: UIStatusBarStyle { current.preferredStatusBarStyle }
@@ -189,21 +219,6 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
     }
     
     open func handleDeepLink(type: DeeplinkType) {}
-    
-    public func attach(to window: UIWindow?) {
-        window?.rootViewController = self
-        window?.makeKeyAndVisible()
-    }
-    
-    @available(iOS 13.0, *)
-    @discardableResult
-    public func attach(to scene: UIScene) -> UIWindow? {
-        guard let windowScene = scene as? UIWindowScene else { return nil }
-        let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = self
-        window.makeKeyAndVisible()
-        return window
-    }
 }
 
 extension UIViewController {

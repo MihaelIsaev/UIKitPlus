@@ -54,6 +54,7 @@ open class ViewController: BaseViewController {
     
     private func _setup() {
         #if !os(macOS)
+        isLandscape = view.frame.size.width > view.frame.size.height
         subscribeToKeyboardNotifications()
         #endif
         body { body }
@@ -232,6 +233,21 @@ open class ViewController: BaseViewController {
     }
     open func viewDidAppearFirstTime(_ animated: Bool) {
         _viewWillAppearFirstTime(animated)
+    }
+    
+    @State public var isLandscape = false
+    
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        if #available(iOS 10.0, *) {
+            UIViewPropertyAnimator.init(duration: coordinator.transitionDuration, curve: coordinator.completionCurve) {
+                self.isLandscape = size.width > self.view.frame.size.width
+            }.startAnimation()
+        } else {
+            UIView.animate(withDuration: coordinator.transitionDuration, delay: 0, options: UIView.AnimationOptions(rawValue: UInt(coordinator.completionCurve.rawValue)), animations: {
+                self.isLandscape = size.width > self.view.frame.size.width
+            }, completion: nil)
+        }
     }
     
     @State public var keyboardHeight: CGFloat = 0

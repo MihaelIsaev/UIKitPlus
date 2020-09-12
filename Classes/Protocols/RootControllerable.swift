@@ -1,7 +1,19 @@
 #if !os(macOS)
 import UIKit
 
-public protocol RootControllerable {
+public protocol AnyRootController {
+    init ()
+    
+    /// Needed to attach to classic window
+    func attach(to window: UIWindow?)
+    
+    /// Needed to attach to scene's window
+    @available(iOS 13.0, *)
+    @discardableResult
+    func attach(to scene: UIScene) -> UIWindow?
+}
+
+public protocol RootControllerable: AnyRootController {
     var current: UIViewController {  get }
     
     var currentType: RootScreenType { get }

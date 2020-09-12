@@ -187,6 +187,17 @@ open class VerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativeProt
         return self
     }
     
+    @discardableResult
+    public func digitShadow(_ colorNumber: Int, opacity: Float = 1, x: CGFloat = 0, y: CGFloat = 0, radius: CGFloat = 10) -> Self {
+        digitShadow(colorNumber.color, opacity: opacity, x: x, y: y, radius: radius)
+    }
+    
+    @discardableResult
+    public func digitShadow(_ color: UColor = .black, opacity: Float = 1, x: CGFloat = 0, y: CGFloat = 0, radius: CGFloat = 10) -> Self {
+        digitViews.forEach { $0.shadow(color, opacity: opacity, x: x, y: y, radius: radius) }
+        return self
+    }
+    
     func setupView() {
         digitViews = (0...quantity - 1).map { _ in DigitView().background(digitBackground).width($widthOfDigitView) }
         body {

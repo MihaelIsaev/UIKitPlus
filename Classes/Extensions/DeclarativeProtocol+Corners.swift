@@ -51,6 +51,7 @@ extension DeclarativeProtocol {
         _declarativeView._properties.customCorners = nil
         guard corners.count > 0 else {
             declarativeView.layer.cornerRadius = radius
+            declarativeView.layoutIfNeeded()
             return self
         }
         _declarativeView._properties.customCorners = CustomCorners(radius: radius, corners: corners)
@@ -73,11 +74,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func corners<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        corners(expressable.value())
-        expressable.state.listen { [weak self] old, new in
-            self?.corners(expressable.value())
-        }
-        return self
+        corners(expressable.unwrap())
     }
 }
 #endif

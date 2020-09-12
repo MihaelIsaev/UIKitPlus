@@ -31,13 +31,13 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     
     // MARK: States
     
-    var titleNormal: UIKitPlus.State<String>?
-    var titleHighlighted: UIKitPlus.State<String>?
-    var titleDisabled: UIKitPlus.State<String>?
-    var titleSelected: UIKitPlus.State<String>?
-    var titleFocused: UIKitPlus.State<String>?
-    var titleApplication: UIKitPlus.State<String>?
-    var titleReserved: UIKitPlus.State<String>?
+    var titleNormal: UIKitPlus.State<NSAttributedString>?
+    var titleHighlighted: UIKitPlus.State<NSAttributedString>?
+    var titleDisabled: UIKitPlus.State<NSAttributedString>?
+    var titleSelected: UIKitPlus.State<NSAttributedString>?
+    var titleFocused: UIKitPlus.State<NSAttributedString>?
+    var titleApplication: UIKitPlus.State<NSAttributedString>?
+    var titleReserved: UIKitPlus.State<NSAttributedString>?
     
     private var titleChangeTransition: UIView.AnimationOptions?
     
@@ -69,42 +69,46 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     
     // MARK: Initialization
     
-    public init (_ title: String = "") {
+    public init (_ string: AnyString...) {
         super.init(frame: .zero)
         _setup()
-        setTitle(title, for: .normal)
+        title(string)
+    }
+    
+    public init (_ strings: [AnyString]) {
+        super.init(frame: .zero)
+        _setup()
+        title(strings)
     }
     
     public init (_ localized: LocalizedString...) {
         super.init(frame: .zero)
         _setup()
-        setTitle(String(localized), for: .normal)
+        title(localized)
     }
     
     public init (_ localized: [LocalizedString]) {
         super.init(frame: .zero)
         _setup()
-        setTitle(String(localized), for: .normal)
+        title(localized)
     }
     
-    public init (_ state: UIKitPlus.State<String>) {
+    public init<A: AnyString>(_ state: UIKitPlus.State<A>) {
         super.init(frame: .zero)
         _setup()
-        setTitle(state.wrappedValue, for: .normal)
-        titleNormal = state
-        titleNormal?.listen { [weak self] new in
-            self?.setTitle(new, for: .normal)
-        }
+        title(state)
     }
     
-    public init <V>(_ expressable: ExpressableState<V, String>) {
+    public init<V, A: AnyString>(_ expressable: ExpressableState<V, A>) {
         super.init(frame: .zero)
         _setup()
-        setTitle(expressable.value(), for: .normal)
-        titleNormal = expressable.unwrap()
-        titleNormal?.listen { [weak self] new in
-            self?.setTitle(new, for: .normal)
-        }
+        title(expressable)
+    }
+    
+    public init (@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
+        super.init(frame: .zero)
+        _setup()
+        title(stateString: stateString)
     }
     
     public override init(frame: CGRect) {
@@ -162,109 +166,64 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     // MARK: Title
     
     @discardableResult
-    public func title(_ title: String, _ state: UIControl.State = .normal) -> Self {
-        setTitle(title, for: state)
+    public func title(_ value: LocalizedString..., for state: UIControl.State = .normal) -> Self {
+        title(value)
+    }
+    
+    @discardableResult
+    public func title(_ value: [LocalizedString], _ state: UIControl.State = .normal) -> Self {
+        setAttributedTitle(.init(string: String(value)), for: state)
         return self
     }
     
     @discardableResult
-    public func title(_ localized: LocalizedString..., state: UIControl.State = .normal) -> Self {
-        setTitle(String(localized), for: state)
+    public func title(_ value: AnyString..., for state: UIControl.State = .normal) -> Self {
+        title(value)
+    }
+    
+    @discardableResult
+    public func title(_ value: [AnyString], _ state: UIControl.State = .normal) -> Self {
+        setAttributedTitle(value.attributedString, for: state)
         return self
     }
     
     @discardableResult
-    public func title(_ localized: [LocalizedString], state: UIControl.State = .normal) -> Self {
-        setTitle(String(localized), for: state)
-        return self
-    }
-    
-    @discardableResult
-    public func title(_ bind: UIKitPlus.State<String>, state: UIControl.State = .normal) -> Self  {
-        setTitle(bind.wrappedValue, for: state)
+    public func title<A: AnyString>(_ bind: UIKitPlus.State<A>, _ state: UIControl.State = .normal) -> Self {
+        setAttributedTitle(bind.wrappedValue.attributedString, for: state)
+        let st: UIKitPlus.State<NSAttributedString>
         switch state {
         case .application:
-            titleApplication = bind
-            bind.listen { [weak self] new in
-                self?.setTitle(new, for: .application)
-            }
+            st = titleApplication ?? .init(wrappedValue: bind.wrappedValue.attributedString)
         case .disabled:
-            titleDisabled = bind
-            bind.listen { [weak self] new in
-                self?.setTitle(new, for: .disabled)
-            }
+            st = titleDisabled ?? .init(wrappedValue: bind.wrappedValue.attributedString)
         case .focused:
-            titleFocused = bind
-            bind.listen { [weak self] new in
-                self?.setTitle(new, for: .focused)
-            }
+            st = titleFocused ?? .init(wrappedValue: bind.wrappedValue.attributedString)
         case .highlighted:
-            titleHighlighted = bind
-            bind.listen { [weak self] new in
-                self?.setTitle(new, for: .highlighted)
-            }
+            st = titleHighlighted ?? .init(wrappedValue: bind.wrappedValue.attributedString)
         case .normal:
-            titleNormal = bind
-            bind.listen { [weak self] new in
-                self?.setTitle(new, for: .normal)
-            }
+            st = titleNormal ?? .init(wrappedValue: bind.wrappedValue.attributedString)
         case .reserved:
-            titleReserved = bind
-            bind.listen { [weak self] new in
-                self?.setTitle(new, for: .reserved)
-            }
+            st = titleReserved ?? .init(wrappedValue: bind.wrappedValue.attributedString)
         case .selected:
-            titleSelected = bind
-            bind.listen { [weak self] new in
-                self?.setTitle(new, for: .selected)
-            }
-        default: break
+            st = titleSelected ?? .init(wrappedValue: bind.wrappedValue.attributedString)
+        default:
+            st = .init(wrappedValue: bind.wrappedValue.attributedString)
+        }
+        bind.listen { [weak self] new in
+            st.wrappedValue = new.attributedString
+            self?.setAttributedTitle(new.attributedString, for: state)
         }
         return self
     }
     
     @discardableResult
-    public func title<V>(_ expressable: ExpressableState<V, String>, state: UIControl.State = .normal) -> Self {
-        setTitle(expressable.value(), for: .normal)
-        switch state {
-        case .application:
-            titleApplication = expressable.unwrap()
-            titleApplication?.listen { [weak self] new in
-                self?.setTitle(new, for: .application)
-            }
-        case .disabled:
-            titleDisabled = expressable.unwrap()
-            titleDisabled?.listen { [weak self] new in
-                self?.setTitle(new, for: .disabled)
-            }
-        case .focused:
-            titleFocused = expressable.unwrap()
-            titleFocused?.listen { [weak self] new in
-                self?.setTitle(new, for: .focused)
-            }
-        case .highlighted:
-            titleHighlighted = expressable.unwrap()
-            titleHighlighted?.listen { [weak self] new in
-                self?.setTitle(new, for: .highlighted)
-            }
-        case .normal:
-            titleNormal = expressable.unwrap()
-            titleNormal?.listen { [weak self] new in
-                self?.setTitle(new, for: .normal)
-            }
-        case .reserved:
-            titleReserved = expressable.unwrap()
-            titleReserved?.listen { [weak self] new in
-                self?.setTitle(new, for: .reserved)
-            }
-        case .selected:
-            titleSelected = expressable.unwrap()
-            titleSelected?.listen { [weak self] new in
-                self?.setTitle(new, for: .selected)
-            }
-        default: break
-        }
-        return self
+    public func title<V, A: AnyString>(_ expressable: ExpressableState<V, A>, _ state: UIControl.State = .normal) -> Self {
+        title(expressable.unwrap(), state)
+    }
+    
+    @discardableResult
+    public func title(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self {
+        title(stateString())
     }
     
     // MARK: Title Color
