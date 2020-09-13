@@ -21,7 +21,8 @@ extension BaseApp {
         public typealias CompletionHandler = (Bool) -> Void
         var action: ((CompletionHandler) -> Void)?
         
-        public init (_ type: String = UUID().uuidString) {
+        public init (_ type: String) {
+            assert(type.count > 0, "Shortcut type should be set, it should be any unique string")
             item = UIMutableApplicationShortcutItem(type: type, localizedTitle: " ")
         }
         

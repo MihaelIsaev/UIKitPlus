@@ -11,6 +11,7 @@ import UIKit
 @UIApplicationMain
 open class BaseApp: UIApplication, UIApplicationDelegate {
     public static override var shared: BaseApp { super.shared as! BaseApp }
+    public static var mainScene: MainScene { shared.mainScene }
     
     @UState public var deviceOrientation = UIDevice.current.orientation
     @UState public var deviceBatteryLevel = UIDevice.current.batteryLevel
@@ -20,8 +21,7 @@ open class BaseApp: UIApplication, UIApplicationDelegate {
     @UState public var pushAuthorizationStatus: PushNotificationsAuthorizationStatus = .notDetermined
     @UState public var pushNotificationToken: String?
     
-    public var rootViewController: UIViewController { mainScene?.handler() ?? SimpleRootController() }
-    var mainScene: MainScene?
+    public internal(set) lazy var mainScene: MainScene = MainScene()
     
     public override init() {
         super.init()
@@ -49,28 +49,31 @@ open class BaseApp: UIApplication, UIApplicationDelegate {
             scenes.append(scene)
         case .shortcuts(let v):
             shortcuts.append(contentsOf: v.shortcuts)
-            shortcutItems?.append(contentsOf: v.shortcuts.map { shortcut in
-                shortcut._update = {
-                    guard let indexToRemove = self.shortcutItems?.firstIndex(where: { $0.type == shortcut.item.type }) else { return }
-                    self.shortcutItems?.remove(at: indexToRemove)
-                    if let indexArray = self.shortcuts.firstIndex(where: { $0 === shortcut }) {
-                        self.shortcutItems?.insert(shortcut.item, at: indexArray)
-                        print("index found")
-                    }
-                }
-                shortcut._disable = {
-                    self.shortcutItems?.removeAll(where: { $0.type == shortcut.item.type })
-                }
-                shortcut._enable = {
-                    self.shortcutItems?.removeAll(where: { $0.type == shortcut.item.type })
-                    guard let index = self.shortcuts.firstIndex(where: { $0 === shortcut }) else { return }
-                    self.shortcutItems?.insert(shortcut.item, at: index)
-                }
-                return shortcut.item
-            })
+            _setShourtcuts()
         case .items(let items): items.forEach { parseAppBuilderItem($0) }
         case .none: break
         }
+    }
+    
+    private func _setShourtcuts() {
+        shortcutItems?.append(contentsOf: shortcuts.map { shortcut in
+            shortcut._update = {
+                guard let indexToRemove = self.shortcutItems?.firstIndex(where: { $0.type == shortcut.item.type }) else { return }
+                self.shortcutItems?.remove(at: indexToRemove)
+                if let indexArray = self.shortcuts.firstIndex(where: { $0 === shortcut }) {
+                    self.shortcutItems?.insert(shortcut.item, at: indexArray)
+                }
+            }
+            shortcut._disable = {
+                self.shortcutItems?.removeAll(where: { $0.type == shortcut.item.type })
+            }
+            shortcut._enable = {
+                self.shortcutItems?.removeAll(where: { $0.type == shortcut.item.type })
+                guard let index = self.shortcuts.firstIndex(where: { $0 === shortcut }) else { return }
+                self.shortcutItems?.insert(shortcut.item, at: index)
+            }
+            return shortcut.item
+        })
     }
     
     // MARK: - UIApplicationDelegate
@@ -78,6 +81,9 @@ open class BaseApp: UIApplication, UIApplicationDelegate {
     public var window: UIWindow?
     
     public func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        shortcutItems = []
+        parseAppBuilderItem(body.appBuilderContent)
+        mainScene.initialize()
         if lifecycle?._willFinishLaunchingWithOptions?(launchOptions ?? [:]) == false {
             return false
         }
@@ -98,21 +104,22 @@ open class BaseApp: UIApplication, UIApplicationDelegate {
         NotificationCenter.default.addObserver(forName: UIDevice.proximityStateDidChangeNotification, object: nil, queue: .main) { _ in
             self.deviceProximityState = UIDevice.current.proximityState
         }
-        shortcutItems = []
-        parseAppBuilderItem(body.appBuilderContent)
         if lifecycle?._didFinishLaunchingWithOptions?(launchOptions ?? [:]) == false {
             return false
         }
         lifecycle?._didFinishLaunching?()
         if #available(iOS 13.0, *) {} else {
             window = UIWindow(frame: UIScreen.main.bounds)
-            rootController.attach(to: window)
+            mainScene.viewController.attach(to: window)
         }
         return true
     }
     
     public func applicationDidBecomeActive(_ application: UIApplication) {
         lifecycle?._didBecomeActive?()
+        if #available(iOS 13.0, *) {} else {
+            // TODO: handle shortcut
+        }
     }
     
     public func applicationWillResignActive(_ application: UIApplication) {
@@ -301,7 +308,7 @@ open class BaseApp: UIApplication, UIApplicationDelegate {
     
     @available(iOS 13.0, *)
     func makeWindowForScene(_ scene: UIScene) -> UIWindow? {
-        rootController.attach(to: scene)
+        mainScene.viewController.attach(to: scene)
     }
     
     @available(iOS 13.0, *)

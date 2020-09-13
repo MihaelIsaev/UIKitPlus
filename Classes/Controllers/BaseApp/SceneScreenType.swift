@@ -1,4 +1,4 @@
-public struct RootScreenType: ExpressibleByStringLiteral, CustomStringConvertible, Equatable {
+public struct SceneScreenType: ExpressibleByStringLiteral, CustomStringConvertible, Equatable, Hashable {
     public let type: String
     
     init (type: String) {
@@ -14,11 +14,15 @@ public struct RootScreenType: ExpressibleByStringLiteral, CustomStringConvertibl
     public static var logout: Self { "logout" }
     public static var main: Self { "main" }
     public static var onboarding: Self { "onboarding" }
-    public static var nothing: Self { "nothing" }
     
     public var description: String { type }
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.type == rhs.type
     }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(type)
+    }
 }
+
