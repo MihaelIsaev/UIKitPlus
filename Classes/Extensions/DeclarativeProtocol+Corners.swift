@@ -66,8 +66,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func corners(_ state: State<CGFloat>) -> Self {
         corners(state.wrappedValue)
-        state.listen { [weak self] old, new in
-            self?.corners(state.wrappedValue)
+        state.listen { old, new in
+            self.corners(state.wrappedValue)
         }
         return self
     }

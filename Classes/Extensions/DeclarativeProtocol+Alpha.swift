@@ -21,8 +21,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func alpha(_ state: State<CGFloat>) -> Self {
         alpha(state.wrappedValue)
-        state.listen { [weak self] old, new in
-            self?.alpha(new)
+        state.listen { old, new in
+            self.alpha(new)
         }
         return self
     }

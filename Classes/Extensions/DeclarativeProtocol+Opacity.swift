@@ -25,13 +25,13 @@ extension DeclarativeProtocol {
         declarativeView.layer.opacity = state.wrappedValue
         #endif
         properties.opacity = state.wrappedValue
-        state.listen { [weak self] old, new in
+        state.listen { old, new in
             #if os(macOS)
-            self?.declarativeView.layer?.opacity = new
+            self.declarativeView.layer?.opacity = new
             #else
-            self?.declarativeView.layer.opacity = new
+            self.declarativeView.layer.opacity = new
             #endif
-            self?.properties.opacity = new
+            self.properties.opacity = new
         }
         return self
     }
@@ -44,13 +44,13 @@ extension DeclarativeProtocol {
         declarativeView.layer.opacity = expressable.value()
         #endif
         properties.opacity = expressable.value()
-        expressable.state.listen { [weak self] old, new in
+        expressable.state.listen { old, new in
             #if os(macOS)
-            self?.declarativeView.layer?.opacity = expressable.value()
+            self.declarativeView.layer?.opacity = expressable.value()
             #else
-            self?.declarativeView.layer.opacity = expressable.value()
+            self.declarativeView.layer.opacity = expressable.value()
             #endif
-            self?.properties.opacity = expressable.value()
+            self.properties.opacity = expressable.value()
         }
         return self
     }

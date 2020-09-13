@@ -866,8 +866,8 @@ extension DeclarativeProtocol {
         guard let _self = self as? DeclarativeProtocolInternal else { return }
         guard let destinationView = preConstraintView.unwrapWithSuperview(superview) else {
             guard let tag = preConstraintView.tag else { return }
-            NotificationCenter.default.addObserver(for: AddedViewWithTag(tag)) { [weak self] in
-                self?.activateRelative(pc)
+            NotificationCenter.default.addObserver(for: AddedViewWithTag(tag)) {
+                self.activateRelative(pc)
             }
             return
         }

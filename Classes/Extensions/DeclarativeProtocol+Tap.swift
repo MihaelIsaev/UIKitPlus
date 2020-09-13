@@ -56,7 +56,7 @@ extension DeclarativeProtocol where V: UIControl {
     
     @discardableResult
     public func onTapGesture(_ event: UIControl.Event = .touchUpInside, _ action: @escaping (V) -> Void) -> Self {
-        declarativeView.actionHandler(controlEvents: event) { [weak self] in
+        declarativeView.actionHandler(controlEvents: event) {
             guard let self = self as? V else { return }
             action(self)
         }
