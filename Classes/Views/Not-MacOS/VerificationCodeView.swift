@@ -76,11 +76,11 @@ open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativePro
         movedToSuperview()
     }
     
-    lazy var hiddenTextField = TextField().edgesToSuperview(top: 0, leading: 0)
-                                                          .alpha(0.05)
-                                                          .keyboard(.numberPad)
-                                                          .editingChanged(edited)
-                                                          .shouldChangeCharacters(shouldChangeCharacters)
+    lazy var hiddenTextField = UTextField().edgesToSuperview(top: 0, leading: 0)
+                                                            .alpha(0.05)
+                                                            .keyboard(.numberPad)
+                                                            .editingChanged(edited)
+                                                            .shouldChangeCharacters(shouldChangeCharacters)
     
     var digitViews: [DigitView] = []
     
@@ -212,7 +212,7 @@ open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativePro
         onTapGesture { self.becomeFirstResponder() }
     }
     
-    open func edited(_ textField: TextField) {
+    open func edited(_ textField: UTextField) {
         let labels = digitViews.map { $0.label }
         for label in labels {
             label.textColor = digitColor
@@ -233,7 +233,7 @@ open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativePro
         }
     }
     
-    func shouldChangeCharacters(_ textField: TextField, range: NSRange, replacement: String) -> Bool {
+    func shouldChangeCharacters(_ textField: UTextField, range: NSRange, replacement: String) -> Bool {
         guard !replacement.isEmpty else { return true }
         if textField.text?.count == digitViews.count {
             textField.text = replacement
@@ -340,7 +340,7 @@ extension UVerificationCodeView {
             }
         }
         
-        lazy var label = Text()
+        lazy var label = UText()
         
         func setupView() {
             body {

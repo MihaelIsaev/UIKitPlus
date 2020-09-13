@@ -1,9 +1,6 @@
 #if !os(macOS)
 import UIKit
 
-@available(*, deprecated, renamed: "UText")
-public typealias Text = UText
-
 public typealias ULabel = UText
 
 /// aka `UILabel`

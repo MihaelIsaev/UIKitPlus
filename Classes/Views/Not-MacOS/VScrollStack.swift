@@ -4,7 +4,7 @@ import UIKit
 @available(*, deprecated, renamed: "UVScrollStack")
 public typealias VScrollStack = UVScrollStack
 
-open class UVScrollStack: ScrollView {
+open class UVScrollStack: UScrollView {
     lazy var stack = UVStack().edgesToSuperview().widthToSuperview()
     
     public override init (@BodyBuilder block: BodyBuilder.SingleView) {

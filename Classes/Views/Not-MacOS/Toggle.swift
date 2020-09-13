@@ -2,12 +2,9 @@
 import UIKit
 #if !os(tvOS)
 
-@available(*, deprecated, renamed: "UToggle")
-public typealias Toggle = UToggle
-
 open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Toggle { self }
-    public lazy var properties = Properties<Toggle>()
+    public var declarativeView: UToggle { self }
+    public lazy var properties = Properties<UToggle>()
     lazy var _properties = PropertiesInternal()
     
     @UIKitPlus.State public var height: CGFloat = 0

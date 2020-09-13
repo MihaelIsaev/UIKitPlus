@@ -2,9 +2,6 @@
 import Foundation
 import UIKit
 
-@available(*, deprecated, renamed: "UTextField")
-public typealias TextField = UTextField
-
 open class UTextField: UITextField, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: UTextField { self }
     public typealias P = Properties<UTextField>
@@ -265,7 +262,7 @@ open class UTextField: UITextField, AnyDeclarativeProtocol, DeclarativeProtocolI
 }
 
 fileprivate class _InnerDelegate: NSObject, UITextFieldDelegate {
-    let parent: TextField
+    let parent: UTextField
     
     init (_ textField: UTextField) {
         parent = textField
@@ -502,12 +499,12 @@ extension UTextField: _TextFieldLeftViewable {
     }
     
     @discardableResult
-    public func leftView(_ view: @escaping (TextField) -> UIView) -> Self {
+    public func leftView(_ view: @escaping (UTextField) -> UIView) -> Self {
         leftView(mode: .always) { view(self) }
     }
     
     @discardableResult
-    public func leftView(mode: UITextField.ViewMode, _ view: @escaping (TextField) -> UIView) -> Self {
+    public func leftView(mode: UITextField.ViewMode, _ view: @escaping (UTextField) -> UIView) -> Self {
         leftView(mode: mode) { view(self) }
     }
 }
@@ -522,12 +519,12 @@ extension UTextField: _TextFieldRightViewable {
     }
     
     @discardableResult
-    public func rightView(_ view: @escaping (TextField) -> UIView) -> Self {
+    public func rightView(_ view: @escaping (UTextField) -> UIView) -> Self {
         rightView(mode: .always) { view(self) }
     }
     
     @discardableResult
-    public func rightView(mode: UITextField.ViewMode, _ view: @escaping (TextField) -> UIView) -> Self {
+    public func rightView(mode: UITextField.ViewMode, _ view: @escaping (UTextField) -> UIView) -> Self {
         rightView(mode: mode) { view(self) }
     }
 }

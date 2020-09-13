@@ -1,9 +1,6 @@
 #if !os(macOS)
 import UIKit
 
-@available(*, deprecated, renamed: "UScrollView")
-public typealias ScrollView = UScrollView
-
 open class UScrollView: UIScrollView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: UScrollView { self }
     public lazy var properties = Properties<UScrollView>()
@@ -155,7 +152,7 @@ open class UScrollView: UIScrollView, AnyDeclarativeProtocol, DeclarativeProtoco
 
 // MARK: Convenience Initializers
 
-extension ScrollView {
+extension UScrollView {
     public convenience init (_ innerView: UIView) {
         self.init()
         body { innerView }
@@ -171,12 +168,12 @@ extension ScrollView {
         body { block() }
     }
     
-    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> ScrollView {
-        ScrollView(block: block)
+    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> UScrollView {
+        UScrollView(block: block)
     }
 }
 
-extension ScrollView: UIScrollViewDelegate {
+extension UScrollView: UIScrollViewDelegate {
     @discardableResult
     public func contentOffset(_ position: CGPoint, animated: Bool = true) -> Self {
         setContentOffset(position, animated: animated)

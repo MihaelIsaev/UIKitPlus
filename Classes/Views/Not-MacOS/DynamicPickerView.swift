@@ -60,7 +60,7 @@ open class UDynamicPickerView<V>: UView where V: UIView, V: UDynamicPickerableVi
         .onTapGesture {
         // TODO: onCancel()
     }
-    lazy var titleLabel = Text(title)
+    lazy var titleLabel = UText(title)
         .font(v: titleFont)
         .color(titleColor)
         .centerY(to: cancelButton)
