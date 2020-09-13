@@ -1,8 +1,7 @@
 #if os(macOS)
 import AppKit
 
-public typealias UPopUpButton = PopUpButton
-open class PopUpButton: NSPopUpButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+open class UPopUpButton: NSPopUpButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: PopUpButton { self }
     public lazy var properties = Properties<PopUpButton>()
     lazy var _properties = PropertiesInternal()

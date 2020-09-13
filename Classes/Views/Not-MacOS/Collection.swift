@@ -1,7 +1,7 @@
 #if !os(macOS)
 import UIKit
 
-class CollectionSection {
+class UCollectionSection {
     var item: BodyBuilderItem
     let axis: NSLayoutConstraint.Axis
     
@@ -11,11 +11,10 @@ class CollectionSection {
     }
 }
 
-public typealias Collection = UCollection
-public class UCollection: View, UICollectionViewDataSource {
+public class UCollection: UView, UICollectionViewDataSource {
     @State var reversed = false
     
-    var items: [CollectionSection] = []
+    var items: [UCollectionSection] = []
     
     let layout: UICollectionViewLayout
     
@@ -87,7 +86,7 @@ public class UCollection: View, UICollectionViewDataSource {
             } else if let fl = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
                 direction = fl.scrollDirection == .horizontal ? .horizontal : .vertical
             }
-            let collectionSection = CollectionSection(item, axis: direction)
+            let collectionSection = UCollectionSection(item, axis: direction)
             items.append(collectionSection)
             let changes = SectionChanges(section: sectionIndex)
             fr.subscribeToChanges({
@@ -111,7 +110,7 @@ public class UCollection: View, UICollectionViewDataSource {
     }
     
     lazy var collectionView = CollectionView(layout)
-        .register(CollectionDynamicCell.self)
+        .register(UCollectionDynamicCell.self)
         .edgesToSuperview()
         .dataSource(self)
         .delegate(self)
@@ -160,24 +159,24 @@ public class UCollection: View, UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(with: CollectionDynamicCell.self, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(with: UCollectionDynamicCell.self, for: indexPath)
         let section = items[indexPath.section]
         switch section.item {
         case .single(let view):
-            cell.setRootView(StackView(view).axis(section.axis))
+            cell.setRootView(UStackView(view).axis(section.axis))
         case .multiple(let views):
-            cell.setRootView(StackView(views).axis(section.axis))
+            cell.setRootView(UStackView(views).axis(section.axis))
         case .forEach(let fr):
             let item = fr.items(at: indexPath.row).bodyBuilderItem
             switch item {
             case .single(let view):
-                cell.setRootView(StackView(view).axis(section.axis))
+                cell.setRootView(UStackView(view).axis(section.axis))
             case .multiple(let views):
-                cell.setRootView(StackView(views).axis(section.axis))
+                cell.setRootView(UStackView(views).axis(section.axis))
             case .forEach(let fr):
-                cell.setRootView(StackView(BodyBuilderItems(items: fr.allItems())).axis(section.axis))
+                cell.setRootView(UStackView(BodyBuilderItems(items: fr.allItems())).axis(section.axis))
             case .nested(let items):
-                cell.setRootView(StackView(BodyBuilderItems(items: items)).axis(section.axis))
+                cell.setRootView(UStackView(BodyBuilderItems(items: items)).axis(section.axis))
             case .none:
                 cell.setRootView(.init())
             }

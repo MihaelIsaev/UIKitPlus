@@ -4,9 +4,11 @@ import AppKit
 import UIKit
 #endif
 
-public typealias UWrapperView = WrapperView
-open class WrapperView<V>: View where V: BaseView {
-    public override var declarativeView: WrapperView { return self }
+@available(*, deprecated, renamed: "UWrapperView")
+public typealias WrapperView = UWrapperView
+
+open class UWrapperView<V>: UView where V: BaseView {
+    public override var declarativeView: UWrapperView { return self }
     
     public let innerView: V
     

@@ -1,12 +1,15 @@
 #if !os(macOS)
 import UIKit
 #if !os(tvOS)
+
 extension UIRefreshControl {
-    public static var `default`: RefreshControl { .init() }
+    public static var `default`: URefreshControl { .init() }
 }
 
-public typealias URefreshControl = RefreshControl
-open class RefreshControl: UIRefreshControl {
+@available(*, deprecated, renamed: "URefreshControl")
+public typealias RefreshControl = URefreshControl
+
+open class URefreshControl: UIRefreshControl {
     override init() {
         super.init()
         setup()

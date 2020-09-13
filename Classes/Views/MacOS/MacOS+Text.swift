@@ -1,11 +1,8 @@
 #if os(macOS)
 import AppKit
 
-public typealias Label = Text
-public typealias UText = Text
-
-/// aka `UILabel`
-open class Text: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+/// aka `NSLabel`
+open class UText: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Text { self }
     public lazy var properties = Properties<Text>()
     lazy var _properties = PropertiesInternal()

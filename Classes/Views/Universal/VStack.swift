@@ -4,11 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-@available(*, deprecated, renamed: "VStack")
-public typealias VStackView = VStack
-
-public typealias UVStack = VStack
-open class VStack: _StackView {
+open class UVStack: _StackView {
     public init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
         #if os(macOS)
@@ -37,7 +33,7 @@ open class VStack: _StackView {
         return self
     }
     
-    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> VStack {
+    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> UVStack {
         .init(block: block)
     }
 }

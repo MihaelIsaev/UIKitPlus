@@ -22,7 +22,7 @@ extension BaseView {
         case .multiple(let views):
             add(views: views, at: index)
         case .forEach(let fr):
-            let subview = View().edgesToSuperview()
+            let subview = UView().edgesToSuperview()
             fr.allItems().forEach {
                 subview.addItem($0)
             }

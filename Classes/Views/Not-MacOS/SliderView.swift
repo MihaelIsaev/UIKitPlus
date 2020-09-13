@@ -1,10 +1,15 @@
 #if !os(macOS)
 import UIKit
 #if !os(tvOS)
-public typealias USliderView = SliderView
-open class SliderView: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: SliderView { self }
-    public lazy var properties = Properties<SliderView>()
+
+@available(*, deprecated, renamed: "USlider")
+public typealias USliderView = USlider
+@available(*, deprecated, renamed: "USlider")
+public typealias SliderView = USlider
+
+open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: USlider { self }
+    public lazy var properties = Properties<USlider>()
     lazy var _properties = PropertiesInternal()
     
     @UIKitPlus.State public var height: CGFloat = 0

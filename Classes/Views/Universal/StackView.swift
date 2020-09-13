@@ -4,8 +4,10 @@ import AppKit
 import UIKit
 #endif
 
-public typealias UStackView = StackView
-open class StackView: _StackView {
+@available(*, deprecated, renamed: "UStackView")
+public typealias StackView = UStackView
+
+open class UStackView: _StackView {
     public override init () {
         super.init()
     }
@@ -20,7 +22,7 @@ open class StackView: _StackView {
         add(item: block())
     }
     
-    public init (@BodyBuilder block: (StackView) -> BodyBuilder.Result) {
+    public init (@BodyBuilder block: (UStackView) -> BodyBuilder.Result) {
         super.init(frame: .zero)
         add(item: block(self))
     }
@@ -34,7 +36,7 @@ open class StackView: _StackView {
         return self
     }
     
-    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> VStack {
+    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> UVStack {
         .init(block: block)
     }
     
@@ -42,13 +44,13 @@ open class StackView: _StackView {
     
     #if os(macOS)
     @discardableResult
-    public func orientation(_ orientation: NSUserInterfaceLayoutOrientation) -> StackView {
+    public func orientation(_ orientation: NSUserInterfaceLayoutOrientation) -> UStackView {
         self.orientation = orientation
         return self
     }
     #else
     @discardableResult
-    public func axis(_ axis: NSLayoutConstraint.Axis) -> StackView {
+    public func axis(_ axis: NSLayoutConstraint.Axis) -> UStackView {
         self.axis = axis
         return self
     }
@@ -198,9 +200,9 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
                 views.forEach { addArrangedSubview($0) }
             case .forEach(let fr):
                 #if os(macOS)
-                let stack = StackView().orientation(fr.orientation ?? orientation)
+                let stack = UStackView().orientation(fr.orientation ?? orientation)
                 #else
-                let stack = StackView().axis(fr.axis ?? axis)
+                let stack = UStackView().axis(fr.axis ?? axis)
                 #endif
                 fr.allItems().forEach {
                     #if os(macOS)
@@ -237,7 +239,7 @@ extension Array where Element == BodyBuilderItemable {
     }
     #else
     fileprivate func flatten(_ axis: NSLayoutConstraint.Axis) -> BaseView {
-        let stackView = StackView().axis(axis)
+        let stackView = UStackView().axis(axis)
         forEach { stackView.add(item: $0) }
         return stackView
     }

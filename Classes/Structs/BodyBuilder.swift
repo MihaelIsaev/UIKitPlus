@@ -46,6 +46,6 @@ public typealias ViewBuilder = BodyBuilder
 
 extension BaseViewController: BodyBuilderItemable {
     public var bodyBuilderItem: BodyBuilderItem {
-        .single(View(inline: view).edgesToSuperview())
+        .single(UView(inline: view).edgesToSuperview())
     }
 }

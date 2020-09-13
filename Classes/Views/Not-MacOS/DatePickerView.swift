@@ -1,10 +1,10 @@
 #if !os(macOS)
 import UIKit
 #if !os(tvOS)
-public typealias UDatePicker = DatePicker
-open class DatePicker: UIDatePicker, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: DatePicker { self }
-    public lazy var properties = Properties<DatePicker>()
+
+open class UDatePicker: UIDatePicker, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UDatePicker { self }
+    public lazy var properties = Properties<UDatePicker>()
     lazy var _properties = PropertiesInternal()
     
     @UIKitPlus.State public var height: CGFloat = 0

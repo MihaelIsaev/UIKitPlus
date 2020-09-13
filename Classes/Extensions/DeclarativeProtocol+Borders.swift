@@ -58,7 +58,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func border(_ side: Borders.Side, _ width: CGFloat, _ color: UColor) -> Self {
-        let border = View().background(color)
+        let border = UView().background(color)
         declarativeView.body { border }
         switch side {
         case .top:

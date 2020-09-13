@@ -142,7 +142,7 @@ public class Preview {
     #endif
     
     public init(@BodyBuilder block: BodyBuilder.SingleView) {
-        view = View(block: block).edgesToSuperview()
+        view = UView(block: block).edgesToSuperview()
     }
     
     @discardableResult

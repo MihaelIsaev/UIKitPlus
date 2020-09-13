@@ -4,11 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-@available(*, deprecated, renamed: "HStack")
-public typealias HStackView = HStack
-
-public typealias UHStack = HStack
-open class HStack: _StackView {
+open class UHStack: _StackView {
     public init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
         #if os(macOS)
@@ -37,7 +33,7 @@ open class HStack: _StackView {
         return self
     }
     
-    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> HStack {
+    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> UHStack {
         .init(block: block)
     }
 }

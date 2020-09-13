@@ -1,10 +1,9 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UButton = Button
-open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Button { self }
-    public lazy var properties = Properties<Button>()
+open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UButton { self }
+    public lazy var properties = Properties<UButton>()
     lazy var _properties = PropertiesInternal()
     
     @UIKitPlus.State public var height: CGFloat = 0
@@ -377,7 +376,7 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
 }
 
-extension Button: _Fontable {
+extension UButton: _Fontable {
     func _setFont(_ v: UIFont?) {
         titleLabel?.font = v
     }

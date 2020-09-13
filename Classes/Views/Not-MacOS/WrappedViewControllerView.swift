@@ -1,11 +1,14 @@
 #if !os(macOS)
 import UIKit
 
-open class WrappedViewControllerView<V>: View, WrappedViewControllerable where V: UIViewController {
+@available(*, deprecated, renamed: "UWrappedViewControllerView")
+public typealias WrappedViewControllerView = UWrappedViewControllerView
+
+open class UWrappedViewControllerView<V>: UView, WrappedViewControllerable where V: UIViewController {
     public let inner: V
     public let parent: UIViewController
     
-    public var protocolView: View { return self }
+    public var protocolView: UView { return self }
     public var protocolController: UIViewController { return inner }
     
     public init (_ inner: V, parent: UIViewController) {

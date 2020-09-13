@@ -1,9 +1,11 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UVScrollStack = VScrollStack
-open class VScrollStack: ScrollView {
-    lazy var stack = VStack().edgesToSuperview().widthToSuperview()
+@available(*, deprecated, renamed: "UVScrollStack")
+public typealias VScrollStack = UVScrollStack
+
+open class UVScrollStack: ScrollView {
+    lazy var stack = UVStack().edgesToSuperview().widthToSuperview()
     
     public override init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)

@@ -1,10 +1,12 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UTableView = TableView
-open class TableView: UITableView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: TableView { self }
-    public lazy var properties = Properties<TableView>()
+@available(*, deprecated, renamed: "UTableView")
+public typealias TableView = UTableView
+
+open class UTableView: UITableView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UTableView { self }
+    public lazy var properties = Properties<UTableView>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0

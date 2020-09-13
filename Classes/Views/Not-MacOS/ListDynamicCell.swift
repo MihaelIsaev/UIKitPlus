@@ -1,8 +1,8 @@
 #if !os(macOS)
 import UIKit
 
-class ListDynamicCell: TableViewCell {
-    func setRootView(_ rootView: StackView) {
+class UListDynamicCell: TableViewCell {
+    func setRootView(_ rootView: UStackView) {
         contentView.subviews.forEach { $0.removeFromSuperview() }
         rootView.translatesAutoresizingMaskIntoConstraints = false
         contentView.body { rootView }

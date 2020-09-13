@@ -1,10 +1,9 @@
 #if os(macOS)
 import AppKit
 
-public typealias UButton = Button
-open class Button: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Button { self }
-    public lazy var properties = Properties<Button>()
+open class UButton: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UButton { self }
+    public lazy var properties = Properties<UButton>()
     lazy var _properties = PropertiesInternal()
     
     @UIKitPlus.State public var height: CGFloat = 0

@@ -1,8 +1,10 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UControlView = ControlView
-open class ControlView: UIControl, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+@available(*, deprecated, renamed: "UControlView")
+public typealias ControlView = UControlView
+
+open class UControlView: UIControl, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: ControlView { self }
     public lazy var properties = Properties<ControlView>()
     lazy var _properties = PropertiesInternal()

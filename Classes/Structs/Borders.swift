@@ -9,5 +9,5 @@ public class Borders {
         case top, left, right, bottom
     }
     
-    var views: [Side: View] = [:]
+    var views: [Side: UView] = [:]
 }

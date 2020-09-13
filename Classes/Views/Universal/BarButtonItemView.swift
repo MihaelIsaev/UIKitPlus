@@ -1,8 +1,10 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UBarButtonItem = BarButtonItem
-open class BarButtonItem: UIBarButtonItem {
+@available(*, deprecated, renamed: "UBarButtonItem")
+public typealias BarButtonItem = UBarButtonItem
+
+open class UBarButtonItem: UIBarButtonItem {
     public init(_ title: String?) {
         super.init()
         self.title = title
@@ -66,7 +68,7 @@ open class BarButtonItem: UIBarButtonItem {
     // MARK: TouchUpInside
     
     public typealias TapAction = ()->Void
-    public typealias TapActionWithButton = (BarButtonItem)->Void
+    public typealias TapActionWithButton = (UBarButtonItem)->Void
     
     private var tapCallback: TapAction?
     private var tapWithButtonCallback: TapActionWithButton?
@@ -83,7 +85,7 @@ open class BarButtonItem: UIBarButtonItem {
         return self
     }
     
-    @objc private func tapEvenWithbuttont(_ button: BarButtonItem) {
+    @objc private func tapEvenWithbuttont(_ button: UBarButtonItem) {
         tapCallback?()
         tapWithButtonCallback?(button)
     }

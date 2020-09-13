@@ -2,12 +2,15 @@
 import Foundation
 import UIKit
 
-public protocol DynamicPickerableView {
+public protocol UDynamicPickerableView {
     associatedtype ValueType: Codable
     var value: ValueType { get }
 }
 
-open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView {
+@available(*, deprecated, renamed: "UDynamicPickerView")
+public typealias DynamicPickerView = UDynamicPickerView
+
+open class UDynamicPickerView<V>: UView where V: UIView, V: UDynamicPickerableView {
     public typealias Done = (_ result: V.ValueType) -> ()
     public typealias Cancel = () -> ()
     
@@ -43,13 +46,13 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
     var onChange: Done = { _ in }
     var onCancel: Cancel = {}
     
-    lazy var containerView = View.subviews {
+    lazy var containerView = UView.subviews {
         return [pickerView, cancelButton, titleLabel, doneButton]
     }.edgesToSuperview(leading: 0, trailing: 0, bottom: defaultHeight)
       .height(defaultHeight)
       .background(.white)
     lazy var pickerView = V()
-    lazy var cancelButton = Button(cancelTitle)
+    lazy var cancelButton = UButton(cancelTitle)
         .edgesToSuperview(top: 0, leading: 8)
         .font(v: cancelFont)
         .color(cancelColor)
@@ -62,7 +65,7 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
         .color(titleColor)
         .centerY(to: cancelButton)
         .centerXInSuperview()
-    lazy var doneButton = Button(doneTitle)
+    lazy var doneButton = UButton(doneTitle)
         .edgesToSuperview(top: 0, trailing: -8)
         .font(v: doneFont)
         .color(doneColor)
@@ -299,14 +302,14 @@ open class DynamicPickerView<V>: View where V: UIView, V: DynamicPickerableView 
 // MARK: PickerPopup + UIDatePicker
 
 #if !os(tvOS)
-public typealias DatePickerPopup = DynamicPickerView<DatePicker>
+public typealias DatePickerPopup = UDynamicPickerView<UDatePicker>
 
-extension UIDatePicker: DynamicPickerableView {
+extension UIDatePicker: UDynamicPickerableView {
     public typealias ValueType = Date
     public var value: Date { return date }
 }
 
-extension DynamicPickerView where V == DatePicker {
+extension UDynamicPickerView where V == UDatePicker {
     @discardableResult
     public func mode(_ value: UIDatePicker.Mode) -> Self {
         pickerView.mode(value)

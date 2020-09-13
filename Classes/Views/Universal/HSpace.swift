@@ -4,6 +4,13 @@ import AppKit
 import UIKit
 #endif
 
-public func HSpace(_ width: CGFloat) -> View { View().width(width) }
-public func HSpace(_ width: State<CGFloat>) -> View { View().width(width) }
-public func HSpace<V>(_ width: ExpressableState<V, CGFloat>) -> View { View().width(width) }
+@available(*, deprecated, renamed: "UHSpace")
+public func HSpace(_ width: CGFloat) -> UView { UHSpace(width) }
+@available(*, deprecated, renamed: "UHSpace")
+public func HSpace(_ width: State<CGFloat>) -> UView { UHSpace(width) }
+@available(*, deprecated, renamed: "UHSpace")
+public func HSpace<V>(_ width: ExpressableState<V, CGFloat>) -> UView { UHSpace(width) }
+
+public func UHSpace(_ width: CGFloat) -> UView { UView().width(width) }
+public func UHSpace(_ width: State<CGFloat>) -> UView { UView().width(width) }
+public func UHSpace<V>(_ width: ExpressableState<V, CGFloat>) -> UView { UView().width(width) }

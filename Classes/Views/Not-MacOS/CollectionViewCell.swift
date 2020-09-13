@@ -1,12 +1,15 @@
 #if !os(macOS)
 import UIKit
 
-public typealias CollectionCell = CollectionViewCell
+@available(*, deprecated, renamed: "UCollectionCell")
+public typealias CollectionViewCell = UCollectionCell
 
-public typealias UCollectionViewCell = CollectionViewCell
-open class CollectionViewCell: UICollectionViewCell, AnyDeclarativeProtocol, DeclarativeProtocolInternal, Cellable {
-    public var declarativeView: CollectionViewCell { self }
-    public lazy var properties = Properties<CollectionViewCell>()
+@available(*, deprecated, renamed: "UCollectionCell")
+public typealias UCollectionViewCell = UCollectionCell
+
+open class UCollectionCell: UICollectionViewCell, AnyDeclarativeProtocol, DeclarativeProtocolInternal, Cellable {
+    public var declarativeView: UCollectionCell { self }
+    public lazy var properties = Properties<UCollectionCell>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0

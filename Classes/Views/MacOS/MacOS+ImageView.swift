@@ -1,8 +1,7 @@
 #if os(macOS)
 import AppKit
 
-public typealias UImage = Image
-open class Image: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+open class UImage: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Image { self }
     public lazy var properties = Properties<Image>()
     lazy var _properties = PropertiesInternal()

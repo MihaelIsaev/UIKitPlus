@@ -2,10 +2,12 @@
 import Foundation
 import UIKit
 
-public typealias UTextField = TextField
-open class TextField: UITextField, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: TextField { self }
-    public typealias P = Properties<TextField>
+@available(*, deprecated, renamed: "UTextField")
+public typealias TextField = UTextField
+
+open class UTextField: UITextField, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UTextField { self }
+    public typealias P = Properties<UTextField>
     public lazy var properties = P()
     lazy var _properties = PropertiesInternal()
     
@@ -265,7 +267,7 @@ open class TextField: UITextField, AnyDeclarativeProtocol, DeclarativeProtocolIn
 fileprivate class _InnerDelegate: NSObject, UITextFieldDelegate {
     let parent: TextField
     
-    init (_ textField: TextField) {
+    init (_ textField: UTextField) {
         parent = textField
         super.init()
         parent.addTarget(self, action: #selector(editingDidBegin), for: .editingDidBegin)
@@ -338,7 +340,7 @@ fileprivate class _InnerDelegate: NSObject, UITextFieldDelegate {
     }
 }
 
-extension TextField: Refreshable {
+extension UTextField: Refreshable {
     /// Refreshes using `RefreshHandler`
     public func refresh() {
         if let statedText = _properties.statedText {
@@ -347,26 +349,26 @@ extension TextField: Refreshable {
     }
 }
 
-extension TextField: _Enableable {
+extension UTextField: _Enableable {
     func _setEnabled(_ v: Bool) {
         isEnabled = v
     }
 }
 
-extension TextField: _Fontable {
+extension UTextField: _Fontable {
     func _setFont(_ v: UIFont?) {
         font = v
     }
 }
 
-extension TextField: _Cleanupable {
+extension UTextField: _Cleanupable {
     func _cleanup() {
         text = ""
         _innerDelegate.editingChanged()
     }
 }
 
-extension TextField: _Colorable {
+extension UTextField: _Colorable {
     var _colorState: UIKitPlus.State<UIColor> { properties.textColorState }
     
     func _setColor(_ v: UIColor?) {
@@ -375,19 +377,19 @@ extension TextField: _Colorable {
     }
 }
 
-extension TextField: _TextAligmentable {
+extension UTextField: _TextAligmentable {
     func _setTextAlignment(v: NSTextAlignment) {
         textAlignment = v
     }
 }
 
-extension TextField: _Secureable {
+extension UTextField: _Secureable {
     func _setSecure(_ v: Bool) {
         isSecureTextEntry = v
     }
 }
 
-extension TextField: _TextBindable {
+extension UTextField: _TextBindable {
     func _setTextBind<A: AnyString>(_ binding: UIKitPlus.State<A>?) {
         _properties.textChangeListeners.append({ new in
             binding?.wrappedValue = A.make(new)
@@ -395,7 +397,7 @@ extension TextField: _TextBindable {
     }
 }
 
-extension TextField: _Textable {
+extension UTextField: _Textable {
     var _statedText: AnyStringBuilder.Handler? {
         get { _properties.statedText }
         set { _properties.statedText = newValue }
@@ -412,7 +414,7 @@ extension TextField: _Textable {
     }
 }
 
-extension TextField: _Typeable {
+extension UTextField: _Typeable {
     func _setTypingInterval(_ v: TimeInterval) {
         _properties.typingInterval = v
     }
@@ -428,7 +430,7 @@ extension TextField: _Typeable {
     }
 }
 
-extension TextField: _Placeholderable {
+extension UTextField: _Placeholderable {
     var _statedPlaceholder: AnyStringBuilder.Handler? {
         get { _properties.statedPlaceholder }
         set { _properties.statedPlaceholder = newValue }
@@ -446,7 +448,7 @@ extension TextField: _Placeholderable {
     }
 }
 
-extension TextField: _Keyboardable {
+extension UTextField: _Keyboardable {
     func _setKeyboardType(_ v: UIKeyboardType) {
         keyboardType = v
     }
@@ -468,19 +470,19 @@ extension TextField: _Keyboardable {
     }
 }
 
-extension TextField: _TextAutocapitalizationable {
+extension UTextField: _TextAutocapitalizationable {
     func _setTextAutocapitalizationType(_ v: UITextAutocapitalizationType) {
         autocapitalizationType = v
     }
 }
 
-extension TextField: _TextAutocorrectionable {
+extension UTextField: _TextAutocorrectionable {
     func _setTextAutocorrectionType(_ v: UITextAutocorrectionType) {
         autocorrectionType = v
     }
 }
 
-extension TextField: _TextFieldContentTypeable {
+extension UTextField: _TextFieldContentTypeable {
     func _setTextFieldContentType(v: TextFieldContentType) {
         if #available(iOS 10.0, *) {
             if let type = v.type {
@@ -490,7 +492,7 @@ extension TextField: _TextFieldContentTypeable {
     }
 }
 
-extension TextField: _TextFieldLeftViewable {
+extension UTextField: _TextFieldLeftViewable {
     func _setLeftView(v: UIView) {
         leftView = v
     }
@@ -510,7 +512,7 @@ extension TextField: _TextFieldLeftViewable {
     }
 }
 
-extension TextField: _TextFieldRightViewable {
+extension UTextField: _TextFieldRightViewable {
     func _setRightView(v: UIView) {
         rightView = v
     }

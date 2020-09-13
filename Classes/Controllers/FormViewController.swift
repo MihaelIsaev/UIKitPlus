@@ -3,7 +3,7 @@ import UIKit
 
 open class FormViewController: ViewController {
     public lazy var scrollView = ScrollView()
-    public lazy var stackView = VStack()
+    public lazy var stackView = UVStack()
     
     open override func buildUI() {
         super.buildUI()

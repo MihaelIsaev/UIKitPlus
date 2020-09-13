@@ -5,6 +5,6 @@ import UIKit
 #endif
 
 public protocol WrappedViewControllerable {
-    var protocolView: View { get }
+    var protocolView: UView { get }
     var protocolController: BaseViewController { get }
 }

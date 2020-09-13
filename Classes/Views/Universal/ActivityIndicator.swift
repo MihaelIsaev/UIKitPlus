@@ -1,10 +1,12 @@
 #if os(macOS)
 import AppKit
 
-public typealias UActivityIndicator = ActivityIndicator
-open class ActivityIndicator: NSProgressIndicator, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: ActivityIndicator { self }
-    public lazy var properties = Properties<ActivityIndicator>()
+@available(*, deprecated, renamed: "UActivityIndicator")
+public typealias ActivityIndicator = UActivityIndicator
+
+open class UActivityIndicator: NSProgressIndicator, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UActivityIndicator { self }
+    public lazy var properties = Properties<UActivityIndicator>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0

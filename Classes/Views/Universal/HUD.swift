@@ -4,38 +4,41 @@ import AppKit
 import UIKit
 #endif
 
-open class HUD: View {
+@available(*, deprecated, renamed: "UHUD")
+public typealias HUD = UHUD
+
+open class UHUD: UView {
     override public var declarativeView: HUD { return self }
     
     var imageHeight: CGFloat = 50
     #if os(macOS)
-    lazy var imageView = Image(nil)
+    lazy var imageView = UImage(nil)
         .mode(.resizeAspect)
     #else
-    lazy var imageView = Image(nil)
+    lazy var imageView = UImage(nil)
         .mode(.scaleAspectFit)
     #endif
     
-    lazy var symbolLabel = Text()
+    lazy var symbolLabel = UText()
         .font(v: .boldSystemFont(ofSize: 48))
         .color(.white)
         .alignment(.center)
     #if os(macOS)
-    lazy var activityIndicator = ActivityIndicator()
+    lazy var activityIndicator = UActivityIndicator()
     #else
-    lazy var activityIndicator = ActivityIndicator(style: .whiteLarge)
+    lazy var activityIndicator = UActivityIndicator(style: .whiteLarge)
     #endif
-    lazy var titleLabel = Text()
+    lazy var titleLabel = UText()
         .font(v: .boldSystemFont(ofSize: 24))
         .color(.white)
         .alignment(.center)
-    lazy var subTitleLabel = Text()
+    lazy var subTitleLabel = UText()
         .multiline()
         .font(v: .systemFont(ofSize: 16))
         .color(.white)
         .alignment(.center)
     #if os(macOS)
-    lazy var contentView = View()
+    lazy var contentView = UView()
         .size(>=70)
         .corners(10)
         .background(.white(0, alpha: 0.7))
@@ -45,9 +48,9 @@ open class HUD: View {
         .trailingToSuperview(<=-20 ! 998)
         .bottomToSuperview(<=-20)
     
-    lazy var backgroundOverlay = View().background(.white(0, alpha: 0.2)).edgesToSuperview().masksToBounds()
+    lazy var backgroundOverlay = UView().background(.white(0, alpha: 0.2)).edgesToSuperview().masksToBounds()
     #else
-    lazy var contentView = View()
+    lazy var contentView = UView()
         .size(>=100)
         .corners(10)
         .background(.init(red: 0, green: 0, blue: 0, alpha: 0.7))
@@ -57,7 +60,7 @@ open class HUD: View {
         .trailingToSuperview(<=-20 ! 998)
         .bottomToSuperview(<=-20)
     
-    lazy var backgroundOverlay = View().background(.init(red: 0, green: 0, blue: 0, alpha: 0.2)).edgesToSuperview().masksToBounds()
+    lazy var backgroundOverlay = UView().background(.init(red: 0, green: 0, blue: 0, alpha: 0.2)).edgesToSuperview().masksToBounds()
     #endif
     
     open override func buildView() {

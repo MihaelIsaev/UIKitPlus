@@ -1,7 +1,10 @@
 #if !os(macOS)
 import UIKit
 
-open class CollectionViewFlowLayout: UICollectionViewFlowLayout {
+@available(*, deprecated, renamed: "UCollectionViewFlowLayout")
+public typealias CollectionViewFlowLayout = UCollectionViewFlowLayout
+
+open class UCollectionViewFlowLayout: UICollectionViewFlowLayout {
     public override init () {
         super.init()
     }

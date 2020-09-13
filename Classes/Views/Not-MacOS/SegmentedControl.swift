@@ -1,10 +1,12 @@
 #if !os(macOS)
 import UIKit
 
-public typealias USegmentedControl = SegmentedControl
-open class SegmentedControl: UISegmentedControl, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: SegmentedControl { self }
-    public lazy var properties = Properties<SegmentedControl>()
+@available(*, deprecated, renamed: "USegmentedControl")
+public typealias SegmentedControl = USegmentedControl
+
+open class USegmentedControl: UISegmentedControl, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: USegmentedControl { self }
+    public lazy var properties = Properties<USegmentedControl>()
     lazy var _properties = PropertiesInternal()
     
     @UIKitPlus.State public var height: CGFloat = 0

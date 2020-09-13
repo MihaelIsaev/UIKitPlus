@@ -1,8 +1,7 @@
 #if os(macOS)
 import AppKit
 
-public typealias UVisualEffectView = VisualEffectView
-open class VisualEffectView: NSVisualEffectView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+open class UVisualEffectView: NSVisualEffectView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: VisualEffectView { self }
     public lazy var properties = Properties<VisualEffectView>()
     lazy var _properties = PropertiesInternal()

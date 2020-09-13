@@ -4,10 +4,9 @@ import AppKit
 import UIKit
 #endif
 
-public typealias UView = View
-open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: View { self }
-    public lazy var properties = Properties<View>()
+open class UView: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UView { self }
+    public lazy var properties = Properties<UView>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0
@@ -246,8 +245,8 @@ open class View: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProtoc
 
 // MARK: Convenience Initializers
 
-extension View {
-    public static func inline(_ v: () -> BaseView) -> View {
+extension UView {
+    public static func inline(_ v: () -> BaseView) -> UView {
         .init(inline: v())
     }
     
@@ -278,14 +277,14 @@ extension View {
         body { block() }
     }
     
-    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> View {
-        View(block: block)
+    public static func subviews(@BodyBuilder block: BodyBuilder.SingleView) -> UView {
+        UView(block: block)
     }
 }
 
 // MARK: Touches
 #if os(macOS)
-extension View {
+extension UView {
     /// Began
     @discardableResult
     public func touchesBegan(_ closure: @escaping () -> Void) -> Self {
@@ -363,7 +362,7 @@ extension View {
     }
 }
 #else
-extension View {
+extension UView {
     /// Began
     @discardableResult
     public func touchesBegan(_ closure: @escaping () -> Void) -> Self {

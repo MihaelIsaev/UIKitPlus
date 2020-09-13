@@ -1,9 +1,12 @@
 #if !os(macOS)
 import UIKit
 
-open class VerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: VerificationCodeView { self }
-    public lazy var properties = Properties<VerificationCodeView>()
+@available(*, deprecated, renamed: "UVerificationCodeView")
+public typealias VerificationCodeView = UVerificationCodeView
+
+open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UVerificationCodeView { self }
+    public lazy var properties = Properties<UVerificationCodeView>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0
@@ -202,7 +205,7 @@ open class VerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativeProt
         digitViews = (0...quantity - 1).map { _ in DigitView().background(digitBackground).width($widthOfDigitView) }
         body {
             hiddenTextField.size(1, 30).content(.oneTimeCode)
-            HStack {
+            UHStack {
                 digitViews
             }.spacing($spaceBetweenDigitViews).edgesToSuperview()
         }
@@ -274,7 +277,7 @@ extension VerificationCodeView: _Fontable {
     }
 }
 
-extension VerificationCodeView {
+extension UVerificationCodeView {
     class DigitView: UIView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
         public var declarativeView: DigitView { self }
         public lazy var properties = Properties<DigitView>()

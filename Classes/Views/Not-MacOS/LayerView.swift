@@ -5,7 +5,7 @@
 #if !os(macOS)
 import UIKit
 
-class LayerView<Layer: CALayer>: View {
+class ULayerView<Layer: CALayer>: UView {
     override final class var layerClass: AnyClass {
         Layer.self
     }

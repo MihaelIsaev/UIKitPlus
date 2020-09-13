@@ -1,10 +1,12 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UVisualEffectView = VisualEffectView
-open class VisualEffectView: UIVisualEffectView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: VisualEffectView { self }
-    public lazy var properties = Properties<VisualEffectView>()
+@available(*, deprecated, renamed: "UVisualEffectView")
+public typealias VisualEffectView = UVisualEffectView
+
+open class UVisualEffectView: UIVisualEffectView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UVisualEffectView { self }
+    public lazy var properties = Properties<UVisualEffectView>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0
@@ -103,8 +105,8 @@ open class VisualEffectView: UIVisualEffectView, AnyDeclarativeProtocol, Declara
 // MARK: Convenience Initializers
 
 extension UIVisualEffect {
-    static func effect(_ effect: UIVisualEffect?) -> VisualEffectView {
-        VisualEffectView(effect)
+    static func effect(_ effect: UIVisualEffect?) -> UVisualEffectView {
+        UVisualEffectView(effect)
     }
 }
 #endif

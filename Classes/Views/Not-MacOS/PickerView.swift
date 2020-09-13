@@ -1,10 +1,13 @@
 #if !os(macOS)
 import UIKit
 #if !os(tvOS)
-public typealias UPickerView = PickerView
-open class PickerView: UIPickerView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: PickerView { self }
-    public lazy var properties = Properties<PickerView>()
+
+@available(*, deprecated, renamed: "UPickerView")
+public typealias PickerView = UPickerView
+
+open class UPickerView: UIPickerView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UPickerView { self }
+    public lazy var properties = Properties<UPickerView>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0

@@ -1,12 +1,14 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UInputView = InputView
-open class InputView: UIInputView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+@available(*, deprecated, renamed: "UInputView")
+public typealias InputView = UInputView
+
+open class UInputView: UIInputView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public static var defaultKeyboardHeight: CGFloat = 216
     
-    public var declarativeView: InputView { self }
-    public lazy var properties = Properties<InputView>()
+    public var declarativeView: UInputView { self }
+    public lazy var properties = Properties<UInputView>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0

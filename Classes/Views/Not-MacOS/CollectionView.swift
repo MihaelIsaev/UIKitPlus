@@ -1,10 +1,12 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UCollectionView = CollectionView
-open class CollectionView: UICollectionView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: CollectionView { self }
-    public lazy var properties = Properties<CollectionView>()
+@available(*, deprecated, renamed: "UCollectionView")
+public typealias CollectionView = UCollectionView
+
+open class UCollectionView: UICollectionView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UCollectionView { self }
+    public lazy var properties = Properties<UCollectionView>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0

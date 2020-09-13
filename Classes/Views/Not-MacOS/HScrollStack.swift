@@ -1,9 +1,11 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UHScrollStack = HScrollStack
-open class HScrollStack: ScrollView {
-    lazy var stack = HStack().edgesToSuperview().heightToSuperview()
+@available(*, deprecated, renamed: "UHScrollStack")
+public typealias HScrollStack = UHScrollStack
+
+open class UHScrollStack: ScrollView {
+    lazy var stack = UHStack().edgesToSuperview().heightToSuperview()
     
     public override init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)

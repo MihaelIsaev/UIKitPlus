@@ -1,8 +1,11 @@
 #if !os(macOS)
 import UIKit
 #if !os(tvOS)
-public typealias UToggle = Toggle
-open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+
+@available(*, deprecated, renamed: "UToggle")
+public typealias Toggle = UToggle
+
+open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: Toggle { self }
     public lazy var properties = Properties<Toggle>()
     lazy var _properties = PropertiesInternal()

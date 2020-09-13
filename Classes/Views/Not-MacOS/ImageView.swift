@@ -1,10 +1,9 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UImage = Image
-open class Image: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Image { self }
-    public lazy var properties = Properties<Image>()
+open class UImage: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UImage { self }
+    public lazy var properties = Properties<UImage>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0

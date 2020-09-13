@@ -2,7 +2,7 @@
 import Foundation
 import AppKit
 
-open class SecureTextField: TextField {
+open class USecureTextField: TextField {
     override func _setup() {
         cell = NSSecureTextFieldCell(textCell: attributedStringValue.string)
         isEditable = true
@@ -10,7 +10,7 @@ open class SecureTextField: TextField {
     }
 }
 
-//extension SecureTextField: _Secureable {
+//extension USecureTextField: _Secureable {
 //    func _setSecure(_ v: Bool) {
 //        var isEditable = self.isEditable
 //        guard let cell = cell as? NSTextFieldCell else { return }
@@ -40,7 +40,7 @@ open class SecureTextField: TextField {
 //    }
 //}
 
-extension SecureTextField: _BulletsEchoable {
+extension USecureTextField: _BulletsEchoable {
     func _setEchosBullets(_ v: Bool) {
         (cell as? NSSecureTextFieldCell)?.echosBullets = v
     }

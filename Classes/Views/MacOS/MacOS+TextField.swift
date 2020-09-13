@@ -2,8 +2,7 @@
 import Foundation
 import AppKit
 
-public typealias UTextField = TextField
-open class TextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+open class UTextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     public var declarativeView: TextField { self }
     public typealias P = Properties<TextField>
     public lazy var properties = P()

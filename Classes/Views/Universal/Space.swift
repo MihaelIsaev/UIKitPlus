@@ -4,4 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public func Space() -> View { View() }
+@available(*, deprecated, renamed: "USpace")
+public func Space() -> UView { USpace() }
+
+public func USpace() -> UView { UView() }

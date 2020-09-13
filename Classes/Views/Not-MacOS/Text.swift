@@ -1,13 +1,15 @@
 #if !os(macOS)
 import UIKit
 
-public typealias Label = Text
-public typealias UText = Text
+@available(*, deprecated, renamed: "UText")
+public typealias Text = UText
+
+public typealias ULabel = UText
 
 /// aka `UILabel`
-open class Text: UILabel, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Text { self }
-    public lazy var properties = Properties<Text>()
+open class UText: UILabel, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UText { self }
+    public lazy var properties = Properties<UText>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0
@@ -99,7 +101,7 @@ open class Text: UILabel, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
     }
 }
 
-extension Text: Refreshable {
+extension UText: Refreshable {
     /// Refreshes using `RefreshHandler`
     public func refresh() {
         if let statedText = _properties.statedText {
@@ -108,13 +110,13 @@ extension Text: Refreshable {
     }
 }
 
-extension Text: _Fontable {
+extension UText: _Fontable {
     func _setFont(_ v: UIFont?) {
         font = v
     }
 }
 
-extension Text: _Textable {
+extension UText: _Textable {
     var _statedText: AnyStringBuilder.Handler? {
         get { _properties.statedText }
         set { _properties.statedText = newValue }
@@ -131,11 +133,11 @@ extension Text: _Textable {
     }
 }
 
-extension Text: _ViewTransitionable {
+extension UText: _ViewTransitionable {
     var _transitionableView: UIView { self }
 }
 
-extension Text: _Colorable {
+extension UText: _Colorable {
     var _colorState: State<UIColor> { properties.textColorState }
     
     func _setColor(_ v: UIColor?) {
@@ -144,7 +146,7 @@ extension Text: _Colorable {
     }
 }
 
-extension Text: _TextAligmentable {
+extension UText: _TextAligmentable {
     func _setTextAlignment(v: NSTextAlignment) {
         let p = NSMutableParagraphStyle()
         p.alignment = v
@@ -155,25 +157,25 @@ extension Text: _TextAligmentable {
     }
 }
 
-extension Text: _TextLineable {
+extension UText: _TextLineable {
     func _setNumbelOfLines(_ v: Int) {
         numberOfLines = v
     }
 }
 
-extension Text: _TextLineBreakModeable {
+extension UText: _TextLineBreakModeable {
     func _setLineBreakMode(_ v: NSLineBreakMode) {
         lineBreakMode = v
     }
 }
 
-extension Text: _TextAdjustsFontSizeable {
+extension UText: _TextAdjustsFontSizeable {
     func _setAdjustsFontSizeToFitWidth(_ v: Bool) {
         adjustsFontSizeToFitWidth = v
     }
 }
 
-extension Text: _TextScaleable {
+extension UText: _TextScaleable {
     func _setMinimumScaleFactor(_ v: CGFloat) {
         minimumScaleFactor = v
     }

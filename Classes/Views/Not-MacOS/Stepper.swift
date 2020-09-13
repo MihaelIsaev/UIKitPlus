@@ -1,10 +1,10 @@
 #if !os(macOS)
 import UIKit
 #if !os(tvOS)
-public typealias UStepper = Stepper
-open class Stepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Stepper { self }
-    public lazy var properties = Properties<Stepper>()
+
+open class UStepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UStepper { self }
+    public lazy var properties = Properties<UStepper>()
     lazy var _properties = PropertiesInternal()
     
     @UIKitPlus.State public var height: CGFloat = 0

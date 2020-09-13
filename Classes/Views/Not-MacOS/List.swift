@@ -1,7 +1,7 @@
 #if !os(macOS)
 import UIKit
 
-class ListSection {
+class UListSection {
     var item: BodyBuilderItem
     let axis: NSLayoutConstraint.Axis
     
@@ -11,13 +11,12 @@ class ListSection {
     }
 }
 
-public typealias UList = List
-public class List: View, UITableViewDataSource {
+public class UList: UView, UITableViewDataSource {
     @State var reversed = false
     
     var scrollPosition: State<CGPoint>?
     
-    var items: [ListSection] = []
+    var items: [UListSection] = []
     
     public override init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
@@ -34,7 +33,7 @@ public class List: View, UITableViewDataSource {
         setup()
     }
     
-    public init (@BodyBuilder block: (List) -> BodyBuilder.Result) {
+    public init (@BodyBuilder block: (UList) -> BodyBuilder.Result) {
         super.init(frame: .zero)
         process(block(self))
         $reversed.listen { [weak self] old, new in
@@ -64,7 +63,7 @@ public class List: View, UITableViewDataSource {
             items.append(.init(item))
         case .forEach(let fr):
             let direction = fr.axis ?? .vertical
-            let listSection = ListSection(item, axis: direction)
+            let listSection = UListSection(item, axis: direction)
             items.append(listSection)
             fr.subscribeToChanges({ [weak self] in
                 self?.tableView.beginUpdates()
@@ -116,8 +115,8 @@ public class List: View, UITableViewDataSource {
         #endif
     }
     
-    public lazy var tableView = TableView()
-        .register(ListDynamicCell.self)
+    public lazy var tableView = UTableView()
+        .register(UListDynamicCell.self)
         .automaticDimension()
         .edgesToSuperview()
         .dataSource(self)
@@ -196,24 +195,24 @@ public class List: View, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(with: ListDynamicCell.self, for: indexPath)
+        let cell = tableView.dequeueReusableCell(with: UListDynamicCell.self, for: indexPath)
         let section = items[indexPath.section]
         switch section.item {
         case .single(let view):
-            cell.setRootView(StackView(view).axis(section.axis))
+            cell.setRootView(UStackView(view).axis(section.axis))
         case .multiple(let views):
-            cell.setRootView(StackView(views.filter { !$0.isHidden }[indexPath.row]).axis(section.axis))
+            cell.setRootView(UStackView(views.filter { !$0.isHidden }[indexPath.row]).axis(section.axis))
         case .forEach(let fr):
             let item = fr.items(at: indexPath.row).bodyBuilderItem
             switch item {
             case .single(let view):
-                cell.setRootView(StackView(view).axis(section.axis))
+                cell.setRootView(UStackView(view).axis(section.axis))
             case .multiple(let views):
-                cell.setRootView(StackView(views).axis(section.axis))
+                cell.setRootView(UStackView(views).axis(section.axis))
             case .forEach(let fr):
-                cell.setRootView(StackView(BodyBuilderItems(items: fr.allItems())).axis(section.axis))
+                cell.setRootView(UStackView(BodyBuilderItems(items: fr.allItems())).axis(section.axis))
             case .nested(let items):
-                cell.setRootView(StackView(BodyBuilderItems(items: items)).axis(section.axis))
+                cell.setRootView(UStackView(BodyBuilderItems(items: items)).axis(section.axis))
             case .none:
                 cell.setRootView(.init())
             }
@@ -264,7 +263,7 @@ public class List: View, UITableViewDataSource {
     }
 }
 
-extension List: UIScrollViewDelegate {
+extension UList: UIScrollViewDelegate {
     @discardableResult
     public func contentOffset(_ position: CGPoint, animated: Bool = true) -> Self {
         tableView.setContentOffset(position, animated: animated)
@@ -288,12 +287,12 @@ extension List: UIScrollViewDelegate {
     }
 }
 
-extension List: UITableViewDelegate {
+extension UList: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {}
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool { false }
 }
 
-extension List {
+extension UList {
     // MARK: Indicators
     
     @discardableResult

@@ -1,11 +1,13 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UTextView = TextView
+@available(*, deprecated, renamed: "UTextView")
+public typealias TextView = UTextView
+
 /// aka `UITextView`
-open class TextView: UITextView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: TextView { self }
-    public lazy var properties = Properties<TextView>()
+open class UTextView: UITextView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UTextView { self }
+    public lazy var properties = Properties<UTextView>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0
@@ -382,7 +384,7 @@ open class TextView: UITextView, AnyDeclarativeProtocol, DeclarativeProtocolInte
     }
 }
 
-extension TextView: Refreshable {
+extension UTextView: Refreshable {
     /// Refreshes using `RefreshHandler`
     public func refresh() {
         if let statedText = _properties.statedText {
@@ -391,13 +393,13 @@ extension TextView: Refreshable {
     }
 }
 
-extension TextView: _Fontable {
+extension UTextView: _Fontable {
     func _setFont(_ v: UIFont?) {
         font = v
     }
 }
 
-extension TextView: _TextBindable {
+extension UTextView: _TextBindable {
     func _setTextBind<A: AnyString>(_ binding: State<A>?) {
         _properties.textChangeListeners.append({ new in
             binding?.wrappedValue = A.make(new)
@@ -405,7 +407,7 @@ extension TextView: _TextBindable {
     }
 }
 
-extension TextView: _Textable {
+extension UTextView: _Textable {
     var _statedText: AnyStringBuilder.Handler? {
         get { _properties.statedText }
         set { _properties.statedText = newValue }
@@ -422,7 +424,7 @@ extension TextView: _Textable {
     }
 }
 
-extension TextView: _Typeable {
+extension UTextView: _Typeable {
     func _setTypingInterval(_ v: TimeInterval) {
         _properties.typingInterval = v
     }
@@ -438,7 +440,7 @@ extension TextView: _Typeable {
     }
 }
 
-extension TextView: _Colorable {
+extension UTextView: _Colorable {
     var _colorState: UIKitPlus.State<UIColor> { properties.textColorState }
     
     func _setColor(_ v: UIColor?) {
@@ -447,13 +449,13 @@ extension TextView: _Colorable {
     }
 }
 
-extension TextView: _TextAligmentable {
+extension UTextView: _TextAligmentable {
     func _setTextAlignment(v: NSTextAlignment) {
         textAlignment = v
     }
 }
 
-extension TextView: _Placeholderable {
+extension UTextView: _Placeholderable {
     var _statedPlaceholder: AnyStringBuilder.Handler? {
         get { _properties.statedPlaceholder }
         set { _properties.statedPlaceholder = newValue }
@@ -472,7 +474,7 @@ extension TextView: _Placeholderable {
 }
 
 
-extension TextView: _Keyboardable {
+extension UTextView: _Keyboardable {
     func _setKeyboardType(_ v: UIKeyboardType) {
         keyboardType = v
     }
@@ -504,19 +506,19 @@ extension TextView: _Keyboardable {
     }
 }
 
-extension TextView: _TextAutocapitalizationable {
+extension UTextView: _TextAutocapitalizationable {
     func _setTextAutocapitalizationType(_ v: UITextAutocapitalizationType) {
         autocapitalizationType = v
     }
 }
 
-extension TextView: _TextAutocorrectionable {
+extension UTextView: _TextAutocorrectionable {
     func _setTextAutocorrectionType(_ v: UITextAutocorrectionType) {
         autocorrectionType = v
     }
 }
 
-extension TextView: _Cleanupable {
+extension UTextView: _Cleanupable {
     func _cleanup() {
         text = ""
         didChangeTextHandler?()
@@ -524,7 +526,7 @@ extension TextView: _Cleanupable {
     }
 }
 
-extension TextView: _Scrollable {
+extension UTextView: _Scrollable {
     func _setScrollingEnabled(_ v: Bool) {
         isScrollEnabled = v
     }
@@ -538,7 +540,7 @@ extension TextView: _Scrollable {
     }
 }
 
-extension TextView: _Enableable {
+extension UTextView: _Enableable {
     func _setEnabled(_ v: Bool) {
         self.isEditable = v
     }

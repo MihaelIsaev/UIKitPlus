@@ -1,10 +1,12 @@
 #if !os(macOS)
 import UIKit
 
-public typealias UScrollView = ScrollView
-open class ScrollView: UIScrollView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: ScrollView { self }
-    public lazy var properties = Properties<ScrollView>()
+@available(*, deprecated, renamed: "UScrollView")
+public typealias ScrollView = UScrollView
+
+open class UScrollView: UIScrollView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
+    public var declarativeView: UScrollView { self }
+    public lazy var properties = Properties<UScrollView>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0
