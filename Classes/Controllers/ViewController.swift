@@ -235,6 +235,11 @@ open class ViewController: BaseViewController {
         _viewWillAppearFirstTime(animated)
     }
     
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
     @State public var isLandscape = false
     
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
