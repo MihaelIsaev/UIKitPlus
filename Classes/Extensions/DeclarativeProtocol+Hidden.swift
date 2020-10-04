@@ -1,7 +1,7 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    public var hidden: State<Bool> { properties.$hidden }
+    public var hidden: UState<Bool> { properties.$hidden }
     
     @discardableResult
     public func hidden(_ hidden: Bool = true) -> Self {
@@ -11,7 +11,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func hidden(_ state: State<Bool>) -> Self {
+    public func hidden(_ state: UState<Bool>) -> Self {
         declarativeView.isHidden = state.wrappedValue
         properties.hidden = state.wrappedValue
         state.listen { [weak self] old, new in

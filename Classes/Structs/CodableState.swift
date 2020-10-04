@@ -5,7 +5,7 @@ public class CodableState<Value>: Stateable, Codable, Equatable, Hashable where 
         set { projectedValue.wrappedValue = newValue }
     }
     
-    public var projectedValue: State<Value>
+    public var projectedValue: UState<Value>
 
     public init(wrappedValue value: Value) {
         projectedValue = .init(wrappedValue: value)
@@ -25,19 +25,19 @@ public class CodableState<Value>: Stateable, Codable, Equatable, Hashable where 
         projectedValue.reset()
     }
     
-    public func beginTrigger(_ trigger: @escaping State<Value>.Trigger) {
+    public func beginTrigger(_ trigger: @escaping UState<Value>.Trigger) {
         projectedValue.beginTrigger(trigger)
     }
     
-    public func endTrigger(_ trigger: @escaping State<Value>.Trigger) {
+    public func endTrigger(_ trigger: @escaping UState<Value>.Trigger) {
         projectedValue.endTrigger(trigger)
     }
     
-    public func listen(_ listener: @escaping State<Value>.Listener) {
+    public func listen(_ listener: @escaping UState<Value>.Listener) {
         projectedValue.listen(listener)
     }
     
-    public func listen(_ listener: @escaping State<Value>.SimpleListener) {
+    public func listen(_ listener: @escaping UState<Value>.SimpleListener) {
         projectedValue.listen(listener)
     }
     

@@ -19,7 +19,7 @@ extension Fontable {
     }
     
     @discardableResult
-    public func font(_ binding: State<UIFont>) -> Self {
+    public func font(_ binding: UState<UIFont>) -> Self {
         binding.listen { self.font(v: $0) }
         return font(v: binding.wrappedValue)
     }

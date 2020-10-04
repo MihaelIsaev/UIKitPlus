@@ -1,29 +1,29 @@
 import UIKit
 
 public class Properties<V> {
-    @State var alpha: CGFloat = 1
-    var alphaState: State<CGFloat> { _alpha }
+    @UState var alpha: CGFloat = 1
+    var alphaState: UState<CGFloat> { _alpha }
     
-    @State var opacity: Float = 1
-    var opacityState: State<Float> { _opacity }
+    @UState var opacity: Float = 1
+    var opacityState: UState<Float> { _opacity }
     
-    @State var hidden: Bool = false
-    var hiddenState: State<Bool> { _hidden }
+    @UState var hidden: Bool = false
+    var hiddenState: UState<Bool> { _hidden }
     
-    @State var userInteraction: Bool = false
-    var userInteractionState: State<Bool> { _userInteraction }
+    @UState var userInteraction: Bool = false
+    var userInteractionState: UState<Bool> { _userInteraction }
     
-    @State var tint: UIColor = .clear
-    var tintState: State<UIColor> { _tint }
+    @UState var tint: UIColor = .clear
+    var tintState: UState<UIColor> { _tint }
     
-    @State var background: UIColor = .clear
-    var backgroundState: State<UIColor> { _background }
+    @UState var background: UIColor = .clear
+    var backgroundState: UState<UIColor> { _background }
     
-    @State var color: UIColor = .clear
-    var colorState: State<UIColor> { _color }
+    @UState var color: UIColor = .clear
+    var colorState: UState<UIColor> { _color }
     
-    @State var textColor: UIColor = .clear
-    var textColorState: State<UIColor> { _textColor }
+    @UState var textColor: UIColor = .clear
+    var textColorState: UState<UIColor> { _textColor }
     
     var hovered: Bool = false
     

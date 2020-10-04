@@ -5,7 +5,7 @@ public protocol Messageable: class {
     func message(_ text: String) -> Self
     
     @discardableResult
-    func message(_ state: State<String>) -> Self
+    func message(_ state: UState<String>) -> Self
     
     @discardableResult
     func message<V>(_ expressable: ExpressableState<V, String>) -> Self
@@ -40,7 +40,7 @@ extension Messageable {
     }
 
     @discardableResult
-    public func message(_ state: State<String>) -> Self {
+    public func message(_ state: UState<String>) -> Self {
         guard let s = self as? _Messageable else { return self }
         s._setMessage(state.wrappedValue)
         state.listen { s._setMessage($0) }
@@ -57,7 +57,7 @@ extension _Messageable {
     }
 
     @discardableResult
-    public func message(_ state: State<String>) -> Self {
+    public func message(_ state: UState<String>) -> Self {
         _setMessage(state.wrappedValue)
         state.listen { self._setMessage($0) }
         return self

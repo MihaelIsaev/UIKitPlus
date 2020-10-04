@@ -12,10 +12,10 @@ class ListSection {
 
 public typealias UList = List
 public class List: View, UITableViewDataSource {
-    @State var reversed = false
+    @UState var reversed = false
     var rowAnimation: UITableView.RowAnimation = .automatic
     
-    var scrollPosition: State<CGPoint>?
+    var scrollPosition: UState<CGPoint>?
     
     var items: [ListSection] = []
     
@@ -272,7 +272,7 @@ extension List: UIScrollViewDelegate {
     }
     
     @discardableResult
-    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+    public func scrollPosition(_ binding: UIKitPlus.UState<CGPoint>) -> Self {
         scrollPosition = binding
         return self
     }

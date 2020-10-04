@@ -1,7 +1,7 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    public var tint: State<UIColor> { properties.$tint }
+    public var tint: UState<UIColor> { properties.$tint }
     
     @discardableResult
     public func tint(_ color: UIColor) -> Self {
@@ -20,7 +20,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func tint(_ state: State<UIColor>) -> Self {
+    public func tint(_ state: UState<UIColor>) -> Self {
         tint(state.wrappedValue)
         state.listen { [weak self] old, new in
             self?.tint(new)

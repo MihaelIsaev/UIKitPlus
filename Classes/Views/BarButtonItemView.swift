@@ -34,7 +34,7 @@ open class BarButtonItem: UIBarButtonItem {
         setup()
     }
     
-    public init(_ image: State<UIImage>) {
+    public init(_ image: UState<UIImage>) {
         super.init()
         self.image = image.wrappedValue
         setup()
@@ -107,7 +107,7 @@ open class BarButtonItem: UIBarButtonItem {
     }
     
     @discardableResult
-    public func tint(_ binding: State<UIColor>) -> Self {
+    public func tint(_ binding: UState<UIColor>) -> Self {
         binding.listen { self.tint($0) }
         return tint(binding.wrappedValue)
     }
@@ -119,7 +119,7 @@ open class BarButtonItem: UIBarButtonItem {
     }
     
     @discardableResult
-    public func tint(_ binding: State<Int>) -> Self {
+    public func tint(_ binding: UState<Int>) -> Self {
         binding.listen { self.tint($0) }
         return tint(binding.wrappedValue)
     }

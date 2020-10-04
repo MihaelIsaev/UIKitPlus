@@ -5,7 +5,7 @@ public protocol Titleable: class {
     func title(_ text: String) -> Self
     
     @discardableResult
-    func title(_ state: State<String>) -> Self
+    func title(_ state: UState<String>) -> Self
     
     @discardableResult
     func title<V>(_ expressable: ExpressableState<V, String>) -> Self
@@ -50,7 +50,7 @@ extension Titleable {
     }
 
     @discardableResult
-    public func title(_ state: State<String>) -> Self {
+    public func title(_ state: UState<String>) -> Self {
         guard let s = self as? _Titleable else { return self }
         s._setTitle(state.wrappedValue)
         state.listen { s._setTitle($0) }
@@ -67,7 +67,7 @@ extension _Titleable {
     }
 
     @discardableResult
-    public func title(_ state: State<String>) -> Self {
+    public func title(_ state: UState<String>) -> Self {
         _setTitle(state.wrappedValue)
         state.listen { self._setTitle($0) }
         return self

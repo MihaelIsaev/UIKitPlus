@@ -3,23 +3,23 @@ public protocol Refreshable {
 }
 
 extension Refreshable {
-    // MARK: Reaction on @State
+    // MARK: Reaction on @UState
     
     @discardableResult
-    public func react<A>(to a: State<A>) -> Self {
+    public func react<A>(to a: UState<A>) -> Self {
         a.listen { _,_ in self.refresh() }
         return self
     }
     
     @discardableResult
-    public func react<A, B>(to a: State<A>, _ b: State<B>) -> Self {
+    public func react<A, B>(to a: UState<A>, _ b: UState<B>) -> Self {
         a.listen { _,_ in self.refresh() }
         b.listen { _,_ in self.refresh() }
         return self
     }
     
     @discardableResult
-    public func react<A, B, C>(to a: State<A>, _ b: State<B>, _ c: State<C>) -> Self {
+    public func react<A, B, C>(to a: UState<A>, _ b: UState<B>, _ c: UState<C>) -> Self {
         a.listen { _,_ in self.refresh() }
         b.listen { _,_ in self.refresh() }
         c.listen { _,_ in self.refresh() }
@@ -27,7 +27,7 @@ extension Refreshable {
     }
     
     @discardableResult
-    public func react<A, B, C, D>(to a: State<A>, _ b: State<B>, _ c: State<C>, _ d: State<D>) -> Self {
+    public func react<A, B, C, D>(to a: UState<A>, _ b: UState<B>, _ c: UState<C>, _ d: UState<D>) -> Self {
         a.listen { _,_ in self.refresh() }
         b.listen { _,_ in self.refresh() }
         c.listen { _,_ in self.refresh() }
@@ -36,7 +36,7 @@ extension Refreshable {
     }
     
     @discardableResult
-    public func react<A, B, C, D, E>(to a: State<A>, _ b: State<B>, _ c: State<C>, _ d: State<D>, _ e: State<E>) -> Self {
+    public func react<A, B, C, D, E>(to a: UState<A>, _ b: UState<B>, _ c: UState<C>, _ d: UState<D>, _ e: UState<E>) -> Self {
         a.listen { _,_ in self.refresh() }
         b.listen { _,_ in self.refresh() }
         c.listen { _,_ in self.refresh() }

@@ -8,7 +8,7 @@ public protocol Enableable {
     func enabled(_ value: Bool) -> Self
     
     @discardableResult
-    func enabled(_ binding: UIKitPlus.State<Bool>) -> Self
+    func enabled(_ binding: UIKitPlus.UState<Bool>) -> Self
     
     @discardableResult
     func enabled<V>(_ expressable: ExpressableState<V, Bool>) -> Self
@@ -25,7 +25,7 @@ extension Enableable {
     }
     
     @discardableResult
-    public func enabled(_ binding: UIKitPlus.State<Bool>) -> Self {
+    public func enabled(_ binding: UIKitPlus.UState<Bool>) -> Self {
         binding.listen { self.enabled($0) }
         return enabled(binding.wrappedValue)
     }

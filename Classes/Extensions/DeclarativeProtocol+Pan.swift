@@ -48,7 +48,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func onPanGesture(minTouches: Int? = nil, maxTouches: Int? = nil, _ state: State<UIGestureRecognizer.State>) -> Self {
+    public func onPanGesture(minTouches: Int? = nil, maxTouches: Int? = nil, _ state: UState<UIGestureRecognizer.State>) -> Self {
         onPanGesture(minTouches: minTouches, maxTouches: maxTouches) { v, s, r in
             state.wrappedValue = s
         }

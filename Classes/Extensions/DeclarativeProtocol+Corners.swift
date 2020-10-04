@@ -26,7 +26,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func corners(_ state: State<CGFloat>) -> Self {
+    public func corners(_ state: UState<CGFloat>) -> Self {
         corners(state.wrappedValue)
         state.listen { [weak self] old, new in
             self?.corners(state.wrappedValue)

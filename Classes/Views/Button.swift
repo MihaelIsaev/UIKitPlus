@@ -6,37 +6,37 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     public lazy var properties = Properties<Button>()
     lazy var _properties = PropertiesInternal()
     
-    @UIKitPlus.State public var height: CGFloat = 0
-    @UIKitPlus.State public var width: CGFloat = 0
-    @UIKitPlus.State public var top: CGFloat = 0
-    @UIKitPlus.State public var leading: CGFloat = 0
-    @UIKitPlus.State public var left: CGFloat = 0
-    @UIKitPlus.State public var trailing: CGFloat = 0
-    @UIKitPlus.State public var right: CGFloat = 0
-    @UIKitPlus.State public var bottom: CGFloat = 0
-    @UIKitPlus.State public var centerX: CGFloat = 0
-    @UIKitPlus.State public var centerY: CGFloat = 0
+    @UIKitPlus.UState public var height: CGFloat = 0
+    @UIKitPlus.UState public var width: CGFloat = 0
+    @UIKitPlus.UState public var top: CGFloat = 0
+    @UIKitPlus.UState public var leading: CGFloat = 0
+    @UIKitPlus.UState public var left: CGFloat = 0
+    @UIKitPlus.UState public var trailing: CGFloat = 0
+    @UIKitPlus.UState public var right: CGFloat = 0
+    @UIKitPlus.UState public var bottom: CGFloat = 0
+    @UIKitPlus.UState public var centerX: CGFloat = 0
+    @UIKitPlus.UState public var centerY: CGFloat = 0
     
-    var __height: UIKitPlus.State<CGFloat> { $height }
-    var __width: UIKitPlus.State<CGFloat> { $width }
-    var __top: UIKitPlus.State<CGFloat> { $top }
-    var __leading: UIKitPlus.State<CGFloat> { $leading }
-    var __left: UIKitPlus.State<CGFloat> { $left }
-    var __trailing: UIKitPlus.State<CGFloat> { $trailing }
-    var __right: UIKitPlus.State<CGFloat> { $right }
-    var __bottom: UIKitPlus.State<CGFloat> { $bottom }
-    var __centerX: UIKitPlus.State<CGFloat> { $centerX }
-    var __centerY: UIKitPlus.State<CGFloat> { $centerY }
+    var __height: UIKitPlus.UState<CGFloat> { $height }
+    var __width: UIKitPlus.UState<CGFloat> { $width }
+    var __top: UIKitPlus.UState<CGFloat> { $top }
+    var __leading: UIKitPlus.UState<CGFloat> { $leading }
+    var __left: UIKitPlus.UState<CGFloat> { $left }
+    var __trailing: UIKitPlus.UState<CGFloat> { $trailing }
+    var __right: UIKitPlus.UState<CGFloat> { $right }
+    var __bottom: UIKitPlus.UState<CGFloat> { $bottom }
+    var __centerX: UIKitPlus.UState<CGFloat> { $centerX }
+    var __centerY: UIKitPlus.UState<CGFloat> { $centerY }
     
     // MARK: States
     
-    var titleNormal: UIKitPlus.State<String>?
-    var titleHighlighted: UIKitPlus.State<String>?
-    var titleDisabled: UIKitPlus.State<String>?
-    var titleSelected: UIKitPlus.State<String>?
-    var titleFocused: UIKitPlus.State<String>?
-    var titleApplication: UIKitPlus.State<String>?
-    var titleReserved: UIKitPlus.State<String>?
+    var titleNormal: UIKitPlus.UState<String>?
+    var titleHighlighted: UIKitPlus.UState<String>?
+    var titleDisabled: UIKitPlus.UState<String>?
+    var titleSelected: UIKitPlus.UState<String>?
+    var titleFocused: UIKitPlus.UState<String>?
+    var titleApplication: UIKitPlus.UState<String>?
+    var titleReserved: UIKitPlus.UState<String>?
     
     private var titleChangeTransition: UIView.AnimationOptions?
     
@@ -86,7 +86,7 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
         setTitle(String(localized), for: .normal)
     }
     
-    public init (_ state: UIKitPlus.State<String>) {
+    public init (_ state: UIKitPlus.UState<String>) {
         super.init(frame: .zero)
         _setup()
         setTitle(state.wrappedValue, for: .normal)
@@ -179,7 +179,7 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func title(_ bind: UIKitPlus.State<String>, state: UIControl.State = .normal) -> Self  {
+    public func title(_ bind: UIKitPlus.UState<String>, state: UIControl.State = .normal) -> Self  {
         setTitle(bind.wrappedValue, for: state)
         switch state {
         case .application:
@@ -280,7 +280,7 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func color(_ binding: UIKitPlus.State<UIColor>, _ state: UIControl.State = .normal) -> Self {
+    public func color(_ binding: UIKitPlus.UState<UIColor>, _ state: UIControl.State = .normal) -> Self {
         binding.listen { self.color($0, state) }
         return color(binding.wrappedValue, state)
     }
@@ -292,7 +292,7 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func color(_ binding: UIKitPlus.State<Int>, _ state: UIControl.State = .normal) -> Self {
+    public func color(_ binding: UIKitPlus.UState<Int>, _ state: UIControl.State = .normal) -> Self {
         binding.listen { self.color($0, state) }
         return color(binding.wrappedValue, state)
     }
@@ -317,7 +317,7 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func image(_ binding: UIKitPlus.State<UIImage>, _ state: UIControl.State = .normal) -> Self {
+    public func image(_ binding: UIKitPlus.UState<UIImage>, _ state: UIControl.State = .normal) -> Self {
         binding.listen { self.image($0, state) }
         return image(binding.wrappedValue, state)
     }
@@ -342,7 +342,7 @@ open class Button: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func backgroundImage(_ binding: UIKitPlus.State<UIImage>, _ state: UIControl.State = .normal) -> Self {
+    public func backgroundImage(_ binding: UIKitPlus.UState<UIImage>, _ state: UIControl.State = .normal) -> Self {
         binding.listen { self.image($0, state) }
         return backgroundImage(binding.wrappedValue, state)
     }

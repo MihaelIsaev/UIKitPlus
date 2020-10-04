@@ -49,7 +49,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func onPinchGesture(scale: CGFloat? = nil, _ state: State<UIGestureRecognizer.State>) -> Self {
+    public func onPinchGesture(scale: CGFloat? = nil, _ state: UState<UIGestureRecognizer.State>) -> Self {
         onPinchGesture(scale: scale) { v, s, r in
             state.wrappedValue = s
         }

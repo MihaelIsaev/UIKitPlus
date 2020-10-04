@@ -26,7 +26,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    private func _dimension(_ value: State<CGFloat>,
+    private func _dimension(_ value: UState<CGFloat>,
                                         attribute: NSLayoutConstraint.Attribute,
                                         relation: NSLayoutConstraint.Relation,
                                         multiplier: CGFloat,
@@ -59,7 +59,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func width(_ value: State<CGFloat>,
+    public func width(_ value: UState<CGFloat>,
                       relation: NSLayoutConstraint.Relation = .equal,
                       multiplier: CGFloat = 1,
                       priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -76,14 +76,14 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func width(_ value: ConstraintValue) -> Self {
-        width(State<CGFloat>(wrappedValue: value.constraintValue.value),
+        width(UState<CGFloat>(wrappedValue: value.constraintValue.value),
               relation: value.constraintValue.relation,
               multiplier: value.constraintValue.multiplier,
               priority: value.constraintValue.priority)
     }
     
     @discardableResult
-    public func height(_ value: State<CGFloat>,
+    public func height(_ value: UState<CGFloat>,
                         relation: NSLayoutConstraint.Relation = .equal,
                         multiplier: CGFloat = 1,
                         priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -100,14 +100,14 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func height(_ value: ConstraintValue) -> Self {
-        height(State<CGFloat>(wrappedValue: value.constraintValue.value),
+        height(UState<CGFloat>(wrappedValue: value.constraintValue.value),
                relation: value.constraintValue.relation,
                multiplier: value.constraintValue.multiplier,
                priority: value.constraintValue.priority)
     }
     
     @discardableResult
-    public func size(_ state: State<CGFloat>,
+    public func size(_ state: UState<CGFloat>,
                         relation: NSLayoutConstraint.Relation = .equal,
                         multiplier: CGFloat = 1,
                         priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -128,7 +128,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func size(_ w: State<CGFloat>, _ h: State<CGFloat>,
+    public func size(_ w: UState<CGFloat>, _ h: UState<CGFloat>,
                         relation: NSLayoutConstraint.Relation = .equal,
                         multiplier: CGFloat = 1,
                         priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -136,7 +136,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func size<V>(_ w: ExpressableState<V, CGFloat>, _ h: State<CGFloat>,
+    public func size<V>(_ w: ExpressableState<V, CGFloat>, _ h: UState<CGFloat>,
                             relation: NSLayoutConstraint.Relation = .equal,
                             multiplier: CGFloat = 1,
                             priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -144,7 +144,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func size<V>(_ w: State<CGFloat>, _ h: ExpressableState<V, CGFloat>,
+    public func size<V>(_ w: UState<CGFloat>, _ h: ExpressableState<V, CGFloat>,
                             relation: NSLayoutConstraint.Relation = .equal,
                             multiplier: CGFloat = 1,
                             priority: UILayoutPriority = .defaultHigh) -> Self {

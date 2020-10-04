@@ -1,7 +1,7 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    public var background: State<UIColor> { properties.$background }
+    public var background: UState<UIColor> { properties.$background }
     
     @discardableResult
     public func background(_ color: UIColor) -> Self {
@@ -16,7 +16,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func background(_ state: State<UIColor>) -> Self {
+    public func background(_ state: UState<UIColor>) -> Self {
         declarativeView.backgroundColor = state.wrappedValue
         properties.background = state.wrappedValue
         state.listen { [weak self] old, new in

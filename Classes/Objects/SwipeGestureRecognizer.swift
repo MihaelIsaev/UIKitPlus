@@ -22,7 +22,7 @@ final public class SwipeGestureRecognizer: UISwipeGestureRecognizer, _GestureTra
     }
     
     @discardableResult
-    public func numberOfTouchesRequired(_ state: UIKitPlus.State<Int>) -> Self {
+    public func numberOfTouchesRequired(_ state: UIKitPlus.UState<Int>) -> Self {
         state.listen { self.numberOfTouchesRequired = $0 }
         return self
     }
@@ -39,7 +39,7 @@ final public class SwipeGestureRecognizer: UISwipeGestureRecognizer, _GestureTra
     }
     
     @discardableResult
-    public func direction(_ state: UIKitPlus.State<UISwipeGestureRecognizer.Direction>) -> Self {
+    public func direction(_ state: UIKitPlus.UState<UISwipeGestureRecognizer.Direction>) -> Self {
         state.listen { self.direction = $0 }
         return self
     }

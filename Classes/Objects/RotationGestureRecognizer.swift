@@ -20,7 +20,7 @@ final public class RotationGestureRecognizer: UIRotationGestureRecognizer, _Gest
     }
     
     @discardableResult
-    public func rotation(_ state: UIKitPlus.State<CGFloat>) -> Self {
+    public func rotation(_ state: UIKitPlus.UState<CGFloat>) -> Self {
         state.listen { self.rotation = $0 }
         return self
     }

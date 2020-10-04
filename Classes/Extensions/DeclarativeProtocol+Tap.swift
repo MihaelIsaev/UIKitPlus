@@ -34,7 +34,7 @@ extension DeclarativeProtocol where V: UIView {
     }
     
     @discardableResult
-    public func onTapGesture(taps: Int = 1, touches: Int = 1, _ state: State<UIGestureRecognizer.State>) -> Self {
+    public func onTapGesture(taps: Int = 1, touches: Int = 1, _ state: UState<UIGestureRecognizer.State>) -> Self {
         onTapGesture(taps: taps, touches: touches) { v, s, r in
             state.wrappedValue = s
         }

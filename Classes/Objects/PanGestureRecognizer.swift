@@ -25,7 +25,7 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
     }
     
     @discardableResult
-    public func minimumNumberOfTouches(_ state: UIKitPlus.State<Int>) -> Self {
+    public func minimumNumberOfTouches(_ state: UIKitPlus.UState<Int>) -> Self {
         state.listen { self.minimumNumberOfTouches = $0 }
         return self
     }
@@ -42,7 +42,7 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
     }
     
     @discardableResult
-    public func maximumNumberOfTouches(_ state: UIKitPlus.State<Int>) -> Self {
+    public func maximumNumberOfTouches(_ state: UIKitPlus.UState<Int>) -> Self {
         state.listen { self.maximumNumberOfTouches = $0 }
         return self
     }

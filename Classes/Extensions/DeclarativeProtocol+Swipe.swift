@@ -46,7 +46,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func onSwipeGesture(direction: UISwipeGestureRecognizer.Direction, touches: Int? = nil, _ state: State<UIGestureRecognizer.State>) -> Self {
+    public func onSwipeGesture(direction: UISwipeGestureRecognizer.Direction, touches: Int? = nil, _ state: UState<UIGestureRecognizer.State>) -> Self {
         onSwipeGesture(direction: direction, touches: touches) { v, s, r in
             state.wrappedValue = s
         }

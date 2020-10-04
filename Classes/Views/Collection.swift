@@ -12,14 +12,15 @@ class CollectionSection {
 
 public typealias Collection = UCollection
 public class UCollection: View, UICollectionViewDataSource {
-    @State var reversed = false
+    @UState var reversed = false
     
     var items: [CollectionSection] = []
     
     let layout: UICollectionViewLayout
     
-    var scrollPosition: State<CGPoint>?
-    var contentSize: State<CGSize>?
+    var scrollPosition: UState<CGPoint>?
+    var contentSize: UState<CGSize>?
+    var shouldFitContent = false
     
     class SectionChanges {
         let section: Int
@@ -73,6 +74,22 @@ public class UCollection: View, UICollectionViewDataSource {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+
+    /*public override func layoutSubviews() {
+        super.layoutSubviews()
+        if shouldFitContent {
+            height = collectionView.collectionViewLayout.collectionViewContentSize.height
+        }
+    }
+    
+    @discardableResult
+    public func fitContent() -> Self {
+        shouldFitContent = true
+        return self
+    }*/
+    
     
     func process(_ item: ViewBuilderItemable, sectionIndex: Int = 0) {
         let item = item.viewBuilderItem
@@ -155,7 +172,7 @@ public class UCollection: View, UICollectionViewDataSource {
     }
     
     @discardableResult
-    public func contentSize(_ binding: UIKitPlus.State<CGSize>) -> Self {
+    public func contentSize(_ binding: UIKitPlus.UState<CGSize>) -> Self {
         contentSize = binding
         return self
     }
@@ -165,7 +182,7 @@ public class UCollection: View, UICollectionViewDataSource {
         contentSize = expressable.unwrap()
         return self
     }
-
+     
     // MARK: - UITableViewDataSource
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -248,7 +265,7 @@ extension UCollection: UIScrollViewDelegate {
     }
     
     @discardableResult
-    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+    public func scrollPosition(_ binding: UIKitPlus.UState<CGPoint>) -> Self {
         scrollPosition = binding
         return self
     }
