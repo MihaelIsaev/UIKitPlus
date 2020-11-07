@@ -30,10 +30,24 @@ open class UImage: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
     
     var _imageLoader: ImageLoader = .defaultRelease
     
-    public init (_ named: String) {
+    public init (named: String) {
         super.init(frame: .zero)
         image = UIImage(named: named)
         _setup()
+    }
+    
+    public init (named name: State<String>) {
+        super.init(frame: .zero)
+        self.image = UIImage(named: name.wrappedValue)
+        _setup()
+        name.listen { [weak self] old, new in
+            guard let self = self else { return }
+            self.image = UIImage(named: new)
+        }
+    }
+    
+    public convenience init <V>(named expressable: ExpressableState<V, String>) {
+        self.init(named: expressable.unwrap())
     }
     
     public init (_ image: UIImage?) {
@@ -52,17 +66,15 @@ open class UImage: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         }
     }
     
-    public init <V>(_ expressable: ExpressableState<V, UIImage?>) {
-        super.init(frame: .zero)
-        self.image = expressable.value()
-        _setup()
-        expressable.state.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self.image = expressable.value()
-        }
+    public convenience init <V>(_ expressable: ExpressableState<V, UIImage?>) {
+        self.init(expressable.unwrap())
     }
     
-    public init (_ url: State<URL>, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
+    public convenience init (url: State<URL?>, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
+        self.init(url: url.map { $0?.absoluteString }, defaultImage: defaultImage, loader: loader)
+    }
+    
+    public init (url: State<String?>, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
         super.init(frame: .zero)
         _setup()
         self.image = defaultImage
@@ -74,31 +86,11 @@ open class UImage: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         }
     }
     
-    public init (_ url: State<String>, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
-        super.init(frame: .zero)
-        _setup()
-        self.image = defaultImage
-        self._imageLoader = loader
-        self._imageLoader.load(url.wrappedValue, imageView: self, defaultImage: defaultImage)
-        url.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self._imageLoader.load(new, imageView: self, defaultImage: defaultImage)
-        }
+    public convenience init <V>(url expressable: ExpressableState<V, String?>, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
+        self.init(url: expressable.unwrap(), defaultImage: defaultImage, loader: loader)
     }
     
-    public init <V>(_ expressable: ExpressableState<V, String>, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
-        super.init(frame: .zero)
-        _setup()
-        self.image = defaultImage
-        self._imageLoader = loader
-        self._imageLoader.load(expressable.value(), imageView: self, defaultImage: defaultImage)
-        expressable.state.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self._imageLoader.load(expressable.value(), imageView: self, defaultImage: defaultImage)
-        }
-    }
-    
-    public init (url: URL, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
+    public init (url: URL?, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
         super.init(frame: .zero)
         _setup()
         self.image = defaultImage
@@ -106,7 +98,7 @@ open class UImage: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         self._imageLoader.load(url, imageView: self, defaultImage: defaultImage)
     }
     
-    public init (url: String, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
+    public init (url: String?, defaultImage: UIImage? = nil, loader: ImageLoader = .defaultRelease) {
         super.init(frame: .zero)
         _setup()
         self.image = defaultImage

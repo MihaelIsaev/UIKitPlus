@@ -3,8 +3,8 @@ import AppKit
 
 /// aka `NSLabel`
 open class UText: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Text { self }
-    public lazy var properties = Properties<Text>()
+    public var declarativeView: UText { self }
+    public lazy var properties = Properties<UText>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0
@@ -98,7 +98,8 @@ open class UText: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolIntern
         movedToSuperview()
     }
 }
-extension Text: Refreshable {
+
+extension UText: Refreshable {
     /// Refreshes using `RefreshHandler`
     public func refresh() {
         if let statedText = _properties.statedText {
@@ -107,13 +108,13 @@ extension Text: Refreshable {
     }
 }
 
-extension Text: _Fontable {
+extension UText: _Fontable {
     func _setFont(_ v: UFont?) {
         font = v
     }
 }
 
-extension Text: _Textable {
+extension UText: _Textable {
     var _statedText: AnyStringBuilder.Handler? {
         get { _properties.statedText }
         set { _properties.statedText = newValue }
@@ -125,7 +126,7 @@ extension Text: _Textable {
     }
 }
 
-extension Text: _Colorable {
+extension UText: _Colorable {
     var _colorState: State<UColor> { properties.textColorState }
 
     func _setColor(_ v: NSColor?) {
@@ -139,7 +140,7 @@ extension Text: _Colorable {
     }
 }
 
-extension Text: _TextAligmentable {
+extension UText: _TextAligmentable {
     func _setTextAlignment(v: NSTextAlignment) {
         let p = NSMutableParagraphStyle()
         p.alignment = v
@@ -150,13 +151,13 @@ extension Text: _TextAligmentable {
     }
 }
 
-extension Text: _TextLineable {
+extension UText: _TextLineable {
     func _setNumbelOfLines(_ v: Int) {
         maximumNumberOfLines = v
     }
 }
 
-extension Text: _TextLineBreakModeable {
+extension UText: _TextLineBreakModeable {
     func _setLineBreakMode(_ v: NSLineBreakMode) {
         lineBreakMode = v
     }

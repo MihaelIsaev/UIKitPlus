@@ -15,6 +15,9 @@ extension UNAuthorizationStatus {
         case .authorized: return .authorized
         case .denied: return .denied
         case .notDetermined: return .notDetermined
+        #if swift(>=5.3)
+        case .ephemeral: return .notDetermined
+        #endif
         case .provisional:
             if #available(iOS 12.0, *) {
                 return .provisional

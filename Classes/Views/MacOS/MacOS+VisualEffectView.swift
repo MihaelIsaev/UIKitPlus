@@ -2,8 +2,8 @@
 import AppKit
 
 open class UVisualEffectView: NSVisualEffectView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: VisualEffectView { self }
-    public lazy var properties = Properties<VisualEffectView>()
+    public var declarativeView: UVisualEffectView { self }
+    public lazy var properties = Properties<UVisualEffectView>()
     lazy var _properties = PropertiesInternal()
     
     @UState public var height: CGFloat = 0

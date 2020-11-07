@@ -30,15 +30,15 @@ open class ImageLoader {
         self.reloadingStyle = reloadingStyle
     }
     
-    open func load(_ url: URL, imageView: _UImageView, defaultImage: _UImage? = nil) {
-        load(url.absoluteString, imageView: imageView, defaultImage: defaultImage)
+    open func load(_ url: String?, imageView: _UImageView, defaultImage: _UImage? = nil) {
+        load(URL(string: url ?? ""), imageView: imageView, defaultImage: defaultImage)
     }
     
-    open func load(_ url: String, imageView: _UImageView, defaultImage: _UImage? = nil) {
+    open func load(_ url: URL?, imageView: _UImageView, defaultImage: _UImage? = nil) {
         DispatchQueue.main.async { [weak self] in
             loaderQueue.async { [weak self] in
                 /// Checks if URL is valid, otherwise trying to set default image
-                guard let url = URL(string: url), url.absoluteString.count > 0 else {
+                guard let url = url, url.absoluteString.count > 0 else {
                     if let defaultImage = defaultImage {
                         DispatchQueue.main.async {
                             imageView.image = defaultImage

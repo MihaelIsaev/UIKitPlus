@@ -248,7 +248,11 @@ extension BaseApp {
             switch type {
             case .splash: return screens[type]?()
             case .login: return screens[type]?()
-            case .logout: return screens[type]?()
+            case .logout:
+                guard let handler = screens[type] else {
+                    return screens[.login]?()
+                }
+                return handler()
             case .main: return screens[type]?()
             case .onboarding: return screens[type]?() ?? screens[.main]?()
             default: return nil

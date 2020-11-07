@@ -2,7 +2,7 @@
 import Foundation
 import AppKit
 
-open class USecureTextField: TextField {
+open class USecureTextField: UTextField {
     override func _setup() {
         cell = NSSecureTextFieldCell(textCell: attributedStringValue.string)
         isEditable = true

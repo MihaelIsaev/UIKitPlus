@@ -23,8 +23,8 @@ extension DeclarativeProtocol {
         properties.borderColor.changeHandler = nil
         properties.borderColor = color.wrappedValue
         declarativeView.layer?.borderColor = color.wrappedValue.current.cgColor
-        properties.borderColor.onChange { [weak self] new in
-            self?.declarativeView.layer?.borderColor = new.cgColor
+        properties.borderColor.onChange { new in
+            self.declarativeView.layer?.borderColor = new.cgColor
         }
         #else
         properties.borderColor = color.wrappedValue

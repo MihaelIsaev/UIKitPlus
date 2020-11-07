@@ -1,8 +1,6 @@
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI
 
-@_exported import protocol SwiftUI.PreviewProvider
-
 #if os(macOS)
 @available(macOS 10.15, *)
 public struct LiveView: NSViewRepresentable {
@@ -24,6 +22,10 @@ public struct LiveView: NSViewRepresentable {
 @available(iOS 13.0, *)
 public struct LiveView: UIViewRepresentable {
     let view: UIView
+    let aaa = SwiftUI.Text("")
+    let bbb = SwiftUI.Button("", action: {})
+    let ccc = SwiftUI.Rectangle()
+    let ddd = SwiftUI.Circle()
     
     public init (_ vc: UIViewController) {
         self.view = vc.view

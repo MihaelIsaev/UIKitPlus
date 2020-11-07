@@ -2,8 +2,8 @@
 import AppKit
 
 open class UImage: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: Image { self }
-    public lazy var properties = Properties<Image>()
+    public var declarativeView: UImage { self }
+    public lazy var properties = Properties<UImage>()
     lazy var _properties = PropertiesInternal()
     
     @State public var height: CGFloat = 0

@@ -30,7 +30,7 @@ open class ViewController: BaseViewController {
     
     #if os(macOS)
     open override func loadView() {
-        self.view = View()
+        self.view = UView()
     }
     
     public var navigationController: NavigationController?

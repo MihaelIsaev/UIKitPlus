@@ -189,5 +189,11 @@ open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInterna
         return offImage(expressable.value())
     }
 }
+
+extension UToggle: _Enableable {
+    func _setEnabled(_ v: Bool) {
+        isEnabled = v
+    }
+}
 #endif
 #endif

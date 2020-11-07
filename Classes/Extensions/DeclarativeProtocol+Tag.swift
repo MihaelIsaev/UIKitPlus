@@ -6,8 +6,8 @@ import UIKit
 
 extension DeclarativeProtocol {
     @discardableResult
-    public func tag(_ value: Int) -> Self {
-        declarativeView.tag = value
+    public mutating func tag(_ value: Int) -> Self {
+        tag = value
         return self
     }
 }

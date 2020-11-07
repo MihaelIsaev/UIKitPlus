@@ -3,8 +3,8 @@ import Foundation
 import AppKit
 
 open class UTextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: TextField { self }
-    public typealias P = Properties<TextField>
+    public var declarativeView: UTextField { self }
+    public typealias P = Properties<UTextField>
     public lazy var properties = P()
     lazy var _properties = PropertiesInternal()
     fileprivate lazy var _formatter = _Formatter(self)
@@ -547,9 +547,9 @@ open class UTextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolI
 }
 
 fileprivate class _InnerDelegate: NSObject, NSTextFieldDelegate, NSTextDelegate {
-    let parent: TextField
+    let parent: UTextField
     
-    init (_ textField: TextField) {
+    init (_ textField: UTextField) {
         parent = textField
         super.init()
         parent.target = self
@@ -681,31 +681,31 @@ fileprivate class _InnerDelegate: NSObject, NSTextFieldDelegate, NSTextDelegate 
     }
 }
 
-extension TextField: _Editableable {
+extension UTextField: _Editableable {
     func _setEditable(_ v: Bool) {
         isEditable = v
     }
 }
 
-extension TextField: _TextAttributesEditingAllowable {
+extension UTextField: _TextAttributesEditingAllowable {
     func _setAllowEditingTextAttributes(_ v: Bool) {
         allowsEditingTextAttributes = v
     }
 }
 
-extension TextField: _Bezeledable {
+extension UTextField: _Bezeledable {
     func _setBezeled(_ v: Bool) {
         isBezeled = v
     }
 }
 
-extension TextField: _FocusRingTypeable {
+extension UTextField: _FocusRingTypeable {
     func _setFocusRingType(_ v: NSFocusRingType) {
         focusRingType = v
     }
 }
 
-extension TextField: Refreshable {
+extension UTextField: Refreshable {
     /// Refreshes using `RefreshHandler`
     public func refresh() {
         if let statedText = _properties.statedText {
@@ -714,27 +714,27 @@ extension TextField: Refreshable {
     }
 }
 
-extension TextField: _Enableable {
+extension UTextField: _Enableable {
     func _setEnabled(_ v: Bool) {
         isEnabled = v
     }
 }
 
-extension TextField: _Fontable {
+extension UTextField: _Fontable {
     func _setFont(_ v: UFont?) {
         font = v
     }
 }
 
-extension TextField: _Cleanupable {
+extension UTextField: _Cleanupable {
     func _cleanup() {
         attributedStringValue = .init()
         _innerDelegate.controlTextDidChange(.init(name: Notification.Name.init("")))
     }
 }
 
-extension TextField: _Colorable {
-    var _colorState: State<UColor> { properties.textColorState }
+extension UTextField: _Colorable {
+    var _colorState: UState<UColor> { properties.textColorState }
 
     func _setColor(_ v: NSColor?) {
         let str = NSMutableAttributedString(attributedString: attributedStringValue)
@@ -747,7 +747,7 @@ extension TextField: _Colorable {
     }
 }
 
-extension TextField: _TextAligmentable {
+extension UTextField: _TextAligmentable {
     func _setTextAlignment(v: NSTextAlignment) {
         let p = NSMutableParagraphStyle()
         p.alignment = v
@@ -758,7 +758,7 @@ extension TextField: _TextAligmentable {
     }
 }
 
-extension TextField: _TextBindable {
+extension UTextField: _TextBindable {
     func _setTextBind<A: AnyString>(_ binding: UIKitPlus.State<A>?) {
         _properties.textChangeListeners.append({ new in
             binding?.wrappedValue = A.make(new)
@@ -766,7 +766,7 @@ extension TextField: _TextBindable {
     }
 }
 
-extension TextField: _Textable {
+extension UTextField: _Textable {
     var _statedText: AnyStringBuilder.Handler? {
         get { _properties.statedText }
         set { _properties.statedText = newValue }
@@ -785,7 +785,7 @@ extension TextField: _Textable {
     }
 }
 
-extension TextField: _Typeable {
+extension UTextField: _Typeable {
     func _setTypingInterval(_ v: TimeInterval) {
         _properties.typingInterval = v
     }
@@ -801,7 +801,7 @@ extension TextField: _Typeable {
     }
 }
 
-extension TextField: _Placeholderable {
+extension UTextField: _Placeholderable {
     var _statedPlaceholder: AnyStringBuilder.Handler? {
         get { _properties.statedPlaceholder }
         set { _properties.statedPlaceholder = newValue }
@@ -832,7 +832,7 @@ extension TextField: _Placeholderable {
     }
 }
 
-extension TextField: _Tintable {
+extension UTextField: _Tintable {
     var _tintState: State<UColor> { properties.tintState }
     
     func _setTint(_ v: NSColor?) {
@@ -853,7 +853,7 @@ extension TextField: _Tintable {
 //    }
 //}
 
-extension TextField: _TextFieldContentTypeable {
+extension UTextField: _TextFieldContentTypeable {
     /// Works only since macOS 10.16 or 11 (Big Sur and higher)
     func _setTextFieldContentType(v: TextFieldContentType) {
         #if swift(>=5.3)
@@ -864,7 +864,7 @@ extension TextField: _TextFieldContentTypeable {
     }
 }
 
-fileprivate class _Formatter<TF>: NumberFormatter where TF: TextField {
+fileprivate class _Formatter<TF>: NumberFormatter where TF: UTextField {
     let tf: TF
     
     init(_ tf: TF) {

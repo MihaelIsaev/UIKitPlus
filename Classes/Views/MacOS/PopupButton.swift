@@ -2,8 +2,8 @@
 import AppKit
 
 open class UPopUpButton: NSPopUpButton, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
-    public var declarativeView: PopUpButton { self }
-    public lazy var properties = Properties<PopUpButton>()
+    public var declarativeView: UPopUpButton { self }
+    public lazy var properties = Properties<UPopUpButton>()
     lazy var _properties = PropertiesInternal()
     
     @UIKitPlus.State public var height: CGFloat = 0

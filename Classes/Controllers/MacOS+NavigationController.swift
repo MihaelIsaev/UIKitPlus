@@ -20,10 +20,10 @@ public class NavigationController: ViewController {
         self.rootViewController = rootViewController
         super.init(nibName: nil, bundle: nil)
         view.body {
-            (rootViewController.view as! View).edgesToSuperview()
+            (rootViewController.view as! UView).edgesToSuperview()
         }
         rootViewController.navigationController = self
-        (view as? View)?.onTouchPanGesture { [weak self] s, p, d in
+        (view as? UView)?.onTouchPanGesture { [weak self] s, p, d in
             guard let self = self else { return }
             switch s {
             case .began:
@@ -67,7 +67,7 @@ public class NavigationController: ViewController {
             previousVC = nav.viewControllers.last ?? nav.rootViewController
             width = currentVC.view.frame.width
             endFrame = currentVC.view.frame.offsetBy(dx: width, dy: 0)
-            (previousVC.view as! View).edgesToSuperview()
+            (previousVC.view as! UView).edgesToSuperview()
             nav.view.addSubview(previousVC.view, positioned: .below, relativeTo: currentVC.view)
         }
         
@@ -168,7 +168,7 @@ extension NavigationController {
         viewController.view.wantsLayer = true
         let oldVC = viewControllers.last ?? rootViewController
         addChild(viewController)
-        view.addSubview((viewController.view as! View).edgesToSuperview(), positioned: .above, relativeTo: oldVC.view)
+        view.addSubview((viewController.view as! UView).edgesToSuperview(), positioned: .above, relativeTo: oldVC.view)
         viewControllers.append(viewController)
         guard animated else { return }
         let endFrame = oldVC.view.frame
@@ -201,14 +201,14 @@ extension NavigationController {
         }
         let previousVC = viewControllers.last ?? rootViewController
         guard animated else {
-            (previousVC.view as! View).edgesToSuperview()
+            (previousVC.view as! UView).edgesToSuperview()
             view.addSubview(previousVC.view, positioned: .below, relativeTo: currentVC.view)
             previousVC.view.bounds.origin.x = 0
             unembedChildViewController(currentVC)
             return
         }
         let endFrame = currentVC.view.frame.offsetBy(dx: currentVC.view.frame.width, dy: 0)
-        (previousVC.view as! View).edgesToSuperview()
+        (previousVC.view as! UView).edgesToSuperview()
         view.addSubview(previousVC.view, positioned: .below, relativeTo: currentVC.view)
         previousVC.view.bounds.origin.x = currentVC.view.frame.width * 0.2
         NSAnimationContext.runAnimationGroup({ context in
@@ -228,7 +228,7 @@ extension NavigationController {
 extension NSViewController {
     func embedChildViewController(_ vc: ViewController) {
         addChild(vc)
-        view.addSubview((vc.view as! View).edgesToSuperview(), positioned: .below, relativeTo: nil)
+        view.addSubview((vc.view as! UView).edgesToSuperview(), positioned: .below, relativeTo: nil)
     }
     
     func unembedChildViewController(_ vc: NSViewController) {

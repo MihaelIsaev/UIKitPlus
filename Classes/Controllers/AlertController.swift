@@ -22,6 +22,14 @@ extension UIAlertController: _Messageable, _UIAlertViewControllerable {
         vc.present(self, animated: true, completion: completion)
         return self
     }
+    
+    public var controller: UIAlertController { self }
+    
+    @discardableResult
+    public func textField(configurationHandler: @escaping ((UITextField) -> Void)) -> Self {
+        addTextField(configurationHandler: configurationHandler)
+        return self
+    }
 }
 
 open class ActionSheet: UIAlertController {
@@ -51,11 +59,19 @@ extension UIAlertAction: _Enableable {
 }
 
 public protocol UIAlertViewControllerable {
+    var controller: UIAlertController { get }
+    
     @discardableResult
     func action(_ title: String?, _ style: UIAlertAction.Style, _ handler: @escaping ((AlertAction) -> Void)) -> Self
     
     @discardableResult
+    func action(_ title: String?, _ style: UIAlertAction.Style, _ handler: @escaping ((AlertAction, UIAlertController) -> Void)) -> Self
+    
+    @discardableResult
     func action(_ title: String?, _ handler: @escaping ((AlertAction) -> Void)) -> Self
+    
+    @discardableResult
+    func action(_ title: String?, _ handler: @escaping ((AlertAction, UIAlertController) -> Void)) -> Self
     
     @discardableResult
     func action(_ title: String?) -> Self
@@ -70,6 +86,9 @@ public protocol UIAlertViewControllerable {
     func destructive(_ title: String?, _ handler: @escaping ((AlertAction) -> Void)) -> Self
     
     @discardableResult
+    func destructive(_ title: String?, _ handler: @escaping ((AlertAction, UIAlertController) -> Void)) -> Self
+    
+    @discardableResult
     func destructive(_ title: String?, _ handler: @escaping (() -> Void)) -> Self
     
     @discardableResult
@@ -77,6 +96,9 @@ public protocol UIAlertViewControllerable {
     
     @discardableResult
     func cancel(_ title: String?, _ handler: @escaping ((AlertAction) -> Void)) -> Self
+    
+    @discardableResult
+    func cancel(_ title: String?, _ handler: @escaping ((AlertAction, UIAlertController) -> Void)) -> Self
     
     @discardableResult
     func cancel(_ title: String?, _ handler: @escaping (() -> Void)) -> Self
@@ -97,6 +119,9 @@ public protocol UIAlertViewControllerable {
     func present(in vc: UIViewController) -> Self
     
     func addAction(_ action: UIAlertAction)
+    
+    @discardableResult
+    func textField(configurationHandler: @escaping ((UITextField) -> Void)) -> Self
 }
 
 protocol _UIAlertViewControllerable: UIAlertViewControllerable {
@@ -106,14 +131,25 @@ protocol _UIAlertViewControllerable: UIAlertViewControllerable {
 extension UIAlertViewControllerable {
     @discardableResult
     public func action(_ title: String?, _ style: UIAlertAction.Style, _ handler: @escaping ((AlertAction) -> Void)) -> Self {
-       addAction(AlertAction(title: title, style: style) {
-           handler($0)
-       })
-       return self
+        action(title, style) { action, controller in
+            handler(action)
+        }
+    }
+    
+    public func action(_ title: String?, _ style: UIAlertAction.Style, _ handler: @escaping ((AlertAction, UIAlertController) -> Void)) -> Self {
+        addAction(AlertAction(title: title, style: style) {
+            handler($0, self.controller)
+        })
+        return self
     }
     
     @discardableResult
     public func action(_ title: String?, _ handler: @escaping ((AlertAction) -> Void)) -> Self {
+        action(title, .default, handler)
+    }
+    
+    @discardableResult
+    public func action(_ title: String?, _ handler: @escaping ((AlertAction, UIAlertController) -> Void)) -> Self {
         action(title, .default, handler)
     }
     
@@ -138,6 +174,11 @@ extension UIAlertViewControllerable {
     }
     
     @discardableResult
+    public func destructive(_ title: String?, _ handler: @escaping ((AlertAction, UIAlertController) -> Void)) -> Self {
+        action(title, .destructive, handler)
+    }
+    
+    @discardableResult
     public func destructive(_ title: String?, _ handler: @escaping (() -> Void)) -> Self {
         action(title, .destructive, handler)
     }
@@ -149,6 +190,11 @@ extension UIAlertViewControllerable {
     
     @discardableResult
     public func cancel(_ title: String?, _ handler: @escaping ((AlertAction) -> Void)) -> Self {
+        action(title, .cancel, handler)
+    }
+    
+    @discardableResult
+    public func cancel(_ title: String?, _ handler: @escaping ((AlertAction, UIAlertController) -> Void)) -> Self {
         action(title, .cancel, handler)
     }
     

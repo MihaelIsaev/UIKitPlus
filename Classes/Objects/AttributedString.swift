@@ -44,7 +44,9 @@ extension NSAttributedString: AnyString {
     }
 }
 
-extension String: AnyString {
+extension String: AnyString, BodyBuilderItemable {
+    public var bodyBuilderItem: BodyBuilderItem { .single(UText(self)) }
+    
     public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {}
     
     public var attributedString: NSAttributedString {
@@ -56,7 +58,9 @@ extension String: AnyString {
     }
 }
 
-open class AttributedString: AnyString {
+open class AttributedString: AnyString, BodyBuilderItemable {
+    public var bodyBuilderItem: BodyBuilderItem { .single(UText(self)) }
+    
     public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {
         _updateHandler = handler
     }

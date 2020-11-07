@@ -68,44 +68,44 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     // MARK: Initialization
     
-    public init (_ string: AnyString...) {
-        super.init(frame: .zero)
+    public convenience init (_ string: AnyString...) {
+        self.init(type: .custom)
         _setup()
         title(string)
     }
     
-    public init (_ strings: [AnyString]) {
-        super.init(frame: .zero)
+    public convenience init (_ strings: [AnyString]) {
+        self.init(type: .custom)
         _setup()
         title(strings)
     }
     
-    public init (_ localized: LocalizedString...) {
-        super.init(frame: .zero)
+    public convenience init (_ localized: LocalizedString...) {
+        self.init(type: .custom)
         _setup()
         title(localized)
     }
     
-    public init (_ localized: [LocalizedString]) {
-        super.init(frame: .zero)
+    public convenience init (_ localized: [LocalizedString]) {
+        self.init(type: .custom)
         _setup()
         title(localized)
     }
     
-    public init<A: AnyString>(_ state: UIKitPlus.State<A>) {
-        super.init(frame: .zero)
+    public convenience init<A: AnyString>(_ state: UIKitPlus.State<A>) {
+        self.init(type: .custom)
         _setup()
         title(state)
     }
     
-    public init<V, A: AnyString>(_ expressable: ExpressableState<V, A>) {
-        super.init(frame: .zero)
+    public convenience init<V, A: AnyString>(_ expressable: ExpressableState<V, A>) {
+        self.init(type: .custom)
         _setup()
         title(expressable)
     }
     
-    public init (@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
-        super.init(frame: .zero)
+    public convenience init (@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
+        self.init(type: .custom)
         _setup()
         title(stateString: stateString)
     }
@@ -166,7 +166,7 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func title(_ value: LocalizedString..., for state: UIControl.State = .normal) -> Self {
-        title(value)
+        title(value, state)
     }
     
     @discardableResult
@@ -177,7 +177,7 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func title(_ value: AnyString..., for state: UIControl.State = .normal) -> Self {
-        title(value)
+        title(value, state)
     }
     
     @discardableResult
@@ -379,6 +379,12 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
 extension UButton: _Fontable {
     func _setFont(_ v: UIFont?) {
         titleLabel?.font = v
+    }
+}
+
+extension UButton: _Enableable {
+    func _setEnabled(_ v: Bool) {
+        isEnabled = v
     }
 }
 #endif
