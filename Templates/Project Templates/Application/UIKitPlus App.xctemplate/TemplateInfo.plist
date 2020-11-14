@@ -17,7 +17,7 @@
 	<key>SortOrder</key>
 	<integer>-2</integer>
 	<key>NameOfInitialFileForEditor</key>
-	<string>MainViewController.swift</string>
+	<string>App.swift</string>
 	<key>Project</key>
 	<dict>
 		<key>SDK</key>
@@ -254,6 +254,8 @@
 			<string>com.yourcompany</string>
 			<key>Type</key>
 			<string>text</string>
+			<key>Default</key>
+			<string>com.yourcompany</string>
 		</dict>
 		<dict>
 			<key>Identifier</key>
@@ -274,31 +276,29 @@
 	<array>
 		<string>Info.plist:iPhone</string>
 		<string>Info.plist:UIRequiredDeviceCapabilities:base</string>
-		<string>Info.plist:LaunchScreen</string>
-		<string>Info.plist:UISupportedInterfaceOrientations~iPhone</string>
-		<string>Info.plist:UISupportedInterfaceOrientations~iPad</string>
-		<string>Info.plist:Identifier</string>
-		<string>Info.plist:statusBarTintForNavBar</string>
 		<string>Info.plist:UIStatusBarHidden</string>
-		<string>Info.plist:LaunchScreen</string>
+		<string>Info.plist:UILaunchScreen</string>
+		<string>Info.plist:UILaunchStoryboardName</string>
+		<string>Info.plist:Identifier</string>
 		<string>Info.plist:PlistVersion</string>
 		<string>Info.plist:Executable</string>
 		<string>Info.plist:BundleName</string>
 		<string>Info.plist:DevelopmentRegion</string>
 		<string>Info.plist:PackageType</string>
 		<string>Info.plist:ProductVersion</string>
+		<string>Info.plist:UISupportedInterfaceOrientations~iPhone</string>
+		<string>Info.plist:UISupportedInterfaceOrientations~iPad</string>
+		<string>Info.plist:statusBarTintForNavBar</string>
+		<string>Info.plist:NSPrincipalClass</string>
 		<string>Assets.xcassets</string>
 		<string>Base.lproj/LaunchScreen.storyboard</string>
 		<string>ViewControllers/MainViewController.swift</string>
-		<string>AppDelegate.swift</string>
-		<string>SceneDelegate.swift</string>
-		<string>ViewControllers/RootViewController.swift</string>
 		<string>ViewControllers/SplashViewController.swift</string>
 		<string>ViewControllers/WelcomeViewController.swift</string>
 		<string>Info.plist:ITSAppUsesNonExemptEncryption</string>
 		<string>Info.plist:NSAppTransportSecurity</string>
 		<string>Info.plist:UIAppFonts</string>
-		<string>DeepLinkManager.swift</string>
+		<string>App.swift</string>
 		<string>Info.plist:UIApplicationSceneManifest</string>
 		<string>Extensions/Buttons.swift</string>
 		<string>Extensions/Colors.swift</string>
@@ -380,10 +380,12 @@
 		<string>&lt;key&gt;UIStatusBarHidden&lt;/key&gt;
 &lt;true/&gt;
 </string>
-		<key>Info.plist:LaunchScreen</key>
+		<key>Info.plist:UILaunchScreen</key>
+		<string>&lt;key&gt;UILaunchScreen&lt;/key&gt;
+	&lt;dict/&gt;</string>
+		<key>Info.plist:UILaunchStoryboardName</key>
 		<string>&lt;key&gt;UILaunchStoryboardName&lt;/key&gt;
-&lt;string&gt;LaunchScreen&lt;/string&gt;
-</string>
+	&lt;string&gt;LaunchScreen&lt;/string&gt;</string>
 		<key>Info.plist:Identifier</key>
 		<string>&lt;key&gt;CFBundleIdentifier&lt;/key&gt;
 &lt;string&gt;$(PRODUCT_BUNDLE_IDENTIFIER)&lt;/string&gt;
@@ -455,26 +457,10 @@
 	&lt;dict&gt;
 		&lt;key&gt;UIApplicationSupportsMultipleScenes&lt;/key&gt;
 		&lt;false/&gt;
-		&lt;key&gt;UISceneConfigurations&lt;/key&gt;
-		&lt;dict&gt;
-			&lt;key&gt;UIWindowSceneSessionRoleApplication&lt;/key&gt;
-			&lt;array&gt;
-				&lt;dict&gt;
-					&lt;key&gt;UISceneConfigurationName&lt;/key&gt;
-					&lt;string&gt;Default Configuration&lt;/string&gt;
-					&lt;key&gt;UISceneDelegateClassName&lt;/key&gt;
-					&lt;string&gt;$(PRODUCT_MODULE_NAME).SceneDelegate&lt;/string&gt;
-				&lt;/dict&gt;
-			&lt;/array&gt;
-		&lt;/dict&gt;
 	&lt;/dict&gt;</string>
-		<key>DeepLinkManager.swift</key>
-		<dict>
-			<key>Path</key>
-			<string>DeepLinkManager.swift</string>
-			<key>SortOrder</key>
-			<integer>92</integer>
-		</dict>
+		<key>Info.plist:NSPrincipalClass</key>
+		<string>&lt;key&gt;NSPrincipalClass&lt;/key&gt;
+	&lt;string&gt;$(PRODUCT_MODULE_NAME).App&lt;/string&gt;</string>
 		<key>Base.lproj/LaunchScreen.storyboard</key>
 		<dict>
 			<key>Path</key>
@@ -493,30 +479,12 @@
 			<key>SortOrder</key>
 			<integer>4</integer>
 		</dict>
-		<key>AppDelegate.swift</key>
-		<dict>
-			<key>SortOrder</key>
-			<integer>90</integer>
-			<key>Path</key>
-			<string>AppDelegate.swift</string>
-		</dict>
-		<key>SceneDelegate.swift</key>
+		<key>App.swift</key>
 		<dict>
 			<key>SortOrder</key>
 			<integer>91</integer>
 			<key>Path</key>
-			<string>SceneDelegate.swift</string>
-		</dict>
-		<key>ViewControllers/RootViewController.swift</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>ViewControllers</string>
-			</array>
-			<key>Path</key>
-			<string>ViewControllers/RootViewController.swift</string>
-			<key>SortOrder</key>
-			<integer>1</integer>
+			<string>App.swift</string>
 		</dict>
 		<key>ViewControllers/SplashViewController.swift</key>
 		<dict>

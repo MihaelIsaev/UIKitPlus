@@ -12,7 +12,7 @@ final class WelcomeViewController: ViewController {
             UVStack {
                 UText("Welcome View Controller")
                     .color(.black / .white)
-                VSpace(8)
+                UVSpace(8)
                 UButton("Enter")
                     .background(.clear)
                     .backgroundHighlighted(.lightGray / .darkGray)
@@ -21,7 +21,7 @@ final class WelcomeViewController: ViewController {
                     .border(1, .green)
                     .circle()
                     .onTapGesture {
-                        $0.rootController.switch(to: .splash, animation: .fade)
+                        App.mainScene.switch(to: .splash, animation: .fade)
                 }
             }.centerInSuperview()
         }
