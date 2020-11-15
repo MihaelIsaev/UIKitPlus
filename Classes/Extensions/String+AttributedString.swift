@@ -8,6 +8,18 @@ import UIKit
 extension String {
     /// UColor, default nil: no background
     @discardableResult
+    public func background(_ state: State<UColor>, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        AttrStr(self).background(state, at: range)
+    }
+    
+    /// UColor, default nil: no background
+    @discardableResult
+    public func background<V>(_ expressable: ExpressableState<V, UColor>, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        AttrStr(self).background(expressable, at: range)
+    }
+    
+    /// UColor, default nil: no background
+    @discardableResult
     public func background(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).background(value, at: range)
     }
@@ -16,6 +28,18 @@ extension String {
     @discardableResult
     public func background(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).background(value, at: range)
+    }
+    
+    /// UColor, default blackColor
+    @discardableResult
+    public func foreground(_ state: State<UColor>, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        AttrStr(self).foreground(state, at: range)
+    }
+    
+    /// UColor, default blackColor
+    @discardableResult
+    public func foreground<V>(_ expressable: ExpressableState<V, UColor>, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        AttrStr(self).foreground(expressable, at: range)
     }
     
     /// UColor, default blackColor
@@ -29,7 +53,6 @@ extension String {
     public func foreground(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).foreground(value, at: range)
     }
-    
     
     /// UColor, default blackColor
     @available(*, deprecated, renamed: "foreground")

@@ -124,6 +124,22 @@ open class AttributedString: AnyString, BodyBuilderItemable {
     
     /// UColor, default nil: no background
     @discardableResult
+    public func background(_ state: State<UColor>, at range: ClosedRange<Int>? = nil) -> Self {
+        background(state.wrappedValue, at: range)
+        state.listen { old, new in
+            self.background(new, at: range)
+        }
+        return self
+    }
+    
+    /// UColor, default nil: no background
+    @discardableResult
+    public func background<V>(_ expressable: ExpressableState<V, UColor>, at range: ClosedRange<Int>? = nil) -> Self {
+        background(expressable.unwrap(), at: range)
+    }
+    
+    /// UColor, default nil: no background
+    @discardableResult
     public func background(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
         addAttribute(.backgroundColor, value.current, at: range)
     }
@@ -132,6 +148,22 @@ open class AttributedString: AnyString, BodyBuilderItemable {
     @discardableResult
     public func background(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
         addAttribute(.backgroundColor, value.color.current, at: range)
+    }
+    
+    /// UColor, default blackColor
+    @discardableResult
+    public func foreground(_ state: State<UColor>, at range: ClosedRange<Int>? = nil) -> Self {
+        foreground(state.wrappedValue, at: range)
+        state.listen { old, new in
+            self.foreground(new, at: range)
+        }
+        return self
+    }
+    
+    /// UColor, default blackColor
+    @discardableResult
+    public func foreground<V>(_ expressable: ExpressableState<V, UColor>, at range: ClosedRange<Int>? = nil) -> Self {
+        foreground(expressable.unwrap(), at: range)
     }
     
     /// UColor, default blackColor
