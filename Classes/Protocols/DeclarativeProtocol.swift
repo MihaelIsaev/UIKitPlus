@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol DeclarativeProtocol {
+public protocol DeclarativeProtocol: class {
     associatedtype V: BaseView, DeclarativeProtocol = Self
     
     var declarativeView: V { get }
