@@ -1,5 +1,5 @@
 // skrew
-
+/*
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI
 
@@ -225,4 +225,4 @@ extension DeclarativePreviewGroup {
     }
 }
 #endif
-
+*/
