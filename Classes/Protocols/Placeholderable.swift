@@ -5,7 +5,7 @@ public protocol Placeholderable {
     func placeholder(_ text: String?) -> Self
     
     @discardableResult
-    func placeholder(_ binding: UIKitPlus.State<String>) -> Self
+    func placeholder(_ binding: UIKitPlus.UState<String>) -> Self
     
     @discardableResult
     func placeholder<V>(_ expressable: ExpressableState<V, String>) -> Self
@@ -31,7 +31,7 @@ extension Placeholderable {
     }
     
     @discardableResult
-    public func placeholder(_ binding: UIKitPlus.State<String>) -> Self {
+    public func placeholder(_ binding: UIKitPlus.UState<String>) -> Self {
         binding.listen { self.placeholder($0) }
         return placeholder(binding.wrappedValue)
     }

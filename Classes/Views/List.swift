@@ -12,9 +12,10 @@ class ListSection {
 
 public typealias UList = List
 public class List: View, UITableViewDataSource {
-    @State var reversed = false
+    @UState var reversed = false
+    var rowAnimation: UITableView.RowAnimation = .automatic
     
-    var scrollPosition: State<CGPoint>?
+    var scrollPosition: UState<CGPoint>?
     
     var items: [ListSection] = []
     
@@ -68,9 +69,9 @@ public class List: View, UITableViewDataSource {
             fr.subscribeToChanges({ [weak self] in
                 self?.tableView.beginUpdates()
             }, { [weak self] deletions, insertions, modifications in
-                self?.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: sectionIndex)}, with: .automatic)
-                self?.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: sectionIndex) }, with: .automatic)
-                self?.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: sectionIndex) }, with: .automatic)
+                self?.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: sectionIndex)}, with: self?.rowAnimation ?? .automatic)
+                self?.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: sectionIndex) }, with: self?.rowAnimation ?? .automatic)
+                self?.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: sectionIndex) }, with: self?.rowAnimation ?? .automatic)
             }) { [weak self] in
                 self?.tableView.endUpdates()
             }
@@ -271,7 +272,7 @@ extension List: UIScrollViewDelegate {
     }
     
     @discardableResult
-    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+    public func scrollPosition(_ binding: UIKitPlus.UState<CGPoint>) -> Self {
         scrollPosition = binding
         return self
     }
@@ -339,5 +340,12 @@ extension List {
     @discardableResult
     public func scrollIndicatorInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
         scrollIndicatorInsets(.init(top: top, left: left, bottom: bottom, right: right))
+    }
+}
+
+extension List {
+    public func rowAnimation(_ animation: UITableView.RowAnimation) -> Self {
+        self.rowAnimation = animation
+        return self
     }
 }

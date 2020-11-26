@@ -6,36 +6,36 @@ open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     public lazy var properties = Properties<Toggle>()
     lazy var _properties = PropertiesInternal()
     
-    @UIKitPlus.State public var height: CGFloat = 0
-    @UIKitPlus.State public var width: CGFloat = 0
-    @UIKitPlus.State public var top: CGFloat = 0
-    @UIKitPlus.State public var leading: CGFloat = 0
-    @UIKitPlus.State public var left: CGFloat = 0
-    @UIKitPlus.State public var trailing: CGFloat = 0
-    @UIKitPlus.State public var right: CGFloat = 0
-    @UIKitPlus.State public var bottom: CGFloat = 0
-    @UIKitPlus.State public var centerX: CGFloat = 0
-    @UIKitPlus.State public var centerY: CGFloat = 0
+    @UIKitPlus.UState public var height: CGFloat = 0
+    @UIKitPlus.UState public var width: CGFloat = 0
+    @UIKitPlus.UState public var top: CGFloat = 0
+    @UIKitPlus.UState public var leading: CGFloat = 0
+    @UIKitPlus.UState public var left: CGFloat = 0
+    @UIKitPlus.UState public var trailing: CGFloat = 0
+    @UIKitPlus.UState public var right: CGFloat = 0
+    @UIKitPlus.UState public var bottom: CGFloat = 0
+    @UIKitPlus.UState public var centerX: CGFloat = 0
+    @UIKitPlus.UState public var centerY: CGFloat = 0
     
-    var __height: UIKitPlus.State<CGFloat> { $height }
-    var __width: UIKitPlus.State<CGFloat> { $width }
-    var __top: UIKitPlus.State<CGFloat> { $top }
-    var __leading: UIKitPlus.State<CGFloat> { $leading }
-    var __left: UIKitPlus.State<CGFloat> { $left }
-    var __trailing: UIKitPlus.State<CGFloat> { $trailing }
-    var __right: UIKitPlus.State<CGFloat> { $right }
-    var __bottom: UIKitPlus.State<CGFloat> { $bottom }
-    var __centerX: UIKitPlus.State<CGFloat> { $centerX }
-    var __centerY: UIKitPlus.State<CGFloat> { $centerY }
+    var __height: UIKitPlus.UState<CGFloat> { $height }
+    var __width: UIKitPlus.UState<CGFloat> { $width }
+    var __top: UIKitPlus.UState<CGFloat> { $top }
+    var __leading: UIKitPlus.UState<CGFloat> { $leading }
+    var __left: UIKitPlus.UState<CGFloat> { $left }
+    var __trailing: UIKitPlus.UState<CGFloat> { $trailing }
+    var __right: UIKitPlus.UState<CGFloat> { $right }
+    var __bottom: UIKitPlus.UState<CGFloat> { $bottom }
+    var __centerX: UIKitPlus.UState<CGFloat> { $centerX }
+    var __centerY: UIKitPlus.UState<CGFloat> { $centerY }
     
-    var binding: UIKitPlus.State<Bool>?
+    var binding: UIKitPlus.UState<Bool>?
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
     
-    public init(_ state: UIKitPlus.State<Bool>) {
+    public init(_ state: UIKitPlus.UState<Bool>) {
         binding = state
         super.init(frame: .zero)
         setup()
@@ -93,7 +93,7 @@ open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func onTint(_ binding: UIKitPlus.State<UIColor>) -> Self {
+    public func onTint(_ binding: UIKitPlus.UState<UIColor>) -> Self {
         binding.listen { self.onTint($0) }
         return onTint(binding.wrappedValue)
     }
@@ -105,7 +105,7 @@ open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func onTint(_ binding: UIKitPlus.State<Int>) -> Self {
+    public func onTint(_ binding: UIKitPlus.UState<Int>) -> Self {
         binding.listen { self.onTint($0) }
         return onTint(binding.wrappedValue)
     }
@@ -129,7 +129,7 @@ open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func thumbTint(_ binding: UIKitPlus.State<UIColor>) -> Self {
+    public func thumbTint(_ binding: UIKitPlus.UState<UIColor>) -> Self {
         binding.listen { self.thumbTint($0) }
         return thumbTint(binding.wrappedValue)
     }
@@ -141,7 +141,7 @@ open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func thumbTint(_ binding: UIKitPlus.State<Int>) -> Self {
+    public func thumbTint(_ binding: UIKitPlus.UState<Int>) -> Self {
         binding.listen { self.thumbTint($0) }
         return thumbTint(binding.wrappedValue)
     }
@@ -159,7 +159,7 @@ open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func onImage(_ binding: UIKitPlus.State<UIImage?>) -> Self {
+    public func onImage(_ binding: UIKitPlus.UState<UIImage?>) -> Self {
         binding.listen { self.onImage($0) }
         return onImage(binding.wrappedValue)
     }
@@ -177,7 +177,7 @@ open class Toggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     }
     
     @discardableResult
-    public func offImage(_ binding: UIKitPlus.State<UIImage?>) -> Self {
+    public func offImage(_ binding: UIKitPlus.UState<UIImage?>) -> Self {
         binding.listen { self.offImage($0) }
         return offImage(binding.wrappedValue)
     }

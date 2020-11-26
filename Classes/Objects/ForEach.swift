@@ -14,43 +14,43 @@ public class ForEach<Item> where Item: Hashable {
     public typealias BuildViewHandlerValue = (Item) -> ViewBuilder.Result
     public typealias BuildViewHandlerSimple = () -> ViewBuilder.Result
     
-    let items: State<[Item]>
+    let items: UState<[Item]>
     let block: BuildViewHandler
     
     public var axis: NSLayoutConstraint.Axis? { nil }
     
     public init (_ items: [Item], @ViewBuilder block: @escaping BuildViewHandler) {
-        self.items = State(wrappedValue: items)
+        self.items = UState(wrappedValue: items)
         self.block = block
     }
     
     public init (_ items: [Item], @ViewBuilder block: @escaping BuildViewHandlerValue) {
-        self.items = State(wrappedValue: items)
+        self.items = UState(wrappedValue: items)
         self.block = { _, v in
             block(v)
         }
     }
     
     public init (_ items: [Item], @ViewBuilder block: @escaping BuildViewHandlerSimple) {
-        self.items = State(wrappedValue: items)
+        self.items = UState(wrappedValue: items)
         self.block = { _,_ in
             block()
         }
     }
     
-    public init (_ items: State<[Item]>, @ViewBuilder block: @escaping BuildViewHandler) {
+    public init (_ items: UState<[Item]>, @ViewBuilder block: @escaping BuildViewHandler) {
         self.items = items
         self.block = block
     }
     
-    public init (_ items: State<[Item]>, @ViewBuilder block: @escaping BuildViewHandlerValue) {
+    public init (_ items: UState<[Item]>, @ViewBuilder block: @escaping BuildViewHandlerValue) {
         self.items = items
         self.block = { _, v in
             block(v)
         }
     }
     
-    public init (_ items: State<[Item]>, @ViewBuilder block: @escaping BuildViewHandlerSimple) {
+    public init (_ items: UState<[Item]>, @ViewBuilder block: @escaping BuildViewHandlerSimple) {
         self.items = items
         self.block = { _,_ in
             block()

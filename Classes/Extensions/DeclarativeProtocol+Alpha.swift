@@ -1,7 +1,7 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    public var alpha: State<CGFloat> { properties.$alpha }
+    public var alpha: UState<CGFloat> { properties.$alpha }
     
     @discardableResult
     public func alpha(_ alpha: CGFloat) -> Self {
@@ -10,7 +10,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func alpha(_ state: State<CGFloat>) -> Self {
+    public func alpha(_ state: UState<CGFloat>) -> Self {
         declarativeView.alpha = state.wrappedValue
         properties.alpha = state.wrappedValue
         state.listen { [weak self] old, new in

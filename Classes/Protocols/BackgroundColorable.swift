@@ -8,7 +8,7 @@ public protocol BackgroundColorable {
     func background(_ number: Int) -> Self
     
     @discardableResult
-    func background(_ state: State<UIColor>) -> Self
+    func background(_ state: UState<UIColor>) -> Self
     
     @discardableResult
     func background<V>(_ expressable: ExpressableState<V, UIColor>) -> Self
@@ -25,7 +25,7 @@ extension BackgroundColorable {
     }
     
     @discardableResult
-    public func background(_ state: State<UIColor>) -> Self {
+    public func background(_ state: UState<UIColor>) -> Self {
         background(state.wrappedValue)
         state.listen {
             self.background($0)

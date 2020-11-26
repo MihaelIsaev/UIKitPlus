@@ -1,7 +1,7 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    public var opacity: State<Float> { properties.$opacity }
+    public var opacity: UState<Float> { properties.$opacity }
     
     @discardableResult
     public func opacity(_ opacity: Float) -> Self {
@@ -10,7 +10,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func opacity(_ state: State<Float>) -> Self {
+    public func opacity(_ state: UState<Float>) -> Self {
         declarativeView.layer.opacity = state.wrappedValue
         properties.opacity = state.wrappedValue
         state.listen { [weak self] old, new in

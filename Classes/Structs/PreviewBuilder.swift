@@ -1,5 +1,6 @@
 import UIKit
-
+ //skrew
+/*
 #if canImport(SwiftUI) && DEBUG
 @available(iOS 13.0, *)
 public class PreviewGroup {
@@ -66,3 +67,4 @@ extension Array: PreviewBuilderItem where Element: Preview {
     public var previewBuilderItems: [Preview] { self }
 }
 #endif
+*/

@@ -48,7 +48,7 @@ class PreConstraint: Equatable {
     
     private let id = UUID()
     weak var fromView: UIView?
-    let value: State<CGFloat>
+    let value: UState<CGFloat>
     let relation: NSLayoutConstraint.Relation
     let multiplier: CGFloat
     let priority: UILayoutPriority
@@ -58,7 +58,7 @@ class PreConstraint: Equatable {
     var destinationView: PreConstraintViewable?
     var constraint: NSLayoutConstraint?
     
-    init (value: State<CGFloat>,
+    init (value: UState<CGFloat>,
           relation: NSLayoutConstraint.Relation,
           multiplier: CGFloat,
           priority: UILayoutPriority,

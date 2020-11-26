@@ -11,7 +11,7 @@ open class RootController<DeeplinkType>: ViewController, RootControllerable {
     #endif
     public internal(set) var current: UIViewController = NotImplementedViewController("nothing")
     
-    @State public internal(set) var currentType: RootScreenType = .nothing
+    @UState public internal(set) var currentType: RootScreenType = .nothing
     
     public var deeplink: DeeplinkType? {
         didSet {

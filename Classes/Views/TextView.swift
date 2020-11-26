@@ -7,27 +7,27 @@ open class TextView: UITextView, AnyDeclarativeProtocol, DeclarativeProtocolInte
     public lazy var properties = Properties<TextView>()
     lazy var _properties = PropertiesInternal()
     
-    @State public var height: CGFloat = 0
-    @State public var width: CGFloat = 0
-    @State public var top: CGFloat = 0
-    @State public var leading: CGFloat = 0
-    @State public var left: CGFloat = 0
-    @State public var trailing: CGFloat = 0
-    @State public var right: CGFloat = 0
-    @State public var bottom: CGFloat = 0
-    @State public var centerX: CGFloat = 0
-    @State public var centerY: CGFloat = 0
+    @UState public var height: CGFloat = 0
+    @UState public var width: CGFloat = 0
+    @UState public var top: CGFloat = 0
+    @UState public var leading: CGFloat = 0
+    @UState public var left: CGFloat = 0
+    @UState public var trailing: CGFloat = 0
+    @UState public var right: CGFloat = 0
+    @UState public var bottom: CGFloat = 0
+    @UState public var centerX: CGFloat = 0
+    @UState public var centerY: CGFloat = 0
     
-    var __height: State<CGFloat> { _height }
-    var __width: State<CGFloat> { _width }
-    var __top: State<CGFloat> { _top }
-    var __leading: State<CGFloat> { _leading }
-    var __left: State<CGFloat> { _left }
-    var __trailing: State<CGFloat> { _trailing }
-    var __right: State<CGFloat> { _right }
-    var __bottom: State<CGFloat> { _bottom }
-    var __centerX: State<CGFloat> { _centerX }
-    var __centerY: State<CGFloat> { _centerY }
+    var __height: UState<CGFloat> { _height }
+    var __width: UState<CGFloat> { _width }
+    var __top: UState<CGFloat> { _top }
+    var __leading: UState<CGFloat> { _leading }
+    var __left: UState<CGFloat> { _left }
+    var __trailing: UState<CGFloat> { _trailing }
+    var __right: UState<CGFloat> { _right }
+    var __bottom: UState<CGFloat> { _bottom }
+    var __centerX: UState<CGFloat> { _centerX }
+    var __centerY: UState<CGFloat> { _centerY }
     
     public init (_ text: String, textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)
@@ -47,7 +47,7 @@ open class TextView: UITextView, AnyDeclarativeProtocol, DeclarativeProtocolInte
         _setup()
     }
     
-    public init (_ state: State<String>, textContainer: NSTextContainer? = nil) {
+    public init (_ state: UState<String>, textContainer: NSTextContainer? = nil) {
         super.init(frame: .zero, textContainer: textContainer)
         _properties.textBinding = state
         text(state)
@@ -394,7 +394,7 @@ extension TextView: _Fontable {
 }
 
 extension TextView: _TextBindable {
-    func _setTextBind(_ binding: State<String>?) {
+    func _setTextBind(_ binding: UState<String>?) {
         _properties.textBinding = binding
     }
 }
@@ -429,7 +429,7 @@ extension TextView: _Typeable {
         _properties.typingInterval = v
     }
     
-    func _observeTypingState(_ v: UIKitPlus.State<Bool>) {
+    func _observeTypingState(_ v: UIKitPlus.UState<Bool>) {
         _properties.isTypingState.listen {
             guard v.wrappedValue != $0 else { return }
             v.wrappedValue = $0
@@ -441,7 +441,7 @@ extension TextView: _Typeable {
 }
 
 extension TextView: _Colorable {
-    var _colorState: UIKitPlus.State<UIColor> { properties.textColorState }
+    var _colorState: UIKitPlus.UState<UIColor> { properties.textColorState }
     
     func _setColor(_ v: UIColor?) {
         textColor = v

@@ -12,13 +12,15 @@ class CollectionSection {
 
 public typealias Collection = UCollection
 public class UCollection: View, UICollectionViewDataSource {
-    @State var reversed = false
+    @UState var reversed = false
     
     var items: [CollectionSection] = []
     
     let layout: UICollectionViewLayout
     
-    var scrollPosition: State<CGPoint>?
+    var scrollPosition: UState<CGPoint>?
+    var contentSize: UState<CGSize>?
+    var shouldFitContent = false
     
     class SectionChanges {
         let section: Int
@@ -55,6 +57,7 @@ public class UCollection: View, UICollectionViewDataSource {
     public init (_ layout: UICollectionViewLayout = CollectionView.defaultLayout, @ViewBuilder block: ViewBuilder.SingleView) {
         self.layout = layout
         super.init(frame: .zero)
+        self.collectionView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         process(block())
         collectionView.reloadData()
         $reversed.listen { [weak self] old, new in
@@ -71,6 +74,22 @@ public class UCollection: View, UICollectionViewDataSource {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+
+    /*public override func layoutSubviews() {
+        super.layoutSubviews()
+        if shouldFitContent {
+            height = collectionView.collectionViewLayout.collectionViewContentSize.height
+        }
+    }
+    
+    @discardableResult
+    public func fitContent() -> Self {
+        shouldFitContent = true
+        return self
+    }*/
+    
     
     func process(_ item: ViewBuilderItemable, sectionIndex: Int = 0) {
         let item = item.viewBuilderItem
@@ -139,6 +158,31 @@ public class UCollection: View, UICollectionViewDataSource {
         return self
     }
     #endif
+    
+    // MARK: ContentSize
+    
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if let obj = object as? UICollectionView {
+            if obj == self.collectionView && keyPath == "contentSize" {
+                if let newSize = change?[NSKeyValueChangeKey.newKey] as? CGSize {
+                    contentSize?.wrappedValue = newSize
+                }
+            }
+        }
+    }
+    
+    @discardableResult
+    public func contentSize(_ binding: UIKitPlus.UState<CGSize>) -> Self {
+        contentSize = binding
+        return self
+    }
+    
+    @discardableResult
+    public func contentSize<V>(_ expressable: ExpressableState<V, CGSize>) -> Self {
+        contentSize = expressable.unwrap()
+        return self
+    }
+     
     // MARK: - UITableViewDataSource
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -221,7 +265,7 @@ extension UCollection: UIScrollViewDelegate {
     }
     
     @discardableResult
-    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+    public func scrollPosition(_ binding: UIKitPlus.UState<CGPoint>) -> Self {
         scrollPosition = binding
         return self
     }

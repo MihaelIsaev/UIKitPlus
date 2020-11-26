@@ -1,7 +1,7 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    private func _createRelative(value: State<CGFloat>,
+    private func _createRelative(value: UState<CGFloat>,
                                               relation: NSLayoutConstraint.Relation,
                                               multiplier: CGFloat,
                                               priority: UILayoutPriority,
@@ -31,7 +31,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func top(to side: DeclarativeConstraintYSide,
                           of view: PreConstraintViewable,
-                          _ state: State<CGFloat>,
+                          _ state: UState<CGFloat>,
                           relation: NSLayoutConstraint.Relation = .equal,
                           multiplier: CGFloat = 1,
                           priority: UILayoutPriority = .defaultHigh,
@@ -49,7 +49,7 @@ extension DeclarativeProtocol {
     /// By default to `bottom` of destination view
     @discardableResult
     public func top(to view: PreConstraintViewable,
-                          _ state: State<CGFloat>,
+                          _ state: UState<CGFloat>,
                           relation: NSLayoutConstraint.Relation = .equal,
                           multiplier: CGFloat = 1,
                           priority: UILayoutPriority = .defaultHigh,
@@ -101,7 +101,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func leading(to side: DeclarativeConstraintXSide,
                                 of view: PreConstraintViewable,
-                                _ state: State<CGFloat>,
+                                _ state: UState<CGFloat>,
                                 relation: NSLayoutConstraint.Relation = .equal,
                                 multiplier: CGFloat = 1,
                                 priority: UILayoutPriority = .defaultHigh,
@@ -119,7 +119,7 @@ extension DeclarativeProtocol {
     /// By default to `trailing` of destination view
     @discardableResult
     public func leading(to view: PreConstraintViewable,
-                                _ state: State<CGFloat>,
+                                _ state: UState<CGFloat>,
                                 relation: NSLayoutConstraint.Relation = .equal,
                                 multiplier: CGFloat = 1,
                                 priority: UILayoutPriority = .defaultHigh,
@@ -171,7 +171,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func left(to side: DeclarativeConstraintXSide,
                           of view: PreConstraintViewable,
-                          _ state: State<CGFloat>,
+                          _ state: UState<CGFloat>,
                           relation: NSLayoutConstraint.Relation = .equal,
                           multiplier: CGFloat = 1,
                           priority: UILayoutPriority = .defaultHigh,
@@ -189,7 +189,7 @@ extension DeclarativeProtocol {
     /// By default to `right` of destination view
     @discardableResult
     public func left(to view: PreConstraintViewable,
-                          _ state: State<CGFloat>,
+                          _ state: UState<CGFloat>,
                           relation: NSLayoutConstraint.Relation = .equal,
                           multiplier: CGFloat = 1,
                           priority: UILayoutPriority = .defaultHigh,
@@ -241,7 +241,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func trailing(to side: DeclarativeConstraintXSide,
                                 of view: PreConstraintViewable,
-                                _ state: State<CGFloat>,
+                                _ state: UState<CGFloat>,
                                 relation: NSLayoutConstraint.Relation = .equal,
                                 multiplier: CGFloat = 1,
                                 priority: UILayoutPriority = .defaultHigh,
@@ -259,7 +259,7 @@ extension DeclarativeProtocol {
     /// By default to `leading` of destination view
     @discardableResult
     public func trailing(to view: PreConstraintViewable,
-                                _ state: State<CGFloat>,
+                                _ state: UState<CGFloat>,
                                 relation: NSLayoutConstraint.Relation = .equal,
                                 multiplier: CGFloat = 1,
                                 priority: UILayoutPriority = .defaultHigh,
@@ -311,7 +311,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func right(to side: DeclarativeConstraintXSide,
                             of view: PreConstraintViewable,
-                            _ state: State<CGFloat>,
+                            _ state: UState<CGFloat>,
                             relation: NSLayoutConstraint.Relation = .equal,
                             multiplier: CGFloat = 1,
                             priority: UILayoutPriority = .defaultHigh,
@@ -329,7 +329,7 @@ extension DeclarativeProtocol {
     /// By default to `left` of destination view
     @discardableResult
     public func right(to view: PreConstraintViewable,
-                            _ state: State<CGFloat>,
+                            _ state: UState<CGFloat>,
                             relation: NSLayoutConstraint.Relation = .equal,
                             multiplier: CGFloat = 1,
                             priority: UILayoutPriority = .defaultHigh,
@@ -381,7 +381,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func bottom(to side: DeclarativeConstraintYSide,
                                 of view: PreConstraintViewable,
-                                _ state: State<CGFloat>,
+                                _ state: UState<CGFloat>,
                                 relation: NSLayoutConstraint.Relation = .equal,
                                 multiplier: CGFloat = 1,
                                 priority: UILayoutPriority = .defaultHigh,
@@ -399,7 +399,7 @@ extension DeclarativeProtocol {
     /// By default to `top` of destination view
     @discardableResult
     public func bottom(to view: PreConstraintViewable,
-                                _ state: State<CGFloat>,
+                                _ state: UState<CGFloat>,
                                 relation: NSLayoutConstraint.Relation = .equal,
                                 multiplier: CGFloat = 1,
                                 priority: UILayoutPriority = .defaultHigh,
@@ -451,7 +451,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func centerX(to side: DeclarativeConstraintCXSide,
                                  of view: PreConstraintViewable,
-                                 _ state: State<CGFloat>,
+                                 _ state: UState<CGFloat>,
                                  relation: NSLayoutConstraint.Relation = .equal,
                                  multiplier: CGFloat = 1,
                                  priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -468,7 +468,7 @@ extension DeclarativeProtocol {
     /// By default to `centerX` of destination view
     @discardableResult
     public func centerX(to view: PreConstraintViewable,
-                                _ state: State<CGFloat>,
+                                _ state: UState<CGFloat>,
                                 relation: NSLayoutConstraint.Relation = .equal,
                                 multiplier: CGFloat = 1,
                                 priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -516,7 +516,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func centerY(to side: DeclarativeConstraintCYSide,
                                  of view: PreConstraintViewable,
-                                 _ state: State<CGFloat>,
+                                 _ state: UState<CGFloat>,
                                  relation: NSLayoutConstraint.Relation = .equal,
                                  multiplier: CGFloat = 1,
                                  priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -533,7 +533,7 @@ extension DeclarativeProtocol {
     /// By default to `centerY` of destination view
     @discardableResult
     public func centerY(to view: PreConstraintViewable,
-                                _ state: State<CGFloat>,
+                                _ state: UState<CGFloat>,
                                 relation: NSLayoutConstraint.Relation = .equal,
                                 multiplier: CGFloat = 1,
                                 priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -580,7 +580,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func center(to view: PreConstraintViewable,
-                               _ value: State<CGFloat>,
+                               _ value: UState<CGFloat>,
                                relation: NSLayoutConstraint.Relation = .equal,
                                multiplier: CGFloat = 1,
                                priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -605,8 +605,8 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func center(to view: PreConstraintViewable,
-                              x: State<CGFloat>,
-                              y: State<CGFloat>,
+                              x: UState<CGFloat>,
+                              y: UState<CGFloat>,
                               relation: NSLayoutConstraint.Relation = .equal,
                               multiplier: CGFloat = 1,
                               priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -616,7 +616,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func center<V>(to view: PreConstraintViewable,
-                                     x: State<CGFloat>,
+                                     x: UState<CGFloat>,
                                      y: ExpressableState<V, CGFloat>,
                                      relation: NSLayoutConstraint.Relation = .equal,
                                      multiplier: CGFloat = 1,
@@ -628,7 +628,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func center<V>(to view: PreConstraintViewable,
                                      x: ExpressableState<V, CGFloat>,
-                                     y: State<CGFloat>,
+                                     y: UState<CGFloat>,
                                      relation: NSLayoutConstraint.Relation = .equal,
                                      multiplier: CGFloat = 1,
                                      priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -638,7 +638,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func center(to view: PreConstraintViewable,
-                               x: State<CGFloat>,
+                               x: UState<CGFloat>,
                                y: ConstraintValue,
                                relation: NSLayoutConstraint.Relation = .equal,
                                multiplier: CGFloat = 1,
@@ -650,7 +650,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func center(to view: PreConstraintViewable,
                               x: ConstraintValue,
-                              y: State<CGFloat>,
+                              y: UState<CGFloat>,
                               relation: NSLayoutConstraint.Relation = .equal,
                               multiplier: CGFloat = 1,
                               priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -701,7 +701,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func width(to side: DeclarativeConstraintDSide,
                               of view: PreConstraintViewable,
-                              _ state: State<CGFloat>,
+                              _ state: UState<CGFloat>,
                               relation: NSLayoutConstraint.Relation = .equal,
                               multiplier: CGFloat = 1,
                               priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -718,7 +718,7 @@ extension DeclarativeProtocol {
     /// By default to `width` of destination view
     @discardableResult
     public func width(to view: PreConstraintViewable,
-                             _ state: State<CGFloat>,
+                             _ state: UState<CGFloat>,
                              relation: NSLayoutConstraint.Relation = .equal,
                              multiplier: CGFloat = 1,
                              priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -766,7 +766,7 @@ extension DeclarativeProtocol {
     @discardableResult
     public func height(to side: DeclarativeConstraintDSide,
                               of view: PreConstraintViewable,
-                              _ state: State<CGFloat>,
+                              _ state: UState<CGFloat>,
                               relation: NSLayoutConstraint.Relation = .equal,
                               multiplier: CGFloat = 1,
                               priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -783,7 +783,7 @@ extension DeclarativeProtocol {
     /// By default to `height` of destination view
     @discardableResult
     public func height(to view: PreConstraintViewable,
-                               _ state: State<CGFloat>,
+                               _ state: UState<CGFloat>,
                                relation: NSLayoutConstraint.Relation = .equal,
                                multiplier: CGFloat = 1,
                                priority: UILayoutPriority = .defaultHigh) -> Self {
@@ -836,7 +836,7 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func equalSize(to: PreConstraintViewable,
-                                   _ state: State<CGFloat>,
+                                   _ state: UState<CGFloat>,
                                    relation: NSLayoutConstraint.Relation = .equal,
                                    multiplier: CGFloat = 1,
                                    priority: UILayoutPriority = .defaultHigh) -> Self {

@@ -30,7 +30,7 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
     }
     
     @discardableResult
-    public func numberOfTapsRequired(_ state: UIKitPlus.State<Int>) -> Self {
+    public func numberOfTapsRequired(_ state: UIKitPlus.UState<Int>) -> Self {
         state.listen { self.numberOfTapsRequired = $0 }
         return self
     }
@@ -48,7 +48,7 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
     }
     
     @discardableResult
-    public func numberOfTouchesRequired(_ state: UIKitPlus.State<Int>) -> Self {
+    public func numberOfTouchesRequired(_ state: UIKitPlus.UState<Int>) -> Self {
         state.listen { self.numberOfTouchesRequired = $0 }
         return self
     }
@@ -66,7 +66,7 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
     }
     
     @discardableResult
-    public func minimumPressDuration(_ state: UIKitPlus.State<TimeInterval>) -> Self {
+    public func minimumPressDuration(_ state: UIKitPlus.UState<TimeInterval>) -> Self {
         state.listen { self.minimumPressDuration = $0 }
         return self
     }
@@ -83,7 +83,7 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
     }
     
     @discardableResult
-    public func allowableMovement(_ state: UIKitPlus.State<CGFloat>) -> Self {
+    public func allowableMovement(_ state: UIKitPlus.UState<CGFloat>) -> Self {
         state.listen { self.allowableMovement = $0 }
         return self
     }

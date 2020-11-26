@@ -42,7 +42,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func onScreenEdgePanGesture(edges: UIRectEdge = .all, _ state: State<UIGestureRecognizer.State>) -> Self {
+    public func onScreenEdgePanGesture(edges: UIRectEdge = .all, _ state: UState<UIGestureRecognizer.State>) -> Self {
         onScreenEdgePanGesture(edges: edges) { v, s, r in
             state.wrappedValue = s
         }

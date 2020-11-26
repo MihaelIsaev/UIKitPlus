@@ -1,7 +1,7 @@
 @propertyWrapper
 public class InnerState<Value, InnerValue> {
     private var _keyPath: WritableKeyPath<Value, InnerValue>
-    private var _wrappedValue: State<Value>
+    private var _wrappedValue: UState<Value>
     public var wrappedValue: InnerValue {
         get { _wrappedValue.wrappedValue[keyPath: _keyPath] }
         set {
@@ -11,12 +11,12 @@ public class InnerState<Value, InnerValue> {
         }
     }
     
-    @State
+    @UState
     var innerState: InnerValue
 
-    public var projectedValue: State<InnerValue> { $innerState }
+    public var projectedValue: UState<InnerValue> { $innerState }
 
-    public init(_ value: State<Value>, _ keyPath: WritableKeyPath<Value, InnerValue>) {
+    public init(_ value: UState<Value>, _ keyPath: WritableKeyPath<Value, InnerValue>) {
         _wrappedValue = value
         _keyPath = keyPath
         innerState = _wrappedValue.wrappedValue[keyPath: keyPath]

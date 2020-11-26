@@ -8,7 +8,7 @@ public protocol Textable: class {
     func text(_ text: String) -> Self
     
     @discardableResult
-    func text(_ state: State<String>) -> Self
+    func text(_ state: UState<String>) -> Self
     
     @discardableResult
     func text<V>(_ expressable: ExpressableState<V, String>) -> Self
@@ -19,13 +19,13 @@ public protocol Textable: class {
     // MARK: Attributed
     
     @discardableResult
-    func attributedText(_ state: State<AttrStr>) -> Self
+    func attributedText(_ state: UState<AttrStr>) -> Self
         
     @discardableResult
     func attributedText<V>(_ expressable: ExpressableState<V, AttrStr>) -> Self
     
     @discardableResult
-    func attributedText(_ state: State<[AttrStr]>) -> Self
+    func attributedText(_ state: UState<[AttrStr]>) -> Self
     
     @discardableResult
     func attributedText<V>(_ expressable: ExpressableState<V, [AttrStr]>) -> Self
@@ -131,7 +131,7 @@ extension Textable {
     }
 
     @discardableResult
-    public func text(_ state: State<String>) -> Self {
+    public func text(_ state: UState<String>) -> Self {
         guard let s = self as? _Textable else { return self }
         s._changeText(to: state.wrappedValue)
         state.listen { s._changeText(to: $0) }
@@ -149,7 +149,7 @@ extension Textable {
     }
     
     @discardableResult
-    public func attributedText(_ state: State<AttrStr>) -> Self {
+    public func attributedText(_ state: UState<AttrStr>) -> Self {
         guard let s = self as? _Textable else { return self }
         s._changeText(to: state.wrappedValue.attributedString)
         state.listen { s._changeText(to: $0.attributedString) }
@@ -157,7 +157,7 @@ extension Textable {
     }
     
     @discardableResult
-    public func attributedText(_ state: State<[AttrStr]>) -> Self {
+    public func attributedText(_ state: UState<[AttrStr]>) -> Self {
         guard let s = self as? _Textable else { return self }
         s._changeText(to: state.wrappedValue.joined())
         state.listen { s._changeText(to: $0.joined()) }
@@ -194,7 +194,7 @@ extension _Textable {
     }
 
     @discardableResult
-    public func text(_ state: State<String>) -> Self {
+    public func text(_ state: UState<String>) -> Self {
         _changeText(to: state.wrappedValue)
         state.listen { self._changeText(to: $0) }
         if let s = self as? TextBindable {
@@ -210,14 +210,14 @@ extension _Textable {
     }
     
     @discardableResult
-    public func attributedText(_ state: State<AttrStr>) -> Self {
+    public func attributedText(_ state: UState<AttrStr>) -> Self {
         _changeText(to: state.wrappedValue.attributedString)
         state.listen { self._changeText(to: $0.attributedString) }
         return self
     }
     
     @discardableResult
-    public func attributedText(_ state: State<[AttrStr]>) -> Self {
+    public func attributedText(_ state: UState<[AttrStr]>) -> Self {
         _changeText(to: state.wrappedValue.joined())
         state.listen { self._changeText(to: $0.joined()) }
         return self

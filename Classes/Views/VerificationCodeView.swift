@@ -5,27 +5,27 @@ open class VerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativeProt
     public lazy var properties = Properties<VerificationCodeView>()
     lazy var _properties = PropertiesInternal()
     
-    @State public var height: CGFloat = 0
-    @State public var width: CGFloat = 0
-    @State public var top: CGFloat = 0
-    @State public var leading: CGFloat = 0
-    @State public var left: CGFloat = 0
-    @State public var trailing: CGFloat = 0
-    @State public var right: CGFloat = 0
-    @State public var bottom: CGFloat = 0
-    @State public var centerX: CGFloat = 0
-    @State public var centerY: CGFloat = 0
+    @UState public var height: CGFloat = 0
+    @UState public var width: CGFloat = 0
+    @UState public var top: CGFloat = 0
+    @UState public var leading: CGFloat = 0
+    @UState public var left: CGFloat = 0
+    @UState public var trailing: CGFloat = 0
+    @UState public var right: CGFloat = 0
+    @UState public var bottom: CGFloat = 0
+    @UState public var centerX: CGFloat = 0
+    @UState public var centerY: CGFloat = 0
     
-    var __height: State<CGFloat> { _height }
-    var __width: State<CGFloat> { _width }
-    var __top: State<CGFloat> { _top }
-    var __leading: State<CGFloat> { _leading }
-    var __left: State<CGFloat> { _left }
-    var __trailing: State<CGFloat> { _trailing }
-    var __right: State<CGFloat> { _right }
-    var __bottom: State<CGFloat> { _bottom }
-    var __centerX: State<CGFloat> { _centerX }
-    var __centerY: State<CGFloat> { _centerY }
+    var __height: UState<CGFloat> { _height }
+    var __width: UState<CGFloat> { _width }
+    var __top: UState<CGFloat> { _top }
+    var __leading: UState<CGFloat> { _leading }
+    var __left: UState<CGFloat> { _left }
+    var __trailing: UState<CGFloat> { _trailing }
+    var __right: UState<CGFloat> { _right }
+    var __bottom: UState<CGFloat> { _bottom }
+    var __centerX: UState<CGFloat> { _centerX }
+    var __centerY: UState<CGFloat> { _centerY }
     
     private let quantity: Int
     
@@ -33,9 +33,9 @@ open class VerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativeProt
     private var enteredClosure: EnteredClosure  = { _ in }
     private var simpleEnteredClosure  = {}
     
-    var bindCode: State<String>?
+    var bindCode: UState<String>?
     
-    public init (_ quantity: Int = 4, _ state: State<String>) {
+    public init (_ quantity: Int = 4, _ state: UState<String>) {
         self.quantity = quantity
         super.init(frame: .zero)
         bindCode = state
@@ -91,8 +91,8 @@ open class VerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativeProt
         }
     }
     
-    @State var widthOfDigitView: CGFloat = 24
-    @State var spaceBetweenDigitViews: CGFloat = 10
+    @UState var widthOfDigitView: CGFloat = 24
+    @UState var spaceBetweenDigitViews: CGFloat = 10
     
     public var code: String {
         return hiddenTextField.text ?? ""
@@ -268,27 +268,27 @@ extension VerificationCodeView {
         public lazy var properties = Properties<DigitView>()
         lazy var _properties = PropertiesInternal()
         
-        @State public var height: CGFloat = 0
-        @State public var width: CGFloat = 0
-        @State public var top: CGFloat = 0
-        @State public var leading: CGFloat = 0
-        @State public var left: CGFloat = 0
-        @State public var trailing: CGFloat = 0
-        @State public var right: CGFloat = 0
-        @State public var bottom: CGFloat = 0
-        @State public var centerX: CGFloat = 0
-        @State public var centerY: CGFloat = 0
+        @UState public var height: CGFloat = 0
+        @UState public var width: CGFloat = 0
+        @UState public var top: CGFloat = 0
+        @UState public var leading: CGFloat = 0
+        @UState public var left: CGFloat = 0
+        @UState public var trailing: CGFloat = 0
+        @UState public var right: CGFloat = 0
+        @UState public var bottom: CGFloat = 0
+        @UState public var centerX: CGFloat = 0
+        @UState public var centerY: CGFloat = 0
         
-        var __height: State<CGFloat> { _height }
-        var __width: State<CGFloat> { _width }
-        var __top: State<CGFloat> { _top }
-        var __leading: State<CGFloat> { _leading }
-        var __left: State<CGFloat> { _left }
-        var __trailing: State<CGFloat> { _trailing }
-        var __right: State<CGFloat> { _right }
-        var __bottom: State<CGFloat> { _bottom }
-        var __centerX: State<CGFloat> { _centerX }
-        var __centerY: State<CGFloat> { _centerY }
+        var __height: UState<CGFloat> { _height }
+        var __width: UState<CGFloat> { _width }
+        var __top: UState<CGFloat> { _top }
+        var __leading: UState<CGFloat> { _leading }
+        var __left: UState<CGFloat> { _left }
+        var __trailing: UState<CGFloat> { _trailing }
+        var __right: UState<CGFloat> { _right }
+        var __bottom: UState<CGFloat> { _bottom }
+        var __centerX: UState<CGFloat> { _centerX }
+        var __centerY: UState<CGFloat> { _centerY }
         
         public init () {
             super.init(frame: .zero)
@@ -316,8 +316,8 @@ extension VerificationCodeView {
             movedToSuperview()
         }
         
-        @State var labelBackground: UIColor = .clear
-        @State var labelColor: UIColor = .black
+        @UState var labelBackground: UIColor = .clear
+        @UState var labelColor: UIColor = .black
         
         var labelFont: UIFont? = .systemFont(ofSize: 30) {
             didSet {

@@ -84,7 +84,7 @@ open class HScrollStack: ScrollView {
     }
     
     @discardableResult
-    public func spacing(_ state: State<CGFloat>) -> Self {
+    public func spacing(_ state: UState<CGFloat>) -> Self {
         state.listen { [weak self] new in
             self?.stack.spacing = new
         }

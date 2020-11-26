@@ -28,7 +28,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func onHoverGesture(_ state: State<UIGestureRecognizer.State>) -> Self {
+    public func onHoverGesture(_ state: UState<UIGestureRecognizer.State>) -> Self {
         onHoverGesture { v, s, r in
             state.wrappedValue = s
         }
@@ -50,7 +50,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func hovered(_ state: State<Bool>) -> Self {
+    public func hovered(_ state: UState<Bool>) -> Self {
         hovered {
             state.wrappedValue = $0
         }

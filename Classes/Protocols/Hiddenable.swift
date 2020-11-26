@@ -1,5 +1,5 @@
 import UIKit
 
 protocol Hiddenable {
-    var hiddenState: State<Bool> { get }
+    var hiddenState: UState<Bool> { get }
 }

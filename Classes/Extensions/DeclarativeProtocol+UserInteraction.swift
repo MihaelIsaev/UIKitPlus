@@ -1,7 +1,7 @@
 import UIKit
 
 extension DeclarativeProtocol {
-    public var userInteraction: State<Bool> { properties.$userInteraction }
+    public var userInteraction: UState<Bool> { properties.$userInteraction }
     
     @discardableResult
     public func userInteraction(_ enabled: Bool = true) -> Self {
@@ -11,7 +11,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func userInteraction(_ state: State<Bool>) -> Self {
+    public func userInteraction(_ state: UState<Bool>) -> Self {
         declarativeView.isUserInteractionEnabled = state.wrappedValue
         properties.userInteraction = state.wrappedValue
         state.listen { [weak self] old, new in

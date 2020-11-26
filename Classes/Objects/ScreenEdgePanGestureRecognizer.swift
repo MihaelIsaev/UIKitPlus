@@ -18,7 +18,7 @@ final public class ScreenEdgePanGestureRecognizer: UIScreenEdgePanGestureRecogni
     }
     
     @discardableResult
-    public func edges(_ state: UIKitPlus.State<UIRectEdge>) -> Self {
+    public func edges(_ state: UIKitPlus.UState<UIRectEdge>) -> Self {
         state.listen { self.edges = $0 }
         return self
     }

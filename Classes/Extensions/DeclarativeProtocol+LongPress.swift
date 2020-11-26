@@ -48,7 +48,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func onLongPressGesture(taps: Int = 0, touches: Int = 1, _ state: State<UIGestureRecognizer.State>) -> Self {
+    public func onLongPressGesture(taps: Int = 0, touches: Int = 1, _ state: UState<UIGestureRecognizer.State>) -> Self {
         onLongPressGesture(taps: taps, touches: touches) { v, s, r in
             state.wrappedValue = s
         }

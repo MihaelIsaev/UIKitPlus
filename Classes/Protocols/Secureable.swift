@@ -8,7 +8,7 @@ public protocol Secureable {
     func secure(_ value: Bool) -> Self
     
     @discardableResult
-    func secure(_ binding: UIKitPlus.State<Bool>) -> Self
+    func secure(_ binding: UIKitPlus.UState<Bool>) -> Self
     
     @discardableResult
     func secure<V>(_ expressable: ExpressableState<V, Bool>) -> Self
@@ -25,7 +25,7 @@ extension Secureable {
     }
     
     @discardableResult
-    public func secure(_ binding: UIKitPlus.State<Bool>) -> Self {
+    public func secure(_ binding: UIKitPlus.UState<Bool>) -> Self {
         binding.listen { self.secure($0) }
         return secure(binding.wrappedValue)
     }

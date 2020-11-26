@@ -6,29 +6,29 @@ open class ScrollView: UIScrollView, AnyDeclarativeProtocol, DeclarativeProtocol
     public lazy var properties = Properties<ScrollView>()
     lazy var _properties = PropertiesInternal()
     
-    @State public var height: CGFloat = 0
-    @State public var width: CGFloat = 0
-    @State public var top: CGFloat = 0
-    @State public var leading: CGFloat = 0
-    @State public var left: CGFloat = 0
-    @State public var trailing: CGFloat = 0
-    @State public var right: CGFloat = 0
-    @State public var bottom: CGFloat = 0
-    @State public var centerX: CGFloat = 0
-    @State public var centerY: CGFloat = 0
+    @UState public var height: CGFloat = 0
+    @UState public var width: CGFloat = 0
+    @UState public var top: CGFloat = 0
+    @UState public var leading: CGFloat = 0
+    @UState public var left: CGFloat = 0
+    @UState public var trailing: CGFloat = 0
+    @UState public var right: CGFloat = 0
+    @UState public var bottom: CGFloat = 0
+    @UState public var centerX: CGFloat = 0
+    @UState public var centerY: CGFloat = 0
     
-    var __height: State<CGFloat> { _height }
-    var __width: State<CGFloat> { _width }
-    var __top: State<CGFloat> { _top }
-    var __leading: State<CGFloat> { _leading }
-    var __left: State<CGFloat> { _left }
-    var __trailing: State<CGFloat> { _trailing }
-    var __right: State<CGFloat> { _right }
-    var __bottom: State<CGFloat> { _bottom }
-    var __centerX: State<CGFloat> { _centerX }
-    var __centerY: State<CGFloat> { _centerY }
+    var __height: UState<CGFloat> { _height }
+    var __width: UState<CGFloat> { _width }
+    var __top: UState<CGFloat> { _top }
+    var __leading: UState<CGFloat> { _leading }
+    var __left: UState<CGFloat> { _left }
+    var __trailing: UState<CGFloat> { _trailing }
+    var __right: UState<CGFloat> { _right }
+    var __bottom: UState<CGFloat> { _bottom }
+    var __centerX: UState<CGFloat> { _centerX }
+    var __centerY: UState<CGFloat> { _centerY }
     
-    var scrollPosition: State<CGPoint>?
+    var scrollPosition: UState<CGPoint>?
     
     public init (@ViewBuilder block: ViewBuilder.SingleView) {
         super.init(frame: .zero)
@@ -181,7 +181,7 @@ extension ScrollView: UIScrollViewDelegate {
     }
     
     @discardableResult
-    public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
+    public func scrollPosition(_ binding: UIKitPlus.UState<CGPoint>) -> Self {
         scrollPosition = binding
         return self
     }

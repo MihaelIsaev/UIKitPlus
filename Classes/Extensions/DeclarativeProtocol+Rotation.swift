@@ -49,7 +49,7 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func onRotationGesture(rotation: CGFloat? = nil, _ state: State<UIGestureRecognizer.State>) -> Self {
+    public func onRotationGesture(rotation: CGFloat? = nil, _ state: UState<UIGestureRecognizer.State>) -> Self {
         onRotationGesture(rotation: rotation) { v, s, r in
             state.wrappedValue = s
         }

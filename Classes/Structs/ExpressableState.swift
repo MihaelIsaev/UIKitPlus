@@ -10,8 +10,8 @@ public class ExpressableState<S, Result> where S: Stateable {
         _expression = expression
     }
     
-    public func unwrap() -> State<Result> {
-        let state: State<Result> = .init(wrappedValue: self.value())
+    public func unwrap() -> UState<Result> {
+        let state: UState<Result> = .init(wrappedValue: self.value())
         self.state.listen { [weak self] _ in
             guard let self = self else { return }
             state.wrappedValue = self.value()
@@ -52,8 +52,8 @@ public class AnyStates {
 }
 
 extension Array where Element == AnyState {
-    public func map<Result>(_ expression: @escaping () -> Result) -> State<Result> {
-        let sss = State<Result>.init(wrappedValue: expression())
+    public func map<Result>(_ expression: @escaping () -> Result) -> UState<Result> {
+        let sss = UState<Result>.init(wrappedValue: expression())
         AnyStates(self) {
             sss.wrappedValue = expression()
         }

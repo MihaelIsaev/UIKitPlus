@@ -129,7 +129,7 @@ open class ViewController: UIViewController {
         _viewWillAppearFirstTime(animated)
     }
     
-    @State public var keyboardHeight: CGFloat = 0
+    @UState public var keyboardHeight: CGFloat = 0
     
     private var isSubscribedToKeyboardNotifications = false
     

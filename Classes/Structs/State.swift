@@ -10,10 +10,10 @@ public protocol Stateable: AnyState {
     func listen(_ listener: @escaping () -> Void)
 }
 
-public typealias UState = State
+//public typealias UState = State
 
 @propertyWrapper
-open class State<Value>: Stateable {
+open class UState<Value>: Stateable {
     private var _originalValue: Value
     private var _wrappedValue: Value
     public var wrappedValue: Value {
@@ -27,7 +27,7 @@ open class State<Value>: Stateable {
         }
     }
     
-    public var projectedValue: State<Value> { self }
+    public var projectedValue: UState<Value> { self }
 
     public init(wrappedValue value: Value) {
         _originalValue = value
@@ -76,7 +76,7 @@ open class State<Value>: Stateable {
         listeners.append({ _,_ in listener() })
     }
     
-    public func merge(with state: State<Value>) {
+    public func merge(with state: UState<Value>) {
         self.wrappedValue = state.wrappedValue
         var justSetExternal = false
         var justSetInternal = false
@@ -102,13 +102,13 @@ open class State<Value>: Stateable {
     }
     
     /// Merging two states into one combined state which could be used as expressable state
-    public func and<V>(_ state: State<V>) -> State<CombinedStateResult<Value, V>> {
+    public func and<V>(_ state: UState<V>) -> UState<CombinedStateResult<Value, V>> {
         let stateA = self
         let stateB = state
         let combinedValue = {
             return CombinedStateResult(left: stateA.wrappedValue, right: stateB.wrappedValue)
         }
-        let resultState = State<CombinedStateResult<Value, V>>(wrappedValue: combinedValue())
+        let resultState = UState<CombinedStateResult<Value, V>>(wrappedValue: combinedValue())
         stateA.listen {
             resultState.wrappedValue = combinedValue()
         }
