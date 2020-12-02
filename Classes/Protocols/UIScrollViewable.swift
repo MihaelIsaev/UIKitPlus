@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol UIScrollViewable: UIViewable {
@@ -7,3 +8,4 @@ public protocol UIScrollViewable: UIViewable {
 extension UIScrollViewable {
     public var _view: UIView { _scrollView }
 }
+#endif

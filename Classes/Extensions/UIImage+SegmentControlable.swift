@@ -1,5 +1,9 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
-extension UIImage: SegmentControlable {
+extension _UImage: SegmentControlable {
     public var item: SegmentControlableItem { .image(self) }
 }

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 #if !os(tvOS)
@@ -53,4 +54,5 @@ extension DeclarativeProtocol {
         onScreenEdgePanGesture(edges: edges, expressable.unwrap())
     }
 }
+#endif
 #endif

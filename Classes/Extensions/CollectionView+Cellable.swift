@@ -1,3 +1,4 @@
+#if !os(macOS)
 import Foundation
 import UIKit
 
@@ -12,3 +13,4 @@ extension UICollectionView {
         dequeueReusableCell(withReuseIdentifier: `class`.reuseIdentifier, for: indexPath) as! T
     }
 }
+#endif

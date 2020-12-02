@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 extension UINavigationController {
@@ -17,3 +18,4 @@ extension UINavigationController {
         popViewController(animated: false)
     }
 }
+#endif

@@ -44,13 +44,13 @@ import Foundation
 }
 
 public protocol GesturesBuilderItem {
-    var gestureRecognizers: [UIGestureRecognizer] { get }
+    var gestureRecognizers: [UGestureRecognizer] { get }
 }
 
-extension UIGestureRecognizer: GesturesBuilderItem {
-    public var gestureRecognizers: [UIGestureRecognizer] { [self] }
+extension UGestureRecognizer: GesturesBuilderItem {
+    public var gestureRecognizers: [UGestureRecognizer] { [self] }
 }
 
-extension Array: GesturesBuilderItem where Element: UIGestureRecognizer {
-    public var gestureRecognizers: [UIGestureRecognizer] { self }
+extension Array: GesturesBuilderItem where Element: UGestureRecognizer {
+    public var gestureRecognizers: [UGestureRecognizer] { self }
 }

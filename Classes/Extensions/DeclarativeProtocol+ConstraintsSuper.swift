@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension DeclarativeProtocol {
     private func _createSuper(value: State<CGFloat>,
@@ -8,7 +12,7 @@ extension DeclarativeProtocol {
                                                     attribute1: NSLayoutConstraint.Attribute,
                                                     attribute2: NSLayoutConstraint.Attribute?,
                                                     toSafe: Bool,
-                                                    destinationView: UIView?) -> Self {
+                                                    destinationView: BaseView?) -> Self {
         let pc = PreConstraint(value: value,
                                         relation: relation,
                                         multiplier: multiplier,
@@ -33,7 +37,7 @@ extension DeclarativeProtocol {
                                                     attribute1: NSLayoutConstraint.Attribute,
                                                     attribute2: NSLayoutConstraint.Attribute?,
                                                     toSafe: Bool,
-                                                    destinationView: UIView?) -> Self {
+                                                    destinationView: BaseView?) -> Self {
         _createSuper(value: expressable.unwrap(),
                                                 relation: relation,
                                                 multiplier: multiplier,
@@ -632,7 +636,11 @@ extension DeclarativeProtocol {
         // Link internal state with external
         linkStates(pc.attribute1, _self, pc.value)
         // Redraw itself
+        #if os(macOS)
+        superview.layoutSubtreeIfNeeded() // TODO: check layoutSubtreeIfNeeded!
+        #else
         superview.layoutIfNeeded()
+        #endif
     }
     
     func linkStates(_ attr: NSLayoutConstraint.Attribute, _ _self: DeclarativeProtocolInternal, _ state: State<CGFloat>) {

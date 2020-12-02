@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension DeclarativeProtocol {
     @discardableResult
@@ -194,6 +198,10 @@ extension DeclarativeProtocol {
         // Link internal state with external
         linkStates(pc.attribute1, _self, pc.value)
         // Redraw itself
+        #if os(macOS)
+        superview.layoutSubtreeIfNeeded() // TODO: check layoutSubtreeIfNeeded!
+        #else
         superview.layoutIfNeeded()
+        #endif
     }
 }

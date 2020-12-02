@@ -1,24 +1,40 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public class PropertiesInternal {
     var circleCorners: Bool = false
+    #if !os(macOS)
     var customCorners: CustomCorners?
+    #endif
     lazy var borders = Borders()
-    var textChangeTransition: UIView.AnimationOptions?
-    var stateString: StateStringBuilder.Handler?
-    var stateAttrString: StateAttrStringBuilder.Handler?
     
-    var textBinding: State<String>?
+    /// See `Textable`
+    
+    #if !os(macOS)
+    var textChangeTransition: UIView.AnimationOptions?
+    #endif
+    var statedText: AnyStringBuilder.Handler?
+    var textChangeListeners: [(NSAttributedString) -> Void] = []
+    
+    /// See `Placeholderable`
+    
+    #if !os(macOS)
+    var placeholderChangeTransition: UIView.AnimationOptions?
+    #endif
+    var statedPlaceholder: AnyStringBuilder.Handler?
+    var placeholderBinding: State<AnyString>?
+    @State var placeholderAttrText: NSAttributedString?
+    
+    /// See `Typeable`
     
     @State var isTyping = false
     var isTypingState: State<Bool> { _isTyping }
     
     var typingInterval: TimeInterval = 0.5
     var typingTimer: Timer?
-    
-    @State var placeholderText: String?
-    var placeholderAttrText: NSMutableAttributedString?
-    var generatedPlaceholderString: NSAttributedString?
     
     // MARK: - Internal Constraints
     
@@ -30,4 +46,12 @@ public class PropertiesInternal {
     
     var notAppliedPreConstraintsRelative: [PreConstraint] = []
     var appliedPreConstraintsRelative: [PreConstraint] = []
+    
+    func moveAppliedToNotApplied() {
+        appliedPreConstraintsSuper.forEach {
+            $0.value.removeAllListeners()
+            notAppliedPreConstraintsSuper.append($0)
+        }
+        appliedPreConstraintsSuper.removeAll()
+    }
 }

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol UIButtonable: UIViewable {
@@ -7,3 +8,4 @@ public protocol UIButtonable: UIViewable {
 extension UIButtonable {
     public var _view: UIView { _button }
 }
+#endif

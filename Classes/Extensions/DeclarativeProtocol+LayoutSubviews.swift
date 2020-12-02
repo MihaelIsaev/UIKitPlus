@@ -1,6 +1,19 @@
+#if os(macOS)
+import AppKit
+
+extension AnyDeclarativeProtocol {
+    func onLayoutSubviews() {
+        if _declarativeView._properties.circleCorners == true {
+            if let minSide = [declarativeView.bounds.size.width, declarativeView.bounds.size.height].min() {
+                declarativeView.layer?.cornerRadius = minSide / 2
+            }
+        }
+    }
+}
+#else
 import UIKit
 
-extension DeclarativeProtocol {
+extension AnyDeclarativeProtocol {
     func onLayoutSubviews() {
         if _declarativeView._properties.circleCorners == true {
             if let minSide = [declarativeView.bounds.size.width, declarativeView.bounds.size.height].min() {
@@ -26,3 +39,4 @@ extension DeclarativeProtocol {
         }
     }
 }
+#endif

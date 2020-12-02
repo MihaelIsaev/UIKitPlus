@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public enum TextFieldContentType {
@@ -85,4 +86,4 @@ public enum TextFieldContentType {
         }
     }
 }
-
+#endif

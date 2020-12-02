@@ -1,31 +1,67 @@
 import Foundation
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
-open class ViewController: UIViewController {
+#if os(macOS)
+public typealias BaseViewController = NSViewController
+#else
+public typealias BaseViewController = UIViewController
+#endif
+
+#if os(macOS)
+extension ViewController: _Menuable {
+    func _setMenu(_ v: Menu) {
+        view.menu = v.menu
+    }
+}
+#endif
+
+open class ViewController: BaseViewController {
+    #if !os(macOS)
     #if !os(tvOS)
     open override var preferredStatusBarStyle: UIStatusBarStyle { statusBarStyle.rawValue }
     #endif
     /// UIKitPlus reimplementation of `preferredStatusBarStyle`
     open var statusBarStyle: StatusBarStyle { _statusBarStyle ?? .default }
+    #endif
     
-    public init (@ViewBuilder block: ViewBuilder.SingleView) {
+    #if os(macOS)
+    open override func loadView() {
+        self.view = UView()
+    }
+    
+    public var navigationController: NavigationController?
+    #endif
+    
+    public init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(nibName: nil, bundle: nil)
-        subscribeToKeyboardNotifications()
-        buildUI()
+        _setup()
         body { block() }
     }
     
     public init () {
         super.init(nibName: nil, bundle: nil)
-        subscribeToKeyboardNotifications()
-        buildUI()
+        _setup()
     }
     
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        _setup()
+    }
+    
+    private func _setup() {
+        #if !os(macOS)
+        isLandscape = view.frame.size.width > view.frame.size.height
         subscribeToKeyboardNotifications()
+        #endif
+        body { body }
         buildUI()
     }
+    
+    @BodyBuilder open var body: BodyBuilder.Result { EmptyBodyBuilderItem() }
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -35,6 +71,15 @@ open class ViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    #if os(macOS)
+    public func shakeWindow(numberOfShakes: Int = 4, intensity: CGFloat = 0.05, duration: Double = 0.6) {
+        window?.shake(numberOfShakes: numberOfShakes, intensity: intensity, duration: duration)
+    }
+    
+    public var window: NSWindow? { view.window }
+    #endif
+    
+    #if !os(macOS)
     // MARK: Touches
     
     typealias TouchClosure = (Set<UITouch>, UIEvent?) -> Void
@@ -63,16 +108,29 @@ open class ViewController: UIViewController {
         super.touchesCancelled(touches, with: event)
         _touchesCancelled?(touches, event)
     }
+    #endif
     
     // MARK: Lifecycle
     
     open func buildUI() {
+        #if !os(macOS)
         view.backgroundColor = .white
+        #endif
     }
     
     public var isWillAppearedOnce = false
     public var isDidAppearedOnce = false
     
+    #if os(macOS)
+    var _viewDidLoad = {}
+    var _viewDidLayout = {}
+    var _viewDidAppear = {}
+    var _viewDidAppearFirstTime = {}
+    var _viewWillAppear = {}
+    var _viewWillAppearFirstTime = {}
+    var _viewWillDisappear = {}
+    var _viewDidDisappear = {}
+    #else
     var _viewDidLoad = {}
     var _viewDidLayoutSubviews = {}
     var _viewDidAppear: (Bool) -> Void = { _ in }
@@ -81,12 +139,60 @@ open class ViewController: UIViewController {
     var _viewWillAppearFirstTime: (Bool) -> Void = { _ in }
     var _viewWillDisappear: (Bool) -> Void = { _ in }
     var _viewDidDisappear: (Bool) -> Void = { _ in }
+    #endif
     
     open override func viewDidLoad() {
         super.viewDidLoad()
         _viewDidLoad()
     }
     
+    #if os(macOS)
+    open override func viewDidLayout() {
+        super.viewDidLayout()
+        _viewDidLayout()
+    }
+    
+    open override func viewDidAppear() {
+        super.viewDidAppear()
+        if !isDidAppearedOnce {
+            isDidAppearedOnce = true
+            viewDidAppearFirstTime()
+        }
+        _viewDidAppear()
+    }
+    
+    open override func viewWillAppear() {
+        super.viewWillAppear()
+        #if !os(macOS)
+        isSubscribedToKeyboardNotifications = true
+        #endif
+        if !isWillAppearedOnce {
+            isWillAppearedOnce = true
+            viewWillAppearFirstTime()
+        }
+        _viewWillAppear()
+    }
+    
+    open override func viewWillDisappear() {
+        super.viewWillDisappear()
+        #if !os(macOS)
+        isSubscribedToKeyboardNotifications = false
+        #endif
+        _viewWillDisappear()
+    }
+    
+    open override func viewDidDisappear() {
+        super.viewDidDisappear()
+        _viewDidDisappear()
+    }
+    
+    open func viewWillAppearFirstTime() {
+        _viewDidAppearFirstTime()
+    }
+    open func viewDidAppearFirstTime() {
+        _viewWillAppearFirstTime()
+    }
+    #else
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         _viewDidLayoutSubviews()
@@ -127,6 +233,26 @@ open class ViewController: UIViewController {
     }
     open func viewDidAppearFirstTime(_ animated: Bool) {
         _viewWillAppearFirstTime(animated)
+    }
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    @State public var isLandscape = false
+    
+    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        if #available(iOS 10.0, *) {
+            UIViewPropertyAnimator.init(duration: coordinator.transitionDuration, curve: coordinator.completionCurve) {
+                self.isLandscape = size.width > self.view.frame.size.width
+            }.startAnimation()
+        } else {
+            UIView.animate(withDuration: coordinator.transitionDuration, delay: 0, options: UIView.AnimationOptions(rawValue: UInt(coordinator.completionCurve.rawValue)), animations: {
+                self.isLandscape = size.width > self.view.frame.size.width
+            }, completion: nil)
+        }
     }
     
     @State public var keyboardHeight: CGFloat = 0
@@ -205,6 +331,7 @@ open class ViewController: UIViewController {
         closure(self, navigationController)
         return self
     }
+    #endif
 }
 
 // MARK: Lifecycle
@@ -225,6 +352,22 @@ extension ViewController {
         return self
     }
     
+    #if os(macOS)
+    /// didLayout
+    @discardableResult
+    public func onViewDidLayout(_ closure: @escaping () -> Void) -> Self {
+        _viewDidLayout = closure
+        return self
+    }
+    
+    @discardableResult
+    public func onViewDidLayout(_ closure: @escaping (Self) -> Void) -> Self {
+        _viewDidLayout = {
+            closure(self)
+        }
+        return self
+    }
+    #else
     /// didLayoutSubviews
     @discardableResult
     public func onViewDidLayoutSubviews(_ closure: @escaping () -> Void) -> Self {
@@ -239,49 +382,39 @@ extension ViewController {
         }
         return self
     }
+    #endif
     
-    /// didAppear
-    @discardableResult
-    public func onViewDidAppear(_ closure: @escaping () -> Void) -> Self {
-        _viewDidAppear = { a in
-            closure()
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func onViewDidAppear(_ closure: @escaping (Self) -> Void) -> Self {
-        _viewDidAppear = { a in
-            closure(self)
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func onViewDidAppear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
-        _viewDidAppear = { a in
-            closure(self, a)
-        }
-        return self
-    }
     
     /// didAppearFirstTime
     @discardableResult
     public func onViewDidAppearFirstTime(_ closure: @escaping () -> Void) -> Self {
+        #if os(macOS)
+        _viewDidAppearFirstTime = {
+            closure()
+        }
+        #else
         _viewDidAppearFirstTime = { a in
             closure()
         }
+        #endif
         return self
     }
     
     @discardableResult
     public func onViewDidAppearFirstTime(_ closure: @escaping (Self) -> Void) -> Self {
+        #if os(macOS)
+        _viewDidAppearFirstTime = {
+            closure(self)
+        }
+        #else
         _viewDidAppearFirstTime = { a in
             closure(self)
         }
+        #endif
         return self
     }
     
+    #if !os(macOS)
     @discardableResult
     public func onViewDidAppearFirstTime(_ closure: @escaping (Self, Bool) -> Void) -> Self {
         _viewDidAppearFirstTime = { a in
@@ -289,24 +422,38 @@ extension ViewController {
         }
         return self
     }
+    #endif
     
     /// willAppear
     @discardableResult
     public func onViewWillAppear(_ closure: @escaping () -> Void) -> Self {
+        #if os(macOS)
+        _viewWillAppear = {
+            closure()
+        }
+        #else
         _viewWillAppear = { a in
             closure()
         }
+        #endif
         return self
     }
     
     @discardableResult
     public func onViewWillAppear(_ closure: @escaping (Self) -> Void) -> Self {
+        #if os(macOS)
+        _viewWillAppear = {
+            closure(self)
+        }
+        #else
         _viewWillAppear = { a in
             closure(self)
         }
+        #endif
         return self
     }
     
+    #if !os(macOS)
     @discardableResult
     public func onViewWillAppear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
         _viewWillAppear = { a in
@@ -314,24 +461,38 @@ extension ViewController {
         }
         return self
     }
+    #endif
     
     /// willAppearFirstTime
     @discardableResult
     public func onViewWillAppearFirstTime(_ closure: @escaping () -> Void) -> Self {
+        #if os(macOS)
+        _viewWillAppearFirstTime = {
+            closure()
+        }
+        #else
         _viewWillAppearFirstTime = { a in
             closure()
         }
+        #endif
         return self
     }
     
     @discardableResult
     public func onViewWillAppearFirstTime(_ closure: @escaping (Self) -> Void) -> Self {
+        #if os(macOS)
+        _viewWillAppearFirstTime = {
+            closure(self)
+        }
+        #else
         _viewWillAppearFirstTime = { a in
             closure(self)
         }
+        #endif
         return self
     }
     
+    #if !os(macOS)
     @discardableResult
     public func onViewWillAppearFirstTime(_ closure: @escaping (Self, Bool) -> Void) -> Self {
         _viewWillAppearFirstTime = { a in
@@ -339,24 +500,38 @@ extension ViewController {
         }
         return self
     }
+    #endif
     
     /// willDisappear
     @discardableResult
     public func onViewWillDisappear(_ closure: @escaping () -> Void) -> Self {
+        #if os(macOS)
+        _viewWillDisappear = {
+            closure()
+        }
+        #else
         _viewWillDisappear = { a in
             closure()
         }
+        #endif
         return self
     }
     
     @discardableResult
     public func onViewWillDisappear(_ closure: @escaping (Self) -> Void) -> Self {
+        #if os(macOS)
+        _viewWillDisappear = {
+            closure(self)
+        }
+        #else
         _viewWillDisappear = { a in
             closure(self)
         }
+        #endif
         return self
     }
     
+    #if !os(macOS)
     @discardableResult
     public func onViewWillDisappear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
         _viewWillDisappear = { a in
@@ -364,24 +539,38 @@ extension ViewController {
         }
         return self
     }
+    #endif
     
     /// didDisappear
     @discardableResult
     public func onViewDidDisappear(_ closure: @escaping () -> Void) -> Self {
+        #if os(macOS)
+        _viewDidDisappear = {
+            closure()
+        }
+        #else
         _viewDidDisappear = { a in
             closure()
         }
+        #endif
         return self
     }
     
     @discardableResult
     public func onViewDidDisappear(_ closure: @escaping (Self) -> Void) -> Self {
+        #if os(macOS)
+        _viewDidDisappear = {
+            closure(self)
+        }
+        #else
         _viewDidDisappear = { a in
             closure(self)
         }
+        #endif
         return self
     }
     
+    #if !os(macOS)
     @discardableResult
     public func onViewDidDisappear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
         _viewDidDisappear = { a in
@@ -389,24 +578,42 @@ extension ViewController {
         }
         return self
     }
+    #endif
 }
 
 // MARK: Titleable
 
-extension ViewController: _Titleable {
-    func _setTitle(_ v: String?) {
-        title = v
+extension BaseViewController: _Titleable {
+    var _statedTitle: AnyStringBuilder.Handler? {
+        get { nil }
+        set {}
+    }
+    #if !os(macOS)
+    var _titleChangeTransition: UIView.AnimationOptions? {
+        get { nil }
+        set {}
+    }
+    #endif
+    
+    func _setTitle(_ v: NSAttributedString?) {
+        self.title = v?.string
     }
 }
 
-extension ViewController: _BackgroundColorable {
-    func _setBackgroundColor(_ v: UIColor) {
+#if !os(macOS)
+extension BaseViewController: _BackgroundColorable {
+    var _backgroundColorState: State<UColor> {
+        .init(wrappedValue: view.backgroundColor ?? .clear)
+    }
+    
+    func _setBackgroundColor(_ v: UColor?) {
         view.backgroundColor = v
     }
 }
+#endif
 
 // MARK: Keyboard Notifications
-#if !os(tvOS)
+#if !os(tvOS) && !os(macOS)
 extension ViewController {
     @objc
     private func keyboardWillAppear(notification: NSNotification) {
@@ -433,6 +640,7 @@ extension ViewController {
 }
 #endif
 
+#if !os(macOS)
 // MARK: Touches
 
 extension ViewController {
@@ -552,3 +760,4 @@ extension ViewController {
         return self
     }
 }
+#endif

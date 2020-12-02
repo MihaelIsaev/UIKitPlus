@@ -1,4 +1,8 @@
-public protocol Identable: Hashable {
+public protocol AnyIdentable {
+    func identHash() -> Int
+}
+
+public protocol Identable: Hashable, AnyIdentable {
     associatedtype ID: Hashable
     
     typealias IDKey = KeyPath<Self, ID>
@@ -9,5 +13,9 @@ public protocol Identable: Hashable {
 extension Identable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(self[keyPath: Self.idKey])
+    }
+    
+    public func identHash() -> Int {
+        self[keyPath: Self.idKey].hashValue 
     }
 }

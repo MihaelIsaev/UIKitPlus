@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension DeclarativeProtocol {
     public var hidden: State<Bool> { properties.$hidden }
@@ -14,9 +18,9 @@ extension DeclarativeProtocol {
     public func hidden(_ state: State<Bool>) -> Self {
         declarativeView.isHidden = state.wrappedValue
         properties.hidden = state.wrappedValue
-        state.listen { [weak self] old, new in
-            self?.declarativeView.isHidden = new
-            self?.properties.hidden = new
+        state.listen { old, new in
+            self.declarativeView.isHidden = new
+            self.properties.hidden = new
         }
         return self
     }
@@ -25,9 +29,9 @@ extension DeclarativeProtocol {
     public func hidden<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
         declarativeView.isHidden = expressable.value()
         properties.hidden = expressable.value()
-        expressable.state.listen { [weak self] old, new in
-            self?.declarativeView.isHidden = expressable.value()
-            self?.properties.hidden = expressable.value()
+        expressable.state.listen { old, new in
+            self.declarativeView.isHidden = expressable.value()
+            self.properties.hidden = expressable.value()
         }
         return self
     }

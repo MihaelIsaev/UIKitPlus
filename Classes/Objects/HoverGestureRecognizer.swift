@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 #if !os(tvOS)
@@ -17,4 +18,5 @@ final public class HoverGestureRecognizer: UIHoverGestureRecognizer, _GestureTra
         set { _tag = newValue }
     }
 }
+#endif
 #endif

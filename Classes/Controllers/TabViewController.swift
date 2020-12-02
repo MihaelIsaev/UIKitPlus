@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 open class TabViewController: UITabBarController {
@@ -16,7 +17,7 @@ open class TabViewController: UITabBarController {
     }
     
     @discardableResult
-    public func icon(_ image: UIImage?) -> TabViewController {
+    public func icon(_ image: _UImage?) -> TabViewController {
         tabBarItem.image = image
         return self
     }
@@ -28,7 +29,7 @@ open class TabViewController: UITabBarController {
     }
     
     @discardableResult
-    public func tint(_ color: UIColor) -> TabViewController {
+    public func tint(_ color: UColor) -> TabViewController {
         tabBarController?.tabBar.tintColor = color
         return self
     }
@@ -39,3 +40,4 @@ open class TabViewController: UITabBarController {
         return self
     }
 }
+#endif

@@ -1,8 +1,19 @@
 import Foundation
+#if os(macOS)
+import AppKit
+
+public typealias _UImageView = NSImageView
+public typealias _UImage = NSImage
+#else
 import UIKit
 
-extension UIImage {
-    public func blurred(_ radius: CGFloat = 10) -> UIImage? {
+public typealias _UImageView = UIImageView
+public typealias _UImage = UIImage
+#endif
+
+#if !os(macOS)
+extension _UImage {
+    public func blurred(_ radius: CGFloat = 10) -> _UImage? {
         let inputImage = CIImage(cgImage: (cgImage)!)
         let filter = CIFilter(name: "CIGaussianBlur")
         filter?.setValue(inputImage, forKey: "inputImage")
@@ -17,7 +28,8 @@ extension UIImage {
         let resultImage = filter?.value(forKey: "outputImage") as! CIImage
         let context = CIContext(options: nil)
         let cgimg = context.createCGImage(resultImage, from: newImageSize)!
-        let blurredImage = UIImage(cgImage: cgimg)
+        let blurredImage = _UImage(cgImage: cgimg)
         return blurredImage
     }
 }
+#endif

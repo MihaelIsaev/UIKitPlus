@@ -1,7 +1,11 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public enum PreConstraintView {
-    case view(UIView)
+    case view(BaseView)
     case tag(Int)
 }
 
@@ -10,7 +14,7 @@ public protocol PreConstraintViewable {
 }
 
 extension PreConstraintView {
-    public func unwrapWithSuperview(_ superview: UIView) -> UIView? {
+    public func unwrapWithSuperview(_ superview: BaseView) -> BaseView? {
         switch self {
         case .view(let view):
             return view
@@ -29,7 +33,7 @@ extension PreConstraintView {
     }
 }
 
-extension UIView: PreConstraintViewable {
+extension BaseView: PreConstraintViewable {
     public var preConstraintView: PreConstraintView? {
         .view(self)
     }
@@ -47,7 +51,7 @@ class PreConstraint: Equatable {
     }
     
     private let id = UUID()
-    weak var fromView: UIView?
+    weak var fromView: BaseView?
     let value: State<CGFloat>
     let relation: NSLayoutConstraint.Relation
     let multiplier: CGFloat
@@ -65,7 +69,7 @@ class PreConstraint: Equatable {
           attribute1: NSLayoutConstraint.Attribute,
           attribute2: NSLayoutConstraint.Attribute?,
           toSafe: Bool,
-          fromView: UIView,
+          fromView: BaseView,
           destinationView: PreConstraintViewable?) {
         self.value = value
         self.relation = relation
@@ -78,13 +82,17 @@ class PreConstraint: Equatable {
         self.destinationView = destinationView
         value.listen { [weak self] constant in
             self?.constraint?.constant = constant
+            #if os(macOS)
+            self?.fromView?.superview?.layoutSubtreeIfNeeded() // TODO: check
+            #else
             self?.fromView?.superview?.layoutIfNeeded()
+            #endif
         }
     }
     
     func inverted() -> PreConstraint? {
         guard let attribute2 = attribute2, let destinationView = destinationView?.preConstraintView else { return nil }
-        let unwrappedDestinationView: UIView
+        let unwrappedDestinationView: BaseView
         switch destinationView {
         case .view(let v):
             unwrappedDestinationView = v

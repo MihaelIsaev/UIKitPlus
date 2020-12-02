@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public enum DeclarativeConstraintCXSide: Int {
     case x, xMargin
@@ -7,15 +11,40 @@ public enum DeclarativeConstraintCXSide: Int {
     var side: NSLayoutConstraint.Attribute {
         switch self {
         case .x: return .centerX
-        case .xMargin: return .centerXWithinMargins
+        case .xMargin:
+            #if os(macOS)
+            return .centerX
+            #else
+            return .centerXWithinMargins
+            #endif
         case .leading: return .leading
-        case .leadingMargin: return .leadingMargin
+        case .leadingMargin:
+            #if os(macOS)
+            return .leading
+            #else
+            return .leadingMargin
+            #endif
         case .left: return .left
-        case .leftMargin: return .leftMargin
+        case .leftMargin:
+            #if os(macOS)
+            return .left
+            #else
+            return .leftMargin
+            #endif
         case .trailing: return .trailing
-        case .trailingMargin: return .trailingMargin
+        case .trailingMargin:
+            #if os(macOS)
+            return .trailing
+            #else
+            return .trailingMargin
+            #endif
         case .right: return .right
-        case .rightMargin: return .rightMargin
+        case .rightMargin:
+            #if os(macOS)
+            return .right
+            #else
+            return .rightMargin
+            #endif
         }
     }
 }
@@ -26,11 +55,26 @@ public enum DeclarativeConstraintCYSide: Int {
     var side: NSLayoutConstraint.Attribute {
         switch self {
         case .y: return .centerY
-        case .yMargin: return .centerYWithinMargins
+        case .yMargin:
+            #if os(macOS)
+            return .centerY
+            #else
+            return .centerYWithinMargins
+            #endif
         case .top: return .top
-        case .topMargin: return .topMargin
+        case .topMargin:
+            #if os(macOS)
+            return .top
+            #else
+            return .topMargin
+            #endif
         case .bottom: return .bottom
-        case .bottomMargin: return .bottomMargin
+        case .bottomMargin:
+            #if os(macOS)
+            return .bottom
+            #else
+            return .bottomMargin
+            #endif
         }
     }
 }

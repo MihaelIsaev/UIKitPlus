@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 #if !os(tvOS)
@@ -34,4 +35,5 @@ final public class ScreenEdgePanGestureRecognizer: UIScreenEdgePanGestureRecogni
         set { _tag = newValue }
     }
 }
+#endif
 #endif

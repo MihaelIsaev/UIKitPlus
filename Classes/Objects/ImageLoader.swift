@@ -1,5 +1,9 @@
 import Foundation
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 fileprivate let loaderQueue = DispatchQueue(label: "com.uikitplus.imageloader")
 
@@ -26,15 +30,15 @@ open class ImageLoader {
         self.reloadingStyle = reloadingStyle
     }
     
-    open func load(_ url: URL, imageView: UIImageView, defaultImage: UIImage? = nil) {
-        load(url.absoluteString, imageView: imageView, defaultImage: defaultImage)
+    open func load(_ url: String?, imageView: _UImageView, defaultImage: _UImage? = nil) {
+        load(URL(string: url ?? ""), imageView: imageView, defaultImage: defaultImage)
     }
     
-    open func load(_ url: String, imageView: UIImageView, defaultImage: UIImage? = nil) {
+    open func load(_ url: URL?, imageView: _UImageView, defaultImage: _UImage? = nil) {
         DispatchQueue.main.async { [weak self] in
             loaderQueue.async { [weak self] in
                 /// Checks if URL is valid, otherwise trying to set default image
-                guard let url = URL(string: url), url.absoluteString.count > 0 else {
+                guard let url = url, url.absoluteString.count > 0 else {
                     if let defaultImage = defaultImage {
                         DispatchQueue.main.async {
                             imageView.image = defaultImage
@@ -58,12 +62,12 @@ open class ImageLoader {
                 }
 
                 /// Checking if image exists in cache
-                if let cachedImageData = cachedImageData, let image = UIImage(data: cachedImageData)?.forceLoad() {
+                if let cachedImageData = cachedImageData, let image = _UImage(data: cachedImageData)?.forceLoad() {
                     /// Apply chached image to `imageView.image`
                     DispatchQueue.main.async { [weak self] in
                         self?.applyLocalImage(imageView, image)
                     }
-                } else if let localImageData = localImageData, let image = UIImage(data: localImageData)?.forceLoad() {
+                } else if let localImageData = localImageData, let image = _UImage(data: localImageData)?.forceLoad() {
                     cache.save(url.absoluteString, localImageData)
                     /// Apply chached image to `imageView.image`
                     DispatchQueue.main.async { [weak self] in
@@ -75,7 +79,7 @@ open class ImageLoader {
                 self?.downloadImage(url) { [weak self] imageData in
                     if let cachedImageData = cachedImageData {
                         if imageData.hashValue != cachedImageData.hashValue {
-                            if let image = UIImage(data: imageData)?.forceLoad() {
+                            if let image = _UImage(data: imageData)?.forceLoad() {
                                 DispatchQueue.main.async { [weak self] in
                                     self?.setImage(imageView, image)
                                 }
@@ -83,7 +87,7 @@ open class ImageLoader {
                             cache.save(url.absoluteString, imageData)
                             self?.fm.createFile(atPath: localImagePath, contents: imageData, attributes: nil)
                         } else {
-                            if let image = UIImage(data: cachedImageData)?.forceLoad() {
+                            if let image = _UImage(data: cachedImageData)?.forceLoad() {
                                 DispatchQueue.main.async { [weak self] in
                                     self?.setImage(imageView, image)
                                 }
@@ -91,7 +95,7 @@ open class ImageLoader {
                         }
                     } else if let localImageData = localImageData {
                         if imageData.hashValue != localImageData.hashValue {
-                            if let image = UIImage(data: imageData)?.forceLoad() {
+                            if let image = _UImage(data: imageData)?.forceLoad() {
                                 DispatchQueue.main.async { [weak self] in
                                     self?.setImage(imageView, image)
                                 }
@@ -99,13 +103,13 @@ open class ImageLoader {
                             cache.save(url.absoluteString, imageData)
                             self?.fm.createFile(atPath: localImagePath, contents: imageData, attributes: nil)
                         } else {
-                            if let image = UIImage(data: localImageData)?.forceLoad() {
+                            if let image = _UImage(data: localImageData)?.forceLoad() {
                                 DispatchQueue.main.async { [weak self] in
                                     self?.setImage(imageView, image)
                                 }
                             }
                         }
-                    } else if let image = UIImage(data: imageData)?.forceLoad() {
+                    } else if let image = _UImage(data: imageData)?.forceLoad() {
                         DispatchQueue.main.async { [weak self] in
                             self?.setImage(imageView, image)
                         }
@@ -124,23 +128,27 @@ open class ImageLoader {
     }
     
     /// Release `imageView.image` before downloading the new one
-    open func releaseBeforeDownloading(_ imageView: UIImageView, _ defaultImage: UIImage? = nil) {
+    open func releaseBeforeDownloading(_ imageView: _UImageView, _ defaultImage: _UImage? = nil) {
         if reloadingStyle == .release {
             imageView.image = defaultImage
         }
     }
     
     /// Apply chached image to `imageView.image`
-    open func applyLocalImage(_ imageView: UIImageView, _ image: UIImage) {
+    open func applyLocalImage(_ imageView: _UImageView, _ image: _UImage) {
         setImage(imageView, image)
     }
     
     /// Set image with or without animation
-    open func setImage(_ imageView: UIImageView, _ image: UIImage) {
+    open func setImage(_ imageView: _UImageView, _ image: _UImage) {
         if self.reloadingStyle == .fade {
+            #if os(macOS)
+            imageView.image = image // TODO: implement fade image setting
+            #else
             UIView.transition(with: imageView, duration: 0.3, options: .transitionCrossDissolve, animations: {
                 imageView.image = image
             }, completion: nil)
+            #endif
         } else {
             imageView.image = image
         }
@@ -177,9 +185,12 @@ extension ImageLoader {
     public static var defaultFade: ImageLoader { .init(.fade) }
 }
 
-extension UIImage {
+extension _UImage {
     /// A trick to force draw image on background thread
-    func forceLoad() -> UIImage {
+    func forceLoad() -> _UImage {
+        #if os(macOS)
+        return self // TODO: figure out
+        #else
         guard let imageRef = self.cgImage else {
             return self //failed
         }
@@ -193,9 +204,10 @@ extension UIImage {
         let rect = CGRect(x: 0, y: 0, width: width, height: height)
         imageContext.draw(imageRef, in: rect)
         if let outputImage = imageContext.makeImage() {
-            let cachedImage = UIImage(cgImage: outputImage, scale: scale, orientation: imageOrientation)
+            let cachedImage = _UImage(cgImage: outputImage, scale: scale, orientation: imageOrientation)
             return cachedImage
         }
         return self //failed
+        #endif
     }
 }

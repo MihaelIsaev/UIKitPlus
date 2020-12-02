@@ -1,6 +1,12 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public class Properties<V> {
+    var tag: Int = -1
+    
     @State var alpha: CGFloat = 1
     var alphaState: State<CGFloat> { _alpha }
     
@@ -13,23 +19,31 @@ public class Properties<V> {
     @State var userInteraction: Bool = false
     var userInteractionState: State<Bool> { _userInteraction }
     
-    @State var tint: UIColor = .clear
-    var tintState: State<UIColor> { _tint }
+    @State var tint: UColor = .clear
+    var tintState: State<UColor> { _tint }
     
-    @State var background: UIColor = .clear
-    var backgroundState: State<UIColor> { _background }
+    @State var background: UColor = .clear
+    var backgroundState: State<UColor> { _background }
     
-    @State var color: UIColor = .clear
-    var colorState: State<UIColor> { _color }
+    @State var borderColor: UColor = .clear
+    var borderColorState: State<UColor> { _borderColor }
     
-    @State var textColor: UIColor = .clear
-    var textColorState: State<UIColor> { _textColor }
+    @State var shadowColor: UColor = .clear
+    var shadowColorState: State<UColor> { _shadowColor }
+    
+    @State var color: UColor = .clear
+    var colorState: State<UColor> { _color }
+    
+    @State var textColor: UColor = .clear
+    var textColorState: State<UColor> { _textColor }
     
     var hovered: Bool = false
     
     public typealias FormatCharactersClosure = (_ textField: V, _ range: NSRange, _ replacement: String) -> Void
     public typealias ChangeCharactersClosure = (_ textField: V, _ range: NSRange, _ replacement: String) -> Bool
+    public typealias EmptyBoolClosure = () -> Bool
     public typealias BoolClosure = (V) -> Bool
+    public typealias EmptyVoidClosure = () -> Void
     public typealias VoidClosure = (V) -> Void
     
     var _shouldBeginEditing: BoolClosure = { _ in return true }
@@ -44,4 +58,8 @@ public class Properties<V> {
     var _editingDidBegin: [VoidClosure] = []
     var _editingChanged: [VoidClosure] = []
     var _editingDidEnd: [VoidClosure] = []
+    #if os(macOS)
+    var _textFieldAction: [VoidClosure] = []
+    var _textFieldEmptyAction: [EmptyVoidClosure] = []
+    #endif
 }

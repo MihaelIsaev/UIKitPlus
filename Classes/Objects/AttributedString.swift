@@ -1,61 +1,186 @@
 import Foundation
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 public typealias AttrStr = AttributedString
 
-open class AttributedString {
-    public var attributedString: NSMutableAttributedString
+public protocol AnyString {
+    func onUpdate(_ handler: @escaping (NSAttributedString) -> Void)
+    var attributedString: NSAttributedString { get }
+    
+    static func make(_ v: NSAttributedString) -> Self
+}
+
+extension Optional: AnyString where Wrapped == AnyString {
+    public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {
+        switch self {
+        case .none: break
+        case .some(let str): str.onUpdate(handler)
+        }
+    }
+    
+    public var attributedString: NSAttributedString {
+        switch self {
+        case .none: return .init()
+        case .some(let str): return str.attributedString
+        }
+    }
+    
+    public static func make(_ v: NSAttributedString) -> Self {
+        .init(v)
+    }
+}
+
+extension NSAttributedString: AnyString {
+    public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {}
+    
+    public var attributedString: NSAttributedString { self }
+    
+    public static func make(_ v: NSAttributedString) -> Self {
+        .init(attributedString: v)
+    }
+}
+
+extension String: AnyString, BodyBuilderItemable {
+    public var bodyBuilderItem: BodyBuilderItem { .single(UText(self)) }
+    
+    public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {}
+    
+    public var attributedString: NSAttributedString {
+        .init(string: self)
+    }
+    
+    public static func make(_ v: NSAttributedString) -> Self {
+        v.string
+    }
+}
+
+open class AttributedString: AnyString, BodyBuilderItemable {
+    public var bodyBuilderItem: BodyBuilderItem { .single(UText(self)) }
+    
+    public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {
+        _updateHandler = handler
+    }
+    
+    public var attributedString: NSAttributedString { _attributedString }
+    
+    var _attributedString: NSMutableAttributedString
+    
+    var _updateHandler: (NSAttributedString) -> Void = { _ in }
+    
+    private let _paragraphStyle = ParagraphStyle()
+    
+    public static func make(_ v: NSAttributedString) -> Self {
+        .init(v)
+    }
+    
+    public required init (_ attrString: NSAttributedString) {
+        _attributedString = .init(attributedString: attrString)
+        _setup()
+    }
     
     public init (_ string: String) {
-        attributedString = .init(string: string)
+        _attributedString = .init(string: string)
+        _setup()
     }
     
     public init (_ localized: LocalizedString...) {
-        attributedString = .init(string: String(localized))
+        _attributedString = .init(string: String(localized))
+        _setup()
     }
     
     public init (_ localized: [LocalizedString]) {
-        attributedString = .init(string: String(localized))
+        _attributedString = .init(string: String(localized))
+        _setup()
+    }
+    
+    private func _setup() {
+        _paragraphStyle.onUpdate { [weak self] in
+            guard let self = self else { return }
+            self.paragraphStyle(self._paragraphStyle)
+        }
     }
     
     @discardableResult
     func addAttribute(_ attr: NSAttributedString.Key, _ value: Any, at range: ClosedRange<Int>? = nil) -> AttributedString {
         // TODO: check range
-        let range = range ?? 0...attributedString.length
-        attributedString.addAttribute(attr, value: value, range: range.nsRange)
+        let range = range ?? 0..._attributedString.length
+        _attributedString.addAttribute(attr, value: value, range: range.nsRange)
+        _updateHandler(_attributedString)
         return self
     }
     
     @discardableResult
     func removeAttribute(_ attr: NSAttributedString.Key, at range: ClosedRange<Int>? = nil) -> AttributedString {
         // TODO: check range
-        let range = range ?? 0...attributedString.length
-        attributedString.removeAttribute(attr, range: range.nsRange)
+        let range = range ?? 0..._attributedString.length
+        _attributedString.removeAttribute(attr, range: range.nsRange)
+        _updateHandler(_attributedString)
         return self
     }
     
-    /// UIColor, default nil: no background
+    /// UColor, default nil: no background
     @discardableResult
-    public func background(_ value: UIColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.backgroundColor, value, at: range)
+    public func background(_ state: State<UColor>, at range: ClosedRange<Int>? = nil) -> Self {
+        background(state.wrappedValue, at: range)
+        state.listen { old, new in
+            self.background(new, at: range)
+        }
+        return self
+    }
+    
+    /// UColor, default nil: no background
+    @discardableResult
+    public func background<V>(_ expressable: ExpressableState<V, UColor>, at range: ClosedRange<Int>? = nil) -> Self {
+        background(expressable.unwrap(), at: range)
+    }
+    
+    /// UColor, default nil: no background
+    @discardableResult
+    public func background(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        addAttribute(.backgroundColor, value.current, at: range)
     }
     
     /// Hex color, default nil: no background
     @discardableResult
     public func background(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.backgroundColor, value.color, at: range)
+        addAttribute(.backgroundColor, value.color.current, at: range)
     }
     
-    /// UIColor, default blackColor
+    /// UColor, default blackColor
     @discardableResult
-    public func foreground(_ value: UIColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.foregroundColor, value, at: range)
+    public func foreground(_ state: State<UColor>, at range: ClosedRange<Int>? = nil) -> Self {
+        foreground(state.wrappedValue, at: range)
+        state.listen { old, new in
+            self.foreground(new, at: range)
+        }
+        return self
+    }
+    
+    /// UColor, default blackColor
+    @discardableResult
+    public func foreground<V>(_ expressable: ExpressableState<V, UColor>, at range: ClosedRange<Int>? = nil) -> Self {
+        foreground(expressable.unwrap(), at: range)
+    }
+    
+    /// UColor, default blackColor
+    @discardableResult
+    public func foreground(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        #if os(macOS)
+        value.onChange { new in
+            self.addAttribute(.foregroundColor, new, at: range)
+        }
+        #endif
+        return addAttribute(.foregroundColor, value.current, at: range)
     }
     
     /// Hex color, default blackColor
     @discardableResult
     public func foreground(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.foregroundColor, value.color, at: range)
+        foreground(value.color, at: range)
     }
     
     /// NSParagraphStyle, default defaultParagraphStyle
@@ -88,16 +213,16 @@ open class AttributedString {
         addAttribute(.underlineStyle, value.rawValue, at: range)
     }
     
-    /// UIColor, default nil: same as foreground color
+    /// UColor, default nil: same as foreground color
     @discardableResult
-    public func strokeColor(_ value: UIColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.strokeColor, value, at: range)
+    public func strokeColor(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        addAttribute(.strokeColor, value.current, at: range)
     }
     
     /// Hex color, default nil: same as foreground color
     @discardableResult
     public func strokeColor(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.strokeColor, value.color, at: range)
+        addAttribute(.strokeColor, value.color.current, at: range)
     }
     
     /// NSNumber containing floating point value, in percent of font point size, default 0: no stroke; positive for stroke alone, negative for stroke and fill (a typical value for outlined text would be 3.0)
@@ -108,11 +233,18 @@ open class AttributedString {
     
     /// Shadow, default nil: no shadow
     @discardableResult
-    public func shadow(offset: CGSize = .zero, blur: CGFloat = 0, color: UIColor = .clear, at range: ClosedRange<Int>? = nil) -> AttributedString {
+    public func shadow(offset: CGSize = .zero, blur: CGFloat = 0, color: UColor = .clear, at range: ClosedRange<Int>? = nil) -> AttributedString {
         let shadow = NSShadow()
         shadow.shadowOffset = offset
         shadow.shadowBlurRadius = blur
+        #if os(macOS)
+        shadow.shadowColor = color.current
+        color.onChange { [weak shadow] new in
+            shadow?.shadowColor = new
+        }
+        #else
         shadow.shadowColor = color
+        #endif
         return addAttribute(.shadow, shadow, at: range)
     }
     
@@ -150,28 +282,28 @@ open class AttributedString {
         addAttribute(.baselineOffset, value, at: range)
     }
     
-    /// UIColor, default nil: same as foreground color
+    /// UColor, default nil: same as foreground color
     @discardableResult
-    public func underlineColor(_ value: UIColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.underlineColor, value, at: range)
+    public func underlineColor(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        addAttribute(.underlineColor, value.current, at: range)
     }
     
     /// Hex color, default nil: same as foreground color
     @discardableResult
     public func underlineColor(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.underlineColor, value.color, at: range)
+        addAttribute(.underlineColor, value.color.current, at: range)
     }
     
-    /// UIColor, default nil: same as foreground color
+    /// UColor, default nil: same as foreground color
     @discardableResult
-    public func strikethroughColor(_ value: UIColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.strikethroughColor, value, at: range)
+    public func strikethroughColor(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
+        addAttribute(.strikethroughColor, value.current, at: range)
     }
     
     /// Hex color, default nil: same as foreground color
     @discardableResult
     public func strikethroughColor(_ value: Int, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        addAttribute(.strikethroughColor, value.color, at: range)
+        addAttribute(.strikethroughColor, value.color.current, at: range)
     }
     
     /// NSNumber containing floating point value; skew to be applied to glyphs, default 0: no skew
@@ -202,7 +334,7 @@ open class AttributedString {
 }
 
 extension AttrStr: _FontableAtRange {
-    func _setFont(_ v: UIFont?) {
+    func _setFont(_ v: UFont?) {
         guard let v = v else {
             removeAttribute(.font)
             return
@@ -210,7 +342,7 @@ extension AttrStr: _FontableAtRange {
         addAttribute(.font, v)
     }
     
-    public func font(v: UIFont?, at range: ClosedRange<Int>) -> Self {
+    public func font(v: UFont?, at range: ClosedRange<Int>) -> Self {
         guard let v = v else {
             removeAttribute(.font, at: range)
             return self
@@ -218,4 +350,410 @@ extension AttrStr: _FontableAtRange {
         addAttribute(.font, v, at: range)
         return self
     }
+    
+    // MARK: - Paragraph Style proxy
+    
+    // MARK: Line Spacing
+    
+    @discardableResult
+    public func lineSpacing(_ v: CGFloat) -> Self {
+        _paragraphStyle.lineSpacing(v)
+        return self
+    }
+    
+    @discardableResult
+    public func lineSpacing(_ state: State<CGFloat>) -> Self {
+        _paragraphStyle.lineSpacing(state)
+        return lineSpacing(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func lineSpacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        _paragraphStyle.lineSpacing(expressable)
+        return self
+    }
+    
+    // MARK: Paragraph Spacing
+    
+    @discardableResult
+    public func paragraphSpacing(_ v: CGFloat) -> Self {
+        _paragraphStyle.paragraphSpacing(v)
+        return self
+    }
+    
+    @discardableResult
+    public func paragraphSpacing(_ state: State<CGFloat>) -> Self {
+        _paragraphStyle.paragraphSpacing(state)
+        return paragraphSpacing(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func paragraphSpacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        _paragraphStyle.paragraphSpacing(expressable)
+        return self
+    }
+    
+    // MARK: First Line Head Indent
+    
+    @discardableResult
+    public func firstLineHeadIndent(_ v: CGFloat) -> Self {
+        _paragraphStyle.firstLineHeadIndent(v)
+        return self
+    }
+    
+    @discardableResult
+    public func firstLineHeadIndent(_ state: State<CGFloat>) -> Self {
+        _paragraphStyle.firstLineHeadIndent(state)
+        return firstLineHeadIndent(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func firstLineHeadIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        _paragraphStyle.firstLineHeadIndent(expressable)
+        return self
+    }
+    
+    // MARK: Head Indent
+    
+    @discardableResult
+    public func headIndent(_ v: CGFloat) -> Self {
+        _paragraphStyle.headIndent(v)
+        return self
+    }
+    
+    @discardableResult
+    public func headIndent(_ state: State<CGFloat>) -> Self {
+        _paragraphStyle.headIndent(state)
+        return headIndent(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func headIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        _paragraphStyle.headIndent(expressable)
+        return self
+    }
+    
+    // MARK: Tail Indent
+    
+    @discardableResult
+    public func tailIndent(_ v: CGFloat) -> Self {
+        _paragraphStyle.tailIndent(v)
+        return self
+    }
+    
+    @discardableResult
+    public func tailIndent(_ state: State<CGFloat>) -> Self {
+        _paragraphStyle.tailIndent(state)
+        return tailIndent(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func tailIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        _paragraphStyle.tailIndent(expressable)
+        return self
+    }
+    
+    // MARK: Minimum Line Height
+    
+    @discardableResult
+    public func minimumLineHeight(_ v: CGFloat) -> Self {
+        _paragraphStyle.minimumLineHeight(v)
+        return self
+    }
+    
+    @discardableResult
+    public func minimumLineHeight(_ state: State<CGFloat>) -> Self {
+        _paragraphStyle.minimumLineHeight(state)
+        return minimumLineHeight(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func minimumLineHeight<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        _paragraphStyle.minimumLineHeight(expressable)
+        return self
+    }
+    
+    // MARK: Maximum Line Height
+    
+    @discardableResult
+    public func maximumLineHeight(_ v: CGFloat) -> Self {
+        _paragraphStyle.maximumLineHeight(v)
+        return self
+    }
+    
+    @discardableResult
+    public func maximumLineHeight(_ state: State<CGFloat>) -> Self {
+        _paragraphStyle.maximumLineHeight(state)
+        return maximumLineHeight(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func maximumLineHeight<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        _paragraphStyle.maximumLineHeight(expressable)
+        return self
+    }
+    
+    // MARK: Line Height Multiple
+    
+    @discardableResult
+    public func lineHeightMultiple(_ v: CGFloat) -> Self {
+        _paragraphStyle.lineHeightMultiple(v)
+        return self
+    }
+    
+    @discardableResult
+    public func lineHeightMultiple(_ state: State<CGFloat>) -> Self {
+        _paragraphStyle.lineHeightMultiple(state)
+        return lineHeightMultiple(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func lineHeightMultiple<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        _paragraphStyle.lineHeightMultiple(expressable)
+        return self
+    }
+    
+    // MARK: Default Tab Interval
+    
+    @discardableResult
+    public func defaultTabInterval(_ v: CGFloat) -> Self {
+        _paragraphStyle.defaultTabInterval(v)
+        return self
+    }
+    
+    @discardableResult
+    public func defaultTabInterval(_ state: State<CGFloat>) -> Self {
+        _paragraphStyle.defaultTabInterval(state)
+        return defaultTabInterval(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func defaultTabInterval<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        _paragraphStyle.defaultTabInterval(expressable)
+        return self
+    }
+    
+    // MARK: Paragraph Spacing Before
+    
+    @discardableResult
+    public func paragraphSpacingBefore(_ v: CGFloat) -> Self {
+        _paragraphStyle.paragraphSpacingBefore(v)
+        return self
+    }
+    
+    @discardableResult
+    public func paragraphSpacingBefore(_ state: State<CGFloat>) -> Self {
+        _paragraphStyle.paragraphSpacingBefore(state)
+        return paragraphSpacingBefore(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func paragraphSpacingBefore<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
+        _paragraphStyle.paragraphSpacingBefore(expressable)
+        return self
+    }
+    
+    // MARK: Hyphenation Factor
+    
+    @discardableResult
+    public func hyphenationFactor(_ v: Float) -> Self {
+        _paragraphStyle.hyphenationFactor(v)
+        return self
+    }
+    
+    @discardableResult
+    public func hyphenationFactor(_ state: State<Float>) -> Self {
+        _paragraphStyle.hyphenationFactor(state)
+        return hyphenationFactor(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func hyphenationFactor<V>(_ expressable: ExpressableState<V, Float>) -> Self {
+        _paragraphStyle.hyphenationFactor(expressable)
+        return self
+    }
+    
+    #if os(macOS)
+    // MARK: Tightening Factor For Truncation
+    
+    @discardableResult
+    public func tighteningFactorForTruncation(_ v: Float) -> Self {
+        _paragraphStyle.tighteningFactorForTruncation(v)
+        return self
+    }
+    
+    @discardableResult
+    public func tighteningFactorForTruncation(_ state: State<Float>) -> Self {
+        _paragraphStyle.tighteningFactorForTruncation(state)
+        return tighteningFactorForTruncation(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func tighteningFactorForTruncation<V>(_ expressable: ExpressableState<V, Float>) -> Self {
+        _paragraphStyle.tighteningFactorForTruncation(expressable)
+        return self
+    }
+    
+    // MARK: Header Level
+    
+    @discardableResult
+    public func headerLevel(_ v: Int) -> Self {
+        _paragraphStyle.headerLevel(v)
+        return self
+    }
+    
+    @discardableResult
+    public func headerLevel(_ state: State<Int>) -> Self {
+        _paragraphStyle.headerLevel(state)
+        return headerLevel(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func headerLevel<V>(_ expressable: ExpressableState<V, Int>) -> Self {
+        _paragraphStyle.headerLevel(expressable)
+        return self
+    }
+    
+    // MARK: Allows Default Tightening For Truncation
+    
+    @discardableResult
+    public func allowsDefaultTighteningForTruncation(_ v: Bool) -> Self {
+        _paragraphStyle.allowsDefaultTighteningForTruncation(v)
+        return self
+    }
+    
+    @discardableResult
+    public func allowsDefaultTighteningForTruncation(_ state: State<Bool>) -> Self {
+        _paragraphStyle.allowsDefaultTighteningForTruncation(state)
+        return allowsDefaultTighteningForTruncation(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func allowsDefaultTighteningForTruncation<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
+        _paragraphStyle.allowsDefaultTighteningForTruncation(expressable)
+        return self
+    }
+    #endif
+    
+    // MARK: Alignment
+    
+    @discardableResult
+    public func alignment(_ v: NSTextAlignment) -> Self {
+        _paragraphStyle.alignment(v)
+        return self
+    }
+    
+    @discardableResult
+    public func alignment(_ state: State<NSTextAlignment>) -> Self {
+        _paragraphStyle.alignment(state)
+        return alignment(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func alignment<V>(_ expressable: ExpressableState<V, NSTextAlignment>) -> Self {
+        _paragraphStyle.alignment(expressable)
+        return self
+    }
+    
+    // MARK: Line Break Mode
+    
+    @discardableResult
+    public func lineBreakMode(_ v: NSLineBreakMode) -> Self {
+        _paragraphStyle.lineBreakMode(v)
+        return self
+    }
+    
+    @discardableResult
+    public func lineBreakMode(_ state: State<NSLineBreakMode>) -> Self {
+        _paragraphStyle.lineBreakMode(state)
+        return lineBreakMode(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func lineBreakMode<V>(_ expressable: ExpressableState<V, NSLineBreakMode>) -> Self {
+        _paragraphStyle.lineBreakMode(expressable)
+        return self
+    }
+    
+    // MARK: Base Writing Direction
+    
+    @discardableResult
+    public func baseWritingDirection(_ v: NSWritingDirection) -> Self {
+        _paragraphStyle.baseWritingDirection(v)
+        return self
+    }
+    
+    @discardableResult
+    public func baseWritingDirection(_ state: State<NSWritingDirection>) -> Self {
+        _paragraphStyle.baseWritingDirection(state)
+        return baseWritingDirection(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func baseWritingDirection<V>(_ expressable: ExpressableState<V, NSWritingDirection>) -> Self {
+        _paragraphStyle.baseWritingDirection(expressable)
+        return self
+    }
+    
+    // MARK: Tab Stops
+    
+    @discardableResult
+    public func tabStops(_ v: [NSTextTab]) -> Self {
+        _paragraphStyle.tabStops(v)
+        return self
+    }
+    
+    @discardableResult
+    public func tabStops(_ state: State<[NSTextTab]>) -> Self {
+        _paragraphStyle.tabStops(state)
+        return tabStops(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func tabStops<V>(_ expressable: ExpressableState<V, [NSTextTab]>) -> Self {
+        _paragraphStyle.tabStops(expressable)
+        return self
+    }
+    
+    #if os(macOS)
+    // MARK: Text Blocks
+    
+    @discardableResult
+    public func textBlocks(_ v: [NSTextBlock]) -> Self {
+        _paragraphStyle.textBlocks(v)
+        return self
+    }
+    
+    @discardableResult
+    public func textBlocks(_ state: State<[NSTextBlock]>) -> Self {
+        _paragraphStyle.textBlocks(state)
+        return textBlocks(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func textBlocks<V>(_ expressable: ExpressableState<V, [NSTextBlock]>) -> Self {
+        _paragraphStyle.textBlocks(expressable)
+        return self
+    }
+    
+    // MARK: Text Lists
+    
+    @discardableResult
+    public func textLists(_ v: [NSTextList]) -> Self {
+        _paragraphStyle.textLists(v)
+        return self
+    }
+    
+    @discardableResult
+    public func textLists(_ state: State<[NSTextList]>) -> Self {
+        _paragraphStyle.textLists(state)
+        return textLists(state.wrappedValue)
+    }
+    
+    @discardableResult
+    public func textLists<V>(_ expressable: ExpressableState<V, [NSTextList]>) -> Self {
+        _paragraphStyle.textLists(expressable)
+        return self
+    }
+    #endif
 }

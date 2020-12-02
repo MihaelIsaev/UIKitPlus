@@ -1,9 +1,13 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension DeclarativeProtocol {
     @discardableResult
     public func tag(_ value: Int) -> Self {
-        declarativeView.tag = value
+        tag = value
         return self
     }
 }

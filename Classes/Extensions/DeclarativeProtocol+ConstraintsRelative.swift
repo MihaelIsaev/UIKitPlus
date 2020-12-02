@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension DeclarativeProtocol {
     private func _createRelative(value: State<CGFloat>,
@@ -862,8 +866,8 @@ extension DeclarativeProtocol {
         guard let _self = self as? DeclarativeProtocolInternal else { return }
         guard let destinationView = preConstraintView.unwrapWithSuperview(superview) else {
             guard let tag = preConstraintView.tag else { return }
-            NotificationCenter.default.addObserver(for: AddedViewWithTag(tag)) { [weak self] in
-                self?.activateRelative(pc)
+            NotificationCenter.default.addObserver(for: AddedViewWithTag(tag)) {
+                self.activateRelative(pc)
             }
             return
         }
@@ -1103,6 +1107,10 @@ extension DeclarativeProtocol {
         // Activate constraint
         constraint?.isActive = true
         // Redraw itself
+        #if os(macOS)
+        superview.layoutSubtreeIfNeeded() // TODO: check layoutSubtreeIfNeeded!
+        #else
         superview.layoutIfNeeded()
+        #endif
     }
 }

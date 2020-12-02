@@ -1,8 +1,9 @@
+#if !os(macOS)
 import UIKit
 
 open class FormViewController: ViewController {
-    public lazy var scrollView = ScrollView()
-    public lazy var stackView = VStack()
+    public lazy var scrollView = UScrollView()
+    public lazy var stackView = UVStack()
     
     open override func buildUI() {
         super.buildUI()
@@ -18,3 +19,4 @@ open class FormViewController: ViewController {
         }
     }
 }
+#endif

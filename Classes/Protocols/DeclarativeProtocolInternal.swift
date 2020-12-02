@@ -1,6 +1,10 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
-internal protocol DeclarativeProtocolInternal: class {
+internal protocol DeclarativeProtocolInternal {
     var _properties: PropertiesInternal { get set }
     
     var __height: State<CGFloat> { get }

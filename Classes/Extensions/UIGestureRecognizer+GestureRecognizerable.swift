@@ -1,7 +1,17 @@
+#if os(macOS)
+import AppKit
+
+public typealias UGestureRecognizer = NSGestureRecognizer
+public typealias UGestureRecognizerDelegate = NSGestureRecognizerDelegate
+#else
 import UIKit
 
-extension UIGestureRecognizer: _GestureRecognizerable {
-    func _setDelegate(_ v: UIGestureRecognizerDelegate) {
+public typealias UGestureRecognizer = UIGestureRecognizer
+public typealias UGestureRecognizerDelegate = UIGestureRecognizerDelegate
+#endif
+
+extension UGestureRecognizer: _GestureRecognizerable {
+    func _setDelegate(_ v: UGestureRecognizerDelegate) {
         delegate = v
     }
     
@@ -9,6 +19,7 @@ extension UIGestureRecognizer: _GestureRecognizerable {
         isEnabled = v
     }
     
+    #if !os(macOS)
     func _setCancelsTouchesInView(_ v: Bool) {
         cancelsTouchesInView = v
     }
@@ -40,8 +51,9 @@ extension UIGestureRecognizer: _GestureRecognizerable {
     func _setAllowedPressTypes(_ v: [NSNumber]) {
         allowedPressTypes = v
     }
+    #endif
     
-    func _setRequireToFailOtherGestureRecognizer(_ v: UIGestureRecognizer) {
+    func _setRequireToFailOtherGestureRecognizer(_ v: UGestureRecognizer) {
         require(toFail: v)
     }
 }

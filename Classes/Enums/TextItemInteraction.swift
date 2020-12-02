@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public enum TextItemInteraction : Int {
@@ -15,3 +16,4 @@ public enum TextItemInteraction : Int {
         }
     }
 }
+#endif

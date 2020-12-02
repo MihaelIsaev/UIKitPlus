@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 public protocol TextAutocorrectionable {
@@ -27,3 +28,4 @@ extension _TextAutocorrectionable {
         return self
     }
 }
+#endif

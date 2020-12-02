@@ -1,0 +1,77 @@
+#if os(macOS)
+import AppKit
+
+final public class ClickGestureRecognizer: NSClickGestureRecognizer, _GestureTrackable, _GestureDelegatorable {
+    var _tracker = _GestureTracker()
+    var _delegator = _GestureDelegator()
+    
+    public init(clicks: Int = 1, touches: Int = 1, buttonMask: Int = 0x1) {
+        super.init(target: _tracker, action: #selector(_tracker.handle))
+        self.numberOfClicksRequired = clicks
+        self.numberOfTouchesRequired = touches
+        self.buttonMask = buttonMask
+        delegate = _delegator
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @discardableResult
+    public func numberOfClicksRequired(_ v: Int) -> Self {
+        numberOfClicksRequired = v
+        return self
+    }
+    
+    @discardableResult
+    public func numberOfClicksRequired(_ state: UIKitPlus.State<Int>) -> Self {
+        state.listen { self.numberOfClicksRequired = $0 }
+        return self
+    }
+
+    @discardableResult
+    public func numberOfClicksRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
+        numberOfClicksRequired(expressable.unwrap())
+    }
+    
+    @discardableResult
+    public func numberOfTouchesRequired(_ v: Int) -> Self {
+        numberOfTouchesRequired = v
+        return self
+    }
+    
+    @discardableResult
+    public func numberOfTouchesRequired(_ state: UIKitPlus.State<Int>) -> Self {
+        state.listen { self.numberOfTouchesRequired = $0 }
+        return self
+    }
+
+    @discardableResult
+    public func numberOfTouchesRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
+        numberOfTouchesRequired(expressable.unwrap())
+    }
+    
+    @discardableResult
+    public func buttonMask(_ v: Int) -> Self {
+        buttonMask = v
+        return self
+    }
+    
+    @discardableResult
+    public func buttonMask(_ state: UIKitPlus.State<Int>) -> Self {
+        state.listen { self.buttonMask = $0 }
+        return self
+    }
+
+    @discardableResult
+    public func buttonMask<V>(_ expressable: ExpressableState<V, Int>) -> Self {
+        buttonMask(expressable.unwrap())
+    }
+    
+    var _tag: Int = 0
+    public override var tag: Int {
+        get { _tag }
+        set { _tag = newValue }
+    }
+}
+#endif

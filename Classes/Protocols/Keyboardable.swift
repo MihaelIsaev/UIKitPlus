@@ -1,8 +1,7 @@
+#if !os(macOS)
 import UIKit
 
 public protocol Keyboardable {
-    
-    
     @discardableResult
     func keyboard(_ keyboard: UIKeyboardType) -> Self
     
@@ -109,3 +108,4 @@ extension _Keyboardable {
         return self
     }
 }
+#endif

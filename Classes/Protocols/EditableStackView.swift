@@ -1,13 +1,17 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 protocol EditableStackView: class {
-    var arrangedSubviews: [UIView] { get }
-    func addArrangedSubview(_ view: UIView)
-    func add(arrangedView: UIView, at index: Int)
+    var arrangedSubviews: [BaseView] { get }
+    func addArrangedSubview(_ view: BaseView)
+    func add(arrangedView: BaseView, at index: Int)
 }
 
 extension EditableStackView {
-    func add(arrangedView: UIView, at index: Int) {
+    func add(arrangedView: BaseView, at index: Int) {
         let nextViews = arrangedSubviews.dropFirst(index)
         nextViews.forEach { $0.removeFromSuperview() }
         addArrangedSubview(arrangedView)
@@ -15,10 +19,10 @@ extension EditableStackView {
     }
 }
 
-extension Array where Element == UIView {
+extension Array where Element == BaseView {
     func removeFromSuperview(at indexes: [Int]) {
         guard indexes.count > 0 else { return }
-        var filtered: [UIView] = []
+        var filtered: [BaseView] = []
         enumerated().forEach { i, v in
             guard indexes.contains(i) else { return }
             filtered.append(v)

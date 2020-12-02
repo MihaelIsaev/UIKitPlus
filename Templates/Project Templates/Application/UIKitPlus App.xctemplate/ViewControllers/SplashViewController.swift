@@ -11,7 +11,7 @@ final class SplashViewController: ViewController {
                 UText("Splash View Controller")
                     .compressionResistance(x: .defaultHigh)
                     .color(.black / .white)
-                VSpace(8)
+                UVSpace(8)
                 ActivityIndicator().color(.dynamicBlack).animate()
             }
             .alignment(.center)
@@ -22,7 +22,7 @@ final class SplashViewController: ViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            self.rootController.switch(to: .main, animation: .fade)
+            App.mainScene.switch(to: .main, animation: .fade)
         }
     }
 }

@@ -1,3 +1,4 @@
+#if !os(macOS)
 import UIKit
 
 protocol _ViewTransitionable {
@@ -16,3 +17,4 @@ extension _ViewTransitionable {
         _transition(duration, options, animations: animations) { _ in }
     }
 }
+#endif

@@ -1,7 +1,13 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
-extension UIViewController {
-    open func body(@ViewBuilder block: ViewBuilder.SingleView) {
+extension BaseViewController {
+    @discardableResult
+    open func body(@BodyBuilder block: BodyBuilder.SingleView) -> Self {
         view.body { block() }
+        return self
     }
 }

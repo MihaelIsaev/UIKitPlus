@@ -10,7 +10,7 @@ final class MainViewController: ViewController {
             UVStack {
                 UText("Main View Controller")
                     .color(.black / .white)
-                VSpace(8)
+                UVSpace(8)
                 UButton("Logout")
                     .background(.clear)
                     .backgroundHighlighted(.lightGray / .darkGray)
@@ -20,7 +20,7 @@ final class MainViewController: ViewController {
                     .circle()
                     .onTapGesture {
 //                    Session.destroy()
-                        $0.rootController.switch(to: .logout, animation: .dismiss)
+                        App.mainScene.switch(to: .logout, animation: .dismiss)
                 }
             }.centerInSuperview()
         }

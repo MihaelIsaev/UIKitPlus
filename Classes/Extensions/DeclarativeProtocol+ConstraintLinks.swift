@@ -1,4 +1,8 @@
+#if os(macOS)
+import AppKit
+#else
 import UIKit
+#endif
 
 extension DeclarativeProtocol {
 //    public var height: State<CGFloat> { _declarativeView._properties.$height }

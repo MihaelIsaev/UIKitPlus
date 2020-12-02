@@ -1,5 +1,5 @@
+#if !os(macOS)
 import UIKit
-
 
 public class ImpactFeedback {
     public enum FeedbackStyle: Int {
@@ -38,3 +38,4 @@ public class ImpactFeedback {
     }
     #endif
 }
+#endif
