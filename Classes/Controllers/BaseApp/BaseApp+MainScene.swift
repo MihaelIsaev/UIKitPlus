@@ -27,6 +27,9 @@ extension UIViewController {
 
 extension BaseApp {
     /// Returns safe insets of the mainScene's window
+    public static var safeInsets: UIEdgeInsets { mainScene.safeInsets }
+    
+    /// Returns safe insets of the mainScene's window
     public var safeInsets: UIEdgeInsets { mainScene.safeInsets }
     
     public typealias RootSimpleCompletion = () -> Void
