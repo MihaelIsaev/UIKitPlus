@@ -20,6 +20,7 @@ public protocol LifecycleBuilderProtocol: class, AppBuilderContent {
     func willEnterForeground(_ handler: @escaping () -> Void) -> Self
     func openURL(_ handler: @escaping (_ url: URL) -> Bool) -> Self
     func openURL(_ handler: @escaping (_ url: URL, _ options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool) -> Self
+    func openURL(_ handler: @escaping (_ url: URL, _ sourceApplication: String?, _ annotation: Any) -> Bool) -> Self
     func didReceiveMemoryWarning(_ handler: @escaping () -> Void) -> Self
     func willTerminate(_ handler: @escaping () -> Void) -> Self
     func significantTimeChange(_ handler: @escaping () -> Void) -> Self
@@ -70,6 +71,7 @@ protocol _LifecycleBuilderProtocol: LifecycleBuilderProtocol {
     var _didEnterBackground: (() -> Void)? { get set }
     var _willEnterForeground: (() -> Void)? { get set }
     var _openURLWithOptions: ((URL, [UIApplication.OpenURLOptionsKey : Any]) -> Bool)? { get set }
+    var _openURLSourceAppAnnotation: ((URL, String?, Any) -> Bool)? { get set }
     var _didReceiveMemoryWarning: (() -> Void)? { get set }
     var _willTerminate: (() -> Void)? { get set }
     var _significantTimeChange: (() -> Void)? { get set }
@@ -164,13 +166,19 @@ class LifecycleBuilder: _LifecycleBuilderProtocol {
     public func openURL(_ handler: @escaping (_ url: URL) -> Bool) -> Self {
         _openURLWithOptions = { url,_ in
             handler(url)
-            
         }
         return self
     }
     
     public func openURL(_ handler: @escaping (_ url: URL, _ options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool) -> Self {
         _openURLWithOptions = handler
+        return self
+    }
+    
+    var _openURLSourceAppAnnotation: ((URL, String?, Any) -> Bool)?
+    
+    func openURL(_ handler: @escaping (_ url: URL, _ sourceApplication: String?, _ annotation: Any) -> Bool) -> Self {
+        _openURLSourceAppAnnotation = handler
         return self
     }
 

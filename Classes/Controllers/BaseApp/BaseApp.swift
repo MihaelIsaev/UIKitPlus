@@ -138,6 +138,10 @@ open class BaseApp: UIApplication, UIApplicationDelegate {
         lifecycle?._openURLWithOptions?(url, options) ?? true
     }
     
+    public func application(_ app: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        lifecycle?._openURLSourceAppAnnotation?(url, sourceApplication, annotation) ?? true
+    }
+    
     public func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
         lifecycle?._didReceiveMemoryWarning?()
     }
