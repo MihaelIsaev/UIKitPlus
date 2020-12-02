@@ -26,6 +26,9 @@ extension UIViewController {
 }
 
 extension BaseApp {
+    /// Returns safe insets of the mainScene's window
+    public var safeInsets: UIEdgeInsets { mainScene.safeInsets }
+    
     public typealias RootSimpleCompletion = () -> Void
     public typealias RootBeforeTransition = (UIViewController) -> Void
     
@@ -35,6 +38,12 @@ extension BaseApp {
         public var persistentIdentifier: String = UUID().uuidString
         public var stateRestorationActivity: NSUserActivity?
         public var userInfo: [String : Any]?
+        
+        /// Link closure to safe insets of the wndow
+        var _safeInsetsRetriever: () -> UIEdgeInsets = { .zero }
+        
+        /// Returns safe insets of the window
+        public var safeInsets: UIEdgeInsets { _safeInsetsRetriever() }
         
         var _onConnect: ((UIWindow?) -> Void)?
         var _onDisconnect: ((UIWindow?) -> Void)?
