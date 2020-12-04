@@ -20,6 +20,9 @@ class _SceneDelegate: UIResponder, UIWindowSceneDelegate {
         BaseApp.shared.mainScene._safeInsetsRetriever = { [weak self] in
             self?.window?.safeInsets ?? .zero
         }
+        BaseApp.shared.mainScene._windowRetriever = { [weak self] in
+            self?.window ?? UIWindow()
+        }
         if let shortcutItem = connectionOptions.shortcutItem {
             BaseApp.shared.shortcuts
                 .first { $0.item.type == shortcutItem.type }?

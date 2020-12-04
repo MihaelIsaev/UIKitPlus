@@ -42,6 +42,12 @@ extension BaseApp {
         public var stateRestorationActivity: NSUserActivity?
         public var userInfo: [String : Any]?
         
+        /// Link closure to the wndow
+        var _windowRetriever: () -> UIWindow = { UIWindow() }
+        
+        /// Returns the window
+        public var window: UIWindow { _windowRetriever() }
+        
         /// Link closure to safe insets of the wndow
         var _safeInsetsRetriever: () -> UIEdgeInsets = { .zero }
         
