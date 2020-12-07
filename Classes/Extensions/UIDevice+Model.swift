@@ -11,6 +11,7 @@ extension UIDevice {
         case iPhone6PlusReal = 1920
         case iPhone6PlusVirtual = 2208
         case iPhoneX = 2436
+        case iPhonePro = 2532
         case iPhoneXr = 1792
         case iPhoneXMax = 2688
         case iPad1stGen = 768
@@ -26,6 +27,7 @@ extension UIDevice {
             case .iPhone6PlusReal: return "iPhone6PlusReal"
             case .iPhone6PlusVirtual: return "iPhone6PlusVirtual"
             case .iPhoneX: return "iPhoneX"
+            case .iPhonePro: return "iPhonePro"
             case .iPhoneXr: return "iPhoneXr"
             case .iPhoneXMax: return "iPhoneXMax"
             case .iPad1stGen: return "iPad1stGen"
@@ -44,6 +46,7 @@ extension UIDevice {
         case iPhone6Plus
         case iPhoneXr
         case iPhoneX
+        case iPhonePro
         case iPhoneXMax
         case iPhoneUnknown
         case iPad
@@ -60,6 +63,7 @@ extension UIDevice {
             case .iPhone6PlusVirtual, .iPhone6PlusReal: return .iPhone6Plus
             case .iPhoneXr: return .iPhoneXr
             case .iPhoneX: return .iPhoneX
+            case .iPhonePro: return .iPhonePro
             case .iPhoneXMax: return .iPhoneXMax
             case .iPad1stGen, .iPad6thGen: return .iPad
             case .iPad10: return .iPad10
@@ -106,6 +110,10 @@ extension UIDevice {
     
     public class var isPhoneX: Bool {
         isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhoneX.rawValue
+    }
+    
+    public class var isPhonePro: Bool {
+        isPhoneIdiom && maxHeight == ScreenNativeHeight.iPhonePro.rawValue
     }
     
     public class var isPhoneXr: Bool {
