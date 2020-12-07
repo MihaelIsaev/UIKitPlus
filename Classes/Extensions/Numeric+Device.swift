@@ -211,6 +211,9 @@ extension BinaryFloatingPoint {
         case .iPhoneXSMax(let v):
             guard UIDevice.isPhoneXMax else { return self }
             return Self(Double(String(describing: v)) ?? Double(self))
+        case .iPhone11(let v):
+            guard UIDevice.isPhoneXr else { return self }
+            return Self(Double(String(describing: v)) ?? Double(self))
         case .iPhoneMini(let v):
             guard UIDevice.isPhoneX else { return self }
             return Self(Double(String(describing: v)) ?? Double(self))
