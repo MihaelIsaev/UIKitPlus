@@ -30,12 +30,11 @@ open class ImagePicker: NSObject {
             original = info
             guard let mediaType = info[.mediaType] as? String else { return nil }
             guard let originalImage = info[.originalImage] as? UIImage else { return nil }
-            guard let mediaMetadata = info[.mediaMetadata] as? NSDictionary else { return nil }
             self.mediaType = mediaType
             self.originalImage = originalImage
             self.cropRect = info[.cropRect] as? CGRect
             self.mediaURL = info[.mediaURL] as? URL
-            self.mediaMetadata = mediaMetadata
+            self.mediaMetadata = (info[.mediaMetadata] as? NSDictionary) ?? [:]
             editedImage = info[.editedImage] as? UIImage
         }
     }
