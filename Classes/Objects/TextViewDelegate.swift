@@ -21,6 +21,7 @@ class TextViewDelegate: NSObject, UITextViewDelegate {
     public func textViewDidBeginEditing(_ textView: UITextView) {
         if self.textView.attributedText.string == self.textView._properties.placeholderAttrText?.string {
             self.textView.text = ""
+            self.textView.textColor = self.textView.properties.textColor
         }
         self.textView.didBeginEditingHandler?()
         self.textView.didBeginEditingHandlerText?(self.textView)
