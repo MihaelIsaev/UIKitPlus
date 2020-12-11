@@ -87,6 +87,17 @@ open class MediaPicker: NSObject {
         return self
     }
     
+    /// Can be used to specify the transcoding quality for videos (via a AVAssetExportPreset* string).
+    /// If the value is nil (the default) then the transcodeQuality is determined by `videoQuality` instead.
+    /// Not valid if the source type is `UIImagePickerControllerSourceTypeCamera`
+    @discardableResult
+    public func videoExportPreset(_ value: String) -> Self {
+        if #available(iOS 11.0, *) {
+            picker.videoExportPreset = value
+        }
+        return self
+    }
+    
     /// set to NO to hide all standard camera UI. default is YES
     @discardableResult
     public func showsCameraControls(_ value: Bool) -> Self {
