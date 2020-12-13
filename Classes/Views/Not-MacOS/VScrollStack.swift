@@ -32,6 +32,14 @@ open class UVScrollStack: UScrollView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // Forbids horizontal scrolling
+    public override var contentOffset: CGPoint {
+        get { super.contentOffset }
+        set {
+            super.contentOffset = .init(x: 0, y: newValue.y)
+        }
+    }
+    
     // MARK: Keyboard Dismiss Mode
     
     @discardableResult

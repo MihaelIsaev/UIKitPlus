@@ -32,6 +32,14 @@ open class UHScrollStack: UScrollView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // Forbids vertical scrolling
+    public override var contentOffset: CGPoint {
+        get { super.contentOffset }
+        set {
+            super.contentOffset = .init(x: newValue.x, y: 0)
+        }
+    }
+    
     /* Add a view to the end of the arrangedSubviews list.
     Maintains the rule that the arrangedSubviews list is a subset of the
     subviews list by adding the view as a subview of the receiver if
