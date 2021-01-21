@@ -9,8 +9,11 @@ extension DeclarativeProtocol {
         declarativeView.tintColor = color
         properties.tint = color
         #if targetEnvironment(macCatalyst)
-        let textInputTraits = declarativeView.value(forKey: "textInputTraits") as? NSObject
-        textInputTraits?.setValue(color, forKey: "insertionPointColor")
+        // FIXME: it crashes on UImage on `textInputTraits` since it doesn't have it
+        if self is UImage == false {
+            let textInputTraits = declarativeView.value(forKey: "textInputTraits") as? NSObject
+            textInputTraits?.setValue(color, forKey: "insertionPointColor")
+        }
         #endif
         return self
     }
