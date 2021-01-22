@@ -10,7 +10,7 @@ extension DeclarativeProtocol {
         properties.tint = color
         #if targetEnvironment(macCatalyst)
         // FIXME: it crashes on UImage on `textInputTraits` since it doesn't have it
-        if self is UImage == false {
+        if self is UImage == false, self is UButton == false {
             let textInputTraits = declarativeView.value(forKey: "textInputTraits") as? NSObject
             textInputTraits?.setValue(color, forKey: "insertionPointColor")
         }
