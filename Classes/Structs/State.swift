@@ -80,16 +80,16 @@ open class State<Value>: Stateable {
         self.wrappedValue = state.wrappedValue
         var justSetExternal = false
         var justSetInternal = false
-        state.listen { new in
+        state.listen { [weak self] new in
             guard !justSetInternal else { return }
             justSetExternal = true
-            self.wrappedValue = new
+            self?.wrappedValue = new
             justSetExternal = false
         }
-        self.listen { new in
+        self.listen { [weak state] new in
             guard !justSetExternal else { return }
             justSetInternal = true
-            state.wrappedValue = new
+            state?.wrappedValue = new
             justSetInternal = false
         }
     }
@@ -109,11 +109,11 @@ open class State<Value>: Stateable {
             return CombinedStateResult(left: stateA.wrappedValue, right: stateB.wrappedValue)
         }
         let resultState = State<CombinedStateResult<Value, V>>(wrappedValue: combinedValue())
-        stateA.listen {
-            resultState.wrappedValue = combinedValue()
+        stateA.listen { [weak resultState] in
+            resultState?.wrappedValue = combinedValue()
         }
-        stateB.listen {
-            resultState.wrappedValue = combinedValue()
+        stateB.listen { [weak resultState] in
+            resultState?.wrappedValue = combinedValue()
         }
         return resultState
     }
