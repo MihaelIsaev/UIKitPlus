@@ -9,10 +9,10 @@
 Pod::Spec.new do |s|
   s.name               = 'UIKit-Plus'
   s.module_name   = 'UIKitPlus'
-  s.version             = '1.28.2'
+  s.version             = '2.0.0-alpha.1.7.4'
   s.summary          = '🏰 Declarative UIKit wrapper inspired by SwiftUI'
 
-  s.swift_version    = '5.2'
+  s.swift_version    = '5.3'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?

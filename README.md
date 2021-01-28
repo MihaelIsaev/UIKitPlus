@@ -3,12 +3,13 @@
         <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT License">
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/swift-5.2-brightgreen.svg" alt="Swift 5.2">
+        <img src="https://img.shields.io/badge/swift-5.2-brightgreen.svg" alt="Swift 5.3">
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/iOS-9+-brightgreen.svg" alt="Swift 5.2">
+        <img src="https://img.shields.io/badge/iOS-9+-brightgreen.svg" alt="Swift 5.3">
     </a>
     <img src="https://img.shields.io/badge/iPadOS+Catalyst-✓-brightgreen.svg" alt="iPadOS and Catalyst support">
+    <img src="https://img.shields.io/badge/macOS-✓-brightgreen.svg" alt="macOS support">
     <a href="https://cocoapods.org/pods/UIKit-Plus">
         <img src="https://img.shields.io/cocoapods/v/UIKit-Plus.svg" alt="Cocoapod">
     </a>
@@ -24,13 +25,13 @@
 <p align="center">With. Live. Preview. iOS9+.</p>
 <br/>
 <p align="center"><a href="https://github.com/MihaelIsaev/UIKitPlusExample" style="color:green;">A LOT OF EXAMPLES</a></p>
-<p align="center"><a href="https://discord.gg/q5wCPYv">SWIFT.STREAM COMMUNITY IN DISCORD</a></p>
+<p align="center"><a href="https://discord.gg/q5wCPYv">OUR COMMUNITY IN DISCORD</a></p>
 
 ## Requirements
 
-Xcode 11.4+
+Xcode 12.3+
 
-Swift 5.2+
+Swift 5.3+
 
 Good mood
 
@@ -40,15 +41,24 @@ Good mood
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 1.28.0'
+pod 'UIKit-Plus', '~> 2.0.0-alpha.1.7.4'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
 
-In Xcode 11.4+ go to `File -> Swift Packages -> Add Package Dependency` and enter there URL of this repo
+In Xcode 12.3+ go to `File -> Swift Packages -> Add Package Dependency` and enter there URL of this repo
 ```
 https://github.com/MihaelIsaev/UIKitPlus
 ```
+
+#### IMPORTANT!
+
+⚠️ Guys, who's interested in `UIKitPlus` please migrate to `2.0.0-alpha.1.7.4` asap, it is stable enough to use it already.
+It will be marked it as `beta` when I finish macOS support.
+
+Since version 2.0.0 there are a lot of advantages and fixes, and your project could look cleaner since there are no AppDelegate and SceneDelegate anymore, everything is under the hood like with SwiftUI, but it is very obvious and convenient to use any AppDelegate/SceneDelegate methods.
+
+Check it out by creating a project with the new project template which is available in the `master` branch.
 
 #### IMPORTANT!
 
