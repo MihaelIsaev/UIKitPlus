@@ -38,7 +38,7 @@ open class USegmentedControl: UISegmentedControl, AnyDeclarativeProtocol, Declar
     
     init(_ items: [SegmentControlable]) {
         super.init(items: [])
-        items.enumerated().forEach { offset, item in
+        for (offset, item) in items.enumerated() {
             switch item.item {
             case .title(let title): insertSegment(withTitle: title, at: offset, animated: false)
             case .image(let image): insertSegment(with: image, at: offset, animated: false)

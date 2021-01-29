@@ -12,7 +12,8 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onPinchGesture(scale: CGFloat? = nil, on state: UIGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
-        onPinchGesture(scale: scale, on: state) { v, r in
+        onPinchGesture(scale: scale, on: state) { [weak self] v, r in
+            guard let self = self else { return }
             action(self)
         }
     }
@@ -43,7 +44,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func onPinchGesture(scale: CGFloat? = nil, _ action: @escaping (Self, UIGestureRecognizer.State, PinchGestureRecognizer) -> Void) -> Self {
         let recognizer = PinchGestureRecognizer(scale: scale)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+            guard let self = self, let recognizer = recognizer else { return }
             action(self, $0, recognizer)
         })
         return self

@@ -266,8 +266,8 @@ open class UDynamicPickerView<V>: UView where V: UIView, V: UDynamicPickerableVi
             self.alpha = 0
             self.containerView.bottom = self.defaultHeight
             self.layoutIfNeeded()
-        }) { _ in
-            self.removeFromSuperview()
+        }) { [weak self] _ in
+            self?.removeFromSuperview()
         }
     }
     

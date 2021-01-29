@@ -11,7 +11,8 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onLongPressGesture(taps: Int = 0, touches: Int = 1, on state: UIGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
-        onLongPressGesture(taps: taps, touches: touches, on: state) { v, r in
+        onLongPressGesture(taps: taps, touches: touches, on: state) { [weak self] v, r in
+            guard let self = self else { return }
             action(self)
         }
     }
@@ -42,7 +43,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func onLongPressGesture(taps: Int = 0, touches: Int = 1, _ action: @escaping (Self, UIGestureRecognizer.State, LongPressGestureRecognizer) -> Void) -> Self {
         let recognizer = LongPressGestureRecognizer(taps: taps, touches: touches)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+            guard let self = self, let recognizer = recognizer else { return }
             action(self, $0, recognizer)
         })
         return self

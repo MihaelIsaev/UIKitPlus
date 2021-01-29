@@ -69,7 +69,7 @@ open class AttributedString: AnyString, BodyBuilderItemable {
     
     var _attributedString: NSMutableAttributedString
     
-    var _updateHandler: (NSAttributedString) -> Void = { _ in }
+    var _updateHandler: ((NSAttributedString) -> Void)?
     
     private lazy var _paragraphStyle = ParagraphStyle(self)
     
@@ -93,12 +93,20 @@ open class AttributedString: AnyString, BodyBuilderItemable {
         _attributedString = .init(string: String(localized))
     }
     
+    convenience init (anyStrings: [AnyString]) {
+        self.init()
+        anyStrings.onUpdate { [weak self] in
+            self?._attributedString = .init(attributedString: $0)
+            self?._updateHandler?($0)
+        }
+    }
+    
     @discardableResult
     func addAttribute(_ attr: NSAttributedString.Key, _ value: Any, at range: ClosedRange<Int>? = nil) -> AttributedString {
         // TODO: check range
         let range = range ?? 0..._attributedString.length
         _attributedString.addAttribute(attr, value: value, range: range.nsRange)
-        _updateHandler(_attributedString)
+        _updateHandler?(_attributedString)
         return self
     }
     
@@ -107,7 +115,7 @@ open class AttributedString: AnyString, BodyBuilderItemable {
         // TODO: check range
         let range = range ?? 0..._attributedString.length
         _attributedString.removeAttribute(attr, range: range.nsRange)
-        _updateHandler(_attributedString)
+        _updateHandler?(_attributedString)
         return self
     }
     
@@ -147,8 +155,8 @@ open class AttributedString: AnyString, BodyBuilderItemable {
     @discardableResult
     public func foreground(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
         #if os(macOS)
-        value.onChange { new in
-            self.addAttribute(.foregroundColor, new, at: range)
+        value.onChange { [weak self] new in
+            self?.addAttribute(.foregroundColor, new, at: range)
         }
         #endif
         return addAttribute(.foregroundColor, value.current, at: range)
@@ -216,8 +224,8 @@ open class AttributedString: AnyString, BodyBuilderItemable {
         shadow.shadowBlurRadius = blur
         #if os(macOS)
         shadow.shadowColor = color.current
-        color.onChange { [weak shadow] new in
-            shadow?.shadowColor = new
+        color.onChange { new in
+            shadow.shadowColor = new
         }
         #else
         shadow.shadowColor = color

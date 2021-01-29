@@ -12,7 +12,8 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onScreenEdgePanGesture(edges: UIRectEdge = .all, on state: UIGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
-        onScreenEdgePanGesture(edges: edges, on: state) { v, r in
+        onScreenEdgePanGesture(edges: edges, on: state) { [weak self] v, r in
+            guard let self = self else { return }
             action(self)
         }
     }
@@ -36,7 +37,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func onScreenEdgePanGesture(edges: UIRectEdge = .all, _ action: @escaping (Self, UIGestureRecognizer.State, ScreenEdgePanGestureRecognizer) -> Void) -> Self {
         let recognizer = ScreenEdgePanGestureRecognizer(edges: edges)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+            guard let self = self, let recognizer = recognizer else { return }
             action(self, $0, recognizer)
         })
         return self

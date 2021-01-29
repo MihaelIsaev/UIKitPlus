@@ -31,7 +31,7 @@ extension Array {
             return DiffItem(index: index, value: b)
         }
         var modified: [DiffItem<T2>] = []
-        print("1 removed: \(removed.map { $0.value.hashValue }), inserted: \(inserted.map { $0.value.hashValue }), modified: \(modified)   a.count: \(first.count)  b.count: \(second.count)")
+//        print("1 removed: \(removed.map { $0.value.hashValue }), inserted: \(inserted.map { $0.value.hashValue }), modified: \(modified)   a.count: \(first.count)  b.count: \(second.count)")
         inserted.enumerated().forEach { ins in
             guard let _ins = ins.element as? AnyIdentable else { return }
             for rem in removed.enumerated() {
@@ -45,7 +45,7 @@ extension Array {
                 }
             }
         }
-        print("2 modified: \(modified)")//removed: \(removed), inserted: \(inserted), modified: \(modified)")
+//        print("2 modified: \(modified)")//removed: \(removed), inserted: \(inserted), modified: \(modified)")
 //        print("1 removed: \(removed), inserted: \(inserted), modified: \(modified)   a.count: \(first.count)  b.count: \(second.count)")
 //        if inserted.count > 0, first.count - removed.count == second.count {
 //            modified = inserted

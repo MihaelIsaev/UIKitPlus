@@ -30,7 +30,8 @@ extension DeclarativeProtocol where V: BaseView {
     @discardableResult
     public func onClickGesture(clicks: Int = 1, touches: Int = 1, buttonMask: Int = 0x1, _ action: @escaping (Self, NSGestureRecognizer.State, ClickGestureRecognizer) -> Void) -> Self {
         let recognizer = ClickGestureRecognizer(clicks: clicks, touches: touches, buttonMask: buttonMask)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self] in
+            guard let self = self else { return }
             action(self, $0, recognizer)
         })
         return self

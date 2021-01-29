@@ -85,7 +85,8 @@ extension DeclarativeProtocol {
         declarativeView.wantsRestingTouches = true
         #endif
         let recognizer = SwipeGestureRecognizer(direction: direction, touches: touches)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+            guard let self = self, let recognizer = recognizer else { return }
             action(self, $0, recognizer)
         })
         return self

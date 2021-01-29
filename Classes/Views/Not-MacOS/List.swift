@@ -75,7 +75,7 @@ public class UList: UView, UITableViewDataSource {
                 self?.tableView.endUpdates()
             }
         case .nested(let items):
-            items.enumerated().forEach { i, v in
+            for (i, v) in items.enumerated() {
                 process(v, sectionIndex: sectionIndex + i)
             }
         case .none:

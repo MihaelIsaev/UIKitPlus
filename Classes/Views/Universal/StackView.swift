@@ -203,7 +203,8 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
                     #endif
                 }
                 addArrangedSubview(stack)
-                fr.subscribeToChanges({}, { deletions, insertions, _ in
+                fr.subscribeToChanges({}, { [weak self] deletions, insertions, _ in
+                    guard let self = self else { return }
                     stack.arrangedSubviews.removeFromSuperview(at: deletions)
                     insertions.forEach {
                         #if os(macOS)

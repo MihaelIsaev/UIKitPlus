@@ -245,11 +245,13 @@ open class ViewController: BaseViewController {
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         if #available(iOS 10.0, *) {
-            UIViewPropertyAnimator.init(duration: coordinator.transitionDuration, curve: coordinator.completionCurve) {
+            UIViewPropertyAnimator.init(duration: coordinator.transitionDuration, curve: coordinator.completionCurve) { [weak self] in
+                guard let self = self else { return }
                 self.isLandscape = size.width > self.view.frame.size.width
             }.startAnimation()
         } else {
-            UIView.animate(withDuration: coordinator.transitionDuration, delay: 0, options: UIView.AnimationOptions(rawValue: UInt(coordinator.completionCurve.rawValue)), animations: {
+            UIView.animate(withDuration: coordinator.transitionDuration, delay: 0, options: UIView.AnimationOptions(rawValue: UInt(coordinator.completionCurve.rawValue)), animations: { [weak self] in
+                guard let self = self else { return }
                 self.isLandscape = size.width > self.view.frame.size.width
             }, completion: nil)
         }
@@ -272,14 +274,14 @@ open class ViewController: BaseViewController {
         keyboardWasShownAtLeastOnce = true
         if inThisController {
             if #available(iOS 11.0, *) {
-                UIViewPropertyAnimator(duration: animationDuration, curve: animationCurve ?? .linear) {
-                    self.keyboardHeight = height
-                    self.view.layoutIfNeeded()
+                UIViewPropertyAnimator(duration: animationDuration, curve: animationCurve ?? .linear) { [weak self] in
+                    self?.keyboardHeight = height
+                    self?.view.layoutIfNeeded()
                 }.startAnimation()
             } else {
                 self.keyboardHeight = height
-                UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: {
-                    self.view.layoutIfNeeded()
+                UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: { [weak self] in
+                    self?.view.layoutIfNeeded()
                 }, completion: nil)
             }
         }
@@ -289,14 +291,14 @@ open class ViewController: BaseViewController {
         guard keyboardWasShownAtLeastOnce else { return false }
         if inThisController {
             if #available(iOS 11.0, *) {
-                UIViewPropertyAnimator(duration: animationDuration, curve: animationCurve ?? .linear) {
-                    self.keyboardHeight = 0
-                    self.view.layoutIfNeeded()
+                UIViewPropertyAnimator(duration: animationDuration, curve: animationCurve ?? .linear) { [weak self] in
+                    self?.keyboardHeight = 0
+                    self?.view.layoutIfNeeded()
                 }.startAnimation()
             } else {
                 self.keyboardHeight = 0
-                UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: {
-                    self.view.layoutIfNeeded()
+                UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: { [weak self] in
+                    self?.view.layoutIfNeeded()
                 }, completion: nil)
             }
         }
@@ -346,7 +348,8 @@ extension ViewController {
     
     @discardableResult
     public func onViewDidLoad(_ closure: @escaping (Self) -> Void) -> Self {
-        _viewDidLoad = {
+        _viewDidLoad = { [weak self] in
+            guard let self = self else { return }
             closure(self)
         }
         return self
@@ -362,7 +365,8 @@ extension ViewController {
     
     @discardableResult
     public func onViewDidLayout(_ closure: @escaping (Self) -> Void) -> Self {
-        _viewDidLayout = {
+        _viewDidLayout = { [weak self] in
+            guard let self = self else { return }
             closure(self)
         }
         return self
@@ -377,7 +381,8 @@ extension ViewController {
     
     @discardableResult
     public func onViewDidLayoutSubviews(_ closure: @escaping (Self) -> Void) -> Self {
-        _viewDidLayoutSubviews = {
+        _viewDidLayoutSubviews = { [weak self] in
+            guard let self = self else { return }
             closure(self)
         }
         return self
@@ -403,11 +408,13 @@ extension ViewController {
     @discardableResult
     public func onViewDidAppearFirstTime(_ closure: @escaping (Self) -> Void) -> Self {
         #if os(macOS)
-        _viewDidAppearFirstTime = {
+        _viewDidAppearFirstTime = { [weak self] in
+            guard let self = self else { return }
             closure(self)
         }
         #else
-        _viewDidAppearFirstTime = { a in
+        _viewDidAppearFirstTime = { [weak self] a in
+            guard let self = self else { return }
             closure(self)
         }
         #endif
@@ -417,7 +424,8 @@ extension ViewController {
     #if !os(macOS)
     @discardableResult
     public func onViewDidAppearFirstTime(_ closure: @escaping (Self, Bool) -> Void) -> Self {
-        _viewDidAppearFirstTime = { a in
+        _viewDidAppearFirstTime = { [weak self] a in
+            guard let self = self else { return }
             closure(self, a)
         }
         return self
@@ -442,11 +450,13 @@ extension ViewController {
     @discardableResult
     public func onViewWillAppear(_ closure: @escaping (Self) -> Void) -> Self {
         #if os(macOS)
-        _viewWillAppear = {
+        _viewWillAppear = { [weak self] in
+            guard let self = self else { return }
             closure(self)
         }
         #else
-        _viewWillAppear = { a in
+        _viewWillAppear = { [weak self] a in
+            guard let self = self else { return }
             closure(self)
         }
         #endif
@@ -456,7 +466,8 @@ extension ViewController {
     #if !os(macOS)
     @discardableResult
     public func onViewWillAppear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
-        _viewWillAppear = { a in
+        _viewWillAppear = { [weak self] a in
+            guard let self = self else { return }
             closure(self, a)
         }
         return self
@@ -481,11 +492,13 @@ extension ViewController {
     @discardableResult
     public func onViewWillAppearFirstTime(_ closure: @escaping (Self) -> Void) -> Self {
         #if os(macOS)
-        _viewWillAppearFirstTime = {
+        _viewWillAppearFirstTime = { [weak self] in
+            guard let self = self else { return }
             closure(self)
         }
         #else
-        _viewWillAppearFirstTime = { a in
+        _viewWillAppearFirstTime = { [weak self] a in
+            guard let self = self else { return }
             closure(self)
         }
         #endif
@@ -495,7 +508,8 @@ extension ViewController {
     #if !os(macOS)
     @discardableResult
     public func onViewWillAppearFirstTime(_ closure: @escaping (Self, Bool) -> Void) -> Self {
-        _viewWillAppearFirstTime = { a in
+        _viewWillAppearFirstTime = { [weak self] a in
+            guard let self = self else { return }
             closure(self, a)
         }
         return self
@@ -520,11 +534,13 @@ extension ViewController {
     @discardableResult
     public func onViewWillDisappear(_ closure: @escaping (Self) -> Void) -> Self {
         #if os(macOS)
-        _viewWillDisappear = {
+        _viewWillDisappear = { [weak self] in
+            guard let self = self else { return }
             closure(self)
         }
         #else
-        _viewWillDisappear = { a in
+        _viewWillDisappear = { [weak self] a in
+            guard let self = self else { return }
             closure(self)
         }
         #endif
@@ -534,7 +550,8 @@ extension ViewController {
     #if !os(macOS)
     @discardableResult
     public func onViewWillDisappear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
-        _viewWillDisappear = { a in
+        _viewWillDisappear = { [weak self] a in
+            guard let self = self else { return }
             closure(self, a)
         }
         return self
@@ -559,11 +576,13 @@ extension ViewController {
     @discardableResult
     public func onViewDidDisappear(_ closure: @escaping (Self) -> Void) -> Self {
         #if os(macOS)
-        _viewDidDisappear = {
+        _viewDidDisappear = { [weak self] in
+            guard let self = self else { return }
             closure(self)
         }
         #else
-        _viewDidDisappear = { a in
+        _viewDidDisappear = { [weak self] a in
+            guard let self = self else { return }
             closure(self)
         }
         #endif
@@ -573,7 +592,8 @@ extension ViewController {
     #if !os(macOS)
     @discardableResult
     public func onViewDidDisappear(_ closure: @escaping (Self, Bool) -> Void) -> Self {
-        _viewDidDisappear = { a in
+        _viewDidDisappear = { [weak self] a in
+            guard let self = self else { return }
             closure(self, a)
         }
         return self
@@ -653,13 +673,17 @@ extension ViewController {
     
     @discardableResult
     public func touchesBegan(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesBegan = { _,_ in closure(self) }
+        _touchesBegan = { [weak self] _,_ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesBegan(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
-        _touchesBegan = { set, _ in
+        _touchesBegan = { [weak self] set, _ in
+            guard let self = self else { return }
             closure(self, set)
         }
         return self
@@ -667,7 +691,8 @@ extension ViewController {
     
     @discardableResult
     public func touchesBegan(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
-        _touchesBegan = { set, event in
+        _touchesBegan = { [weak self] set, event in
+            guard let self = self else { return }
             closure(self, set, event)
         }
         return self
@@ -682,13 +707,17 @@ extension ViewController {
     
     @discardableResult
     public func touchesMoved(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesMoved = { _,_ in closure(self) }
+        _touchesMoved = { [weak self] _,_ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesMoved(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
-        _touchesMoved = { set, _ in
+        _touchesMoved = { [weak self] set, _ in
+            guard let self = self else { return }
             closure(self, set)
         }
         return self
@@ -696,7 +725,8 @@ extension ViewController {
     
     @discardableResult
     public func touchesMoved(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
-        _touchesMoved = { set, event in
+        _touchesMoved = { [weak self] set, event in
+            guard let self = self else { return }
             closure(self, set, event)
         }
         return self
@@ -711,13 +741,17 @@ extension ViewController {
     
     @discardableResult
     public func touchesEnded(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesEnded = { _,_ in closure(self) }
+        _touchesEnded = { [weak self] _,_ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesEnded(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
-        _touchesEnded = { set, _ in
+        _touchesEnded = { [weak self] set, _ in
+            guard let self = self else { return }
             closure(self, set)
         }
         return self
@@ -725,7 +759,8 @@ extension ViewController {
     
     @discardableResult
     public func touchesEnded(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
-        _touchesEnded = { set, event in
+        _touchesEnded = { [weak self] set, event in
+            guard let self = self else { return }
             closure(self, set, event)
         }
         return self
@@ -740,13 +775,17 @@ extension ViewController {
     
     @discardableResult
     public func touchesCancelled(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesCancelled = { _,_ in closure(self) }
+        _touchesCancelled = { [weak self] _,_ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesCancelled(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
-        _touchesCancelled = { set, _ in
+        _touchesCancelled = { [weak self] set, _ in
+            guard let self = self else { return }
             closure(self, set)
         }
         return self
@@ -754,7 +793,8 @@ extension ViewController {
     
     @discardableResult
     public func touchesCancelled(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
-        _touchesCancelled = { set, event in
+        _touchesCancelled = { [weak self] set, event in
+            guard let self = self else { return }
             closure(self, set, event)
         }
         return self

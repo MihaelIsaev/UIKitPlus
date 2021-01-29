@@ -135,9 +135,9 @@ public class NavigationController: ViewController {
                context.timingFunction = .init(name: CAMediaTimingFunctionName.easeOut)
                previousVC.view.animator().bounds.origin.x = width * 0.2
                currentVC.view.animator().bounds.origin.x = 0
-            }) {
-                self.nav.transitionInProgress = false
-                self.previousVC.view.removeFromSuperview()
+            }) { [weak self] in
+                self?.nav.transitionInProgress = false
+                self?.previousVC.view.removeFromSuperview()
             }
         }
         
@@ -148,7 +148,8 @@ public class NavigationController: ViewController {
                 context.timingFunction = .init(name: .easeIn)
                 currentVC.view.animator().bounds.origin.x = -endFrame.width
                 previousVC.view.animator().bounds.origin.x = 0
-            }) {
+            }) { [weak self] in
+                guard let self = self else { return }
                 self.nav.transitionInProgress = false
                 self.nav.unembedChildViewController(self.currentVC)
             }
@@ -217,9 +218,9 @@ extension NavigationController {
             context.timingFunction = .init(name: .easeIn)
             currentVC.view.animator().bounds.origin.x = -endFrame.width
             previousVC.view.animator().bounds.origin.x = 0
-        }) {
-            self.unembedChildViewController(currentVC)
-            self.transitionInProgress = false
+        }) { [weak self] in
+            self?.unembedChildViewController(currentVC)
+            self?.transitionInProgress = false
         }
         return
     }
