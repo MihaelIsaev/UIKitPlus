@@ -183,11 +183,6 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
         return self
     }
     
-    @discardableResult
-    public func spacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        spacing(expressable.unwrap())
-    }
-    
     func add(item: BodyBuilderItemable) {
         switch item.bodyBuilderItem {
             case .single(let view):

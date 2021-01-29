@@ -33,11 +33,6 @@ final public class PanGestureRecognizer: NSPanGestureRecognizer, _GestureTrackab
         }
         return self
     }
-
-    @discardableResult
-    public func numberOfTouches<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        numberOfTouches(expressable.unwrap())
-    }
     
     @discardableResult
     public func buttonMask(_ v: Int) -> Self {
@@ -51,11 +46,6 @@ final public class PanGestureRecognizer: NSPanGestureRecognizer, _GestureTrackab
             self?.buttonMask = $0
         }
         return self
-    }
-
-    @discardableResult
-    public func buttonMask<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        buttonMask(expressable.unwrap())
     }
     
     var _tag: Int = 0
@@ -98,11 +88,6 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
         }
         return self
     }
-
-    @discardableResult
-    public func minimumNumberOfTouches<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        minimumNumberOfTouches(expressable.unwrap())
-    }
     
     @discardableResult
     public func maximumNumberOfTouches(_ v: Int) -> Self {
@@ -116,11 +101,6 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
             self?.maximumNumberOfTouches = $0
         }
         return self
-    }
-
-    @discardableResult
-    public func maximumNumberOfTouches<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        maximumNumberOfTouches(expressable.unwrap())
     }
     #endif
     var _tag: Int = 0

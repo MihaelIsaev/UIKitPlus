@@ -13,9 +13,6 @@ public protocol PullsDownable: class {
     
     @discardableResult
     func pullsDown(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func pullsDown<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _PullsDownable: PullsDownable {
@@ -34,11 +31,6 @@ extension PullsDownable {
             self?.pullsDown($0)
         }
         return pullsDown(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func pullsDown<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        pullsDown(expressable.unwrap())
     }
 }
 

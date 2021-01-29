@@ -7,22 +7,12 @@ public protocol ControlStateable: class {
     
     @discardableResult
     func state(_ binding: UIKitPlus.State<NSControl.StateValue>) -> Self
-    
-    @discardableResult
-    func state<V>(_ expressable: ExpressableState<V, NSControl.StateValue>) -> Self
 }
 
 protocol _ControlStateable: ControlStateable {
     var _stateState: State<NSControl.StateValue> { get set }
     
     func _setState(_ v: NSControl.StateValue)
-}
-
-extension ControlStateable {
-    @discardableResult
-    public func state<V>(_ expressable: ExpressableState<V, NSControl.StateValue>) -> Self {
-        state(expressable.unwrap())
-    }
 }
 
 @available(iOS 13.0, *)

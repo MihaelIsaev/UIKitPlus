@@ -24,11 +24,6 @@ extension DeclarativeProtocol {
         }
         return self
     }
-    
-    @discardableResult
-    public func corners<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        corners(expressable.unwrap())
-    }
 }
 #else
 import UIKit
@@ -66,11 +61,6 @@ extension DeclarativeProtocol {
             self?.corners(new)
         }
         return self
-    }
-    
-    @discardableResult
-    public func corners<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        corners(expressable.unwrap())
     }
 }
 #endif

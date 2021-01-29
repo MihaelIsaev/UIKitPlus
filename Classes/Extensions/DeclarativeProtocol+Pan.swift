@@ -73,11 +73,6 @@ extension DeclarativeProtocol {
             state.wrappedValue = s
         }
     }
-
-    @discardableResult
-    public func onPanGesture<V>(touches: Int? = nil, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onPanGesture(touches: touches, expressable.unwrap())
-    }
 }
 #else
 import UIKit
@@ -134,11 +129,6 @@ extension DeclarativeProtocol {
         onPanGesture(minTouches: minTouches, maxTouches: maxTouches) { v, s, r in
             state.wrappedValue = s
         }
-    }
-
-    @discardableResult
-    public func onPanGesture<V>(minTouches: Int? = nil, maxTouches: Int? = nil, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
-        onPanGesture(minTouches: minTouches, maxTouches: maxTouches, expressable.unwrap())
     }
 }
 #endif

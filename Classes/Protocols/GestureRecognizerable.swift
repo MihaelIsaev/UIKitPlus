@@ -55,11 +55,6 @@ extension GestureRecognizerable {
         return enabled(binding.wrappedValue)
     }
     
-    @discardableResult
-    public func enabled<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        enabled(expressable.unwrap())
-    }
-    
     #if !os(macOS)
     // MARK: cancelsTouchesInView
     
@@ -81,11 +76,6 @@ extension GestureRecognizerable {
             self?.cancelsTouchesInView($0)
         }
         return cancelsTouchesInView(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func cancelsTouchesInView<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        cancelsTouchesInView(expressable.unwrap())
     }
     
     // MARK: delaysTouchesBegan
@@ -110,11 +100,6 @@ extension GestureRecognizerable {
         return delaysTouchesBegan(binding.wrappedValue)
     }
     
-    @discardableResult
-    public func delaysTouchesBegan<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        delaysTouchesBegan(expressable.unwrap())
-    }
-    
     // MARK: delaysTouchesEnded
     
     @discardableResult
@@ -137,11 +122,6 @@ extension GestureRecognizerable {
         return delaysTouchesEnded(binding.wrappedValue)
     }
     
-    @discardableResult
-    public func delaysTouchesEnded<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        delaysTouchesEnded(expressable.unwrap())
-    }
-    
     // MARK: requiresExclusiveTouchType
     
     @discardableResult
@@ -162,11 +142,6 @@ extension GestureRecognizerable {
             self?.requiresExclusiveTouchType($0)
         }
         return requiresExclusiveTouchType(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func requiresExclusiveTouchType<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        requiresExclusiveTouchType(expressable.unwrap())
     }
     
     // MARK: allowedTouchTypes
@@ -246,11 +221,6 @@ extension _GestureRecognizerable {
         return enabled(binding.wrappedValue)
     }
     
-    @discardableResult
-    public func enabled<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        enabled(expressable.unwrap())
-    }
-    
     #if !os(macOS)
     // MARK: cancelsTouchesInView
     
@@ -271,11 +241,6 @@ extension _GestureRecognizerable {
             self?.cancelsTouchesInView($0)
         }
         return cancelsTouchesInView(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func cancelsTouchesInView<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        cancelsTouchesInView(expressable.unwrap())
     }
     
     // MARK: delaysTouchesBegan
@@ -299,11 +264,6 @@ extension _GestureRecognizerable {
         return delaysTouchesBegan(binding.wrappedValue)
     }
     
-    @discardableResult
-    public func delaysTouchesBegan<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        delaysTouchesBegan(expressable.unwrap())
-    }
-    
     // MARK: delaysTouchesEnded
     
     @discardableResult
@@ -325,11 +285,6 @@ extension _GestureRecognizerable {
         return delaysTouchesEnded(binding.wrappedValue)
     }
     
-    @discardableResult
-    public func delaysTouchesEnded<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        delaysTouchesEnded(expressable.unwrap())
-    }
-    
     // MARK: requiresExclusiveTouchType
     
     @discardableResult
@@ -349,11 +304,6 @@ extension _GestureRecognizerable {
             self?.requiresExclusiveTouchType($0)
         }
         return requiresExclusiveTouchType(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func requiresExclusiveTouchType<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        requiresExclusiveTouchType(expressable.unwrap())
     }
     
     // MARK: allowedTouchTypes

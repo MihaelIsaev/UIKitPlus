@@ -13,9 +13,6 @@ public protocol FirstResponderRefusable: class {
     
     @discardableResult
     func refuseFirstResponder(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func refuseFirstResponder<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _FirstResponderRefusable: FirstResponderRefusable {
@@ -36,11 +33,6 @@ extension FirstResponderRefusable {
             self?.refuseFirstResponder($0)
         }
         return refuseFirstResponder(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func refuseFirstResponder<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        refuseFirstResponder(expressable.unwrap())
     }
 }
 

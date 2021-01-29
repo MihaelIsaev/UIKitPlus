@@ -7,22 +7,12 @@ public protocol BezelStyleable: class {
     
     @discardableResult
     func style(_ binding: UIKitPlus.State<NSButton.BezelStyle>) -> Self
-    
-    @discardableResult
-    func style<V>(_ expressable: ExpressableState<V, NSButton.BezelStyle>) -> Self
 }
 
 protocol _BezelStyleable: BezelStyleable {
     var _bezelStyleState: State<NSButton.BezelStyle> { get set }
     
     func _setBezelStyle(_ v: NSButton.BezelStyle)
-}
-
-extension BezelStyleable {
-    @discardableResult
-    public func style<V>(_ expressable: ExpressableState<V, NSButton.BezelStyle>) -> Self {
-        style(expressable.unwrap())
-    }
 }
 
 @available(iOS 13.0, *)

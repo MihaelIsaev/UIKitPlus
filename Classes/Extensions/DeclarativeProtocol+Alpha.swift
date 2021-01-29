@@ -26,9 +26,4 @@ extension DeclarativeProtocol {
         }
         return self
     }
-    
-    @discardableResult
-    public func alpha<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        alpha(expressable.unwrap())
-    }
 }

@@ -48,11 +48,6 @@ extension DeclarativeProtocol {
             state.wrappedValue = s
         }
     }
-    
-    @discardableResult
-    public func onScreenEdgePanGesture<V>(edges: UIRectEdge = .all, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
-        onScreenEdgePanGesture(edges: edges, expressable.unwrap())
-    }
 }
 #endif
 #endif

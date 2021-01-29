@@ -41,11 +41,6 @@ extension DeclarativeProtocol where V: UIView {
             state.wrappedValue = s
         }
     }
-
-    @discardableResult
-    public func onTapGesture<V>(taps: Int = 1, touches: Int = 1, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
-        onTapGesture(taps: taps, touches: touches, expressable.unwrap())
-    }
 }
 
 extension DeclarativeProtocol where V: UIControl {

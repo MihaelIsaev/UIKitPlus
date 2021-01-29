@@ -35,9 +35,4 @@ extension DeclarativeProtocol {
         }
         return self
     }
-    
-    @discardableResult
-    public func opacity<V>(_ expressable: ExpressableState<V, Float>) -> Self {
-        opacity(expressable.unwrap())
-    }
 }

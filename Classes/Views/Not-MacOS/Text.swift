@@ -61,12 +61,6 @@ open class UText: UILabel, AnyDeclarativeProtocol, DeclarativeProtocolInternal {
         text(state)
     }
     
-    public init<V, A: AnyString>(_ expressable: ExpressableState<V, A>) {
-        super.init(frame: .zero)
-        _setup()
-        text(expressable)
-    }
-    
     public init (@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
         super.init(frame: .zero)
         _setup()

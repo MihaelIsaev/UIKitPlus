@@ -37,11 +37,6 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
         }
         return self
     }
-
-    @discardableResult
-    public func numberOfTapsRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        numberOfTapsRequired(expressable.unwrap())
-    }
     
     #if !os(tvOS)
     @discardableResult
@@ -56,11 +51,6 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
             self?.numberOfTouchesRequired = $0
         }
         return self
-    }
-    
-    @discardableResult
-    public func numberOfTouchesRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        numberOfTouchesRequired(expressable.unwrap())
     }
     #endif
     
@@ -77,11 +67,6 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
         }
         return self
     }
-
-    @discardableResult
-    public func minimumPressDuration<V>(_ expressable: ExpressableState<V, TimeInterval>) -> Self {
-        minimumPressDuration(expressable.unwrap())
-    }
     
     @discardableResult
     public func allowableMovement(_ v: CGFloat) -> Self {
@@ -95,11 +80,6 @@ final public class LongPressGestureRecognizer: UILongPressGestureRecognizer, _Ge
             self?.allowableMovement = $0
         }
         return self
-    }
-
-    @discardableResult
-    public func allowableMovement<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        allowableMovement(expressable.unwrap())
     }
     
     var _tag: Int = 0

@@ -73,11 +73,6 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func value<V>(_ expressable: ExpressableState<V, Float>) -> Self {
-        value(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func minimumValue(_ value: Float) -> Self {
         minimumValue = value
         return self
@@ -87,11 +82,6 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     public func minimumValue(_ binding: UIKitPlus.State<Float>) -> Self {
         binding.listen { [weak self] in self?.minimumValue($0) }
         return minimumValue(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func minimumValue<V>(_ expressable: ExpressableState<V, Float>) -> Self {
-        minimumValue(expressable.unwrap())
     }
     
     @discardableResult
@@ -107,11 +97,6 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func maximumValue<V>(_ expressable: ExpressableState<V, Float>) -> Self {
-        maximumValue(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func minimumValueImage(_ value: UIImage?) -> Self {
         minimumValueImage = value
         return self
@@ -121,11 +106,6 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     public func minimumValueImage(_ binding: UIKitPlus.State<UIImage?>) -> Self {
         binding.listen { [weak self] in self?.minimumValueImage($0) }
         return minimumValueImage(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func minimumValueImage<V>(_ expressable: ExpressableState<V, UIImage?>) -> Self {
-        minimumValueImage(expressable.unwrap())
     }
     
     @discardableResult
@@ -141,11 +121,6 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func maximumValueImage<V>(_ expressable: ExpressableState<V, UIImage?>) -> Self {
-        maximumValueImage(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func isContinuous(_ value: Bool = true) -> Self {
         isContinuous = value
         return self
@@ -155,11 +130,6 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     public func isContinuous(_ binding: UIKitPlus.State<Bool>) -> Self {
         binding.listen { [weak self] in self?.isContinuous($0) }
         return isContinuous(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func isContinuous<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        isContinuous(expressable.unwrap())
     }
     
     @discardableResult
@@ -181,19 +151,9 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func minimumTrackTintColor<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        minimumTrackTintColor(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func minimumTrackTintColor(_ binding: UIKitPlus.State<Int>) -> Self {
         binding.listen { [weak self] in self?.minimumTrackTintColor($0) }
         return minimumTrackTintColor(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func minimumTrackTintColor<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        minimumTrackTintColor(expressable.unwrap())
     }
     
     @discardableResult
@@ -215,19 +175,9 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func maximumTrackTintColor<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        maximumTrackTintColor(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func maximumTrackTintColor(_ binding: UIKitPlus.State<Int>) -> Self {
         binding.listen { [weak self] in self?.maximumTrackTintColor($0) }
         return maximumTrackTintColor(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func maximumTrackTintColor<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        maximumTrackTintColor(expressable.unwrap())
     }
     
     @discardableResult
@@ -249,19 +199,9 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func thumbTintColor<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        thumbTintColor(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func thumbTintColor(_ binding: UIKitPlus.State<Int>) -> Self {
         binding.listen { [weak self] in self?.thumbTintColor($0) }
         return thumbTintColor(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func thumbTintColor<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        thumbTintColor(expressable.unwrap())
     }
     
     @discardableResult
@@ -283,19 +223,9 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func tintColor<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        tintColor(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func tintColor(_ binding: UIKitPlus.State<Int>) -> Self {
         binding.listen { [weak self] in self?.tintColor($0) }
         return tintColor(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func tintColor<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        tintColor(expressable.unwrap())
     }
     
     @discardableResult
@@ -308,11 +238,6 @@ open class USlider: UISlider, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     public func thumbImage(_ binding: UIKitPlus.State<UIImage?>) -> Self {
         binding.listen { [weak self] in self?.thumbImage($0) }
         return thumbImage(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func thumbImage<V>(_ expressable: ExpressableState<V, UIImage?>) -> Self {
-        thumbImage(expressable.unwrap())
     }
     
     var step: Float?

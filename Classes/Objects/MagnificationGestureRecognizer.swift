@@ -32,11 +32,6 @@ final public class MagnificationGestureRecognizer: NSMagnificationGestureRecogni
         }
         return self
     }
-
-    @discardableResult
-    public func magnification<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        magnification(expressable.unwrap())
-    }
     
     var _tag: Int = 0
     public override var tag: Int {

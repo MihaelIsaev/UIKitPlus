@@ -54,10 +54,5 @@ extension DeclarativeProtocol {
             state.wrappedValue = s
         }
     }
-
-    @discardableResult
-    public func onMagnification<V>(_ value: CGFloat? = nil, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onMagnification(value, expressable.unwrap())
-    }
 }
 #endif

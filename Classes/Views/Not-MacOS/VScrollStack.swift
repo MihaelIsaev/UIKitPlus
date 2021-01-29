@@ -110,10 +110,5 @@ open class UVScrollStack: UScrollView {
         stack.spacing = state.wrappedValue
         return self
     }
-    
-    @discardableResult
-    public func spacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        spacing(expressable.unwrap())
-    }
 }
 #endif

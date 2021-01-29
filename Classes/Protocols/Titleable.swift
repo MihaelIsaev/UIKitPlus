@@ -26,9 +26,6 @@ public protocol Titleable: class {
     func title<A: AnyString>(_ state: State<A>) -> Self
     
     @discardableResult
-    func title<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self
-    
-    @discardableResult
     func title(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self
 }
 
@@ -84,11 +81,6 @@ extension Titleable {
             self?.title($0)
         }
         return self
-    }
-    
-    @discardableResult
-    public func title<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self {
-        title(expressable.unwrap())
     }
 }
 

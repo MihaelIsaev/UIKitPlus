@@ -21,10 +21,5 @@ extension DeclarativeProtocol {
         }
         return self
     }
-    
-    @discardableResult
-    public func userInteraction<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        userInteraction(expressable.unwrap())
-    }
 }
 #endif

@@ -47,14 +47,6 @@ open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativePro
         setupView()
     }
     
-    public init<V>(_ quantity: Int = 4, _ expressable: ExpressableState<V, String>) {
-        self.quantity = quantity
-        super.init(frame: .zero)
-        bindCode = expressable.unwrap()
-        translatesAutoresizingMaskIntoConstraints = false
-        setupView()
-    }
-    
     public override init(frame: CGRect) {
         quantity = 4
         super.init(frame: frame)

@@ -26,9 +26,6 @@ public protocol Placeholderable: class {
     func placeholder<A: AnyString>(_ state: State<A>) -> Self
     
     @discardableResult
-    func placeholder<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self
-    
-    @discardableResult
     func placeholder(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self
 }
 
@@ -84,11 +81,6 @@ extension Placeholderable {
             self?.placeholder($0)
         }
         return self
-    }
-    
-    @discardableResult
-    public func placeholder<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self {
-        placeholder(expressable.unwrap())
     }
 }
 

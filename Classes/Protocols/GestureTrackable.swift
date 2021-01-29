@@ -15,9 +15,6 @@ public protocol GestureTrackable: class {
     func trackState(_ state: State<UGestureRecognizer.State>) -> Self
     
     @discardableResult
-    func trackState<V>(_ expressable: ExpressableState<V, UGestureRecognizer.State>) -> Self
-    
-    @discardableResult
     func onPossible(_ action: @escaping () -> Void) -> Self
     @discardableResult
     func onPossible(_ action: @escaping (Self) -> Void) -> Self
@@ -53,11 +50,6 @@ protocol _GestureTrackable: GestureTrackable {
 }
 
 extension GestureTrackable {
-    @discardableResult
-    public func trackState<V>(_ expressable: ExpressableState<V, UGestureRecognizer.State>) -> Self {
-        trackState(expressable.unwrap())
-    }
-    
     @discardableResult
     public func onPossible(_ action: @escaping () -> Void) -> Self {
         onPossible { _ in action() }

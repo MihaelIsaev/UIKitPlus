@@ -24,9 +24,4 @@ extension DeclarativeProtocol {
         }
         return self
     }
-    
-    @discardableResult
-    public func hidden<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        hidden(expressable.unwrap())
-    }
 }

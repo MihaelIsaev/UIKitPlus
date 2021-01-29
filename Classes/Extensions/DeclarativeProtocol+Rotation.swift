@@ -56,11 +56,6 @@ extension DeclarativeProtocol {
             state.wrappedValue = s
         }
     }
-
-    @discardableResult
-    public func onRotationGesture<V>(rotation: CGFloat? = nil, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onRotationGesture(rotation: rotation, expressable.unwrap())
-    }
     
     // MARK: In Degrees
     
@@ -115,11 +110,6 @@ extension DeclarativeProtocol {
         onRotationGesture(rotationInDegrees: rotationInDegrees) { v, s, r in
             state.wrappedValue = s
         }
-    }
-
-    @discardableResult
-    public func onRotationGesture<V>(rotationInDegrees: CGFloat, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onRotationGesture(rotationInDegrees: rotationInDegrees, expressable.unwrap())
     }
 }
 #else
@@ -178,11 +168,6 @@ extension DeclarativeProtocol {
         onRotationGesture(rotation: rotation) { v, s, r in
             state.wrappedValue = s
         }
-    }
-
-    @discardableResult
-    public func onRotationGesture<V>(rotation: CGFloat? = nil, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
-        onRotationGesture(rotation: rotation, expressable.unwrap())
     }
 }
 #endif

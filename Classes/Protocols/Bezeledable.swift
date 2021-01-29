@@ -13,9 +13,6 @@ public protocol Bezeledable: class {
     
     @discardableResult
     func bezeled(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func bezeled<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _Bezeledable: Bezeledable {
@@ -34,11 +31,6 @@ extension Bezeledable {
             self?.bezeled($0)
         }
         return bezeled(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func bezeled<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        bezeled(expressable.unwrap())
     }
 }
 

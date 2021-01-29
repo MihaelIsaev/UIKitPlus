@@ -13,9 +13,6 @@ public protocol TextAdjustsFontSizeable: class {
     
     @discardableResult
     func adjustsFontSizeToFitWidth(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func adjustsFontSizeToFitWidth<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _TextAdjustsFontSizeable: TextAdjustsFontSizeable {
@@ -34,11 +31,6 @@ extension TextAdjustsFontSizeable {
             self?.adjustsFontSizeToFitWidth($0)
         }
         return adjustsFontSizeToFitWidth(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func adjustsFontSizeToFitWidth<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        adjustsFontSizeToFitWidth(expressable.unwrap())
     }
 }
 

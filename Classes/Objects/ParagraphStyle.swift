@@ -122,11 +122,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return lineSpacing(state.wrappedValue)
     }
     
-    @discardableResult
-    public func lineSpacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        lineSpacing(expressable.unwrap())
-    }
-    
     // MARK: Paragraph Spacing
     
     public override var paragraphSpacing: CGFloat {
@@ -156,11 +151,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func paragraphSpacing(_ state: State<CGFloat>) -> Self {
         paragraphSpacingState.merge(with: state)
         return paragraphSpacing(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func paragraphSpacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        paragraphSpacing(expressable.unwrap())
     }
     
     // MARK: First Line Head Indent
@@ -194,11 +184,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return firstLineHeadIndent(state.wrappedValue)
     }
     
-    @discardableResult
-    public func firstLineHeadIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        firstLineHeadIndent(expressable.unwrap())
-    }
-    
     // MARK: Head Indent
     
     public override var headIndent: CGFloat {
@@ -228,11 +213,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func headIndent(_ state: State<CGFloat>) -> Self {
         headIndentState.merge(with: state)
         return headIndent(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func headIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        headIndent(expressable.unwrap())
     }
     
     // MARK: Tail Indent
@@ -266,11 +246,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return tailIndent(state.wrappedValue)
     }
     
-    @discardableResult
-    public func tailIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        tailIndent(expressable.unwrap())
-    }
-    
     // MARK: Minimum Line Height
     
     public override var minimumLineHeight: CGFloat {
@@ -300,11 +275,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func minimumLineHeight(_ state: State<CGFloat>) -> Self {
         minimumLineHeightState.merge(with: state)
         return minimumLineHeight(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func minimumLineHeight<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        minimumLineHeight(expressable.unwrap())
     }
     
     // MARK: Maximum Line Height
@@ -338,11 +308,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return maximumLineHeight(state.wrappedValue)
     }
     
-    @discardableResult
-    public func maximumLineHeight<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        maximumLineHeight(expressable.unwrap())
-    }
-    
     // MARK: Line Height Multiple
     
     public override var lineHeightMultiple: CGFloat {
@@ -372,11 +337,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func lineHeightMultiple(_ state: State<CGFloat>) -> Self {
         lineHeightMultipleState.merge(with: state)
         return lineHeightMultiple(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func lineHeightMultiple<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        lineHeightMultiple(expressable.unwrap())
     }
     
     // MARK: Default Tab Interval
@@ -410,11 +370,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return defaultTabInterval(state.wrappedValue)
     }
     
-    @discardableResult
-    public func defaultTabInterval<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        defaultTabInterval(expressable.unwrap())
-    }
-    
     // MARK: Paragraph Spacing Before
     
     public override var paragraphSpacingBefore: CGFloat {
@@ -446,11 +401,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return paragraphSpacingBefore(state.wrappedValue)
     }
     
-    @discardableResult
-    public func paragraphSpacingBefore<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        paragraphSpacingBefore(expressable.unwrap())
-    }
-    
     // MARK: Hyphenation Factor
     
     public override var hyphenationFactor: Float {
@@ -480,11 +430,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func hyphenationFactor(_ state: State<Float>) -> Self {
         hyphenationFactorState.merge(with: state)
         return hyphenationFactor(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func hyphenationFactor<V>(_ expressable: ExpressableState<V, Float>) -> Self {
-        hyphenationFactor(expressable.unwrap())
     }
     
     #if os(macOS)
@@ -519,11 +464,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return tighteningFactorForTruncation(state.wrappedValue)
     }
     
-    @discardableResult
-    public func tighteningFactorForTruncation<V>(_ expressable: ExpressableState<V, Float>) -> Self {
-        tighteningFactorForTruncation(expressable.unwrap())
-    }
-    
     // MARK: Header Level
     
     public override var headerLevel: Int {
@@ -555,11 +495,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return headerLevel(state.wrappedValue)
     }
     
-    @discardableResult
-    public func headerLevel<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        headerLevel(expressable.unwrap())
-    }
-    
     // MARK: Allows Default Tightening For Truncation
     
     public override var allowsDefaultTighteningForTruncation: Bool {
@@ -589,11 +524,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func allowsDefaultTighteningForTruncation(_ state: State<Bool>) -> Self {
         allowsDefaultTighteningForTruncationState.merge(with: state)
         return allowsDefaultTighteningForTruncation(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func allowsDefaultTighteningForTruncation<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        allowsDefaultTighteningForTruncation(expressable.unwrap())
     }
     #endif
     
@@ -628,11 +558,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return alignment(state.wrappedValue)
     }
     
-    @discardableResult
-    public func alignment<V>(_ expressable: ExpressableState<V, NSTextAlignment>) -> Self {
-        alignment(expressable.unwrap())
-    }
-    
     // MARK: Line Break Mode
     
     public override var lineBreakMode: NSLineBreakMode {
@@ -662,11 +587,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func lineBreakMode(_ state: State<NSLineBreakMode>) -> Self {
         lineBreakModeState.merge(with: state)
         return lineBreakMode(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func lineBreakMode<V>(_ expressable: ExpressableState<V, NSLineBreakMode>) -> Self {
-        lineBreakMode(expressable.unwrap())
     }
     
     // MARK: Base Writing Direction
@@ -700,11 +620,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return baseWritingDirection(state.wrappedValue)
     }
     
-    @discardableResult
-    public func baseWritingDirection<V>(_ expressable: ExpressableState<V, NSWritingDirection>) -> Self {
-        baseWritingDirection(expressable.unwrap())
-    }
-    
     // MARK: Tab Stops
     
     public override var tabStops: [NSTextTab]! {
@@ -734,11 +649,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func tabStops(_ state: State<[NSTextTab]>) -> Self {
         tabStopsState.merge(with: state)
         return tabStops(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func tabStops<V>(_ expressable: ExpressableState<V, [NSTextTab]>) -> Self {
-        tabStops(expressable.unwrap())
     }
     
     #if os(macOS)
@@ -773,11 +683,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return textBlocks(state.wrappedValue)
     }
     
-    @discardableResult
-    public func textBlocks<V>(_ expressable: ExpressableState<V, [NSTextBlock]>) -> Self {
-        textBlocks(expressable.unwrap())
-    }
-    
     // MARK: Text Lists
     
     public override var textLists: [NSTextList] {
@@ -807,11 +712,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func textLists(_ state: State<[NSTextList]>) -> Self {
         textListsState.merge(with: state)
         return textLists(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func textLists<V>(_ expressable: ExpressableState<V, [NSTextList]>) -> Self {
-        textLists(expressable.unwrap())
     }
     #endif
 }

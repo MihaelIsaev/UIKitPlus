@@ -115,20 +115,11 @@ open class UBarButtonItem: UIBarButtonItem {
         return tint(binding.wrappedValue)
     }
     
-    @discardableResult
-    public func tint<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        tint(expressable.unwrap())
-    }
     
     @discardableResult
     public func tint(_ binding: State<Int>) -> Self {
         binding.listen { [weak self] in self?.tint($0) }
         return tint(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func tint<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        tint(expressable.unwrap())
     }
 }
 #endif

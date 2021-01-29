@@ -54,10 +54,5 @@ extension DeclarativeProtocol {
             state.wrappedValue = s
         }
     }
-
-    @discardableResult
-    public func onPressGesture<V>(touches: Int = 1, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onPressGesture(touches: touches, expressable.unwrap())
-    }
 }
 #endif

@@ -7,9 +7,6 @@ public protocol Soundable: class {
     
     @discardableResult
     func sound(_ binding: UIKitPlus.State<NSSound?>) -> Self
-    
-    @discardableResult
-    func sound<V>(_ expressable: ExpressableState<V, NSSound?>) -> Self
 }
 
 protocol _Soundable: Soundable {
@@ -23,11 +20,6 @@ extension Soundable {
             self?.sound($0)
         }
         return sound(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func sound<V>(_ expressable: ExpressableState<V, NSSound?>) -> Self {
-        sound(expressable.unwrap())
     }
 }
 

@@ -42,11 +42,6 @@ extension DeclarativeProtocol where V: BaseView {
             state.wrappedValue = s
         }
     }
-
-    @discardableResult
-    public func onClickGesture<V>(clicks: Int = 1, touches: Int = 1, buttonMask: Int = 0x1, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onClickGesture(clicks: clicks, touches: touches, buttonMask: buttonMask, expressable.unwrap())
-    }
     
     // MARK: Double Click
     
@@ -73,11 +68,6 @@ extension DeclarativeProtocol where V: BaseView {
     @discardableResult
     public func onDoubleClickGesture(touches: Int = 1, buttonMask: Int = 0x1, _ state: State<NSGestureRecognizer.State>) -> Self {
         onClickGesture(clicks: 2, touches: touches, buttonMask: buttonMask, state)
-    }
-
-    @discardableResult
-    public func onDoubleClickGesture<V>(touches: Int = 1, buttonMask: Int = 0x1, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onClickGesture(clicks: 2, touches: touches, buttonMask: buttonMask, expressable)
     }
 }
 #endif

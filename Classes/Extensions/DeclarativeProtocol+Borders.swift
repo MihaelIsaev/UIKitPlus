@@ -49,12 +49,6 @@ extension DeclarativeProtocol {
 //        // TODO: implement
 //        return self
 //    }
-//
-//    @discardableResult
-//    public func border<V>(_ width: CGFloat, _ expressable: ExpressableState<V, UColor>) -> Self {
-//        // TODO: implement
-//        return self
-//    }
     
     @discardableResult
     public func border(_ side: Borders.Side, _ width: CGFloat, _ color: UColor) -> Self {

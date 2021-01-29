@@ -30,24 +30,6 @@ extension DeclarativeProtocol {
         return self
     }
     
-    private func _createSuper<V>(expressable: ExpressableState<V, CGFloat>,
-                                                    relation: NSLayoutConstraint.Relation,
-                                                    multiplier: CGFloat,
-                                                    priority: UILayoutPriority,
-                                                    attribute1: NSLayoutConstraint.Attribute,
-                                                    attribute2: NSLayoutConstraint.Attribute?,
-                                                    toSafe: Bool,
-                                                    destinationView: BaseView?) -> Self {
-        _createSuper(value: expressable.unwrap(),
-                                                relation: relation,
-                                                multiplier: multiplier,
-                                                priority: priority,
-                                                attribute1: attribute1,
-                                                attribute2: attribute2,
-                                                toSafe: toSafe,
-                                                destinationView: destinationView)
-    }
-    
     // MARK: -
     
     @discardableResult
@@ -166,22 +148,6 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func topToSuperview<V>(_ expressable: ExpressableState<V, CGFloat>,
-                                            relation: NSLayoutConstraint.Relation = .equal,
-                                            multiplier: CGFloat = 1,
-                                            priority: UILayoutPriority = .defaultHigh,
-                                            safeArea: Bool = false) -> Self {
-        _createSuper(expressable: expressable,
-                     relation: relation,
-                     multiplier: multiplier,
-                     priority: priority,
-                     attribute1: .top,
-                     attribute2: .top,
-                     toSafe: safeArea,
-                     destinationView: declarativeView.superview)
-    }
-    
-    @discardableResult
     public func topToSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         topToSuperview(State<CGFloat>(wrappedValue: value.constraintValue.value),
                                 relation: value.constraintValue.relation,
@@ -207,22 +173,6 @@ extension DeclarativeProtocol {
                      toSafe: safeArea,
                      destinationView: declarativeView.superview)
     }
-    
-    @discardableResult
-    public func leadingToSuperview<V>(_ expressable: ExpressableState<V, CGFloat>,
-                                            relation: NSLayoutConstraint.Relation = .equal,
-                                            multiplier: CGFloat = 1,
-                                            priority: UILayoutPriority = .defaultHigh,
-                                            safeArea: Bool = false) -> Self {
-        _createSuper(expressable: expressable,
-                        relation: relation,
-                        multiplier: multiplier,
-                        priority: priority,
-                        attribute1: .leading,
-                        attribute2: .leading,
-                        toSafe: safeArea,
-                        destinationView: declarativeView.superview)
-    }
         
     @discardableResult
     public func leadingToSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
@@ -245,22 +195,6 @@ extension DeclarativeProtocol {
                                                 priority: UILayoutPriority = .defaultHigh,
                                                 safeArea: Bool = false) -> Self {
         _createSuper(value: state,
-                     relation: relation,
-                     multiplier: multiplier,
-                     priority: priority,
-                     attribute1: .trailing,
-                     attribute2: .trailing,
-                     toSafe: safeArea,
-                     destinationView: declarativeView.superview)
-    }
-    
-    @discardableResult
-    public func trailingToSuperview<V>(_ expressable: ExpressableState<V, CGFloat>,
-                                            relation: NSLayoutConstraint.Relation = .equal,
-                                            multiplier: CGFloat = 1,
-                                            priority: UILayoutPriority = .defaultHigh,
-                                            safeArea: Bool = false) -> Self {
-        _createSuper(expressable: expressable,
                      relation: relation,
                      multiplier: multiplier,
                      priority: priority,
@@ -301,22 +235,6 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func bottomToSuperview<V>(_ expressable: ExpressableState<V, CGFloat>,
-                                            relation: NSLayoutConstraint.Relation = .equal,
-                                            multiplier: CGFloat = 1,
-                                            priority: UILayoutPriority = .defaultHigh,
-                                            safeArea: Bool = false) -> Self {
-        _createSuper(expressable: expressable,
-                     relation: relation,
-                     multiplier: multiplier,
-                     priority: priority,
-                     attribute1: .bottom,
-                     attribute2: .bottom,
-                     toSafe: safeArea,
-                     destinationView: declarativeView.superview)
-    }
-    
-    @discardableResult
     public func bottomToSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         _createSuper(value: State<CGFloat>(wrappedValue: value.constraintValue.value),
                      relation: value.constraintValue.relation,
@@ -337,22 +255,6 @@ extension DeclarativeProtocol {
                                                 priority: UILayoutPriority = .defaultHigh,
                                                 safeArea: Bool = false) -> Self {
         _createSuper(value: state,
-                     relation: relation,
-                     multiplier: multiplier,
-                     priority: priority,
-                     attribute1: .centerX,
-                     attribute2: .centerX,
-                     toSafe: safeArea,
-                     destinationView: declarativeView.superview)
-    }
-    
-    @discardableResult
-    public func centerXInSuperview<V>(_ expressable: ExpressableState<V, CGFloat>,
-                                            relation: NSLayoutConstraint.Relation = .equal,
-                                            multiplier: CGFloat = 1,
-                                            priority: UILayoutPriority = .defaultHigh,
-                                            safeArea: Bool = false) -> Self {
-        _createSuper(expressable: expressable,
                      relation: relation,
                      multiplier: multiplier,
                      priority: priority,
@@ -393,22 +295,6 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func centerYInSuperview<V>(_ expressable: ExpressableState<V, CGFloat>,
-                                            relation: NSLayoutConstraint.Relation = .equal,
-                                            multiplier: CGFloat = 1,
-                                            priority: UILayoutPriority = .defaultHigh,
-                                            safeArea: Bool = false) -> Self {
-        _createSuper(expressable: expressable,
-                     relation: relation,
-                     multiplier: multiplier,
-                     priority: priority,
-                     attribute1: .centerY,
-                     attribute2: .centerY,
-                     toSafe: safeArea,
-                     destinationView: declarativeView.superview)
-    }
-    
-    @discardableResult
     public func centerYInSuperview(_ value: ConstraintValue = CGFloat(0), safeArea: Bool = false) -> Self {
         _createSuper(value: State<CGFloat>(wrappedValue: value.constraintValue.value),
                                         relation: value.constraintValue.relation,
@@ -434,17 +320,6 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func centerInSuperview<V>(_ expressable: ExpressableState<V, CGFloat>,
-                                                relation: NSLayoutConstraint.Relation = .equal,
-                                                multiplier: CGFloat = 1,
-                                                priority: UILayoutPriority = .defaultHigh,
-                                                safeArea: Bool = false) -> Self {
-        centerXInSuperview(expressable, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
-        centerYInSuperview(expressable, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
-        return self
-    }
-    
-    @discardableResult
     public func centerInSuperview(_ value: ConstraintValue = CGFloat(0)) -> Self {
         centerXInSuperview(value)
         centerYInSuperview(value)
@@ -465,42 +340,6 @@ extension DeclarativeProtocol {
                                                 multiplier: CGFloat = 1,
                                                 priority: UILayoutPriority = .defaultHigh,
                                                 safeArea: Bool = false) -> Self {
-        centerXInSuperview(x, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
-        centerYInSuperview(y, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
-        return self
-    }
-    
-    @discardableResult
-    public func centerInSuperview<A, B>(x: ExpressableState<A, CGFloat>,
-                                                y: ExpressableState<B, CGFloat>,
-                                                relation: NSLayoutConstraint.Relation = .equal,
-                                                multiplier: CGFloat = 1,
-                                                priority: UILayoutPriority = .defaultHigh,
-                                                safeArea: Bool = false) -> Self {
-        centerXInSuperview(x, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
-        centerYInSuperview(y, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
-        return self
-    }
-    
-    @discardableResult
-    public func centerInSuperview<V>(x: ExpressableState<V, CGFloat>,
-                                                    y: State<CGFloat>,
-                                                    relation: NSLayoutConstraint.Relation = .equal,
-                                                    multiplier: CGFloat = 1,
-                                                    priority: UILayoutPriority = .defaultHigh,
-                                                    safeArea: Bool = false) -> Self {
-        centerXInSuperview(x, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
-        centerYInSuperview(y, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
-        return self
-    }
-    
-    @discardableResult
-    public func centerInSuperview<V>(x: State<CGFloat>,
-                                                    y: ExpressableState<V, CGFloat>,
-                                                    relation: NSLayoutConstraint.Relation = .equal,
-                                                    multiplier: CGFloat = 1,
-                                                    priority: UILayoutPriority = .defaultHigh,
-                                                    safeArea: Bool = false) -> Self {
         centerXInSuperview(x, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
         centerYInSuperview(y, relation: relation, multiplier: multiplier, priority: priority, safeArea: safeArea)
         return self

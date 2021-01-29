@@ -26,9 +26,6 @@ public protocol Textable: class {
     func text<V: AnyString>(_ state: State<V>) -> Self
     
     @discardableResult
-    func text<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self
-    
-    @discardableResult
     func text(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self
 }
 
@@ -85,11 +82,6 @@ extension Textable {
         }
         (self as? TextBindable)?.bind(state)
         return self
-    }
-    
-    @discardableResult
-    public func text<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self {
-        text(expressable.unwrap())
     }
 }
 

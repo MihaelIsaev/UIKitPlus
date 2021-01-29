@@ -13,9 +13,6 @@ public protocol TextAttributesEditingAllowable: class {
     
     @discardableResult
     func allowEditingTextAttributes(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func allowEditingTextAttributes<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _TextAttributesEditingAllowable: TextAttributesEditingAllowable {
@@ -34,11 +31,6 @@ extension TextAttributesEditingAllowable {
             self?.allowEditingTextAttributes($0)
         }
         return allowEditingTextAttributes(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func allowEditingTextAttributes<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        allowEditingTextAttributes(expressable.unwrap())
     }
 }
 

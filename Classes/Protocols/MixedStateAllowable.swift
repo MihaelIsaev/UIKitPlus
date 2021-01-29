@@ -13,9 +13,6 @@ public protocol MixedStateAllowable: class {
     
     @discardableResult
     func allowMixedState(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func allowMixedState<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _MixedStateAllowable: MixedStateAllowable {
@@ -36,11 +33,6 @@ extension MixedStateAllowable {
             self?.allowMixedState($0)
         }
         return allowMixedState(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func allowMixedState<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        allowMixedState(expressable.unwrap())
     }
 }
 

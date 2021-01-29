@@ -26,9 +26,6 @@ public protocol Messageable: class {
     func message<A: AnyString>(_ state: State<A>) -> Self
     
     @discardableResult
-    func message<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self
-    
-    @discardableResult
     func message(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self
 }
 
@@ -84,11 +81,6 @@ extension Messageable {
             self?.message($0)
         }
         return self
-    }
-    
-    @discardableResult
-    public func message<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self {
-        message(expressable.unwrap())
     }
 }
 

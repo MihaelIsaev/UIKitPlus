@@ -98,9 +98,4 @@ extension DeclarativeProtocol {
         }
         return self
     }
-
-    @discardableResult
-    public func onSwipeGesture<V>(direction: USwipeGestureRecognizer.Direction, touches: Int? = nil, _ expressable: ExpressableState<V, GestureRecognizer.State>) -> Self {
-        onSwipeGesture(direction: direction, touches: touches, expressable.unwrap())
-    }
 }

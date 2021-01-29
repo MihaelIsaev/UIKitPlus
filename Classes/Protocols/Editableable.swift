@@ -13,9 +13,6 @@ public protocol Editableable: class {
     
     @discardableResult
     func editable(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func editable<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _Editableable: Editableable {
@@ -34,11 +31,6 @@ extension Editableable {
             self?.editable($0)
         }
         return editable(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func editable<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        editable(expressable.unwrap())
     }
 }
 

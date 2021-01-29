@@ -29,11 +29,6 @@ extension Fontable {
         }
         return font(v: binding.wrappedValue)
     }
-    
-    @discardableResult
-    public func font<V>(_ expressable: ExpressableState<V, UFont>) -> Self {
-        font(expressable.unwrap())
-    }
 }
 
 @available(iOS 13.0, *)

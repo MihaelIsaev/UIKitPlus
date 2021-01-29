@@ -1,27 +1,9 @@
-public class ExpressableState<S, Result> where S: Stateable {
-    let state: S
-    let value: () -> Result
-    
-    init (_ state: S, _ expression: @escaping (S.Value) -> Result) {
-        self.state = state
-        value = {// [unowned state] in
-            expression(state.wrappedValue)
-        }
+extension State {
+    public func map<Result>(_ expression: @escaping () -> Result) -> State<Result> {
+        .init(self, expression)
     }
     
-    public func unwrap() -> State<Result> {
-        .init(self)
-    }
-}
-
-extension Stateable {
-    public func map<Result>(_ expression: @escaping () -> Result) -> ExpressableState<Self, Result> {
-        .init(self) { _ in
-            expression()
-        }
-    }
-    
-    public func map<Result>(_ expression: @escaping (Value) -> Result) -> ExpressableState<Self, Result> {
+    public func map<Result>(_ expression: @escaping (Value) -> Result) -> State<Result> {
         .init(self, expression)
     }
 }

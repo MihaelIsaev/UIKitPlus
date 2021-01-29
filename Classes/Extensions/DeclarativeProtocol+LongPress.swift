@@ -54,10 +54,5 @@ extension DeclarativeProtocol {
             state.wrappedValue = s
         }
     }
-
-    @discardableResult
-    public func onLongPressGesture<V>(taps: Int = 0, touches: Int = 1, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
-        onLongPressGesture(taps: taps, touches: touches, expressable.unwrap())
-    }
 }
 #endif

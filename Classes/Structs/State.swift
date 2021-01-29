@@ -39,10 +39,10 @@ open class State<Value>: Stateable {
         let value = expression()
         _originalValue = value
         _wrappedValue = value
-        stateA.listen {// [weak self] in
+        stateA.listen {
             self.wrappedValue = expression()
         }
-        stateB.listen {// [weak self] in
+        stateB.listen {
             self.wrappedValue = expression()
         }
     }
@@ -76,12 +76,21 @@ open class State<Value>: Stateable {
         _wrappedValue = value
     }
     
-    public init <E>(_ expressable: ExpressableState<E, Value>) {
-        let initialValue = expressable.value()
-        _originalValue = initialValue
-        _wrappedValue = initialValue
-        expressable.state.listen {
-            self.wrappedValue = expressable.value()
+    init (_ stateA: AnyState, _ expression: @escaping () -> Value) {
+        let value = expression()
+        _originalValue = value
+        _wrappedValue = value
+        stateA.listen {
+            self.wrappedValue = expression()
+        }
+    }
+    
+    init <A>(_ stateA: State<A>, _ expression: @escaping (A) -> Value) {
+        let value = expression(stateA.wrappedValue)
+        _originalValue = value
+        _wrappedValue = value
+        stateA.listen {
+            self.wrappedValue = expression(stateA.wrappedValue)
         }
     }
     

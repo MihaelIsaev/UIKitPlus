@@ -31,10 +31,5 @@ extension DeclarativeProtocol {
         }
         return self
     }
-    
-    @discardableResult
-    public func tint<V>(_ expressable: ExpressableState<V, UColor>) -> Self {
-        tint(expressable.unwrap())
-    }
 }
 #endif

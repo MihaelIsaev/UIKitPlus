@@ -54,27 +54,10 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    private func _dimension<V>(_ expressable: ExpressableState<V, CGFloat>,
-                                        attribute: NSLayoutConstraint.Attribute,
-                                        relation: NSLayoutConstraint.Relation,
-                                        multiplier: CGFloat,
-                                        priority: UILayoutPriority) -> Self {
-        _dimension(expressable.unwrap(), attribute: attribute, relation: relation, multiplier: multiplier, priority: priority)
-    }
-    
-    @discardableResult
     public func width(_ value: State<CGFloat>,
                       relation: NSLayoutConstraint.Relation = .equal,
                       multiplier: CGFloat = 1,
                       priority: UILayoutPriority = .defaultHigh) -> Self {
-        _dimension(value, attribute: .width, relation: relation, multiplier: multiplier, priority: priority)
-    }
-    
-    @discardableResult
-    public func width<V>(_ value: ExpressableState<V, CGFloat>,
-                         relation: NSLayoutConstraint.Relation = .equal,
-                         multiplier: CGFloat = 1,
-                         priority: UILayoutPriority = .defaultHigh) -> Self {
         _dimension(value, attribute: .width, relation: relation, multiplier: multiplier, priority: priority)
     }
     
@@ -95,14 +78,6 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func height<V>(_ value: ExpressableState<V, CGFloat>,
-                            relation: NSLayoutConstraint.Relation = .equal,
-                            multiplier: CGFloat = 1,
-                            priority: UILayoutPriority = .defaultHigh) -> Self {
-        _dimension(value, attribute: .height, relation: relation, multiplier: multiplier, priority: priority)
-    }
-    
-    @discardableResult
     public func height(_ value: ConstraintValue) -> Self {
         height(State<CGFloat>(wrappedValue: value.constraintValue.value),
                relation: value.constraintValue.relation,
@@ -119,14 +94,6 @@ extension DeclarativeProtocol {
     }
     
     @discardableResult
-    public func size<V>(_ state: ExpressableState<V, CGFloat>,
-                        relation: NSLayoutConstraint.Relation = .equal,
-                        multiplier: CGFloat = 1,
-                        priority: UILayoutPriority = .defaultHigh) -> Self {
-        width(state, relation: relation, multiplier: multiplier, priority: priority).height(state, relation: relation, multiplier: multiplier, priority: priority)
-    }
-    
-    @discardableResult
     public func size(_ value: ConstraintValue) -> Self {
         width(value).height(value)
     }
@@ -136,30 +103,6 @@ extension DeclarativeProtocol {
                         relation: NSLayoutConstraint.Relation = .equal,
                         multiplier: CGFloat = 1,
                         priority: UILayoutPriority = .defaultHigh) -> Self {
-        width(w, relation: relation, multiplier: multiplier, priority: priority).height(h, relation: relation, multiplier: multiplier, priority: priority)
-    }
-    
-    @discardableResult
-    public func size<V>(_ w: ExpressableState<V, CGFloat>, _ h: State<CGFloat>,
-                            relation: NSLayoutConstraint.Relation = .equal,
-                            multiplier: CGFloat = 1,
-                            priority: UILayoutPriority = .defaultHigh) -> Self {
-        width(w, relation: relation, multiplier: multiplier, priority: priority).height(h, relation: relation, multiplier: multiplier, priority: priority)
-    }
-    
-    @discardableResult
-    public func size<V>(_ w: State<CGFloat>, _ h: ExpressableState<V, CGFloat>,
-                            relation: NSLayoutConstraint.Relation = .equal,
-                            multiplier: CGFloat = 1,
-                            priority: UILayoutPriority = .defaultHigh) -> Self {
-        width(w, relation: relation, multiplier: multiplier, priority: priority).height(h, relation: relation, multiplier: multiplier, priority: priority)
-    }
-    
-    @discardableResult
-    public func size<A, B>(_ w: ExpressableState<A, CGFloat>, _ h: ExpressableState<B, CGFloat>,
-                            relation: NSLayoutConstraint.Relation = .equal,
-                            multiplier: CGFloat = 1,
-                            priority: UILayoutPriority = .defaultHigh) -> Self {
         width(w, relation: relation, multiplier: multiplier, priority: priority).height(h, relation: relation, multiplier: multiplier, priority: priority)
     }
     

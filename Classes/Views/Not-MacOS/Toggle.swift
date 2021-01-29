@@ -100,19 +100,9 @@ open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func onTint<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        onTint(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func onTint(_ binding: UIKitPlus.State<Int>) -> Self {
         binding.listen { [weak self] in self?.onTint($0) }
         return onTint(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func onTint<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        onTint(expressable.unwrap())
     }
     
     @discardableResult
@@ -134,19 +124,9 @@ open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func thumbTint<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        thumbTint(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func thumbTint(_ binding: UIKitPlus.State<Int>) -> Self {
         binding.listen { [weak self] in self?.thumbTint($0) }
         return thumbTint(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func thumbTint<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        thumbTint(expressable.unwrap())
     }
     
     @discardableResult
@@ -162,11 +142,6 @@ open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func onImage<V>(_ expressable: ExpressableState<V, UIImage?>) -> Self {
-        onImage(expressable.unwrap())
-    }
-    
-    @discardableResult
     public func offImage(_ image: UIImage?) -> Self {
         offImage = image
         return self
@@ -176,11 +151,6 @@ open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     public func offImage(_ binding: UIKitPlus.State<UIImage?>) -> Self {
         binding.listen { [weak self] in self?.offImage($0) }
         return offImage(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func offImage<V>(_ expressable: ExpressableState<V, UIImage?>) -> Self {
-        offImage(expressable.unwrap())
     }
 }
 

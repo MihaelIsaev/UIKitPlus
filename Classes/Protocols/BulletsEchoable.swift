@@ -13,9 +13,6 @@ public protocol BulletsEchoable {
     
     @discardableResult
     func echosBullets(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func echosBullets<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _BulletsEchoable: BulletsEchoable {
@@ -32,11 +29,6 @@ extension BulletsEchoable {
     public func echosBullets(_ binding: UIKitPlus.State<Bool>) -> Self {
         binding.listen { self.echosBullets($0) }
         return echosBullets(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func echosBullets<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        echosBullets(expressable.unwrap())
     }
 }
 

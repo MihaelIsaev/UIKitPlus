@@ -55,11 +55,6 @@ extension DeclarativeProtocol {
             state.wrappedValue = s
         }
     }
-
-    @discardableResult
-    public func onPinchGesture<V>(scale: CGFloat? = nil, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
-        onPinchGesture(scale: scale, expressable.unwrap())
-    }
 }
 #endif
 #endif

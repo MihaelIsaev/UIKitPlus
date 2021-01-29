@@ -78,10 +78,6 @@ open class UImage: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         }
     }
     
-    public convenience init <V>(_ expressable: ExpressableState<V, NSImage?>) {
-        self.init(expressable.unwrap())
-    }
-    
     public init (_ url: State<URL>, defaultImage: NSImage? = nil, loader: ImageLoader = .defaultRelease) {
         super.init(frame: .zero)
         _setup()
@@ -104,10 +100,6 @@ open class UImage: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
             guard let self = self else { return }
             self._imageLoader.load(new, imageView: self, defaultImage: defaultImage)
         }
-    }
-    
-    public convenience init <V>(_ expressable: ExpressableState<V, String>, defaultImage: NSImage? = nil, loader: ImageLoader = .defaultRelease) {
-        self.init(expressable.unwrap(), defaultImage: defaultImage, loader: loader)
     }
     
     public init (url: URL, defaultImage: NSImage? = nil, loader: ImageLoader = .defaultRelease) {

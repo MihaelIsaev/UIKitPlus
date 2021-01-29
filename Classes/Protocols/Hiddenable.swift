@@ -13,9 +13,6 @@ public protocol Hiddenable {
     
     @discardableResult
     func hidden(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func hidden<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _Hiddenable: Hiddenable {
@@ -34,11 +31,6 @@ extension Hiddenable {
     public func hidden(_ binding: UIKitPlus.State<Bool>) -> Self {
         binding.listen { self.hidden($0) }
         return hidden(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func hidden<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        hidden(expressable.unwrap())
     }
 }
 

@@ -98,12 +98,6 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
         title(state)
     }
     
-    public convenience init<V, A: AnyString>(_ expressable: ExpressableState<V, A>) {
-        self.init(type: .custom)
-        _setup()
-        title(expressable)
-    }
-    
     public convenience init (@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
         self.init(type: .custom)
         _setup()
@@ -216,11 +210,6 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func title<V, A: AnyString>(_ expressable: ExpressableState<V, A>, _ state: UIControl.State = .normal) -> Self {
-        title(expressable.unwrap(), state)
-    }
-    
-    @discardableResult
     public func title(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self {
         title(stateString())
     }
@@ -247,21 +236,11 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     @discardableResult
-    public func color<V>(_ expressable: ExpressableState<V, UIColor>, _ state: UIControl.State = .normal) -> Self {
-        color(expressable.unwrap(), state)
-    }
-    
-    @discardableResult
     public func color(_ binding: UIKitPlus.State<Int>, _ state: UIControl.State = .normal) -> Self {
         binding.listen { [weak self] in
             self?.color($0, state)
         }
         return color(binding.wrappedValue, state)
-    }
-    
-    @discardableResult
-    public func color<V>(_ expressable: ExpressableState<V, Int>, _ state: UIControl.State = .normal) -> Self {
-        color(expressable.unwrap(), state)
     }
     
     // MARK: Image
@@ -285,11 +264,6 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
         return image(binding.wrappedValue, state)
     }
     
-    @discardableResult
-    public func image<V>(_ expressable: ExpressableState<V, UIImage>, _ state: UIControl.State = .normal) -> Self {
-        image(expressable.unwrap(), state)
-    }
-    
     // MARK: Background Image
     
     @discardableResult
@@ -309,11 +283,6 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
             self?.image($0, state)
         }
         return backgroundImage(binding.wrappedValue, state)
-    }
-    
-    @discardableResult
-    public func backgroundImage<V>(_ expressable: ExpressableState<V, UIImage>, _ state: UIControl.State = .normal) -> Self {
-        backgroundImage(expressable.unwrap(), state)
     }
     
     @discardableResult

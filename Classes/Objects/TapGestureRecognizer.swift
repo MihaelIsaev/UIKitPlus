@@ -27,11 +27,6 @@ final public class TapGestureRecognizer: UITapGestureRecognizer, _GestureTrackab
         }
         return self
     }
-
-    @discardableResult
-    public func numberOfTapsRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        numberOfTapsRequired(expressable.unwrap())
-    }
     #if !os(tvOS)
     @discardableResult
     public func numberOfTouchesRequired(_ v: Int) -> Self {
@@ -45,11 +40,6 @@ final public class TapGestureRecognizer: UITapGestureRecognizer, _GestureTrackab
             self?.numberOfTouchesRequired = $0
         }
         return self
-    }
-
-    @discardableResult
-    public func numberOfTouchesRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        numberOfTouchesRequired(expressable.unwrap())
     }
     #endif
     var _tag: Int = 0

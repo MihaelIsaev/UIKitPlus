@@ -90,11 +90,6 @@ open class URefreshControl: UIRefreshControl {
         return self
     }
     
-    @discardableResult
-    public func tint<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        tint(expressable.unwrap())
-    }
-    
     // MARK: Self pointer
     
     public func itself(_ itself: inout RefreshControl?) -> Self {
