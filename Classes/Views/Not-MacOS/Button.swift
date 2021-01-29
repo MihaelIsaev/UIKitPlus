@@ -248,11 +248,7 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func color<V>(_ expressable: ExpressableState<V, UIColor>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { [weak self, weak expressable] in
-            guard let expressable = expressable else { return }
-            self?.color(expressable.value(), state)
-        }
-        return color(expressable.value(), state)
+        color(expressable.unwrap(), state)
     }
     
     @discardableResult
@@ -265,11 +261,7 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func color<V>(_ expressable: ExpressableState<V, Int>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { [weak self, weak expressable] _,_ in
-            guard let expressable = expressable else { return }
-            self?.color(expressable.value(), state)
-        }
-        return color(expressable.value(), state)
+        color(expressable.unwrap(), state)
     }
     
     // MARK: Image
@@ -295,11 +287,7 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func image<V>(_ expressable: ExpressableState<V, UIImage>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { [weak self, weak expressable] in
-            guard let expressable = expressable else { return }
-            self?.image(expressable.value(), state)
-        }
-        return image(expressable.value(), state)
+        image(expressable.unwrap(), state)
     }
     
     // MARK: Background Image
@@ -325,11 +313,7 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func backgroundImage<V>(_ expressable: ExpressableState<V, UIImage>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { [weak self, weak expressable] in
-            guard let expressable = expressable else { return }
-            self?.image(expressable.value(), state)
-        }
-        return backgroundImage(expressable.value(), state)
+        backgroundImage(expressable.unwrap(), state)
     }
     
     @discardableResult

@@ -1,19 +1,19 @@
 public class ExpressableState<S, Result> where S: Stateable {
     weak var _leftState: S?
-    let _value: () -> Result
+    let value: () -> Result
     
     init (_ state: S, _ expression: @escaping (S.Value) -> Result) {
         _leftState = state
-        _value = { [unowned state] in
+        value = { [unowned state] in
             expression(state.wrappedValue)
         }
     }
     
     public func unwrap() -> State<Result> {
-        let resultState: State<Result> = .init(wrappedValue: _value())
+        let resultState: State<Result> = .init(wrappedValue: value())
         self._leftState?.listen { [weak self, weak resultState] in
             guard let self = self else { return }
-            resultState?.wrappedValue = self._value()
+            resultState?.wrappedValue = self.value()
         }
         return resultState
     }
