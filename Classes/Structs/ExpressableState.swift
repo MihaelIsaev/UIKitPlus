@@ -1,7 +1,7 @@
 public class ExpressableState<S, Result> where S: Stateable {
     let state: S
     private let _expression: (S.Value) -> Result
-    lazy var value: () -> Result = {
+    lazy var value: () -> Result = { [unowned self] in
         self._expression(self.state.wrappedValue)
     }
     
@@ -12,9 +12,9 @@ public class ExpressableState<S, Result> where S: Stateable {
     
     public func unwrap() -> State<Result> {
         let state: State<Result> = .init(wrappedValue: self.value())
-        self.state.listen { [weak self] _ in
+        self.state.listen { [weak self, weak state] _ in
             guard let self = self else { return }
-            state.wrappedValue = self.value()
+            state?.wrappedValue = self.value()
         }
         return state
     }
