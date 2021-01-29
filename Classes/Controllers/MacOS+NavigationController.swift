@@ -23,8 +23,7 @@ public class NavigationController: ViewController {
             (rootViewController.view as! UView).edgesToSuperview()
         }
         rootViewController.navigationController = self
-        (view as? UView)?.onTouchPanGesture { [weak self] s, p, d in
-            guard let self = self else { return }
+        (view as? UView)?.onTouchPanGesture { s, p, d in
             switch s {
             case .began:
                 if self.viewControllers.count > 0 {
@@ -135,9 +134,9 @@ public class NavigationController: ViewController {
                context.timingFunction = .init(name: CAMediaTimingFunctionName.easeOut)
                previousVC.view.animator().bounds.origin.x = width * 0.2
                currentVC.view.animator().bounds.origin.x = 0
-            }) { [weak self] in
-                self?.nav.transitionInProgress = false
-                self?.previousVC.view.removeFromSuperview()
+            }) {
+                self.nav.transitionInProgress = false
+                self.previousVC.view.removeFromSuperview()
             }
         }
         
@@ -148,8 +147,7 @@ public class NavigationController: ViewController {
                 context.timingFunction = .init(name: .easeIn)
                 currentVC.view.animator().bounds.origin.x = -endFrame.width
                 previousVC.view.animator().bounds.origin.x = 0
-            }) { [weak self] in
-                guard let self = self else { return }
+            }) {
                 self.nav.transitionInProgress = false
                 self.nav.unembedChildViewController(self.currentVC)
             }
@@ -218,9 +216,9 @@ extension NavigationController {
             context.timingFunction = .init(name: .easeIn)
             currentVC.view.animator().bounds.origin.x = -endFrame.width
             previousVC.view.animator().bounds.origin.x = 0
-        }) { [weak self] in
-            self?.unembedChildViewController(currentVC)
-            self?.transitionInProgress = false
+        }) {
+            self.unembedChildViewController(currentVC)
+            self.transitionInProgress = false
         }
         return
     }

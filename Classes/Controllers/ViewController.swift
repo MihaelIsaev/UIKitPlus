@@ -245,13 +245,11 @@ open class ViewController: BaseViewController {
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         if #available(iOS 10.0, *) {
-            UIViewPropertyAnimator.init(duration: coordinator.transitionDuration, curve: coordinator.completionCurve) { [weak self] in
-                guard let self = self else { return }
+            UIViewPropertyAnimator.init(duration: coordinator.transitionDuration, curve: coordinator.completionCurve) {
                 self.isLandscape = size.width > self.view.frame.size.width
             }.startAnimation()
         } else {
-            UIView.animate(withDuration: coordinator.transitionDuration, delay: 0, options: UIView.AnimationOptions(rawValue: UInt(coordinator.completionCurve.rawValue)), animations: { [weak self] in
-                guard let self = self else { return }
+            UIView.animate(withDuration: coordinator.transitionDuration, delay: 0, options: UIView.AnimationOptions(rawValue: UInt(coordinator.completionCurve.rawValue)), animations: {
                 self.isLandscape = size.width > self.view.frame.size.width
             }, completion: nil)
         }
@@ -274,14 +272,14 @@ open class ViewController: BaseViewController {
         keyboardWasShownAtLeastOnce = true
         if inThisController {
             if #available(iOS 11.0, *) {
-                UIViewPropertyAnimator(duration: animationDuration, curve: animationCurve ?? .linear) { [weak self] in
-                    self?.keyboardHeight = height
-                    self?.view.layoutIfNeeded()
+                UIViewPropertyAnimator(duration: animationDuration, curve: animationCurve ?? .linear) {
+                    self.keyboardHeight = height
+                    self.view.layoutIfNeeded()
                 }.startAnimation()
             } else {
                 self.keyboardHeight = height
-                UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: { [weak self] in
-                    self?.view.layoutIfNeeded()
+                UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: {
+                    self.view.layoutIfNeeded()
                 }, completion: nil)
             }
         }
@@ -291,14 +289,14 @@ open class ViewController: BaseViewController {
         guard keyboardWasShownAtLeastOnce else { return false }
         if inThisController {
             if #available(iOS 11.0, *) {
-                UIViewPropertyAnimator(duration: animationDuration, curve: animationCurve ?? .linear) { [weak self] in
-                    self?.keyboardHeight = 0
-                    self?.view.layoutIfNeeded()
+                UIViewPropertyAnimator(duration: animationDuration, curve: animationCurve ?? .linear) {
+                    self.keyboardHeight = 0
+                    self.view.layoutIfNeeded()
                 }.startAnimation()
             } else {
                 self.keyboardHeight = 0
-                UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: { [weak self] in
-                    self?.view.layoutIfNeeded()
+                UIView.animate(withDuration: animationDuration, delay: 0, options: options, animations: {
+                    self.view.layoutIfNeeded()
                 }, completion: nil)
             }
         }

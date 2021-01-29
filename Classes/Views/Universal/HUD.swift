@@ -122,13 +122,13 @@ open class UHUD: UView {
         } else {
             self.hidden(false).alpha(0)
             #if os(macOS)
-            NSAnimationContext.runAnimationGroup { [weak self] context in
+            NSAnimationContext.runAnimationGroup { context in
                 context.duration = 0.3
-                self?.animator().alphaValue = 1
+                self.animator().alphaValue = 1
             }
             #else
-            UIView.animate(withDuration: 0.3) { [weak self] in
-                self?.alpha(1)
+            UIView.animate(withDuration: 0.3) {
+                self.alpha(1)
             }
             #endif
         }
@@ -142,19 +142,19 @@ open class UHUD: UView {
             completionHandler?()
         } else {
             #if os(macOS)
-            NSAnimationContext.runAnimationGroup({ [ weak self] context in
+            NSAnimationContext.runAnimationGroup({ context in
                 context.duration = 0.3
-                self?.animator().alphaValue = 0
-            }) { [weak self] in
-                self?.hidden().alpha(1)
+                self.animator().alphaValue = 0
+            }) {
+                self.hidden().alpha(1)
                 completionHandler?()
             }
             #else
-            UIView.animate(withDuration: 0.3, animations: { [weak self] in
-                self?.alpha(0)
-            }) { [weak self] _ in
-                self?.activityIndicator.stopAnimating()
-                self?.hidden().alpha(1)
+            UIView.animate(withDuration: 0.3, animations: {
+                self.alpha(0)
+            }) {
+                self.activityIndicator.stopAnimating()
+                self.hidden().alpha(1)
                 completionHandler?()
             }
             #endif
