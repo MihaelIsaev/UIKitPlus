@@ -1,5 +1,5 @@
 public class ExpressableState<S, Result> where S: Stateable {
-    weak var _leftState: S?
+    var _leftState: S?
     let value: () -> Result
     
     init (_ state: S, _ expression: @escaping (S.Value) -> Result) {
@@ -11,9 +11,8 @@ public class ExpressableState<S, Result> where S: Stateable {
     
     public func unwrap() -> State<Result> {
         let resultState: State<Result> = .init(wrappedValue: value())
-        self._leftState?.listen { [weak self, weak resultState] in
-            guard let self = self else { return }
-            resultState?.wrappedValue = self.value()
+        self._leftState?.listen {
+            resultState.wrappedValue = self.value()
         }
         return resultState
     }

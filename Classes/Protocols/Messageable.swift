@@ -106,7 +106,9 @@ extension Messageable {
     @discardableResult
     public func text(_ value: [AnyString]) -> Self {
         guard let s = self as? _Messageable else { return self }
-        value.onUpdate(s._changeMessage)
+        value.onUpdate { [weak s] in
+            s?._changeMessage(to: $0)
+        }
         s._changeMessage(to: value.attributedString)
         return self
     }
@@ -130,7 +132,9 @@ extension _Messageable {
     
     @discardableResult
     public func message(_ value: [AnyString]) -> Self {
-        value.onUpdate(_changeMessage)
+        value.onUpdate { [weak self] in
+            self?._changeMessage(to: $0)
+        }
         _changeMessage(to: value.attributedString)
         return self
     }

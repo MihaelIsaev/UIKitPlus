@@ -71,7 +71,7 @@ open class AttributedString: AnyString, BodyBuilderItemable {
     
     var _updateHandler: (NSAttributedString) -> Void = { _ in }
     
-    private let _paragraphStyle = ParagraphStyle()
+    private lazy var _paragraphStyle = ParagraphStyle(self)
     
     public static func make(_ v: NSAttributedString) -> Self {
         .init(v)
@@ -79,29 +79,18 @@ open class AttributedString: AnyString, BodyBuilderItemable {
     
     public required init (_ attrString: NSAttributedString) {
         _attributedString = .init(attributedString: attrString)
-        _setup()
     }
     
     public init (_ string: String) {
         _attributedString = .init(string: string)
-        _setup()
     }
     
     public init (_ localized: LocalizedString...) {
         _attributedString = .init(string: String(localized))
-        _setup()
     }
     
     public init (_ localized: [LocalizedString]) {
         _attributedString = .init(string: String(localized))
-        _setup()
-    }
-    
-    private func _setup() {
-        _paragraphStyle.onUpdate { [weak self] in
-            guard let self = self else { return }
-            self.paragraphStyle(self._paragraphStyle)
-        }
     }
     
     @discardableResult
@@ -333,6 +322,14 @@ open class AttributedString: AnyString, BodyBuilderItemable {
     }
 }
 
+// MARK: ParagraphStyleDelegate
+
+extension AttributedString: ParagraphStyleDelegate {
+    func onParagraphUpdate(_ p: ParagraphStyle) {
+        paragraphStyle(p)
+    }
+}
+
 extension AttrStr: _FontableAtRange {
     func _setFont(_ v: UFont?) {
         guard let v = v else {
@@ -489,8 +486,7 @@ extension AttrStr: _FontableAtRange {
     
     @discardableResult
     public func maximumLineHeight<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        _paragraphStyle.maximumLineHeight(expressable)
-        return self
+        maximumLineHeight(expressable.unwrap())
     }
     
     // MARK: Line Height Multiple
@@ -504,7 +500,7 @@ extension AttrStr: _FontableAtRange {
     @discardableResult
     public func lineHeightMultiple(_ state: State<CGFloat>) -> Self {
         _paragraphStyle.lineHeightMultiple(state)
-        return lineHeightMultiple(state.wrappedValue)
+        return self
     }
     
     @discardableResult

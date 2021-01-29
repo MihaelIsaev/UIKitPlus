@@ -97,19 +97,18 @@ open class State<Value>: Stateable {
     // MARK: Experimental part
     
     public struct CombinedStateResult<A, B> {
-        public let left: A
-        public let right: B
+        public var left: A
+        public var right: B
     }
     
     /// Merging two states into one combined state which could be used as expressable state
     public func and<V>(_ state: State<V>) -> State<CombinedStateResult<Value, V>> {
-        let stateA = self
         let stateB = state
-        let combinedValue = { [unowned stateA, unowned stateB] in
-            CombinedStateResult(left: stateA.wrappedValue, right: stateB.wrappedValue)
+        let combinedValue = { [unowned self, unowned stateB] in
+            CombinedStateResult(left: self.wrappedValue, right: stateB.wrappedValue)
         }
         let resultState = State<CombinedStateResult<Value, V>>(wrappedValue: combinedValue())
-        stateA.listen { [weak resultState] in
+        self.listen { [weak resultState] in
             resultState?.wrappedValue = combinedValue()
         }
         stateB.listen { [weak resultState] in
