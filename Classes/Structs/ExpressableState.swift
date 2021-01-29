@@ -39,24 +39,28 @@ public protocol AnyState {
 }
 
 public class AnyStates {
-    private let _expression: () -> Void
-    lazy var value: () -> Void = {
-        self._expression()
+    private var _expression: (() -> Void)?
+    lazy var value: () -> Void = { [weak self] in
+        self?._expression?()
     }
     
     @discardableResult
     init (_ states: [AnyState], expression: @escaping () -> Void) {
         _expression = expression
-        states.forEach { $0.listen(expression) }
+        states.forEach {
+            $0.listen { [weak self] in
+                self?._expression?()
+            }
+        }
     }
 }
 
 extension Array where Element == AnyState {
     public func map<Result>(_ expression: @escaping () -> Result) -> State<Result> {
-        let sss = State<Result>.init(wrappedValue: expression())
+        let state = State<Result>.init(wrappedValue: expression())
         AnyStates(self) {
-            sss.wrappedValue = expression()
+            state.wrappedValue = expression()
         }
-        return sss
+        return state
     }
 }
