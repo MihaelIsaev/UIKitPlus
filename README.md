@@ -626,7 +626,7 @@ View().equalSize(to: otherView)
 /// all the same as for top(to:)
 ```
 
-> 💡 TIP: Feel free to use `State`, `ExpressableState`, and values based on device type everywhere
+> 💡 TIP: Feel free to use `UState`, and values based on device type everywhere
 
 #### Relative constraints by tags 🔥
 
@@ -1635,7 +1635,7 @@ let logo = Label.welcomeLogo.centerInSuperview()
 
 #### Properties
 
-All the properties are available to be set declaratively and can be binded to `State` or `ExpressableState`.
+All the properties are available to be set declaratively and can be binded to `UState`.
 
 A lot of layer properties are available directly and have convenient initializers.
 
