@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Borderedable {
+public protocol Borderedable: class {
     @discardableResult
     func bordered() -> Self
     
@@ -32,7 +32,9 @@ extension Borderedable {
     
     @discardableResult
     public func bordered(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.bordered($0) }
+        binding.listen { [weak self] in
+            self?.bordered($0)
+        }
         return bordered(binding.wrappedValue)
     }
     

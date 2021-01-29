@@ -36,7 +36,9 @@ extension Tintable {
     
     @discardableResult
     public func tint(_ state: State<UColor>) -> Self {
-        state.listen { self.tint($0) }
+        state.listen { [weak self] in
+            self?.tint($0)
+        }
         return tint(state.wrappedValue)
     }
     

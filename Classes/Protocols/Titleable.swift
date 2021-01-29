@@ -80,7 +80,9 @@ extension Titleable {
     @discardableResult
     public func title<A: AnyString>(_ state: State<A>) -> Self {
         title(state.wrappedValue)
-        state.listen { self.title(state.wrappedValue) }
+        state.listen { [weak self] in
+            self?.title($0)
+        }
         return self
     }
     

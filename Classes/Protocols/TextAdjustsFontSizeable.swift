@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol TextAdjustsFontSizeable {
+public protocol TextAdjustsFontSizeable: class {
     @discardableResult
     func adjustsFontSizeToFitWidth() -> Self
     
@@ -30,7 +30,9 @@ extension TextAdjustsFontSizeable {
     
     @discardableResult
     public func adjustsFontSizeToFitWidth(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.adjustsFontSizeToFitWidth($0) }
+        binding.listen { [weak self] in
+            self?.adjustsFontSizeToFitWidth($0)
+        }
         return adjustsFontSizeToFitWidth(binding.wrappedValue)
     }
     

@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol FirstResponderRefusable {
+public protocol FirstResponderRefusable: class {
     @discardableResult
     func refuseFirstResponder() -> Self
     
@@ -32,7 +32,9 @@ extension FirstResponderRefusable {
     
     @discardableResult
     public func refuseFirstResponder(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.refuseFirstResponder($0) }
+        binding.listen { [weak self] in
+            self?.refuseFirstResponder($0)
+        }
         return refuseFirstResponder(binding.wrappedValue)
     }
     

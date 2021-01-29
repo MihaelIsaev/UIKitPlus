@@ -1,22 +1,21 @@
 public class ExpressableState<S, Result> where S: Stateable {
-    let state: S
-    private let _expression: (S.Value) -> Result
-    lazy var value: () -> Result = { [unowned self] in
-        self._expression(self.state.wrappedValue)
-    }
+    weak var _leftState: S?
+    let _value: () -> Result
     
     init (_ state: S, _ expression: @escaping (S.Value) -> Result) {
-        self.state = state
-        _expression = expression
+        _leftState = state
+        _value = { [unowned state] in
+            expression(state.wrappedValue)
+        }
     }
     
     public func unwrap() -> State<Result> {
-        let state: State<Result> = .init(wrappedValue: self.value())
-        self.state.listen { [weak self, weak state] _ in
+        let resultState: State<Result> = .init(wrappedValue: _value())
+        self._leftState?.listen { [weak self, weak resultState] in
             guard let self = self else { return }
-            state?.wrappedValue = self.value()
+            resultState?.wrappedValue = self._value()
         }
-        return state
+        return resultState
     }
 }
 
@@ -34,7 +33,7 @@ extension Stateable {
 
 // MARK: Any States to Expressable
 
-public protocol AnyState {
+public protocol AnyState: class {
     func listen(_ listener: @escaping () -> Void)
 }
 

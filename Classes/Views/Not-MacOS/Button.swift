@@ -208,8 +208,8 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
         default:
             st = .init(wrappedValue: bind.wrappedValue.attributedString)
         }
-        bind.listen { [weak self] new in
-            st.wrappedValue = new.attributedString
+        bind.listen { [weak self, weak st] new in
+            st?.wrappedValue = new.attributedString
             self?.setAttributedTitle(new.attributedString, for: state)
         }
         return self
@@ -240,25 +240,35 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func color(_ binding: UIKitPlus.State<UIColor>, _ state: UIControl.State = .normal) -> Self {
-        binding.listen { self.color($0, state) }
+        binding.listen { [weak self] in
+            self?.color($0, state)
+        }
         return color(binding.wrappedValue, state)
     }
     
     @discardableResult
     public func color<V>(_ expressable: ExpressableState<V, UIColor>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { _,_ in self.color(expressable.value(), state) }
+        expressable.state.listen { [weak self, weak expressable] in
+            guard let expressable = expressable else { return }
+            self?.color(expressable.value(), state)
+        }
         return color(expressable.value(), state)
     }
     
     @discardableResult
     public func color(_ binding: UIKitPlus.State<Int>, _ state: UIControl.State = .normal) -> Self {
-        binding.listen { self.color($0, state) }
+        binding.listen { [weak self] in
+            self?.color($0, state)
+        }
         return color(binding.wrappedValue, state)
     }
     
     @discardableResult
     public func color<V>(_ expressable: ExpressableState<V, Int>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { _,_ in self.color(expressable.value(), state) }
+        expressable.state.listen { [weak self, weak expressable] _,_ in
+            guard let expressable = expressable else { return }
+            self?.color(expressable.value(), state)
+        }
         return color(expressable.value(), state)
     }
     
@@ -277,13 +287,18 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func image(_ binding: UIKitPlus.State<UIImage>, _ state: UIControl.State = .normal) -> Self {
-        binding.listen { self.image($0, state) }
+        binding.listen { [weak self] in
+            self?.image($0, state)
+        }
         return image(binding.wrappedValue, state)
     }
     
     @discardableResult
     public func image<V>(_ expressable: ExpressableState<V, UIImage>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { _,_ in self.image(expressable.value(), state) }
+        expressable.state.listen { [weak self, weak expressable] in
+            guard let expressable = expressable else { return }
+            self?.image(expressable.value(), state)
+        }
         return image(expressable.value(), state)
     }
     
@@ -302,13 +317,18 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func backgroundImage(_ binding: UIKitPlus.State<UIImage>, _ state: UIControl.State = .normal) -> Self {
-        binding.listen { self.image($0, state) }
+        binding.listen { [weak self] in
+            self?.image($0, state)
+        }
         return backgroundImage(binding.wrappedValue, state)
     }
     
     @discardableResult
     public func backgroundImage<V>(_ expressable: ExpressableState<V, UIImage>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { _,_ in self.image(expressable.value(), state) }
+        expressable.state.listen { [weak self, weak expressable] in
+            guard let expressable = expressable else { return }
+            self?.image(expressable.value(), state)
+        }
         return backgroundImage(expressable.value(), state)
     }
     

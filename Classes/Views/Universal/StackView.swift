@@ -185,11 +185,7 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     
     @discardableResult
     public func spacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        expressable.state.listen { [weak self] _,_ in
-            self?.spacing = expressable.value()
-        }
-        self.spacing = expressable.value()
-        return self
+        spacing(expressable.unwrap())
     }
     
     func add(item: BodyBuilderItemable) {

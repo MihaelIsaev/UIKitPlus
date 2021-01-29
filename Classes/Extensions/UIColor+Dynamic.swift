@@ -44,8 +44,9 @@ public class Color {
     }
     
     private func _setup() {
-        App.shared.$theme.listen { old, new in
+        App.shared.$theme.listen { [weak self] old, new in
             guard old != new else { return }
+            guard let self = self else { return }
             switch new {
             case .dark:
                 self.changeHandler?(self.dark)

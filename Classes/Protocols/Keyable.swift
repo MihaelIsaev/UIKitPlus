@@ -27,7 +27,9 @@ extension Keyable {
     @discardableResult
     public func key(_ state: State<String>) -> Self {
         key(state.wrappedValue)
-        state.listen { self.key($0) }
+        state.listen { [weak self] in
+            self?.key($0)
+        }
         return self
     }
 

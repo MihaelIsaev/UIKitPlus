@@ -105,11 +105,7 @@ open class UHScrollStack: UScrollView {
     
     @discardableResult
     public func spacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        expressable.state.listen { [weak self] _,_ in
-            self?.stack.spacing = expressable.value()
-        }
-        stack.spacing = expressable.value()
-        return self
+        spacing(expressable.unwrap())
     }
 }
 #endif

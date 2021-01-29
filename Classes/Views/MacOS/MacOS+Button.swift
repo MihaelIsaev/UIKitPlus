@@ -226,8 +226,8 @@ open class UButton: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     /// Listens for mouse hover and pass it into state
     @discardableResult
     public func hoveredByMouse(_ state: State<Bool>) -> Self {
-        isHoveredByMouse.listen {
-            state.wrappedValue = $0
+        isHoveredByMouse.listen { [weak state] in
+            state?.wrappedValue = $0
         }
         return self
     }

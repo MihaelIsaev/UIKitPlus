@@ -20,12 +20,12 @@ public class InnerState<Value, InnerValue> {
         _wrappedValue = value
         _keyPath = keyPath
         innerState = _wrappedValue.wrappedValue[keyPath: keyPath]
-        value.listen { [weak self] oldValue, newValue in
+        value.listen { [weak self, weak keyPath] newValue in
+            guard let keyPath = keyPath else { return }
             self?.innerState = newValue[keyPath: keyPath]
         }
         $innerState.listen { [weak self] oldValue, newValue in
-            guard let self = self else { return }
-            self.listeners.forEach { $0(oldValue, newValue) }
+            self?.listeners.forEach { $0(oldValue, newValue) }
         }
     }
 

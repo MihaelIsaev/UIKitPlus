@@ -36,7 +36,9 @@ extension Colorable {
     
     @discardableResult
     public func color(_ state: State<UColor>) -> Self {
-        state.listen { self.color($0) }
+        state.listen { [weak self] in
+            self?.color($0)
+        }
         return color(state.wrappedValue)
     }
     

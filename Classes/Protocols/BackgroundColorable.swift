@@ -36,7 +36,9 @@ extension BackgroundColorable {
     
     @discardableResult
     public func background(_ state: State<UColor>) -> Self {
-        state.listen { self.background($0) }
+        state.listen { [weak self] in
+            self?.background($0)
+        }
         return background(state.wrappedValue)
     }
     

@@ -791,7 +791,8 @@ extension UTextField: _Typeable {
     }
     
     func _observeTypingState(_ v: UIKitPlus.State<Bool>) {
-        _properties.isTypingState.listen {
+        _properties.isTypingState.listen { [weak v] in
+            guard let v = v else { return }
             guard v.wrappedValue != $0 else { return }
             v.wrappedValue = $0
         }

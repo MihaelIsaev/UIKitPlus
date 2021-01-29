@@ -40,9 +40,8 @@ open class UImage: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         super.init(frame: .zero)
         self.image = UIImage(named: name.wrappedValue)
         _setup()
-        name.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self.image = UIImage(named: new)
+        name.listen { [weak self] new in
+            self?.image = UIImage(named: new)
         }
     }
     
@@ -60,9 +59,8 @@ open class UImage: UIImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         super.init(frame: .zero)
         self.image = image.wrappedValue
         _setup()
-        image.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self.image = new
+        image.listen { [weak self] new in
+            self?.image = new
         }
     }
     

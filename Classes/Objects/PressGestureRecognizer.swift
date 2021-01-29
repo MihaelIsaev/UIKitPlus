@@ -36,7 +36,9 @@ final public class PressGestureRecognizer: NSPressGestureRecognizer, _GestureTra
     
     @discardableResult
     public func numberOfTouchesRequired(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.numberOfTouchesRequired = $0 }
+        state.listen { [weak self] in
+            self?.numberOfTouchesRequired = $0
+        }
         return self
     }
     
@@ -53,7 +55,9 @@ final public class PressGestureRecognizer: NSPressGestureRecognizer, _GestureTra
     
     @discardableResult
     public func minimumPressDuration(_ state: UIKitPlus.State<TimeInterval>) -> Self {
-        state.listen { self.minimumPressDuration = $0 }
+        state.listen { [weak self] in
+            self?.minimumPressDuration = $0
+        }
         return self
     }
 
@@ -70,7 +74,9 @@ final public class PressGestureRecognizer: NSPressGestureRecognizer, _GestureTra
     
     @discardableResult
     public func allowableMovement(_ state: UIKitPlus.State<CGFloat>) -> Self {
-        state.listen { self.allowableMovement = $0 }
+        state.listen { [weak self] in
+            self?.allowableMovement = $0
+        }
         return self
     }
 
@@ -87,7 +93,9 @@ final public class PressGestureRecognizer: NSPressGestureRecognizer, _GestureTra
     
     @discardableResult
     public func buttonMask(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.buttonMask = $0 }
+        state.listen { [weak self] in
+            self?.buttonMask = $0
+        }
         return self
     }
 

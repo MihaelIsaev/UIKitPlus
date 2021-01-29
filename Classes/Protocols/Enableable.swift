@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Enableable {
+public protocol Enableable: class {
     @discardableResult
     func enabled() -> Self
     
@@ -30,7 +30,9 @@ extension Enableable {
     
     @discardableResult
     public func enabled(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.enabled($0) }
+        binding.listen { [weak self] in
+            self?.enabled($0)
+        }
         return enabled(binding.wrappedValue)
     }
     

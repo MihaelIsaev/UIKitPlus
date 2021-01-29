@@ -89,26 +89,24 @@ open class UPickerView: UIPickerView, AnyDeclarativeProtocol, DeclarativeProtoco
     
     @discardableResult
     public func textColor(_ binding: UIKitPlus.State<UIColor>) -> Self {
-        binding.listen { self.textColor($0) }
+        binding.listen { [weak self] in self?.textColor($0) }
         return textColor(binding.wrappedValue)
     }
     
     @discardableResult
     public func textColor<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        expressable.state.listen { _ in self.textColor(expressable.value()) }
-        return textColor(expressable.value())
+        textColor(expressable.unwrap())
     }
     
     @discardableResult
     public func textColor(_ binding: UIKitPlus.State<Int>) -> Self {
-        binding.listen { self.textColor($0) }
+        binding.listen { [weak self] in self?.textColor($0) }
         return textColor(binding.wrappedValue)
     }
     
     @discardableResult
     public func textColor<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        expressable.state.listen { _ in self.textColor(expressable.value()) }
-        return textColor(expressable.value())
+        textColor(expressable.unwrap())
     }
 }
 

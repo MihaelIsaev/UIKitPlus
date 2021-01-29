@@ -74,19 +74,12 @@ open class UImage: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         self.image = image.wrappedValue
         _setup()
         image.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self.image = new
+            self?.image = new
         }
     }
     
-    public init <V>(_ expressable: ExpressableState<V, NSImage?>) {
-        super.init(frame: .zero)
-        self.image = expressable.value()
-        _setup()
-        expressable.state.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self.image = expressable.value()
-        }
+    public convenience init <V>(_ expressable: ExpressableState<V, NSImage?>) {
+        self.init(expressable.unwrap())
     }
     
     public init (_ url: State<URL>, defaultImage: NSImage? = nil, loader: ImageLoader = .defaultRelease) {
@@ -113,16 +106,8 @@ open class UImage: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         }
     }
     
-    public init <V>(_ expressable: ExpressableState<V, String>, defaultImage: NSImage? = nil, loader: ImageLoader = .defaultRelease) {
-        super.init(frame: .zero)
-        _setup()
-        self.image = defaultImage
-        self._imageLoader = loader
-        self._imageLoader.load(expressable.value(), imageView: self, defaultImage: defaultImage)
-        expressable.state.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self._imageLoader.load(expressable.value(), imageView: self, defaultImage: defaultImage)
-        }
+    public convenience init <V>(_ expressable: ExpressableState<V, String>, defaultImage: NSImage? = nil, loader: ImageLoader = .defaultRelease) {
+        self.init(expressable.unwrap(), defaultImage: defaultImage, loader: loader)
     }
     
     public init (url: URL, defaultImage: NSImage? = nil, loader: ImageLoader = .defaultRelease) {

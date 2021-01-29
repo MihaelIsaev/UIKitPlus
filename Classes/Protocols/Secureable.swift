@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Secureable {
+public protocol Secureable: class {
     @discardableResult
     func secure() -> Self
     
@@ -30,7 +30,9 @@ extension Secureable {
     
     @discardableResult
     public func secure(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.secure($0) }
+        binding.listen { [weak self] in
+            self?.secure($0)
+        }
         return secure(binding.wrappedValue)
     }
     

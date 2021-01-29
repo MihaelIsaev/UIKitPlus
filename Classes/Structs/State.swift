@@ -105,8 +105,8 @@ open class State<Value>: Stateable {
     public func and<V>(_ state: State<V>) -> State<CombinedStateResult<Value, V>> {
         let stateA = self
         let stateB = state
-        let combinedValue = {
-            return CombinedStateResult(left: stateA.wrappedValue, right: stateB.wrappedValue)
+        let combinedValue = { [unowned stateA, unowned stateB] in
+            CombinedStateResult(left: stateA.wrappedValue, right: stateB.wrappedValue)
         }
         let resultState = State<CombinedStateResult<Value, V>>(wrappedValue: combinedValue())
         stateA.listen { [weak resultState] in

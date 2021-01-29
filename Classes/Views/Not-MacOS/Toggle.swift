@@ -41,8 +41,8 @@ open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInterna
         super.init(frame: .zero)
         setup()
         isOn = state.wrappedValue
-        binding?.listen { _, new in
-            self.setOn(new, animated: true)
+        binding?.listen { [weak self] new in
+            self?.setOn(new, animated: true)
         }
     }
     
@@ -95,26 +95,24 @@ open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func onTint(_ binding: UIKitPlus.State<UIColor>) -> Self {
-        binding.listen { self.onTint($0) }
+        binding.listen { [weak self] in self?.onTint($0) }
         return onTint(binding.wrappedValue)
     }
     
     @discardableResult
     public func onTint<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        expressable.state.listen { _ in self.onTint(expressable.value()) }
-        return onTint(expressable.value())
+        onTint(expressable.unwrap())
     }
     
     @discardableResult
     public func onTint(_ binding: UIKitPlus.State<Int>) -> Self {
-        binding.listen { self.onTint($0) }
+        binding.listen { [weak self] in self?.onTint($0) }
         return onTint(binding.wrappedValue)
     }
     
     @discardableResult
     public func onTint<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        expressable.state.listen { _ in self.onTint(expressable.value()) }
-        return onTint(expressable.value())
+        onTint(expressable.unwrap())
     }
     
     @discardableResult
@@ -131,26 +129,24 @@ open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func thumbTint(_ binding: UIKitPlus.State<UIColor>) -> Self {
-        binding.listen { self.thumbTint($0) }
+        binding.listen { [weak self] in self?.thumbTint($0) }
         return thumbTint(binding.wrappedValue)
     }
     
     @discardableResult
     public func thumbTint<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        expressable.state.listen { _ in self.thumbTint(expressable.value()) }
-        return thumbTint(expressable.value())
+        thumbTint(expressable.unwrap())
     }
     
     @discardableResult
     public func thumbTint(_ binding: UIKitPlus.State<Int>) -> Self {
-        binding.listen { self.thumbTint($0) }
+        binding.listen { [weak self] in self?.thumbTint($0) }
         return thumbTint(binding.wrappedValue)
     }
     
     @discardableResult
     public func thumbTint<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        expressable.state.listen { _ in self.thumbTint(expressable.value()) }
-        return thumbTint(expressable.value())
+        thumbTint(expressable.unwrap())
     }
     
     @discardableResult
@@ -161,14 +157,13 @@ open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func onImage(_ binding: UIKitPlus.State<UIImage?>) -> Self {
-        binding.listen { self.onImage($0) }
+        binding.listen { [weak self] in self?.onImage($0) }
         return onImage(binding.wrappedValue)
     }
     
     @discardableResult
     public func onImage<V>(_ expressable: ExpressableState<V, UIImage?>) -> Self {
-        expressable.state.listen { _ in self.onImage(expressable.value()) }
-        return onImage(expressable.value())
+        onImage(expressable.unwrap())
     }
     
     @discardableResult
@@ -179,14 +174,13 @@ open class UToggle: UISwitch, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func offImage(_ binding: UIKitPlus.State<UIImage?>) -> Self {
-        binding.listen { self.offImage($0) }
+        binding.listen { [weak self] in self?.offImage($0) }
         return offImage(binding.wrappedValue)
     }
     
     @discardableResult
     public func offImage<V>(_ expressable: ExpressableState<V, UIImage?>) -> Self {
-        expressable.state.listen { _ in self.offImage(expressable.value()) }
-        return offImage(expressable.value())
+        offImage(expressable.unwrap())
     }
 }
 

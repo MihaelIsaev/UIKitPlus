@@ -80,7 +80,9 @@ extension Textable {
     @discardableResult
     public func text<A: AnyString>(_ state: State<A>) -> Self {
         text(state.wrappedValue)
-        state.listen { self.text($0) }
+        state.listen { [weak self] in
+            self?.text($0)
+        }
         (self as? TextBindable)?.bind(state)
         return self
     }

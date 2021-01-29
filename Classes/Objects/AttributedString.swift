@@ -126,8 +126,8 @@ open class AttributedString: AnyString, BodyBuilderItemable {
     @discardableResult
     public func background(_ state: State<UColor>, at range: ClosedRange<Int>? = nil) -> Self {
         background(state.wrappedValue, at: range)
-        state.listen { old, new in
-            self.background(new, at: range)
+        state.listen { [weak self] new in
+            self?.background(new, at: range)
         }
         return self
     }
@@ -154,8 +154,8 @@ open class AttributedString: AnyString, BodyBuilderItemable {
     @discardableResult
     public func foreground(_ state: State<UColor>, at range: ClosedRange<Int>? = nil) -> Self {
         foreground(state.wrappedValue, at: range)
-        state.listen { old, new in
-            self.foreground(new, at: range)
+        state.listen { [weak self] new in
+            self?.foreground(new, at: range)
         }
         return self
     }
