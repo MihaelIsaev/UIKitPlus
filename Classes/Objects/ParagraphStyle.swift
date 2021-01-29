@@ -439,7 +439,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         get { super.tighteningFactorForTruncation }
         set {
             super.tighteningFactorForTruncation = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -470,7 +470,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         get { super.headerLevel }
         set {
             super.headerLevel = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -501,7 +501,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         get { super.allowsDefaultTighteningForTruncation }
         set {
             super.allowsDefaultTighteningForTruncation = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -658,7 +658,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         get { super.textBlocks }
         set {
             super.textBlocks = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -689,7 +689,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         get { super.textLists }
         set {
             super.textLists = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
