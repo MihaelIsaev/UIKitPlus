@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol GestureTrackable {
+public protocol GestureTrackable: class {
     @discardableResult
     func trackState(_ action: @escaping (UGestureRecognizer.State) -> Void) -> Self
     
@@ -101,7 +101,8 @@ extension GestureTrackable {
     @discardableResult
     public func trackState(_ action: @escaping (UGestureRecognizer.State, Self) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
-        s._tracker.change = {
+        s._tracker.change = { [weak self] in
+            guard let self = self else { return }
             action($0, self)
         }
         return self
@@ -110,7 +111,10 @@ extension GestureTrackable {
     @discardableResult
     public func trackState(_ action: @escaping (Self, UGestureRecognizer.State) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
-        s._tracker.change = { action(self, $0) }
+        s._tracker.change = { [weak self] in
+            guard let self = self else { return }
+            action(self, $0)
+        }
         return self
     }
     
@@ -126,42 +130,60 @@ extension GestureTrackable {
     @discardableResult
     public func onPossible(_ action: @escaping (Self) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
-        s._tracker.possible = { action(self) }
+        s._tracker.possible = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
     @discardableResult
     public func onBegan(_ action: @escaping (Self) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
-        s._tracker.began = { action(self) }
+        s._tracker.began = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
     @discardableResult
     public func onChanged(_ action: @escaping (Self) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
-        s._tracker.changed = { action(self) }
+        s._tracker.changed = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
     @discardableResult
     public func onEnded(_ action: @escaping (Self) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
-        s._tracker.ended = { action(self) }
+        s._tracker.ended = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
     @discardableResult
     public func onCancelled(_ action: @escaping (Self) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
-        s._tracker.cancelled = { action(self) }
+        s._tracker.cancelled = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
     @discardableResult
     public func onFailed(_ action: @escaping (Self) -> Void) -> Self {
         guard let s = self as? _GestureTrackable else { return self }
-        s._tracker.failed = { action(self) }
+        s._tracker.failed = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
@@ -183,7 +205,8 @@ extension _GestureTrackable {
     
     @discardableResult
     public func trackState(_ action: @escaping (UGestureRecognizer.State, Self) -> Void) -> Self {
-        _tracker.change = {
+        _tracker.change = { [weak self] in
+            guard let self = self else { return }
             action($0, self)
         }
         return self
@@ -191,7 +214,10 @@ extension _GestureTrackable {
     
     @discardableResult
     public func trackState(_ action: @escaping (Self, UGestureRecognizer.State) -> Void) -> Self {
-        _tracker.change = { action(self, $0) }
+        _tracker.change = { [weak self] in
+            guard let self = self else { return }
+            action(self, $0)
+        }
         return self
     }
     
@@ -205,37 +231,55 @@ extension _GestureTrackable {
     
     @discardableResult
     public func onPossible(_ action: @escaping (Self) -> Void) -> Self {
-        _tracker.possible = { action(self) }
+        _tracker.possible = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
     @discardableResult
     public func onBegan(_ action: @escaping (Self) -> Void) -> Self {
-        _tracker.began = { action(self) }
+        _tracker.began = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
     @discardableResult
     public func onChanged(_ action: @escaping (Self) -> Void) -> Self {
-        _tracker.changed = { action(self) }
+        _tracker.changed = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
     @discardableResult
     public func onEnded(_ action: @escaping (Self) -> Void) -> Self {
-        _tracker.ended = { action(self) }
+        _tracker.ended = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
     @discardableResult
     public func onCancelled(_ action: @escaping (Self) -> Void) -> Self {
-        _tracker.cancelled = { action(self) }
+        _tracker.cancelled = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     
     @discardableResult
     public func onFailed(_ action: @escaping (Self) -> Void) -> Self {
-        _tracker.failed = { action(self) }
+        _tracker.failed = { [weak self] in
+            guard let self = self else { return }
+            action(self)
+        }
         return self
     }
     

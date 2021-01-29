@@ -10,19 +10,19 @@ extension WrappedViewControllerable {
         protocolView.hidden(hidden)
         #if os(macOS)
         if hidden {
-            protocolController.viewWillDisappear()
-            protocolController.viewDidDisappear()
+            protocolController?.viewWillDisappear()
+            protocolController?.viewDidDisappear()
         } else {
-            protocolController.viewWillAppear()
-            protocolController.viewDidAppear()
+            protocolController?.viewWillAppear()
+            protocolController?.viewDidAppear()
         }
         #else
         if hidden {
-            protocolController.viewWillDisappear(false)
-            protocolController.viewDidDisappear(false)
+            protocolController?.viewWillDisappear(false)
+            protocolController?.viewDidDisappear(false)
         } else {
-            protocolController.viewWillAppear(false)
-            protocolController.viewDidAppear(false)
+            protocolController?.viewWillAppear(false)
+            protocolController?.viewDidAppear(false)
         }
         #endif
     }

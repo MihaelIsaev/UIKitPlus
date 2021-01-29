@@ -6,5 +6,5 @@ import UIKit
 
 public protocol WrappedViewControllerable {
     var protocolView: UView { get }
-    var protocolController: BaseViewController { get }
+    var protocolController: BaseViewController? { get }
 }

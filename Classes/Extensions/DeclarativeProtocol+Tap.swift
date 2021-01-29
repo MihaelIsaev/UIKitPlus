@@ -28,7 +28,8 @@ extension DeclarativeProtocol where V: UIView {
     @discardableResult
     public func onTapGesture(taps: Int = 1, touches: Int = 1, _ action: @escaping (Self, UIGestureRecognizer.State, TapGestureRecognizer) -> Void) -> Self {
         let recognizer = TapGestureRecognizer(taps: taps, touches: touches)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+            guard let self = self, let recognizer = recognizer else { return }
             action(self, $0, recognizer)
         })
         return self
@@ -56,7 +57,7 @@ extension DeclarativeProtocol where V: UIControl {
     
     @discardableResult
     public func onTapGesture(_ event: UIControl.Event = .touchUpInside, _ action: @escaping (V) -> Void) -> Self {
-        declarativeView.actionHandler(controlEvents: event) {
+        declarativeView.actionHandler(controlEvents: event) { [weak self] in
             guard let self = self as? V else { return }
             action(self)
         }

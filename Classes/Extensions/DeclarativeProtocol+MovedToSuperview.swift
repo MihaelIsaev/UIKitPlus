@@ -6,9 +6,15 @@ import UIKit
 
 extension DeclarativeProtocol {
     func movedToSuperview() {
-        _declarativeView._properties.notAppliedPreConstraintsSolo.forEach(declarativeView.activateSolo)
-        _declarativeView._properties.notAppliedPreConstraintsSuper.forEach(declarativeView.activateSuper)
-        _declarativeView._properties.notAppliedPreConstraintsRelative.forEach(declarativeView.activateRelative)
+        for constraint in _declarativeView._properties.notAppliedPreConstraintsSolo {
+            declarativeView.activateSolo(constraint)
+        }
+        for constraint in _declarativeView._properties.notAppliedPreConstraintsSuper {
+            declarativeView.activateSuper(constraint)
+        }
+        for constraint in _declarativeView._properties.notAppliedPreConstraintsRelative {
+            declarativeView.activateRelative(constraint)
+        }
         NotificationCenter.default.post(raw: AddedViewWithTag(tag))
     }
 }
