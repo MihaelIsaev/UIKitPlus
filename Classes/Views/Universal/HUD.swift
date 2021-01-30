@@ -152,7 +152,7 @@ open class UHUD: UView {
             #else
             UIView.animate(withDuration: 0.3, animations: {
                 self.alpha(0)
-            }) {
+            }) { _ in
                 self.activityIndicator.stopAnimating()
                 self.hidden().alpha(1)
                 completionHandler?()
