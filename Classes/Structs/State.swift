@@ -1,4 +1,4 @@
-public protocol Stateable: AnyState {
+public protocol Stateable: AnyObject, AnyState {
     associatedtype Value
     
     var wrappedValue: Value { get set }
@@ -80,10 +80,10 @@ open class State<Value>: Stateable {
         self.wrappedValue = state.wrappedValue
         var justSetExternal = false
         var justSetInternal = false
-        state.listen { new in
+        state.listen { [weak self] new in
             guard !justSetInternal else { return }
             justSetExternal = true
-            self.wrappedValue = new
+            self?.wrappedValue = new
             justSetExternal = false
         }
         self.listen { new in

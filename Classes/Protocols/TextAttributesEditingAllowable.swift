@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol TextAttributesEditingAllowable {
+public protocol TextAttributesEditingAllowable: AnyObject {
     @discardableResult
     func allowEditingTextAttributes() -> Self
     
@@ -30,7 +30,7 @@ extension TextAttributesEditingAllowable {
     
     @discardableResult
     public func allowEditingTextAttributes(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.allowEditingTextAttributes($0) }
+        binding.listen { [weak self] in self?.allowEditingTextAttributes($0) }
         return allowEditingTextAttributes(binding.wrappedValue)
     }
     

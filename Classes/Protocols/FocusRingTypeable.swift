@@ -19,7 +19,7 @@ protocol _FocusRingTypeable: FocusRingTypeable {
 extension FocusRingTypeable {
     @discardableResult
     public func focusRingType(_ binding: UIKitPlus.State<NSFocusRingType>) -> Self {
-        binding.listen { self.focusRingType($0) }
+        binding.listen { [weak self] in self?.focusRingType($0) }
         return focusRingType(binding.wrappedValue)
     }
     

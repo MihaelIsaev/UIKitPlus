@@ -27,7 +27,7 @@ final public class MagnificationGestureRecognizer: NSMagnificationGestureRecogni
     
     @discardableResult
     public func magnification(_ state: UIKitPlus.State<CGFloat>) -> Self {
-        state.listen { self.magnification = $0 }
+        state.listen { [weak self] in self?.magnification = $0 }
         return self
     }
 

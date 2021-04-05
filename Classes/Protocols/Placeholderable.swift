@@ -80,7 +80,7 @@ extension Placeholderable {
     @discardableResult
     public func placeholder<A: AnyString>(_ state: State<A>) -> Self {
         placeholder(state.wrappedValue)
-        state.listen { self.placeholder($0) }
+        state.listen { [weak self] in self?.placeholder($0) }
         return self
     }
     

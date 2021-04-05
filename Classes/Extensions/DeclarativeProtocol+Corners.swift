@@ -19,8 +19,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func corners(_ state: State<CGFloat>) -> Self {
         corners(state.wrappedValue)
-        state.listen { old, new in
-            self.corners(state.wrappedValue)
+        state.listen { [weak self] old, new in
+            self?.corners(state.wrappedValue)
         }
         return self
     }
@@ -28,8 +28,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func corners<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
         corners(expressable.value())
-        expressable.state.listen { old, new in
-            self.corners(expressable.value())
+        expressable.state.listen { [weak self] old, new in
+            self?.corners(expressable.value())
         }
         return self
     }
@@ -66,8 +66,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func corners(_ state: State<CGFloat>) -> Self {
         corners(state.wrappedValue)
-        state.listen { old, new in
-            self.corners(state.wrappedValue)
+        state.listen { [weak self] old, new in
+            self?.corners(state.wrappedValue)
         }
         return self
     }

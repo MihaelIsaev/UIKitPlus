@@ -87,14 +87,14 @@ open class USegmentedControl: UISegmentedControl, AnyDeclarativeProtocol, Declar
     @discardableResult
     public func select(_ binding: UIKitPlus.State<Int>) -> Self {
         selectBinding = binding
-        binding.listen { self.selectedSegmentIndex = $0 }
+        binding.listen { [weak self] in self?.selectedSegmentIndex = $0 }
         return select(binding.wrappedValue)
     }
     
     @discardableResult
     public func select<V>(_ expressable: ExpressableState<V, Int>) -> Self {
         selectBinding = expressable.unwrap()
-        expressable.state.listen { _,_ in self.select(expressable.value()) }
+        expressable.state.listen { [weak self] _,_ in self?.select(expressable.value()) }
         return select(expressable.value())
     }
     

@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Alternateable {
+public protocol Alternateable: AnyObject {
     @discardableResult
     func alternate() -> Self
     
@@ -30,7 +30,7 @@ extension Alternateable {
     
     @discardableResult
     public func alternate(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.alternate($0) }
+        binding.listen { [weak self] in self?.alternate($0) }
         return alternate(binding.wrappedValue)
     }
     

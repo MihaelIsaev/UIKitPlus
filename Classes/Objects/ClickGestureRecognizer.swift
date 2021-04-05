@@ -25,7 +25,7 @@ final public class ClickGestureRecognizer: NSClickGestureRecognizer, _GestureTra
     
     @discardableResult
     public func numberOfClicksRequired(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.numberOfClicksRequired = $0 }
+        state.listen { [weak self] in self?.numberOfClicksRequired = $0 }
         return self
     }
 
@@ -42,7 +42,7 @@ final public class ClickGestureRecognizer: NSClickGestureRecognizer, _GestureTra
     
     @discardableResult
     public func numberOfTouchesRequired(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.numberOfTouchesRequired = $0 }
+        state.listen { [weak self] in self?.numberOfTouchesRequired = $0 }
         return self
     }
 
@@ -59,7 +59,7 @@ final public class ClickGestureRecognizer: NSClickGestureRecognizer, _GestureTra
     
     @discardableResult
     public func buttonMask(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.buttonMask = $0 }
+        state.listen { [weak self] in self?.buttonMask = $0 }
         return self
     }
 

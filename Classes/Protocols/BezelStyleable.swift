@@ -32,7 +32,7 @@ extension BezelStyleable {
         guard var s = self as? _BezelStyleable else { return self }
         s._bezelStyleState = binding
         s._setBezelStyle(binding.wrappedValue)
-        binding.listen { s._setBezelStyle($0) }
+        binding.listen { [weak self] in s?._setBezelStyle($0) }
         return self
     }
     
@@ -51,7 +51,7 @@ extension _BezelStyleable {
     public func style(_ binding: UIKitPlus.State<NSButton.BezelStyle>) -> Self {
         _bezelStyleState = binding
         _setBezelStyle(binding.wrappedValue)
-        binding.listen { self._setBezelStyle($0) }
+        binding.listen { [weak self] in self?._setBezelStyle($0) }
         return self
     }
     

@@ -19,7 +19,7 @@ protocol _ArrowPositionable: ArrowPositionable {
 extension ArrowPositionable {
     @discardableResult
     public func arrowPosition(_ binding: UIKitPlus.State<NSPopUpButton.ArrowPosition>) -> Self {
-        binding.listen { self.arrowPosition($0) }
+        binding.listen { [weak self] in self?.arrowPosition($0) }
         return arrowPosition(binding.wrappedValue)
     }
     

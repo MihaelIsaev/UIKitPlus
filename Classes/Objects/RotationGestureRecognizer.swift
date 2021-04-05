@@ -31,7 +31,7 @@ final public class RotationGestureRecognizer: NSRotationGestureRecognizer, _Gest
     
     @discardableResult
     public func rotation(_ state: UIKitPlus.State<CGFloat>) -> Self {
-        state.listen { self.rotation = $0 }
+        state.listen { [weak self] in self?.rotation = $0 }
         return self
     }
 
@@ -48,7 +48,7 @@ final public class RotationGestureRecognizer: NSRotationGestureRecognizer, _Gest
     
     @discardableResult
     public func rotationInDegrees(_ state: UIKitPlus.State<CGFloat>) -> Self {
-        state.listen { self.rotationInDegrees = $0 }
+        state.listen { [weak self] in self?.rotationInDegrees = $0 }
         return self
     }
 
@@ -87,7 +87,7 @@ final public class RotationGestureRecognizer: UIRotationGestureRecognizer, _Gest
     
     @discardableResult
     public func rotation(_ state: UIKitPlus.State<CGFloat>) -> Self {
-        state.listen { self.rotation = $0 }
+        state.listen { [weak self] in self?.rotation = $0 }
         return self
     }
 

@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol MultiClickIgnorable {
+public protocol MultiClickIgnorable: AnyObject {
     @discardableResult
     func ignoreMultiClick() -> Self
     
@@ -32,7 +32,7 @@ extension MultiClickIgnorable {
     
     @discardableResult
     public func ignoreMultiClick(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.ignoreMultiClick($0) }
+        binding.listen { [weak self] in self?.ignoreMultiClick($0) }
         return ignoreMultiClick(binding.wrappedValue)
     }
     

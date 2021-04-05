@@ -34,7 +34,7 @@ extension KeyMaskable {
     @discardableResult
     public func keyMask(_ state: State<NSEvent.ModifierFlags>) -> Self {
         keyMask(state.wrappedValue)
-        state.listen { self.keyMask($0) }
+        state.listen { [weak self] in self?.keyMask($0) }
         return self
     }
 

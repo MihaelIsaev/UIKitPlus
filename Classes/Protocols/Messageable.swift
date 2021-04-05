@@ -80,7 +80,7 @@ extension Messageable {
     @discardableResult
     public func message<A: AnyString>(_ state: State<A>) -> Self {
         message(state.wrappedValue)
-        state.listen { self.message($0) }
+        state.listen { [weak self] in self?.message($0) }
         return self
     }
     

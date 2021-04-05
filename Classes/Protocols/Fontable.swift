@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Fontable {
+public protocol Fontable: AnyObject {
     @discardableResult
     func font(v: UFont?) -> Self
     
@@ -24,7 +24,7 @@ extension Fontable {
     
     @discardableResult
     public func font(_ binding: State<UFont>) -> Self {
-        binding.listen { self.font(v: $0) }
+        binding.listen { [weak self] in self?.font(v: $0) }
         return font(v: binding.wrappedValue)
     }
     
