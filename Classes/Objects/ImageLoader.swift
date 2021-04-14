@@ -26,6 +26,8 @@ open class ImageLoader {
 
     public var reloadingStyle: ImageReloadingStyle
 
+    private var uuid: UUID?
+
     public init (_ reloadingStyle: ImageReloadingStyle = .release) {
         self.reloadingStyle = reloadingStyle
     }
@@ -36,16 +38,23 @@ open class ImageLoader {
 
     open func load(_ url: URL?, imageView: _UImageView, defaultImage: _UImage? = nil) {
         DispatchQueue.main.async { [weak self] in
-            loaderQueue.async { [weak self] in
+            loaderQueue.async {
+                /// Before image update we should check it
+                let uuid = UUID()
+                self?.uuid = uuid
+
+                /// Cancel previous task
+                self?.cancel()
+
                 /// Checks if URL is valid, otherwise trying to set default image
                 guard let url = url, url.absoluteString.count > 0 else {
-                    if let defaultImage = defaultImage {
-                        DispatchQueue.main.async {
-                            imageView.image = defaultImage
-                        }
+                    DispatchQueue.main.async {
+                        guard self?.uuid == uuid else { return }
+                        imageView.image = defaultImage
                     }
                     return
                 }
+
                 /// Builds path to image in cache
                 guard let localImagePath = self?.localImagePath(url).path else { return }
 
@@ -57,30 +66,36 @@ open class ImageLoader {
                 }
 
                 /// Release `imageView.image` before downloading the new one
-                DispatchQueue.main.async { [weak self] in
+                DispatchQueue.main.async {
+                    guard self?.uuid == uuid else { return }
                     self?.releaseBeforeDownloading(imageView, defaultImage)
                 }
 
                 /// Checking if image exists in cache
                 if let cachedImageData = cachedImageData, let image = _UImage(data: cachedImageData)?.forceLoad() {
                     /// Apply chached image to `imageView.image`
-                    DispatchQueue.main.async { [weak self] in
+                    DispatchQueue.main.async {
+                        guard self?.uuid == uuid else { return }
                         self?.applyLocalImage(imageView, image)
                     }
+                    return
                 } else if let localImageData = localImageData, let image = _UImage(data: localImageData)?.forceLoad() {
                     cache.save(url.absoluteString, localImageData)
                     /// Apply chached image to `imageView.image`
-                    DispatchQueue.main.async { [weak self] in
+                    DispatchQueue.main.async {
+                        guard self?.uuid == uuid else { return }
                         self?.applyLocalImage(imageView, image)
                     }
+                    return
                 }
 
                 /// Downloads image data from URL
-                self?.downloadImage(url) { [weak self] imageData in
+                self?.downloadImage(url) { imageData in
                     if let cachedImageData = cachedImageData {
                         if imageData.hashValue != cachedImageData.hashValue {
                             if let image = _UImage(data: imageData)?.forceLoad() {
-                                DispatchQueue.main.async { [weak self] in
+                                DispatchQueue.main.async {
+                                    guard self?.uuid == uuid else { return }
                                     self?.setImage(imageView, image)
                                 }
                             }
@@ -88,7 +103,8 @@ open class ImageLoader {
                             self?.fm.createFile(atPath: localImagePath, contents: imageData, attributes: nil)
                         } else {
                             if let image = _UImage(data: cachedImageData)?.forceLoad() {
-                                DispatchQueue.main.async { [weak self] in
+                                DispatchQueue.main.async {
+                                    guard self?.uuid == uuid else { return }
                                     self?.setImage(imageView, image)
                                 }
                             }
@@ -96,7 +112,8 @@ open class ImageLoader {
                     } else if let localImageData = localImageData {
                         if imageData.hashValue != localImageData.hashValue {
                             if let image = _UImage(data: imageData)?.forceLoad() {
-                                DispatchQueue.main.async { [weak self] in
+                                DispatchQueue.main.async {
+                                    guard self?.uuid == uuid else { return }
                                     self?.setImage(imageView, image)
                                 }
                             }
@@ -104,13 +121,15 @@ open class ImageLoader {
                             self?.fm.createFile(atPath: localImagePath, contents: imageData, attributes: nil)
                         } else {
                             if let image = _UImage(data: localImageData)?.forceLoad() {
-                                DispatchQueue.main.async { [weak self] in
+                                DispatchQueue.main.async {
+                                    guard self?.uuid == uuid else { return }
                                     self?.setImage(imageView, image)
                                 }
                             }
                         }
                     } else if let image = _UImage(data: imageData)?.forceLoad() {
-                        DispatchQueue.main.async { [weak self] in
+                        DispatchQueue.main.async {
+                            guard self?.uuid == uuid else { return }
                             self?.setImage(imageView, image)
                         }
                         cache.save(url.absoluteString, imageData)
