@@ -78,7 +78,6 @@ open class ImageLoader {
                         guard self?.uuid == uuid else { return }
                         self?.applyLocalImage(imageView, image)
                     }
-                    return
                 } else if let localImageData = localImageData, let image = _UImage(data: localImageData)?.forceLoad() {
                     cache.save(url.absoluteString, localImageData)
                     /// Apply chached image to `imageView.image`
@@ -86,7 +85,6 @@ open class ImageLoader {
                         guard self?.uuid == uuid else { return }
                         self?.applyLocalImage(imageView, image)
                     }
-                    return
                 }
 
                 /// Downloads image data from URL
