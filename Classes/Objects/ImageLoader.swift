@@ -48,7 +48,9 @@ open class ImageLoader {
 
                 /// Checks if URL is valid, otherwise trying to set default image
                 guard let url = url, url.absoluteString.count > 0 else {
-                    imageView.image = defaultImage
+                    DispatchQueue.main.async {
+                        imageView.image = defaultImage
+                    }
                     return
                 }
 
