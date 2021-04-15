@@ -37,6 +37,12 @@ open class ImageLoader {
     }
 
     open func load(_ url: URL?, imageView: _UImageView, defaultImage: _UImage? = nil) {
+        /// Checks if URL is valid, otherwise trying to set default image
+        guard let url = url, url.absoluteString.count > 0 else {
+            imageView.image = defaultImage
+            return
+        }
+        /// Start loading image
         DispatchQueue.main.async { [weak self] in
             loaderQueue.async {
                 /// Before image update we should check it
@@ -45,15 +51,6 @@ open class ImageLoader {
 
                 /// Cancel previous task
                 self?.cancel()
-
-                /// Checks if URL is valid, otherwise trying to set default image
-                guard let url = url, url.absoluteString.count > 0 else {
-                    DispatchQueue.main.async {
-                        guard self?.uuid == uuid else { return }
-                        imageView.image = defaultImage
-                    }
-                    return
-                }
 
                 /// Builds path to image in cache
                 guard let localImagePath = self?.localImagePath(url).path else { return }
