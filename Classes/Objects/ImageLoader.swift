@@ -42,6 +42,8 @@ open class ImageLoader {
             imageView.image = defaultImage
             return
         }
+        /// Release `imageView.image` before downloading the new one
+        releaseBeforeDownloading(imageView, defaultImage)
         /// Start loading image
         DispatchQueue.main.async { [weak self] in
             loaderQueue.async {
@@ -60,12 +62,6 @@ open class ImageLoader {
                 var localImageData: Data?
                 if cachedImageData == nil {
                     localImageData = self?.fm.contents(atPath: localImagePath)
-                }
-
-                /// Release `imageView.image` before downloading the new one
-                DispatchQueue.main.async {
-                    guard self?.uuid == uuid else { return }
-                    self?.releaseBeforeDownloading(imageView, defaultImage)
                 }
 
                 /// Checking if image exists in cache
