@@ -69,7 +69,11 @@ class PreConstraint: Equatable {
     let attribute1: NSLayoutConstraint.Attribute
     let attribute2: NSLayoutConstraint.Attribute?
     let toSafe: Bool
-    var destinationView: PreConstraintViewable?
+    var destinationView: PreConstraintViewable? {
+        get { _destinationView }
+        set { _destinationView = newValue?.box }
+    }
+    private var _destinationView: PreConstraintViewable?
     var constraint: NSLayoutConstraint?
 
     init (value: State<CGFloat>,
