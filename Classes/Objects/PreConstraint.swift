@@ -46,6 +46,10 @@ extension Int: PreConstraintViewable {
 }
 
 class PreConstraint: Equatable {
+    private final class WeakDestinationBox {
+        var destinationView: PreConstraintViewable?
+    }
+
     static func == (lhs: PreConstraint, rhs: PreConstraint) -> Bool {
         lhs.id == rhs.id
     }
@@ -59,7 +63,11 @@ class PreConstraint: Equatable {
     let attribute1: NSLayoutConstraint.Attribute
     let attribute2: NSLayoutConstraint.Attribute?
     let toSafe: Bool
-    var destinationView: PreConstraintViewable?
+    private weak var weakDestinationView: WeakDestinationBox?
+    var destinationView: PreConstraintViewable? {
+        get { self.weakDestinationView?.destinationView }
+        set { self.weakDestinationView?.destinationView = newValue }
+    }
     var constraint: NSLayoutConstraint?
     
     init (value: State<CGFloat>,
