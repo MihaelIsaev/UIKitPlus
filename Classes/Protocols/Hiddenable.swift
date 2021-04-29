@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Hiddenable {
+public protocol Hiddenable: AnyObject {
     @discardableResult
     func hidden() -> Self
     
@@ -32,7 +32,7 @@ extension Hiddenable {
     
     @discardableResult
     public func hidden(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.hidden($0) }
+        binding.listen { [weak self] in self?.hidden($0) }
         return hidden(binding.wrappedValue)
     }
     

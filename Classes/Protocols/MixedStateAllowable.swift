@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol MixedStateAllowable {
+public protocol MixedStateAllowable: AnyObject {
     @discardableResult
     func allowMixedState() -> Self
     
@@ -32,7 +32,7 @@ extension MixedStateAllowable {
     
     @discardableResult
     public func allowMixedState(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.allowMixedState($0) }
+        binding.listen { [weak self] in self?.allowMixedState($0) }
         return allowMixedState(binding.wrappedValue)
     }
     

@@ -100,8 +100,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         lineSpacing = v
         if !isListeningLineSpace {
             isListeningLineSpace = true
-            lineSpacingState.listen {
-                self.lineSpacing($0)
+            lineSpacingState.listen { [weak self] in
+                self?.lineSpacing($0)
             }
         }
         return self
@@ -136,8 +136,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         paragraphSpacing = v
         if !isListeningParagraphSpacing {
             isListeningParagraphSpacing = true
-            paragraphSpacingState.listen {
-                self.paragraphSpacing($0)
+            paragraphSpacingState.listen { [weak self] in
+                self?.paragraphSpacing($0)
             }
         }
         return self
@@ -172,8 +172,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         firstLineHeadIndent = v
         if !isListeningFirstLineHeadIndent {
             isListeningFirstLineHeadIndent = true
-            firstLineHeadIndentState.listen {
-                self.firstLineHeadIndent($0)
+            firstLineHeadIndentState.listen { [weak self] in
+                self?.firstLineHeadIndent($0)
             }
         }
         return self
@@ -208,8 +208,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         headIndent = v
         if !isListeningHeadIndent {
             isListeningHeadIndent = true
-            headIndentState.listen {
-                self.headIndent($0)
+            headIndentState.listen { [weak self] in
+                self?.headIndent($0)
             }
         }
         return self
@@ -244,8 +244,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         tailIndent = v
         if !isListeningTailIndent {
             isListeningTailIndent = true
-            tailIndentState.listen {
-                self.tailIndent($0)
+            tailIndentState.listen { [weak self] in
+                self?.tailIndent($0)
             }
         }
         return self
@@ -280,8 +280,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         minimumLineHeight = v
         if !isListeningMinimumLineHeight {
             isListeningMinimumLineHeight = true
-            minimumLineHeightState.listen {
-                self.minimumLineHeight($0)
+            minimumLineHeightState.listen { [weak self] in
+                self?.minimumLineHeight($0)
             }
         }
         return self
@@ -316,8 +316,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         maximumLineHeight = v
         if !isListeningMaximumLineHeight {
             isListeningMaximumLineHeight = true
-            maximumLineHeightState.listen {
-                self.maximumLineHeight($0)
+            maximumLineHeightState.listen { [weak self] in
+                self?.maximumLineHeight($0)
             }
         }
         return self
@@ -352,8 +352,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         lineHeightMultiple = v
         if !isListeningLineHeightMultiple {
             isListeningLineHeightMultiple = true
-            lineHeightMultipleState.listen {
-                self.lineHeightMultiple($0)
+            lineHeightMultipleState.listen { [weak self] in
+                self?.lineHeightMultiple($0)
             }
         }
         return self
@@ -388,8 +388,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         defaultTabInterval = v
         if !isListeningDefaultTabInterval {
             isListeningDefaultTabInterval = true
-            defaultTabIntervalState.listen {
-                self.defaultTabInterval($0)
+            defaultTabIntervalState.listen { [weak self] in
+                self?.defaultTabInterval($0)
             }
         }
         return self
@@ -424,8 +424,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         paragraphSpacingBefore = v
         if !isListeningParagraphSpacingBefore {
             isListeningParagraphSpacingBefore = true
-            paragraphSpacingBeforeState.listen {
-                self.paragraphSpacingBefore($0)
+            paragraphSpacingBeforeState.listen { [weak self] in
+                self?.paragraphSpacingBefore($0)
             }
         }
         return self
@@ -460,8 +460,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         hyphenationFactor = v
         if !isListeningHyphenationFactor {
             isListeningHyphenationFactor = true
-            hyphenationFactorState.listen {
-                self.hyphenationFactor($0)
+            hyphenationFactorState.listen { [weak self] in
+                self?.hyphenationFactor($0)
             }
         }
         return self
@@ -497,8 +497,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         tighteningFactorForTruncation = v
         if !isListeningTighteningFactorForTruncation {
             isListeningTighteningFactorForTruncation = true
-            tighteningFactorForTruncationState.listen {
-                self.tighteningFactorForTruncation($0)
+            tighteningFactorForTruncationState.listen { [weak self] in
+                self?.tighteningFactorForTruncation($0)
             }
         }
         return self
@@ -533,8 +533,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         headerLevel = v
         if !isListeningHeaderLevel {
             isListeningHeaderLevel = true
-            headerLevelState.listen {
-                self.headerLevel($0)
+            headerLevelState.listen { [weak self] in
+                self?.headerLevel($0)
             }
         }
         return self
@@ -569,8 +569,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         allowsDefaultTighteningForTruncation = v
         if !isListeningAllowsDefaultTighteningForTruncation {
             isListeningAllowsDefaultTighteningForTruncation = true
-            allowsDefaultTighteningForTruncationState.listen {
-                self.allowsDefaultTighteningForTruncation($0)
+            allowsDefaultTighteningForTruncationState.listen { [weak self] in
+                self?.allowsDefaultTighteningForTruncation($0)
             }
         }
         return self
@@ -606,8 +606,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         alignment = v
         if !isListeningAlignment {
             isListeningAlignment = true
-            alignmentState.listen {
-                self.alignment($0)
+            alignmentState.listen { [weak self] in
+                self?.alignment($0)
             }
         }
         return self
@@ -642,8 +642,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         lineBreakMode = v
         if !isListeningLineBreakMode {
             isListeningLineBreakMode = true
-            lineBreakModeState.listen {
-                self.lineBreakMode($0)
+            lineBreakModeState.listen { [weak self] in
+                self?.lineBreakMode($0)
             }
         }
         return self
@@ -678,8 +678,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         baseWritingDirection = v
         if !isListeningBaseWritingDirection {
             isListeningBaseWritingDirection = true
-            baseWritingDirectionState.listen {
-                self.baseWritingDirection($0)
+            baseWritingDirectionState.listen { [weak self] in
+                self?.baseWritingDirection($0)
             }
         }
         return self
@@ -714,8 +714,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         tabStops = v
         if !isListeningTabStops {
             isListeningTabStops = true
-            tabStopsState.listen {
-                self.tabStops($0)
+            tabStopsState.listen { [weak self] in
+                self?.tabStops($0)
             }
         }
         return self
@@ -751,8 +751,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         textBlocks = v
         if !isListeningTextBlocks {
             isListeningTextBlocks = true
-            textBlocksState.listen {
-                self.textBlocks($0)
+            textBlocksState.listen { [weak self] in
+                self?.textBlocks($0)
             }
         }
         return self
@@ -787,8 +787,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         textLists = v
         if !isListeningTextLists {
             isListeningTextLists = true
-            textListsState.listen {
-                self.textLists($0)
+            textListsState.listen { [weak self] in
+                self?.textLists($0)
             }
         }
         return self

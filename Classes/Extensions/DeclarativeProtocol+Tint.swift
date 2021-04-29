@@ -23,8 +23,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func tint(_ state: State<UColor>) -> Self {
         tint(state.wrappedValue)
-        state.listen { old, new in
-            self.tint(new)
+        state.listen { [weak self] old, new in
+            self?.tint(new)
         }
         return self
     }
@@ -33,8 +33,8 @@ extension DeclarativeProtocol {
     public func tint<V>(_ expressable: ExpressableState<V, UColor>) -> Self {
         declarativeView.tintColor = expressable.value()
         properties.tint = expressable.value()
-        expressable.state.listen { old, new in
-            self.tint(expressable.value())
+        expressable.state.listen { [weak self] old, new in
+            self?.tint(expressable.value())
         }
         return self
     }

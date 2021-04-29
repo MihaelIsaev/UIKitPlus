@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol BulletsEchoable {
+public protocol BulletsEchoable: AnyObject {
     @discardableResult
     func echosBullets() -> Self
     
@@ -30,7 +30,7 @@ extension BulletsEchoable {
     
     @discardableResult
     public func echosBullets(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.echosBullets($0) }
+        binding.listen { [weak self] in self?.echosBullets($0) }
         return echosBullets(binding.wrappedValue)
     }
     

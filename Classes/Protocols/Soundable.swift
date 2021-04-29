@@ -19,7 +19,7 @@ protocol _Soundable: Soundable {
 extension Soundable {
     @discardableResult
     public func sound(_ binding: UIKitPlus.State<NSSound?>) -> Self {
-        binding.listen { self.sound($0) }
+        binding.listen { [weak self] in self?.sound($0) }
         return sound(binding.wrappedValue)
     }
     

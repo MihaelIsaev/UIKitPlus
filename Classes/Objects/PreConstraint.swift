@@ -13,6 +13,16 @@ public protocol PreConstraintViewable {
     var preConstraintView: PreConstraintView? { get }
 }
 
+private extension PreConstraintViewable {
+    var box: PreConstraintViewable? {
+        switch self.preConstraintView {
+        case let .tag(tag): return TagPreConstraintBox(tag)
+        case let .view(view): return ViewPreConstraintBox(view)
+        default: return nil
+        }
+    }
+}
+
 extension PreConstraintView {
     public func unwrapWithSuperview(_ superview: BaseView) -> BaseView? {
         switch self {
@@ -22,7 +32,7 @@ extension PreConstraintView {
             return superview.viewWithTagInSuperview(tag)
         }
     }
-    
+
     public var tag: Int? {
         switch self {
         case .view:
@@ -49,7 +59,7 @@ class PreConstraint: Equatable {
     static func == (lhs: PreConstraint, rhs: PreConstraint) -> Bool {
         lhs.id == rhs.id
     }
-    
+
     private let id = UUID()
     weak var fromView: BaseView?
     let value: State<CGFloat>
@@ -59,9 +69,13 @@ class PreConstraint: Equatable {
     let attribute1: NSLayoutConstraint.Attribute
     let attribute2: NSLayoutConstraint.Attribute?
     let toSafe: Bool
-    var destinationView: PreConstraintViewable?
+    var destinationView: PreConstraintViewable? {
+        get { _destinationView }
+        set { _destinationView = newValue?.box }
+    }
+    private var _destinationView: PreConstraintViewable?
     var constraint: NSLayoutConstraint?
-    
+
     init (value: State<CGFloat>,
           relation: NSLayoutConstraint.Relation,
           multiplier: CGFloat,
@@ -79,7 +93,7 @@ class PreConstraint: Equatable {
         self.attribute2 = attribute2
         self.toSafe = toSafe
         self.fromView = fromView
-        self.destinationView = destinationView
+        self.destinationView = destinationView?.box
         value.listen { [weak self] constant in
             self?.constraint?.constant = constant
             #if os(macOS)
@@ -89,7 +103,7 @@ class PreConstraint: Equatable {
             #endif
         }
     }
-    
+
     func inverted() -> PreConstraint? {
         guard let attribute2 = attribute2, let destinationView = destinationView?.preConstraintView else { return nil }
         let unwrappedDestinationView: BaseView
@@ -108,5 +122,23 @@ class PreConstraint: Equatable {
                   toSafe: toSafe,
                   fromView: unwrappedDestinationView,
                   destinationView: fromView)
+    }
+}
+
+private struct TagPreConstraintBox: PreConstraintViewable {
+    var preConstraintView: PreConstraintView? { .tag(tag) }
+    private var tag: Int
+
+    init(_ tag: Int) {
+        self.tag = tag
+    }
+}
+
+private struct ViewPreConstraintBox: PreConstraintViewable {
+    var preConstraintView: PreConstraintView? { view.map { .view($0) } }
+    private weak var view: BaseView?
+
+    init(_ view: BaseView) {
+        self.view = view
     }
 }

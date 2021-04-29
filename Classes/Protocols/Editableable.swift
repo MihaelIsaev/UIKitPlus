@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Editableable {
+public protocol Editableable: AnyObject {
     @discardableResult
     func editable() -> Self
     
@@ -30,7 +30,7 @@ extension Editableable {
     
     @discardableResult
     public func editable(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.editable($0) }
+        binding.listen { [weak self] in self?.editable($0) }
         return editable(binding.wrappedValue)
     }
     

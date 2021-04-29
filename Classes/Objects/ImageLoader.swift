@@ -11,11 +11,11 @@ fileprivate let cache = ImagesCache()
 
 open class ImagesCache {
     var cache = NSCache<NSString, NSData>()
-    
+
     func save(_ key: String, _ image: Data) {
         cache.setObject(NSData(data: image), forKey: NSString(string: key))
     }
-    
+
     func get(_ key: String) -> Data? {
         cache.object(forKey: NSString(string: key)) as Data?
     }
@@ -23,64 +23,76 @@ open class ImagesCache {
 
 open class ImageLoader {
     lazy var fm = FileManager()
-    
+
     public var reloadingStyle: ImageReloadingStyle
-    
+
+    private var uuid: UUID?
+
     public init (_ reloadingStyle: ImageReloadingStyle = .release) {
         self.reloadingStyle = reloadingStyle
     }
-    
+
     open func load(_ url: String?, imageView: _UImageView, defaultImage: _UImage? = nil) {
         load(URL(string: url ?? ""), imageView: imageView, defaultImage: defaultImage)
     }
-    
+
     open func load(_ url: URL?, imageView: _UImageView, defaultImage: _UImage? = nil) {
-        DispatchQueue.main.async { [weak self] in
-            loaderQueue.async { [weak self] in
+        DispatchQueue.main.async {
+            loaderQueue.async {
+                /// Before image update we should check it
+                let uuid = UUID()
+                self.uuid = uuid
+
+                /// Cancel previous task
+                self.cancel()
+
                 /// Checks if URL is valid, otherwise trying to set default image
                 guard let url = url, url.absoluteString.count > 0 else {
-                    if let defaultImage = defaultImage {
-                        DispatchQueue.main.async {
-                            imageView.image = defaultImage
-                        }
+                    DispatchQueue.main.async {
+                        imageView.image = defaultImage
                     }
                     return
                 }
+
                 /// Builds path to image in cache
-                guard let localImagePath = self?.localImagePath(url).path else { return }
-                
+                let localImagePath = self.localImagePath(url).path
+
                 /// Tries to get image data from cache
                 let cachedImageData = cache.get(url.absoluteString)
                 var localImageData: Data?
                 if cachedImageData == nil {
-                    localImageData = self?.fm.contents(atPath: localImagePath)
+                    localImageData = self.fm.contents(atPath: localImagePath)
                 }
-                
+
                 /// Release `imageView.image` before downloading the new one
-                DispatchQueue.main.async { [weak self] in
-                    self?.releaseBeforeDownloading(imageView, defaultImage)
+                DispatchQueue.main.async {
+                    guard self.uuid == uuid else { return }
+                    self.releaseBeforeDownloading(imageView, defaultImage)
                 }
 
                 /// Checking if image exists in cache
                 if let cachedImageData = cachedImageData, let image = _UImage(data: cachedImageData)?.forceLoad() {
                     /// Apply chached image to `imageView.image`
-                    DispatchQueue.main.async { [weak self] in
-                        self?.applyLocalImage(imageView, image)
+                    DispatchQueue.main.async {
+                        guard self.uuid == uuid else { return }
+                        self.applyLocalImage(imageView, image)
                     }
                 } else if let localImageData = localImageData, let image = _UImage(data: localImageData)?.forceLoad() {
                     cache.save(url.absoluteString, localImageData)
                     /// Apply chached image to `imageView.image`
-                    DispatchQueue.main.async { [weak self] in
-                        self?.applyLocalImage(imageView, image)
+                    DispatchQueue.main.async {
+                        guard self.uuid == uuid else { return }
+                        self.applyLocalImage(imageView, image)
                     }
                 }
 
                 /// Downloads image data from URL
-                self?.downloadImage(url) { [weak self] imageData in
+                self.downloadImage(url) { [weak self] imageData in
                     if let cachedImageData = cachedImageData {
                         if imageData.hashValue != cachedImageData.hashValue {
                             if let image = _UImage(data: imageData)?.forceLoad() {
-                                DispatchQueue.main.async { [weak self] in
+                                DispatchQueue.main.async {
+                                    guard self?.uuid == uuid else { return }
                                     self?.setImage(imageView, image)
                                 }
                             }
@@ -88,7 +100,8 @@ open class ImageLoader {
                             self?.fm.createFile(atPath: localImagePath, contents: imageData, attributes: nil)
                         } else {
                             if let image = _UImage(data: cachedImageData)?.forceLoad() {
-                                DispatchQueue.main.async { [weak self] in
+                                DispatchQueue.main.async {
+                                    guard self?.uuid == uuid else { return }
                                     self?.setImage(imageView, image)
                                 }
                             }
@@ -96,7 +109,8 @@ open class ImageLoader {
                     } else if let localImageData = localImageData {
                         if imageData.hashValue != localImageData.hashValue {
                             if let image = _UImage(data: imageData)?.forceLoad() {
-                                DispatchQueue.main.async { [weak self] in
+                                DispatchQueue.main.async {
+                                    guard self?.uuid == uuid else { return }
                                     self?.setImage(imageView, image)
                                 }
                             }
@@ -104,13 +118,15 @@ open class ImageLoader {
                             self?.fm.createFile(atPath: localImagePath, contents: imageData, attributes: nil)
                         } else {
                             if let image = _UImage(data: localImageData)?.forceLoad() {
-                                DispatchQueue.main.async { [weak self] in
+                                DispatchQueue.main.async {
+                                    guard self?.uuid == uuid else { return }
                                     self?.setImage(imageView, image)
                                 }
                             }
                         }
                     } else if let image = _UImage(data: imageData)?.forceLoad() {
-                        DispatchQueue.main.async { [weak self] in
+                        DispatchQueue.main.async {
+                            guard self?.uuid == uuid else { return }
                             self?.setImage(imageView, image)
                         }
                         cache.save(url.absoluteString, imageData)
@@ -120,25 +136,25 @@ open class ImageLoader {
             }
         }
     }
-    
+
     /// Builds path to image in cache
     open func localImagePath(_ imageURL: URL) -> URL {
         let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0] as NSString
-        return URL(fileURLWithPath: documentDirectoryPath.appendingPathComponent("\(imageURL.lastPathComponent)"))
+        return URL(fileURLWithPath: documentDirectoryPath.appendingPathComponent("\(Data(imageURL.absoluteString.utf8).base64EncodedString())"))
     }
-    
+
     /// Release `imageView.image` before downloading the new one
     open func releaseBeforeDownloading(_ imageView: _UImageView, _ defaultImage: _UImage? = nil) {
         if reloadingStyle == .release {
             imageView.image = defaultImage
         }
     }
-    
+
     /// Apply chached image to `imageView.image`
     open func applyLocalImage(_ imageView: _UImageView, _ image: _UImage) {
         setImage(imageView, image)
     }
-    
+
     /// Set image with or without animation
     open func setImage(_ imageView: _UImageView, _ image: _UImage) {
         if self.reloadingStyle == .fade {
@@ -153,9 +169,9 @@ open class ImageLoader {
             imageView.image = image
         }
     }
-    
+
     public var downloadTask: URLSessionDataTask?
-    
+
     /// Downloads image data from URL
     /// Calls on background thread
     open func downloadImage(_ url: URL, callback: @escaping (Data) -> Void) {
@@ -172,7 +188,7 @@ open class ImageLoader {
             downloadTask?.resume()
         }
     }
-    
+
     /// Cancels download task
     open func cancel() {
         downloadTask?.cancel()
