@@ -152,14 +152,31 @@ open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativePro
         return self
     }
     
+    var digitBorder: (CGFloat, UIColor)?
+    var digitBorderSelected: (CGFloat, UIColor)?
+    
+    @discardableResult
+    public func digitBorderSelected(_ width: CGFloat, _ color: UIColor) -> Self {
+        digitBorderSelected = (width, color)
+        return self
+    }
+    
+    @discardableResult
+    public func digitBorderSelected(_ width: CGFloat, _ number: Int) -> Self {
+        digitBorderSelected = (width, number.color)
+        return self
+    }
+    
     @discardableResult
     public func digitBorder(_ width: CGFloat, _ color: UIColor) -> Self {
+        digitBorder = (width, color)
         digitViews.forEach { $0.label.border(width, color) }
         return self
     }
     
     @discardableResult
     public func digitBorder(_ width: CGFloat, _ number: Int) -> Self {
+        digitBorder = (width, number.color)
         digitBorder(width, number.color)
         return self
     }
@@ -208,6 +225,9 @@ open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativePro
         let labels = digitViews.map { $0.label }
         for label in labels {
             label.textColor = digitColor
+            if let digitBorder = digitBorder {
+                label.border(digitBorder.0, digitBorder.1)
+            }
             guard let text = hiddenTextField.text else { continue }
             guard let index = labels.firstIndex(of: label) else { continue }
             let letters = text.map { String($0) }
@@ -218,10 +238,18 @@ open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativePro
                 label.text = ""
             }
         }
+        chackSelectedBorder()
         bindCode?.wrappedValue = hiddenTextField.text ?? ""
         if hiddenTextField.text?.count == digitViews.count {
             enteredClosure(hiddenTextField.text ?? "")
             simpleEnteredClosure()
+        }
+    }
+    
+    private func chackSelectedBorder() {
+        let labels = digitViews.map { $0.label }
+        if let digitBorderSelected = digitBorderSelected, let text = hiddenTextField.text, text.count < labels.count {
+            labels[text.count].border(digitBorderSelected.0, digitBorderSelected.1)
         }
     }
     
@@ -255,10 +283,12 @@ open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativePro
     
     @discardableResult
     open override func becomeFirstResponder() -> Bool {
-        hiddenTextField.becomeFirstResponder()
+        chackSelectedBorder()
+        return hiddenTextField.becomeFirstResponder()
     }
     
     public func cleanup() {
+        chackSelectedBorder()
         hiddenTextField.cleanup()
     }
 }
