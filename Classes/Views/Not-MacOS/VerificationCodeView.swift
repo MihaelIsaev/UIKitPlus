@@ -70,6 +70,7 @@ open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativePro
     
     lazy var hiddenTextField = UTextField().edgesToSuperview(top: 0, leading: 0)
                                                             .alpha(0.05)
+                                                            .content(.oneTimeCode)
                                                             .keyboard(.numberPad)
                                                             .editingChanged(edited)
                                                             .shouldChangeCharacters(shouldChangeCharacters)
@@ -103,6 +104,12 @@ open class UVerificationCodeView: UIView, AnyDeclarativeProtocol, DeclarativePro
     @discardableResult
     public func secureSymbol(_ value: String) -> Self {
         secureSymbol = value
+        return self
+    }
+    
+    @discardableResult
+    public func content(_ content: TextFieldContentType) -> Self {
+        hiddenTextField.content(content)
         return self
     }
     

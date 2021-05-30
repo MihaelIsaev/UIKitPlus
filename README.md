@@ -41,7 +41,7 @@ Good mood
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 2.0.0-alpha.1.8.0'
+pod 'UIKit-Plus', '~> 2.0.0-alpha.1.9.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
@@ -53,7 +53,7 @@ https://github.com/MihaelIsaev/UIKitPlus
 
 #### IMPORTANT!
 
-⚠️ Guys, who's interested in `UIKitPlus` please migrate to `2.0.0-alpha.1.8.0` asap, it is stable enough to use it already.
+⚠️ Guys, who's interested in `UIKitPlus` please migrate to `2.0.0-alpha.1.9.0` asap, it is stable enough to use it already.
 It will be marked it as `beta` when I finish macOS support.
 
 Since version 2.0.0 there are a lot of advantages and fixes, and your project could look cleaner since there are no AppDelegate and SceneDelegate anymore, everything is under the hood like with SwiftUI, but it is very obvious and convenient to use any AppDelegate/SceneDelegate methods.

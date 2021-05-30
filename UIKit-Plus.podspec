@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name               = 'UIKit-Plus'
   s.module_name   = 'UIKitPlus'
-  s.version             = '2.0.0-alpha.1.8.0'
+  s.version             = '2.0.0-alpha.1.9.0'
   s.summary          = '🏰 Declarative UIKit wrapper inspired by SwiftUI'
 
   s.swift_version    = '5.3'
