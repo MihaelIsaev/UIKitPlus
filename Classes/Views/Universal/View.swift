@@ -98,6 +98,18 @@ open class UView: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProto
     
     open func buildView() {}
     
+    #if os(macOS)
+    open override var isFlipped: Bool {
+        properties.isFlipped
+    }
+    
+    @discardableResult
+    public func flipped(_ value: Bool) -> Self {
+        properties.isFlipped = value
+        return self
+    }
+    #endif
+    
     // MARK: Touches
     #if os(macOS)
     typealias TouchClosure = (NSEvent) -> Void
