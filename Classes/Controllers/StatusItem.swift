@@ -75,6 +75,14 @@ public class StatusItem: AppBuilderContent {
         return self
     }
     
+    public func title(_ state: UState<String>) -> Self {
+        title(state.wrappedValue)
+        state.listen {
+            self.title($0)
+        }
+        return self
+    }
+    
     public func attributedTitle(_ value: NSAttributedString) -> Self {
         item.button?.attributedTitle = value
         return self
@@ -85,8 +93,24 @@ public class StatusItem: AppBuilderContent {
         return self
     }
     
+    public func image(_ state: UState<NSImage?>) -> Self {
+        image(state.wrappedValue)
+        state.listen {
+            self.image($0)
+        }
+        return self
+    }
+    
     public func alternateImage(_ value: NSImage?) -> Self {
         item.button?.alternateImage = value
+        return self
+    }
+    
+    public func alternateImage(_ state: UState<NSImage?>) -> Self {
+        alternateImage(state.wrappedValue)
+        state.listen {
+            self.alternateImage($0)
+        }
         return self
     }
     
@@ -102,6 +126,14 @@ public class StatusItem: AppBuilderContent {
     
     public func toolTip(_ value: String? = nil) -> Self {
         item.button?.toolTip = value
+        return self
+    }
+    
+    public func toolTip(_ state: UState<String>) -> Self {
+        toolTip(state.wrappedValue)
+        state.listen {
+            self.toolTip($0)
+        }
         return self
     }
     
