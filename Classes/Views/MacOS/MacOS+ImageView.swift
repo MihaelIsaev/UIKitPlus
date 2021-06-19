@@ -193,16 +193,21 @@ extension UImage: _Tintable {
     }
     
     func tintedImage(with tintColor: NSColor) -> NSImage? {
-        guard let image = self.image else { return self.image }
-        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return self.image }
-        
-        return NSImage(size: image.size, flipped: false) { bounds in
-            guard let context = NSGraphicsContext.current?.cgContext else { return false }
-            tintColor.set()
-            context.clip(to: bounds, mask: cgImage)
-            context.fill(bounds)
-            return true
-        }
+        self.image?.image(withTintColor: tintColor)
     }
+}
+
+extension NSImage {
+   public func image(withTintColor tintColor: NSColor) -> NSImage {
+       guard isTemplate else { return self }
+       guard let copiedImage = self.copy() as? NSImage else { return self }
+       copiedImage.lockFocus()
+       tintColor.set()
+       let imageBounds = NSMakeRect(0, 0, copiedImage.size.width, copiedImage.size.height)
+       imageBounds.fill(using: .sourceAtop)
+       copiedImage.unlockFocus()
+       copiedImage.isTemplate = false
+       return copiedImage
+   }
 }
 #endif
