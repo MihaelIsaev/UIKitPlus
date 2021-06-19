@@ -17,20 +17,24 @@ open class UVScrollStack: UScrollView {
         .flipped(true)
     #endif
     
+    #if os(macOS)
     public init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
-        #if !os(macOS)
+        hasVerticalScroller = true
+        borderType = .noBorder
+        documentView(_docView)
+        _docView.body {
+            stack.subviews(block: block)
+        }
+    }
+    #else
+    public override init (@BodyBuilder block: BodyBuilder.SingleView) {
+        super.init(frame: .zero)
         body {
             stack.subviews(block: block)
         }
-        #else
-        hasVerticalScroller = true
-        borderType = .noBorder
-        documentView(_docView.body {
-            stack.subviews(block: block)
-        })
-        #endif
     }
+    #endif
     
     public override init() {
         super.init(frame: .zero)

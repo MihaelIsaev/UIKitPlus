@@ -16,21 +16,24 @@ open class UHScrollStack: UScrollView {
         .edgesToSuperview(v: 0)
     #endif
     
+    #if os(macOS)
     public init (@BodyBuilder block: BodyBuilder.SingleView) {
         super.init(frame: .zero)
-        #if !os(macOS)
-        body {
-            stack.subviews(block: block)
-        }
-        #else
         hasHorizontalScroller = true
         borderType = .noBorder
         documentView(_docView)
         _docView.body {
             stack.subviews(block: block)
         }
-        #endif
     }
+    #else
+    public override init (@BodyBuilder block: BodyBuilder.SingleView) {
+        super.init(frame: .zero)
+        body {
+            stack.subviews(block: block)
+        }
+    }
+    #endif
     
     public override init() {
         super.init(frame: .zero)
