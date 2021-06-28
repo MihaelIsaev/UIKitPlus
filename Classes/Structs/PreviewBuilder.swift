@@ -32,7 +32,7 @@ public class PreviewGroup {
     }
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
 @_functionBuilder public struct PreviewBuilder {
     public typealias Block = () -> PreviewBuilderItem
     
@@ -69,7 +69,7 @@ public class PreviewGroup {
     }
 }
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, *)
 extension Array: PreviewBuilderItem where Element: Preview {
     public var previewBuilderItems: [Preview] { self }
 }

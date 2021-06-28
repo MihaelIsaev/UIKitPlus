@@ -37,21 +37,11 @@ extension Menuable {
     }
 }
 
-@available(iOS 13.0, macOS 10.15, *)
 extension Menuable {
     @discardableResult
     public func menu(_ value: Menu) -> Self {
         guard let s = self as? _Menuable else { return self }
         s._setMenu(value)
-        return self
-    }
-}
-
-// for iOS lower than 13
-extension _Menuable {
-    @discardableResult
-    public func allowMixedState(_ value: Menu) -> Self {
-        _setMenu(value)
         return self
     }
 }
