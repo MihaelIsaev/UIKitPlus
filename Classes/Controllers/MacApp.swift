@@ -142,7 +142,7 @@ open class App: NSApplication, NSApplicationDelegate {
 //    let windowsBuilderContent: WindowsBuilderItem
 //}
 //
-//@_functionBuilder public struct WindowsBuilder {
+//@resultBuilder public struct WindowsBuilder {
 //    public typealias Block = () -> WindowsBuilderContent
 //    
 //    public static func buildBlock() -> WindowsBuilderContent {
@@ -186,7 +186,7 @@ struct _AppContent: AppBuilderContent {
     let appBuilderContent: AppBuilderItem
 }
 
-@_functionBuilder public struct AppBuilder {
+@resultBuilder public struct AppBuilder {
     public typealias Block = () -> AppBuilderContent
     
     public static func buildBlock() -> AppBuilderContent {
