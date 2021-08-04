@@ -68,12 +68,6 @@ open class UTextView: UITextView, AnyDeclarativeProtocol, DeclarativeProtocolInt
         text(state)
     }
     
-    public init<V, A: AnyString>(_ expressable: ExpressableState<V, A>, textContainer: NSTextContainer? = nil) {
-        super.init(frame: .zero, textContainer: textContainer)
-        _setup()
-        text(expressable)
-    }
-    
     public init (textContainer: NSTextContainer? = nil, @AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
         super.init(frame: .zero, textContainer: textContainer)
         _setup()
@@ -430,7 +424,8 @@ extension UTextView: _Typeable {
     }
     
     func _observeTypingState(_ v: UIKitPlus.State<Bool>) {
-        _properties.isTypingState.listen {
+        _properties.isTypingState.listen { [weak v] in
+            guard let v = v else { return }
             guard v.wrappedValue != $0 else { return }
             v.wrappedValue = $0
         }

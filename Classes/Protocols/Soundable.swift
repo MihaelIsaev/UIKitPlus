@@ -1,15 +1,12 @@
 #if os(macOS)
 import AppKit
 
-public protocol Soundable {
+public protocol Soundable: class {
     @discardableResult
     func sound(_ value: NSSound?) -> Self
     
     @discardableResult
     func sound(_ binding: UIKitPlus.State<NSSound?>) -> Self
-    
-    @discardableResult
-    func sound<V>(_ expressable: ExpressableState<V, NSSound?>) -> Self
 }
 
 protocol _Soundable: Soundable {
@@ -19,13 +16,10 @@ protocol _Soundable: Soundable {
 extension Soundable {
     @discardableResult
     public func sound(_ binding: UIKitPlus.State<NSSound?>) -> Self {
-        binding.listen { self.sound($0) }
+        binding.listen { [weak self] in
+            self?.sound($0)
+        }
         return sound(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func sound<V>(_ expressable: ExpressableState<V, NSSound?>) -> Self {
-        sound(expressable.unwrap())
     }
 }
 

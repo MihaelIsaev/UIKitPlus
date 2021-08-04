@@ -23,8 +23,7 @@ public class NavigationController: ViewController {
             (rootViewController.view as! UView).edgesToSuperview()
         }
         rootViewController.navigationController = self
-        (view as? UView)?.onTouchPanGesture { [weak self] s, p, d in
-            guard let self = self else { return }
+        (view as? UView)?.onTouchPanGesture { s, p, d in
             switch s {
             case .began:
                 if self.viewControllers.count > 0 {

@@ -38,7 +38,7 @@ open class USegmentedControl: UISegmentedControl, AnyDeclarativeProtocol, Declar
     
     init(_ items: [SegmentControlable]) {
         super.init(items: [])
-        items.enumerated().forEach { offset, item in
+        for (offset, item) in items.enumerated() {
             switch item.item {
             case .title(let title): insertSegment(withTitle: title, at: offset, animated: false)
             case .image(let image): insertSegment(with: image, at: offset, animated: false)
@@ -87,15 +87,8 @@ open class USegmentedControl: UISegmentedControl, AnyDeclarativeProtocol, Declar
     @discardableResult
     public func select(_ binding: UIKitPlus.State<Int>) -> Self {
         selectBinding = binding
-        binding.listen { self.selectedSegmentIndex = $0 }
+        binding.listen { [weak self] in self?.selectedSegmentIndex = $0 }
         return select(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func select<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        selectBinding = expressable.unwrap()
-        expressable.state.listen { _,_ in self.select(expressable.value()) }
-        return select(expressable.value())
     }
     
     public typealias ChangedClosure = (Int) -> Void

@@ -74,8 +74,8 @@ extension ForEach: AnyForEach {
     public var count: Int { items.wrappedValue.count }
     
     public func allItems() -> [BodyBuilder.Result] {
-        items.wrappedValue.enumerated().map {
-            block($0.offset, $0.element)
+        items.wrappedValue.enumerated().compactMap { [weak self] in
+            self?.block($0.offset, $0.element)
         }
     }
     

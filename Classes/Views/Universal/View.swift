@@ -98,6 +98,18 @@ open class UView: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProto
     
     open func buildView() {}
     
+    #if os(macOS)
+    open override var isFlipped: Bool {
+        properties.isFlipped
+    }
+    
+    @discardableResult
+    public func flipped(_ value: Bool) -> Self {
+        properties.isFlipped = value
+        return self
+    }
+    #endif
+    
     // MARK: Touches
     #if os(macOS)
     typealias TouchClosure = (NSEvent) -> Void
@@ -294,13 +306,19 @@ extension UView {
     
     @discardableResult
     public func touchesBegan(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesBegan = { _ in closure(self) }
+        _touchesBegan = { [weak self] _ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesBegan(_ closure: @escaping (Self, NSEvent) -> Void) -> Self {
-        _touchesBegan = { closure(self, $0) }
+        _touchesBegan = { [weak self] in
+            guard let self = self else { return }
+            closure(self, $0)
+        }
         return self
     }
     
@@ -313,13 +331,19 @@ extension UView {
     
     @discardableResult
     public func touchesMoved(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesMoved = { _ in closure(self) }
+        _touchesMoved = { [weak self] _ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesMoved(_ closure: @escaping (Self, NSEvent) -> Void) -> Self {
-        _touchesMoved = { closure(self, $0) }
+        _touchesMoved = { [weak self] in
+            guard let self = self else { return }
+            closure(self, $0)
+        }
         return self
     }
     
@@ -332,13 +356,19 @@ extension UView {
     
     @discardableResult
     public func touchesEnded(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesEnded = { _ in closure(self) }
+        _touchesEnded = { [weak self] _ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesEnded(_ closure: @escaping (Self, NSEvent) -> Void) -> Self {
-        _touchesEnded = { closure(self, $0) }
+        _touchesEnded = { [weak self] in
+            guard let self = self else { return }
+            closure(self, $0)
+        }
         return self
     }
     
@@ -351,13 +381,19 @@ extension UView {
     
     @discardableResult
     public func touchesCancelled(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesCancelled = { _ in closure(self) }
+        _touchesCancelled = { [weak self] _ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesCancelled(_ closure: @escaping (Self, NSEvent) -> Void) -> Self {
-        _touchesCancelled = { closure(self, $0) }
+        _touchesCancelled = { [weak self] in
+            guard let self = self else { return }
+            closure(self, $0)
+        }
         return self
     }
 }
@@ -372,13 +408,17 @@ extension UView {
     
     @discardableResult
     public func touchesBegan(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesBegan = { _,_ in closure(self) }
+        _touchesBegan = { [weak self] _,_ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesBegan(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
-        _touchesBegan = { set, _ in
+        _touchesBegan = { [weak self] set, _ in
+            guard let self = self else { return }
             closure(self, set)
         }
         return self
@@ -386,7 +426,8 @@ extension UView {
     
     @discardableResult
     public func touchesBegan(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
-        _touchesBegan = { set, event in
+        _touchesBegan = { [weak self] set, event in
+            guard let self = self else { return }
             closure(self, set, event)
         }
         return self
@@ -401,13 +442,17 @@ extension UView {
     
     @discardableResult
     public func touchesMoved(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesMoved = { _,_ in closure(self) }
+        _touchesMoved = { [weak self] _,_ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesMoved(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
-        _touchesMoved = { set, _ in
+        _touchesMoved = { [weak self] set, _ in
+            guard let self = self else { return }
             closure(self, set)
         }
         return self
@@ -415,7 +460,8 @@ extension UView {
     
     @discardableResult
     public func touchesMoved(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
-        _touchesMoved = { set, event in
+        _touchesMoved = { [weak self] set, event in
+            guard let self = self else { return }
             closure(self, set, event)
         }
         return self
@@ -430,13 +476,17 @@ extension UView {
     
     @discardableResult
     public func touchesEnded(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesEnded = { _,_ in closure(self) }
+        _touchesEnded = { [weak self] _,_ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesEnded(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
-        _touchesEnded = { set, _ in
+        _touchesEnded = { [weak self] set, _ in
+            guard let self = self else { return }
             closure(self, set)
         }
         return self
@@ -444,7 +494,8 @@ extension UView {
     
     @discardableResult
     public func touchesEnded(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
-        _touchesEnded = { set, event in
+        _touchesEnded = { [weak self] set, event in
+            guard let self = self else { return }
             closure(self, set, event)
         }
         return self
@@ -459,13 +510,17 @@ extension UView {
     
     @discardableResult
     public func touchesCancelled(_ closure: @escaping (Self) -> Void) -> Self {
-        _touchesCancelled = { _,_ in closure(self) }
+        _touchesCancelled = { [weak self] _,_ in
+            guard let self = self else { return }
+            closure(self)
+        }
         return self
     }
     
     @discardableResult
     public func touchesCancelled(_ closure: @escaping (Self, Set<UITouch>) -> Void) -> Self {
-        _touchesCancelled = { set, _ in
+        _touchesCancelled = { [weak self] set, _ in
+            guard let self = self else { return }
             closure(self, set)
         }
         return self
@@ -473,7 +528,8 @@ extension UView {
     
     @discardableResult
     public func touchesCancelled(_ closure: @escaping (Self, Set<UITouch>, UIEvent?) -> Void) -> Self {
-        _touchesCancelled = { set, event in
+        _touchesCancelled = { [weak self] set, event in
+            guard let self = self else { return }
             closure(self, set, event)
         }
         return self

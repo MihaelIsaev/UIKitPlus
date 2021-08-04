@@ -13,7 +13,8 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onRotationGesture(rotation: CGFloat? = nil, on state: NSGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
-        onRotationGesture(rotation: rotation, on: state) { v, r in
+        onRotationGesture(rotation: rotation, on: state) { [weak self] v, r in
+            guard let self = self else { return }
             action(self)
         }
     }
@@ -44,7 +45,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func onRotationGesture(rotation: CGFloat? = nil, _ action: @escaping (Self, NSGestureRecognizer.State, RotationGestureRecognizer) -> Void) -> Self {
         let recognizer = RotationGestureRecognizer(rotation: rotation)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+            guard let self = self, let recognizer = recognizer else { return }
             action(self, $0, recognizer)
         })
         return self
@@ -55,11 +57,6 @@ extension DeclarativeProtocol {
         onRotationGesture(rotation: rotation) { v, s, r in
             state.wrappedValue = s
         }
-    }
-
-    @discardableResult
-    public func onRotationGesture<V>(rotation: CGFloat? = nil, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onRotationGesture(rotation: rotation, expressable.unwrap())
     }
     
     // MARK: In Degrees
@@ -73,7 +70,8 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onRotationGesture(rotationInDegrees: CGFloat, on state: NSGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
-        onRotationGesture(rotationInDegrees: rotationInDegrees, on: state) { v, r in
+        onRotationGesture(rotationInDegrees: rotationInDegrees, on: state) { [weak self] v, r in
+            guard let self = self else { return }
             action(self)
         }
     }
@@ -104,7 +102,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func onRotationGesture(rotationInDegrees: CGFloat, _ action: @escaping (Self, NSGestureRecognizer.State, RotationGestureRecognizer) -> Void) -> Self {
         let recognizer = RotationGestureRecognizer(rotationInDegrees: rotationInDegrees)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+            guard let self = self, let recognizer = recognizer else { return }
             action(self, $0, recognizer)
         })
         return self
@@ -115,11 +114,6 @@ extension DeclarativeProtocol {
         onRotationGesture(rotationInDegrees: rotationInDegrees) { v, s, r in
             state.wrappedValue = s
         }
-    }
-
-    @discardableResult
-    public func onRotationGesture<V>(rotationInDegrees: CGFloat, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onRotationGesture(rotationInDegrees: rotationInDegrees, expressable.unwrap())
     }
 }
 #else
@@ -136,7 +130,8 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onRotationGesture(rotation: CGFloat? = nil, on state: UIGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
-        onRotationGesture(rotation: rotation, on: state) { v, r in
+        onRotationGesture(rotation: rotation, on: state) { [weak self] v, r in
+            guard let self = self else { return }
             action(self)
         }
     }
@@ -167,7 +162,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func onRotationGesture(rotation: CGFloat? = nil, _ action: @escaping (Self, UIGestureRecognizer.State, RotationGestureRecognizer) -> Void) -> Self {
         let recognizer = RotationGestureRecognizer(rotation: rotation)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+            guard let self = self, let recognizer = recognizer else { return }
             action(self, $0, recognizer)
         })
         return self
@@ -178,11 +174,6 @@ extension DeclarativeProtocol {
         onRotationGesture(rotation: rotation) { v, s, r in
             state.wrappedValue = s
         }
-    }
-
-    @discardableResult
-    public func onRotationGesture<V>(rotation: CGFloat? = nil, _ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
-        onRotationGesture(rotation: rotation, expressable.unwrap())
     }
 }
 #endif

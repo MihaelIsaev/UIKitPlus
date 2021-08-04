@@ -42,13 +42,6 @@ open class UStepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInter
         setup()
     }
     
-    public init<V>(_ expressable: ExpressableState<V, Double>) {
-        super.init(frame: .zero)
-        valueBinding = expressable.unwrap()
-        self.value = expressable.value()
-        setup()
-    }
-    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -111,13 +104,6 @@ open class UStepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInter
         return self
     }
     
-    @discardableResult
-    public func isContinuous<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        isContinuousBinding = expressable.unwrap()
-        isContinuous = expressable.value()
-        return self
-    }
-    
     // if YES, press & hold repeatedly alters value. default = YES
     @discardableResult
     public func autorepeat(_ value: Bool = true) -> Self {
@@ -130,13 +116,6 @@ open class UStepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInter
     public func autorepeat(_ state: UIKitPlus.State<Bool>) -> Self {
         autorepeatBinding = state
         autorepeat = state.wrappedValue
-        return self
-    }
-    
-    @discardableResult
-    public func autorepeat<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        autorepeatBinding = expressable.unwrap()
-        autorepeat = expressable.value()
         return self
     }
     
@@ -155,13 +134,6 @@ open class UStepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInter
         return self
     }
     
-    @discardableResult
-    public func wraps<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        wrapsBinding = expressable.unwrap()
-        wraps = expressable.value()
-        return self
-    }
-    
     // default is 0. sends UIControlEventValueChanged. clamped to min/max
     @discardableResult
     public func value(_ value: Double) -> Self {
@@ -174,13 +146,6 @@ open class UStepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInter
     public func value(_ state: UIKitPlus.State<Double>) -> Self {
         valueBinding = state
         value = state.wrappedValue
-        return self
-    }
-    
-    @discardableResult
-    public func value<V>(_ expressable: ExpressableState<V, Double>) -> Self {
-        valueBinding = expressable.unwrap()
-        self.value = expressable.value()
         return self
     }
     
@@ -199,13 +164,6 @@ open class UStepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInter
         return self
     }
     
-    @discardableResult
-    public func minimumValue<V>(_ expressable: ExpressableState<V, Double>) -> Self {
-        minValueBinding = expressable.unwrap()
-        minimumValue = expressable.value()
-        return self
-    }
-    
     // default 100. must be greater than minimumValue
     @discardableResult
     public func maximumValue(_ value: Double) -> Self {
@@ -221,13 +179,6 @@ open class UStepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInter
         return self
     }
     
-    @discardableResult
-    public func maximumValue<V>(_ expressable: ExpressableState<V, Double>) -> Self {
-        maxValueBinding = expressable.unwrap()
-        maximumValue = expressable.value()
-        return self
-    }
-    
     // default 1. must be greater than 0
     @discardableResult
     public func stepValue(_ value: Double) -> Self {
@@ -240,13 +191,6 @@ open class UStepper: UIStepper, AnyDeclarativeProtocol, DeclarativeProtocolInter
     public func stepValue(_ state: UIKitPlus.State<Double>) -> Self {
         stepValueBinding = state
         stepValue = state.wrappedValue
-        return self
-    }
-    
-    @discardableResult
-    public func stepValue<V>(_ expressable: ExpressableState<V, Double>) -> Self {
-        stepValueBinding = expressable.unwrap()
-        stepValue = expressable.value()
         return self
     }
 }

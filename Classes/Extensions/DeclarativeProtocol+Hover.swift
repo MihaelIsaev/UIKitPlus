@@ -21,7 +21,8 @@ extension DeclarativeProtocol {
     public func onHoverGesture(_ action: @escaping (Self, UIGestureRecognizer.State, UIGestureRecognizer) -> Void) -> Self {
         if #available(iOS 13.0, *) {
             let recognizer = HoverGestureRecognizer()
-            declarativeView.addGestureRecognizer(recognizer.trackState {
+            declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+                guard let self = self, let recognizer = recognizer else { return }
                 action(self, $0, recognizer)
             })
         }
@@ -34,18 +35,13 @@ extension DeclarativeProtocol {
             state.wrappedValue = s
         }
     }
-
-    @discardableResult
-    public func onHoverGesture<V>(_ expressable: ExpressableState<V, UIGestureRecognizer.State>) -> Self {
-        onHoverGesture(expressable.unwrap())
-    }
     
     @discardableResult
     public func hovered(_ action: @escaping (Bool) -> Void) -> Self {
-        onHoverGesture { v, s, r in
+        onHoverGesture { [weak self] v, s, r in
             let hovered = [.began, .changed].contains(s)
-            guard hovered != self.properties.hovered else { return }
-            self.properties.hovered = hovered
+            guard hovered != self?.properties.hovered else { return }
+            self?.properties.hovered = hovered
             action(hovered)
         }
     }
@@ -55,11 +51,6 @@ extension DeclarativeProtocol {
         hovered {
             state.wrappedValue = $0
         }
-    }
-
-    @discardableResult
-    public func hovered<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        hovered(expressable.unwrap())
     }
     #endif
 }

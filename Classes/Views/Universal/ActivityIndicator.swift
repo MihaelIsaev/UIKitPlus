@@ -81,24 +81,14 @@ open class UActivityIndicator: NSProgressIndicator, AnyDeclarativeProtocol, Decl
 //
 //    @discardableResult
 //    public func color(_ binding: State<UColor>) -> Self {
-//        binding.listen { self.color($0) }
+//        binding.listen { [weak self] in self?.color($0) }
 //        return color(binding.wrappedValue)
-//    }
-//
-//    @discardableResult
-//    public func color<V>(_ expressable: ExpressableState<V, UColor>) -> Self {
-//        color(expressable.unwrap())
 //    }
 //
 //    @discardableResult
 //    public func color(_ binding: State<Int>) -> Self {
-//        binding.listen { self.color($0) }
+//        binding.listen { [weak self] in self?.color($0) }
 //        return color(binding.wrappedValue)
-//    }
-//
-//    @discardableResult
-//    public func color<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-//        color(expressable.unwrap())
 //    }
     
     @discardableResult
@@ -113,13 +103,8 @@ open class UActivityIndicator: NSProgressIndicator, AnyDeclarativeProtocol, Decl
     
     @discardableResult
     public func started(_ binding: State<Bool>) -> Self {
-        binding.listen { self.started($0) }
+        binding.listen { [weak self] in self?.started($0) }
         return started(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func started<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        started(expressable.unwrap())
     }
     
     @discardableResult
@@ -204,26 +189,14 @@ open class ActivityIndicator: UIActivityIndicatorView, AnyDeclarativeProtocol, D
     
     @discardableResult
     public func color(_ binding: State<UIColor>) -> Self {
-        binding.listen { self.color($0) }
+        binding.listen { [weak self] in self?.color($0) }
         return color(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func color<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        expressable.state.listen { _ in self.color(expressable.value()) }
-        return color(expressable.value())
     }
     
     @discardableResult
     public func color(_ binding: State<Int>) -> Self {
-        binding.listen { self.color($0) }
+        binding.listen { [weak self] in self?.color($0) }
         return color(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func color<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        expressable.state.listen { _ in self.color(expressable.value()) }
-        return color(expressable.value())
     }
     
     @discardableResult
@@ -238,13 +211,8 @@ open class ActivityIndicator: UIActivityIndicatorView, AnyDeclarativeProtocol, D
     
     @discardableResult
     public func started(_ binding: State<Bool>) -> Self {
-        binding.listen { self.started($0) }
+        binding.listen { [weak self] in self?.started($0) }
         return started(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func started<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        started(expressable.unwrap())
     }
     
     @discardableResult

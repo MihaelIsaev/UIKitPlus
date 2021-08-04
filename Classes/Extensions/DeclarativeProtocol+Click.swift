@@ -30,7 +30,8 @@ extension DeclarativeProtocol where V: BaseView {
     @discardableResult
     public func onClickGesture(clicks: Int = 1, touches: Int = 1, buttonMask: Int = 0x1, _ action: @escaping (Self, NSGestureRecognizer.State, ClickGestureRecognizer) -> Void) -> Self {
         let recognizer = ClickGestureRecognizer(clicks: clicks, touches: touches, buttonMask: buttonMask)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self] in
+            guard let self = self else { return }
             action(self, $0, recognizer)
         })
         return self
@@ -41,11 +42,6 @@ extension DeclarativeProtocol where V: BaseView {
         onClickGesture(clicks: clicks, touches: touches, buttonMask: buttonMask) { v, s, r in
             state.wrappedValue = s
         }
-    }
-
-    @discardableResult
-    public func onClickGesture<V>(clicks: Int = 1, touches: Int = 1, buttonMask: Int = 0x1, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onClickGesture(clicks: clicks, touches: touches, buttonMask: buttonMask, expressable.unwrap())
     }
     
     // MARK: Double Click
@@ -73,11 +69,6 @@ extension DeclarativeProtocol where V: BaseView {
     @discardableResult
     public func onDoubleClickGesture(touches: Int = 1, buttonMask: Int = 0x1, _ state: State<NSGestureRecognizer.State>) -> Self {
         onClickGesture(clicks: 2, touches: touches, buttonMask: buttonMask, state)
-    }
-
-    @discardableResult
-    public func onDoubleClickGesture<V>(touches: Int = 1, buttonMask: Int = 0x1, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onClickGesture(clicks: 2, touches: touches, buttonMask: buttonMask, expressable)
     }
 }
 #endif

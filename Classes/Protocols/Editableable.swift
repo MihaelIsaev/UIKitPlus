@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Editableable {
+public protocol Editableable: class {
     @discardableResult
     func editable() -> Self
     
@@ -13,9 +13,6 @@ public protocol Editableable {
     
     @discardableResult
     func editable(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func editable<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _Editableable: Editableable {
@@ -30,13 +27,10 @@ extension Editableable {
     
     @discardableResult
     public func editable(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.editable($0) }
+        binding.listen { [weak self] in
+            self?.editable($0)
+        }
         return editable(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func editable<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        editable(expressable.unwrap())
     }
 }
 

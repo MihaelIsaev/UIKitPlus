@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Continuousable {
+public protocol Continuousable: class {
     @discardableResult
     func continuous() -> Self
     
@@ -13,9 +13,6 @@ public protocol Continuousable {
     
     @discardableResult
     func continuous(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func continuous<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _Continuousable: Continuousable {
@@ -32,13 +29,10 @@ extension Continuousable {
     
     @discardableResult
     public func continuous(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.continuous($0) }
+        binding.listen { [weak self] in
+            self?.continuous($0)
+        }
         return continuous(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func continuous<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        continuous(expressable.unwrap())
     }
 }
 

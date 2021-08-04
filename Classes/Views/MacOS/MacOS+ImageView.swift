@@ -74,18 +74,7 @@ open class UImage: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         self.image = image.wrappedValue
         _setup()
         image.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self.image = new
-        }
-    }
-    
-    public init <V>(_ expressable: ExpressableState<V, NSImage?>) {
-        super.init(frame: .zero)
-        self.image = expressable.value()
-        _setup()
-        expressable.state.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self.image = expressable.value()
+            self?.image = new
         }
     }
     
@@ -110,18 +99,6 @@ open class UImage: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         url.listen { [weak self] old, new in
             guard let self = self else { return }
             self._imageLoader.load(new, imageView: self, defaultImage: defaultImage)
-        }
-    }
-    
-    public init <V>(_ expressable: ExpressableState<V, String>, defaultImage: NSImage? = nil, loader: ImageLoader = .defaultRelease) {
-        super.init(frame: .zero)
-        _setup()
-        self.image = defaultImage
-        self._imageLoader = loader
-        self._imageLoader.load(expressable.value(), imageView: self, defaultImage: defaultImage)
-        expressable.state.listen { [weak self] old, new in
-            guard let self = self else { return }
-            self._imageLoader.load(expressable.value(), imageView: self, defaultImage: defaultImage)
         }
     }
     
@@ -216,16 +193,21 @@ extension UImage: _Tintable {
     }
     
     func tintedImage(with tintColor: NSColor) -> NSImage? {
-        guard let image = self.image else { return self.image }
-        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return self.image }
-        
-        return NSImage(size: image.size, flipped: false) { bounds in
-            guard let context = NSGraphicsContext.current?.cgContext else { return false }
-            tintColor.set()
-            context.clip(to: bounds, mask: cgImage)
-            context.fill(bounds)
-            return true
-        }
+        self.image?.image(withTintColor: tintColor)
     }
+}
+
+extension NSImage {
+   public func image(withTintColor tintColor: NSColor) -> NSImage {
+       guard isTemplate else { return self }
+       guard let copiedImage = self.copy() as? NSImage else { return self }
+       copiedImage.lockFocus()
+       tintColor.set()
+       let imageBounds = NSMakeRect(0, 0, copiedImage.size.width, copiedImage.size.height)
+       imageBounds.fill(using: .sourceAtop)
+       copiedImage.unlockFocus()
+       copiedImage.isTemplate = false
+       return copiedImage
+   }
 }
 #endif

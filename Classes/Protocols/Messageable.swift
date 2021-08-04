@@ -26,9 +26,6 @@ public protocol Messageable: class {
     func message<A: AnyString>(_ state: State<A>) -> Self
     
     @discardableResult
-    func message<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self
-    
-    @discardableResult
     func message(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self
 }
 
@@ -80,13 +77,10 @@ extension Messageable {
     @discardableResult
     public func message<A: AnyString>(_ state: State<A>) -> Self {
         message(state.wrappedValue)
-        state.listen { self.message($0) }
+        state.listen { [weak self] in
+            self?.message($0)
+        }
         return self
-    }
-    
-    @discardableResult
-    public func message<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self {
-        message(expressable.unwrap())
     }
 }
 
@@ -104,7 +98,9 @@ extension Messageable {
     @discardableResult
     public func text(_ value: [AnyString]) -> Self {
         guard let s = self as? _Messageable else { return self }
-        value.onUpdate(s._changeMessage)
+        value.onUpdate { [weak s] in
+            s?._changeMessage(to: $0)
+        }
         s._changeMessage(to: value.attributedString)
         return self
     }
@@ -128,7 +124,9 @@ extension _Messageable {
     
     @discardableResult
     public func message(_ value: [AnyString]) -> Self {
-        value.onUpdate(_changeMessage)
+        value.onUpdate { [weak self] in
+            self?._changeMessage(to: $0)
+        }
         _changeMessage(to: value.attributedString)
         return self
     }

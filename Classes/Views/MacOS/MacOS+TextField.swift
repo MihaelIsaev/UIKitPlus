@@ -63,12 +63,6 @@ open class UTextField: NSTextField, AnyDeclarativeProtocol, DeclarativeProtocolI
         text(state)
     }
     
-    public init<V, A: AnyString>(_ expressable: ExpressableState<V, A>) {
-        super.init(frame: .zero)
-        _setup()
-        text(expressable)
-    }
-    
     public init (@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
         super.init(frame: .zero)
         _setup()
@@ -791,7 +785,8 @@ extension UTextField: _Typeable {
     }
     
     func _observeTypingState(_ v: UIKitPlus.State<Bool>) {
-        _properties.isTypingState.listen {
+        _properties.isTypingState.listen { [weak v] in
+            guard let v = v else { return }
             guard v.wrappedValue != $0 else { return }
             v.wrappedValue = $0
         }

@@ -24,8 +24,8 @@ extension DeclarativeProtocol {
         properties.shadowColor.changeHandler = nil
         properties.shadowColor = color.wrappedValue
         declarativeView.layer?.shadowColor = color.wrappedValue.current.cgColor
-        properties.shadowColor.onChange { new in
-            self.declarativeView.layer?.shadowColor = new.cgColor
+        properties.shadowColor.onChange { [weak self] new in
+            self?.declarativeView.layer?.shadowColor = new.cgColor
         }
         #else
         properties.shadowColor = color.wrappedValue

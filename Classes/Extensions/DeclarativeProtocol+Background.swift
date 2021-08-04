@@ -41,17 +41,6 @@ extension AnyDeclarativeProtocol {
 //        return self
 //    }
 //
-//    @discardableResult
-//    public func background<V>(_ expressable: ExpressableState<V, UColor>) -> Self {
-//        declarativeView.background(expressable.value())
-//        properties.background = expressable.value()
-//        expressable.state.listen { [weak self] old, new in
-//            self?.declarativeView.background(expressable.value())
-//            self?.properties.background = expressable.value()
-//        }
-//        return self
-//    }
-//
 //    private func _setBackground(_ color: State<UColor>) {
 //        #if os(macOS)
 //        background.wrappedValue.changeHandler = nil

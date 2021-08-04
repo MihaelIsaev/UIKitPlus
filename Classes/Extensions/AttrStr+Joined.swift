@@ -15,14 +15,16 @@ import UIKit
 extension Array: AnyString where Element == AnyString {
     public var attributedString: NSAttributedString {
         var res: NSMutableAttributedString = .init()
-        forEach { res.append($0.attributedString) }
+        for str in self {
+            res.append(str.attributedString)
+        }
         return res
     }
     
     public func onUpdate(_ handler: @escaping (NSAttributedString) -> Void) {
-        forEach {
-            $0.onUpdate { _ in
-                handler(self.attributedString)
+        for str in self {
+            str.onUpdate {
+                handler($0.attributedString)
             }
         }
     }
@@ -35,8 +37,8 @@ extension Array: AnyString where Element == AnyString {
 extension Array where Element: NSAttributedString {
     public func joined() -> NSAttributedString {
         let result = NSMutableAttributedString(string: "")
-        forEach {
-            result.append($0)
+        for str in self {
+            result.append(str)
         }
         return result
     }
@@ -45,16 +47,16 @@ extension Array where Element: NSAttributedString {
 extension Array where Element: AttributedString {
     public func joined() -> AttrStr {
         let result = AttributedString("")
-        forEach {
-            result._attributedString.append($0._attributedString)
+        for str in self {
+            result._attributedString.append(str._attributedString)
         }
         return result
     }
     
     public func joined() -> NSMutableAttributedString {
         let result = NSMutableAttributedString(string: "")
-        forEach {
-            result.append($0._attributedString)
+        for str in self {
+            result.append(str._attributedString)
         }
         return result
     }

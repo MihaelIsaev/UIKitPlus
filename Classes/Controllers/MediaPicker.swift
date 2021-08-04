@@ -10,19 +10,27 @@ import UIKit
 
 private var _picker: ImagePicker?
 
-open class ImagePicker: NSObject {
+@available(*, deprecated, renamed: "MediaPicker")
+public typealias VideoPicker = MediaPicker
+
+@available(*, deprecated, renamed: "MediaPicker")
+public typealias ImagePicker = MediaPicker
+
+open class MediaPicker: NSObject {
     private lazy var picker = UIImagePickerController()
     
     private var cancelHandler = {}
-    private var doneHandler: (UIImage, Info)->() = { _,_ in }
+    private var imageHandler: (UIImage, ImageInfo) -> () = { _,_ in }
+    private var infoHandler: ([UIImagePickerController.InfoKey : Any]) -> () = { _ in }
+    private var videoHandler: (URL) -> () = { _ in }
     private var sourceType: UIImagePickerController.SourceType = .camera
     
-    public struct Info {
+    public struct ImageInfo {
         let original: [UIImagePickerController.InfoKey : Any]
         let mediaType: String
         let originalImage: UIImage
         let editedImage: UIImage?
-        let cropRect: CGRect
+        let cropRect: CGRect?
         let mediaURL: URL?
         let mediaMetadata: NSDictionary
         
@@ -30,13 +38,11 @@ open class ImagePicker: NSObject {
             original = info
             guard let mediaType = info[.mediaType] as? String else { return nil }
             guard let originalImage = info[.originalImage] as? UIImage else { return nil }
-            guard let cropRect = info[.cropRect] as? CGRect else { return nil }
-            guard let mediaMetadata = info[.mediaMetadata] as? NSDictionary else { return nil }
             self.mediaType = mediaType
             self.originalImage = originalImage
-            self.cropRect = cropRect
+            self.cropRect = info[.cropRect] as? CGRect
             self.mediaURL = info[.mediaURL] as? URL
-            self.mediaMetadata = mediaMetadata
+            self.mediaMetadata = (info[.mediaMetadata] as? NSDictionary) ?? [:]
             editedImage = info[.editedImage] as? UIImage
         }
     }
@@ -53,13 +59,13 @@ open class ImagePicker: NSObject {
         return self
     }
     
-    /// Use e.g. `kUTTypeImage`, you have to `import MobileCoreServices` for it
+    /// Use e.g. `public.image` or `public.movie`
     @discardableResult
     public func mediaTypes(_ types: String...) -> Self {
         mediaTypes(types)
     }
     
-    /// Use e.g. `kUTTypeImage`, you have to `import MobileCoreServices` for it
+    /// Use e.g. `public.image` or `public.movie`
     @discardableResult
     public func mediaTypes(_ types: [String]) -> Self {
         picker.mediaTypes = types
@@ -78,6 +84,17 @@ open class ImagePicker: NSObject {
     @discardableResult
     public func videoQuality(_ value: UIImagePickerController.QualityType) -> Self {
         picker.videoQuality = value
+        return self
+    }
+    
+    /// Can be used to specify the transcoding quality for videos (via a AVAssetExportPreset* string).
+    /// If the value is nil (the default) then the transcodeQuality is determined by `videoQuality` instead.
+    /// Not valid if the source type is `UIImagePickerControllerSourceTypeCamera`
+    @discardableResult
+    public func videoExportPreset(_ value: String) -> Self {
+        if #available(iOS 11.0, *) {
+            picker.videoExportPreset = value
+        }
         return self
     }
     
@@ -147,17 +164,41 @@ open class ImagePicker: NSObject {
         return self
     }
     
+    @available(*, deprecated, renamed: "onImage")
     @discardableResult
-    public func onDone(_ handler: @escaping (UIImage, Info) -> Void) -> Self {
-        doneHandler = handler
+    public func onDone(_ handler: @escaping (UIImage, ImageInfo) -> Void) -> Self {
+        onImage(handler)
+    }
+    
+    @available(*, deprecated, renamed: "onImage")
+    @discardableResult
+    public func onDone(_ handler: @escaping (UIImage) -> Void) -> Self {
+        onImage(handler)
+    }
+    
+    @discardableResult
+    public func onImage(_ handler: @escaping (UIImage, ImageInfo) -> Void) -> Self {
+        imageHandler = handler
         return self
     }
     
     @discardableResult
-    public func onDone(_ handler: @escaping (UIImage) -> Void) -> Self {
-        doneHandler = { image, info in
+    public func onImage(_ handler: @escaping (UIImage) -> Void) -> Self {
+        imageHandler = { image, info in
             handler(image)
         }
+        return self
+    }
+    
+    @discardableResult
+    public func onInfo(_ handler: @escaping ([UIImagePickerController.InfoKey : Any]) -> Void) -> Self {
+        infoHandler = handler
+        return self
+    }
+    
+    @discardableResult
+    public func onVideo(_ handler: @escaping (URL) -> Void) -> Self {
+        videoHandler = handler
         return self
     }
     
@@ -171,8 +212,14 @@ open class ImagePicker: NSObject {
 
 extension ImagePicker: UIImagePickerControllerDelegate {
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let info = Info(info) {
-            doneHandler(info.editedImage ?? info.originalImage, info)
+        infoHandler(info)
+        if let mediaType = info[.mediaType] as? String,
+           ["movie", "video"].contains { mediaType.contains($0) },
+           let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? URL {
+            videoHandler(videoURL)
+        }
+        if let imageInfo = ImageInfo(info) {
+            imageHandler(imageInfo.editedImage ?? imageInfo.originalImage, imageInfo)
         }
         picker.dismiss(animated: true)
         _picker = nil
@@ -180,6 +227,7 @@ extension ImagePicker: UIImagePickerControllerDelegate {
     
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         cancelHandler()
+        picker.dismiss(animated: true)
         _picker = nil
     }
 }

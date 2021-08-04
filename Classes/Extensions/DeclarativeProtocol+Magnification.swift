@@ -42,7 +42,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func onMagnification(_ value: CGFloat? = nil, _ action: @escaping (Self, NSGestureRecognizer.State, MagnificationGestureRecognizer) -> Void) -> Self {
         let recognizer = MagnificationGestureRecognizer(magnification: value)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+            guard let self = self, let recognizer = recognizer else { return }
             action(self, $0, recognizer)
         })
         return self
@@ -53,11 +54,6 @@ extension DeclarativeProtocol {
         onMagnification(value) { v, s, r in
             state.wrappedValue = s
         }
-    }
-
-    @discardableResult
-    public func onMagnification<V>(_ value: CGFloat? = nil, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onMagnification(value, expressable.unwrap())
     }
 }
 #endif

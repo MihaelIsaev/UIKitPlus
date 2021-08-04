@@ -11,7 +11,8 @@ extension DeclarativeProtocol {
     
     @discardableResult
     public func onPressGesture(touches: Int = 1, on state: NSGestureRecognizer.State, _ action: @escaping (Self) -> Void) -> Self {
-        onPressGesture(touches: touches, on: state) { v, r in
+        onPressGesture(touches: touches, on: state) { [weak self] v, r in
+            guard let self = self else { return }
             action(self)
         }
     }
@@ -42,7 +43,8 @@ extension DeclarativeProtocol {
     @discardableResult
     public func onPressGesture(touches: Int = 1, _ action: @escaping (Self, NSGestureRecognizer.State, PressGestureRecognizer) -> Void) -> Self {
         let recognizer = PressGestureRecognizer(touches: touches)
-        declarativeView.addGestureRecognizer(recognizer.trackState {
+        declarativeView.addGestureRecognizer(recognizer.trackState { [weak self, weak recognizer] in
+            guard let self = self, let recognizer = recognizer else { return }
             action(self, $0, recognizer)
         })
         return self
@@ -53,11 +55,6 @@ extension DeclarativeProtocol {
         onPressGesture(touches: touches) { v, s, r in
             state.wrappedValue = s
         }
-    }
-
-    @discardableResult
-    public func onPressGesture<V>(touches: Int = 1, _ expressable: ExpressableState<V, NSGestureRecognizer.State>) -> Self {
-        onPressGesture(touches: touches, expressable.unwrap())
     }
 }
 #endif

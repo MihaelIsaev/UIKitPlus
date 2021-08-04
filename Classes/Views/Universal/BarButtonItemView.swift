@@ -41,7 +41,7 @@ open class UBarButtonItem: UIBarButtonItem {
         super.init()
         self.image = image.wrappedValue
         setup()
-        image.listen { self.image = $0 }
+        image.listen { [weak self] in self?.image = $0 }
     }
     
     public init(image imageName: String) {
@@ -111,26 +111,15 @@ open class UBarButtonItem: UIBarButtonItem {
     
     @discardableResult
     public func tint(_ binding: State<UIColor>) -> Self {
-        binding.listen { self.tint($0) }
+        binding.listen { [weak self] in self?.tint($0) }
         return tint(binding.wrappedValue)
     }
     
-    @discardableResult
-    public func tint<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        expressable.state.listen { _ in self.tint(expressable.value()) }
-        return tint(expressable.value())
-    }
     
     @discardableResult
     public func tint(_ binding: State<Int>) -> Self {
-        binding.listen { self.tint($0) }
+        binding.listen { [weak self] in self?.tint($0) }
         return tint(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func tint<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        expressable.state.listen { _ in self.tint(expressable.value()) }
-        return tint(expressable.value())
     }
 }
 #endif

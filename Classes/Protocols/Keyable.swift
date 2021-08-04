@@ -7,9 +7,6 @@ public protocol Keyable: class {
     
     @discardableResult
     func key(_ state: State<String>) -> Self
-    
-    @discardableResult
-    func key<V>(_ expressable: ExpressableState<V, String>) -> Self
 }
 
 protocol _Keyable: Keyable {
@@ -27,13 +24,10 @@ extension Keyable {
     @discardableResult
     public func key(_ state: State<String>) -> Self {
         key(state.wrappedValue)
-        state.listen { self.key($0) }
+        state.listen { [weak self] in
+            self?.key($0)
+        }
         return self
-    }
-
-    @discardableResult
-    public func key<V>(_ expressable: ExpressableState<V, String>) -> Self {
-        key(expressable.unwrap())
     }
 }
 #endif

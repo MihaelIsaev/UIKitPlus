@@ -36,6 +36,8 @@ open class App: NSApplication, NSApplicationDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    open func applicationWillFinishLaunching(_ notification: Notification) {}
+    
     open func applicationDidFinishLaunching(_ aNotification: Notification) {
         parseAppBuilderItem(body.appBuilderContent)
         DistributedNotificationCenter.default.addObserver(

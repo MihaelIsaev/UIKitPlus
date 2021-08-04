@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol PullsDownable {
+public protocol PullsDownable: class {
     @discardableResult
     func pullsDown() -> Self
     
@@ -13,9 +13,6 @@ public protocol PullsDownable {
     
     @discardableResult
     func pullsDown(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func pullsDown<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _PullsDownable: PullsDownable {
@@ -30,13 +27,10 @@ extension PullsDownable {
     
     @discardableResult
     public func pullsDown(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.pullsDown($0) }
+        binding.listen { [weak self] in
+            self?.pullsDown($0)
+        }
         return pullsDown(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func pullsDown<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        pullsDown(expressable.unwrap())
     }
 }
 

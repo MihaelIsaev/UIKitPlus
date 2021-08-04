@@ -14,12 +14,6 @@ extension String {
     
     /// UColor, default nil: no background
     @discardableResult
-    public func background<V>(_ expressable: ExpressableState<V, UColor>, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        AttrStr(self).background(expressable, at: range)
-    }
-    
-    /// UColor, default nil: no background
-    @discardableResult
     public func background(_ value: UColor, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).background(value, at: range)
     }
@@ -34,12 +28,6 @@ extension String {
     @discardableResult
     public func foreground(_ state: State<UColor>, at range: ClosedRange<Int>? = nil) -> AttributedString {
         AttrStr(self).foreground(state, at: range)
-    }
-    
-    /// UColor, default blackColor
-    @discardableResult
-    public func foreground<V>(_ expressable: ExpressableState<V, UColor>, at range: ClosedRange<Int>? = nil) -> AttributedString {
-        AttrStr(self).foreground(expressable, at: range)
     }
     
     /// UColor, default blackColor
@@ -232,11 +220,6 @@ extension String {
         AttrStr(self).lineSpacing(state)
     }
     
-    @discardableResult
-    public func lineSpacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> AttributedString {
-        AttrStr(self).lineSpacing(expressable)
-    }
-    
     // MARK: Paragraph Spacing
     
     @discardableResult
@@ -247,11 +230,6 @@ extension String {
     @discardableResult
     public func paragraphSpacing(_ state: State<CGFloat>) -> AttributedString {
         AttrStr(self).paragraphSpacing(state)
-    }
-    
-    @discardableResult
-    public func paragraphSpacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> AttributedString {
-        AttrStr(self).paragraphSpacing(expressable)
     }
     
     // MARK: First Line Head Indent
@@ -266,11 +244,6 @@ extension String {
         AttrStr(self).firstLineHeadIndent(state)
     }
     
-    @discardableResult
-    public func firstLineHeadIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> AttributedString {
-        AttrStr(self).firstLineHeadIndent(expressable)
-    }
-    
     // MARK: Head Indent
     
     @discardableResult
@@ -281,11 +254,6 @@ extension String {
     @discardableResult
     public func headIndent(_ state: State<CGFloat>) -> AttributedString {
         AttrStr(self).headIndent(state)
-    }
-    
-    @discardableResult
-    public func headIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> AttributedString {
-        AttrStr(self).headIndent(expressable)
     }
     
     // MARK: Tail Indent
@@ -300,11 +268,6 @@ extension String {
         AttrStr(self).tailIndent(state)
     }
     
-    @discardableResult
-    public func tailIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> AttributedString {
-        AttrStr(self).tailIndent(expressable)
-    }
-    
     // MARK: Minimum Line Height
     
     @discardableResult
@@ -315,11 +278,6 @@ extension String {
     @discardableResult
     public func minimumLineHeight(_ state: State<CGFloat>) -> AttributedString {
         AttrStr(self).minimumLineHeight(state)
-    }
-    
-    @discardableResult
-    public func minimumLineHeight<V>(_ expressable: ExpressableState<V, CGFloat>) -> AttributedString {
-        AttrStr(self).minimumLineHeight(expressable)
     }
     
     // MARK: Maximum Line Height
@@ -334,11 +292,6 @@ extension String {
         AttrStr(self).maximumLineHeight(state)
     }
     
-    @discardableResult
-    public func maximumLineHeight<V>(_ expressable: ExpressableState<V, CGFloat>) -> AttributedString {
-        AttrStr(self).maximumLineHeight(expressable)
-    }
-    
     // MARK: Line Height Multiple
     
     @discardableResult
@@ -349,11 +302,6 @@ extension String {
     @discardableResult
     public func lineHeightMultiple(_ state: State<CGFloat>) -> AttributedString {
         AttrStr(self).lineHeightMultiple(state)
-    }
-    
-    @discardableResult
-    public func lineHeightMultiple<V>(_ expressable: ExpressableState<V, CGFloat>) -> AttributedString {
-        AttrStr(self).lineHeightMultiple(expressable)
     }
     
     // MARK: Default Tab Interval
@@ -368,11 +316,6 @@ extension String {
         AttrStr(self).defaultTabInterval(state)
     }
     
-    @discardableResult
-    public func defaultTabInterval<V>(_ expressable: ExpressableState<V, CGFloat>) -> AttributedString {
-        AttrStr(self).defaultTabInterval(expressable)
-    }
-    
     // MARK: Paragraph Spacing Before
     
     @discardableResult
@@ -385,11 +328,6 @@ extension String {
         AttrStr(self).paragraphSpacingBefore(state)
     }
     
-    @discardableResult
-    public func paragraphSpacingBefore<V>(_ expressable: ExpressableState<V, CGFloat>) -> AttributedString {
-        AttrStr(self).paragraphSpacingBefore(expressable)
-    }
-    
     // MARK: Hyphenation Factor
     
     @discardableResult
@@ -400,11 +338,6 @@ extension String {
     @discardableResult
     public func hyphenationFactor(_ state: State<Float>) -> AttributedString {
         AttrStr(self).hyphenationFactor(state)
-    }
-    
-    @discardableResult
-    public func hyphenationFactor<V>(_ expressable: ExpressableState<V, Float>) -> AttributedString {
-        AttrStr(self).hyphenationFactor(expressable)
     }
     
     #if os(macOS)
@@ -420,11 +353,6 @@ extension String {
         AttrStr(self).tighteningFactorForTruncation(state)
     }
     
-    @discardableResult
-    public func tighteningFactorForTruncation<V>(_ expressable: ExpressableState<V, Float>) -> AttributedString {
-        AttrStr(self).tighteningFactorForTruncation(expressable)
-    }
-    
     // MARK: Header Level
     
     @discardableResult
@@ -437,11 +365,6 @@ extension String {
         AttrStr(self).headerLevel(state)
     }
     
-    @discardableResult
-    public func headerLevel<V>(_ expressable: ExpressableState<V, Int>) -> AttributedString {
-        AttrStr(self).headerLevel(expressable)
-    }
-    
     // MARK: Allows Default Tightening For Truncation
     
     @discardableResult
@@ -452,11 +375,6 @@ extension String {
     @discardableResult
     public func allowsDefaultTighteningForTruncation(_ state: State<Bool>) -> AttributedString {
         AttrStr(self).allowsDefaultTighteningForTruncation(state)
-    }
-    
-    @discardableResult
-    public func allowsDefaultTighteningForTruncation<V>(_ expressable: ExpressableState<V, Bool>) -> AttributedString {
-        AttrStr(self).allowsDefaultTighteningForTruncation(expressable)
     }
     #endif
     
@@ -472,11 +390,6 @@ extension String {
         AttrStr(self).alignment(state)
     }
     
-    @discardableResult
-    public func alignment<V>(_ expressable: ExpressableState<V, NSTextAlignment>) -> AttributedString {
-        AttrStr(self).alignment(expressable)
-    }
-    
     // MARK: Line Break Mode
     
     @discardableResult
@@ -487,11 +400,6 @@ extension String {
     @discardableResult
     public func lineBreakMode(_ state: State<NSLineBreakMode>) -> AttributedString {
         AttrStr(self).lineBreakMode(state)
-    }
-    
-    @discardableResult
-    public func lineBreakMode<V>(_ expressable: ExpressableState<V, NSLineBreakMode>) -> AttributedString {
-        AttrStr(self).lineBreakMode(expressable)
     }
     
     // MARK: Base Writing Direction
@@ -506,11 +414,6 @@ extension String {
         AttrStr(self).baseWritingDirection(state)
     }
     
-    @discardableResult
-    public func baseWritingDirection<V>(_ expressable: ExpressableState<V, NSWritingDirection>) -> AttributedString {
-        AttrStr(self).baseWritingDirection(expressable)
-    }
-    
     // MARK: Tab Stops
     
     @discardableResult
@@ -521,11 +424,6 @@ extension String {
     @discardableResult
     public func tabStops(_ state: State<[NSTextTab]>) -> AttributedString {
         AttrStr(self).tabStops(state)
-    }
-    
-    @discardableResult
-    public func tabStops<V>(_ expressable: ExpressableState<V, [NSTextTab]>) -> AttributedString {
-        AttrStr(self).tabStops(expressable)
     }
     
     #if os(macOS)
@@ -541,11 +439,6 @@ extension String {
         AttrStr(self).textBlocks(state)
     }
     
-    @discardableResult
-    public func textBlocks<V>(_ expressable: ExpressableState<V, [NSTextBlock]>) -> AttributedString {
-        AttrStr(self).textBlocks(expressable)
-    }
-    
     // MARK: Text Lists
     
     @discardableResult
@@ -556,11 +449,6 @@ extension String {
     @discardableResult
     public func textLists(_ state: State<[NSTextList]>) -> AttributedString {
         AttrStr(self).textLists(state)
-    }
-    
-    @discardableResult
-    public func textLists<V>(_ expressable: ExpressableState<V, [NSTextList]>) -> AttributedString {
-        AttrStr(self).textLists(expressable)
     }
     #endif
 }

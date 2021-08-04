@@ -13,9 +13,6 @@ public protocol Colorable: class {
     
     @discardableResult
     func color(_ color: State<UColor>) -> Self
-    
-    @discardableResult
-    func color<V>(_ expressable: ExpressableState<V, UColor>) -> Self
 }
 
 protocol _Colorable: Colorable {
@@ -36,13 +33,10 @@ extension Colorable {
     
     @discardableResult
     public func color(_ state: State<UColor>) -> Self {
-        state.listen { self.color($0) }
+        state.listen { [weak self] in
+            self?.color($0)
+        }
         return color(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func color<V>(_ expressable: ExpressableState<V, UColor>) -> Self {
-        color(expressable.unwrap())
     }
 }
 

@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol GestureDelegatorable {}
+public protocol GestureDelegatorable: class {}
 
 protocol _GestureDelegatorable: GestureDelegatorable {
     var _delegator: _GestureDelegator { get set }
@@ -28,8 +28,9 @@ extension GestureDelegatorable {
     @discardableResult
     public func shouldBegin(_ action: @escaping (Self) -> Bool) -> Self {
         guard let s = self as? _GestureDelegatorable else { return self }
-        s._delegator._shouldBegin = {
-            action(self)
+        s._delegator._shouldBegin = { [weak self] in
+            guard let self = self else { return false }
+            return action(self)
         }
         return self
     }
@@ -58,8 +59,9 @@ extension GestureDelegatorable {
     @discardableResult
     public func shouldAttemptToRecognizeWithEvent(_ action: @escaping (Self, NSEvent) -> Bool) -> Self {
         guard let s = self as? _GestureDelegatorable else { return self }
-        s._delegator._shouldAttemptToRecognizeWithEvent = { e in
-            action(self, e)
+        s._delegator._shouldAttemptToRecognizeWithEvent = { [weak self] e in
+            guard let self = self else { return false }
+            return action(self, e)
         }
         return self
     }
@@ -83,8 +85,9 @@ extension GestureDelegatorable {
     @discardableResult
     public func shouldReceiveTouch(_ action: @escaping (Self, NSTouch) -> Bool) -> Self {
         guard let s = self as? _GestureDelegatorable else { return self }
-        s._delegator._shouldReceiveTouch = { t in
-            action(self, t)
+        s._delegator._shouldReceiveTouch = { [weak self] t in
+            guard let self = self else { return false }
+            return action(self, t)
         }
         return self
     }
@@ -108,8 +111,9 @@ extension GestureDelegatorable {
     @discardableResult
     public func shouldReceivePress(_ action: @escaping (Self, UIPress) -> Bool) -> Self {
         guard let s = self as? _GestureDelegatorable else { return self }
-        s._delegator._shouldReceivePress = { p in
-            action(self, p)
+        s._delegator._shouldReceivePress = { [weak self] p in
+            guard let self = self else { return false }
+            return action(self, p)
         }
         return self
     }
@@ -133,8 +137,9 @@ extension GestureDelegatorable {
     @discardableResult
     public func shouldReceiveTouch(_ action: @escaping (Self, UITouch) -> Bool) -> Self {
         guard let s = self as? _GestureDelegatorable else { return self }
-        s._delegator._shouldReceiveTouch = { t in
-            action(self, t)
+        s._delegator._shouldReceiveTouch = { [weak self] t in
+            guard let self = self else { return false }
+            return action(self, t)
         }
         return self
     }
@@ -160,8 +165,9 @@ extension GestureDelegatorable {
     @discardableResult
     public func shouldRequireFailureOfOtherGestureRecognizer(_ action: @escaping (Self, UGestureRecognizer) -> Bool) -> Self {
         guard let s = self as? _GestureDelegatorable else { return self }
-        s._delegator._shouldRequireFailureOfOtherGestureRecognizer = { o in
-            action(self, o)
+        s._delegator._shouldRequireFailureOfOtherGestureRecognizer = { [weak self] o in
+            guard let self = self else { return false }
+            return action(self, o)
         }
         return self
     }
@@ -185,8 +191,9 @@ extension GestureDelegatorable {
     @discardableResult
     public func shouldBeRequiredToFailByOtherGestureRecognizer(_ action: @escaping (Self, UGestureRecognizer) -> Bool) -> Self {
         guard let s = self as? _GestureDelegatorable else { return self }
-        s._delegator._shouldBeRequiredToFailByOtherGestureRecognizer = { o in
-            action(self, o)
+        s._delegator._shouldBeRequiredToFailByOtherGestureRecognizer = { [weak self] o in
+            guard let self = self else { return false }
+            return action(self, o)
         }
         return self
     }
@@ -210,8 +217,9 @@ extension GestureDelegatorable {
     @discardableResult
     public func shouldRecognizeSimultaneouslyWithOtherGestureRecognizer(_ action: @escaping (Self, UGestureRecognizer) -> Bool) -> Self {
         guard let s = self as? _GestureDelegatorable else { return self }
-        s._delegator._shouldRecognizeSimultaneouslyWithOtherGestureRecognizer = { o in
-            action(self, o)
+        s._delegator._shouldRecognizeSimultaneouslyWithOtherGestureRecognizer = { [weak self] o in
+            guard let self = self else { return false }
+            return action(self, o)
         }
         return self
     }

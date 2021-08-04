@@ -5,11 +5,11 @@ import UIKit
 public typealias WrappedViewControllerView = UWrappedViewControllerView
 
 open class UWrappedViewControllerView<V>: UView, WrappedViewControllerable where V: UIViewController {
-    public let inner: V
-    public let parent: UIViewController
+    public weak var inner: V?
+    public weak var parent: UIViewController?
     
     public var protocolView: UView { return self }
-    public var protocolController: UIViewController { return inner }
+    public var protocolController: UIViewController? { inner }
     
     public init (_ inner: V, parent: UIViewController) {
         self.inner = inner
@@ -31,13 +31,13 @@ open class UWrappedViewControllerView<V>: UView, WrappedViewControllerable where
     
     open override func layoutSubviews() {
         super.layoutSubviews()
-        inner.view.layer.masksToBounds = true
+        inner?.view.layer.masksToBounds = true
         guard let _ = _declarativeView._properties.customCorners else {
-            inner.view.layer.cornerRadius = layer.cornerRadius
+            inner?.view.layer.cornerRadius = layer.cornerRadius
             return
         }
-        inner.view.layer.cornerRadius = 0
-        inner.view.layer.mask = layer.sublayers?.first
+        inner?.view.layer.cornerRadius = 0
+        inner?.view.layer.mask = layer.sublayers?.first
     }
 }
 #endif

@@ -189,12 +189,6 @@ extension CollectionView: UIScrollViewDelegate {
         return self
     }
     
-    @discardableResult
-    public func scrollPosition<V>(_ expressable: ExpressableState<V, CGPoint>) -> Self {
-        scrollPosition = expressable.unwrap()
-        return self
-    }
-    
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollPosition?.wrappedValue = scrollView.contentOffset
     }

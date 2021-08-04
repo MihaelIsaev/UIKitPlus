@@ -56,8 +56,8 @@ open class URefreshControl: UIRefreshControl {
     @discardableResult
     public func attributedTitle(_ attributedStrings: [AttributedString]) -> Self {
         let attrStr = NSMutableAttributedString(string: "")
-        attributedStrings.forEach {
-            attrStr.append($0._attributedString)
+        for str in attributedStrings {
+            attrStr.append(str._attributedString)
         }
         attributedTitle = attrStr
         return self
@@ -83,20 +83,9 @@ open class URefreshControl: UIRefreshControl {
     public func tint(_ state: UIKitPlus.State<UIColor>) -> Self {
         tintColor = state.wrappedValue
         tint = state.wrappedValue
-        state.listen { [weak self] old, new in
+        state.listen { [weak self] new in
             self?.tintColor = new
             self?.tint = new
-        }
-        return self
-    }
-    
-    @discardableResult
-    public func tint<V>(_ expressable: ExpressableState<V, UIColor>) -> Self {
-        tintColor = expressable.value()
-        tint = expressable.value()
-        expressable.state.listen { [weak self] old, new in
-            self?.tintColor = expressable.value()
-            self?.tint = expressable.value()
         }
         return self
     }

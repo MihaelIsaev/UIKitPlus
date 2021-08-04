@@ -11,24 +11,33 @@ import AppKit
 import UIKit
 #endif
 
+protocol ParagraphStyleDelegate: class {
+    func onParagraphUpdate(_ p: ParagraphStyle)
+}
+
 public class ParagraphStyle: NSMutableParagraphStyle {
-    var _updateHandler = {}
+    weak var delegate: ParagraphStyleDelegate?
     
-    public func onUpdate(_ handler: @escaping () -> Void) {
-        _updateHandler = handler
+    init (_ delegate: ParagraphStyleDelegate) {
+        super.init()
+        self.delegate = delegate
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     @discardableResult
     public func remove(tabStop: NSTextTab) -> Self {
         super.removeTabStop(tabStop)
-        _updateHandler()
+        delegate?.onParagraphUpdate(self)
         return self
     }
     
     @discardableResult
     public func add(tabStop: NSTextTab) -> Self {
         super.addTabStop(tabStop)
-        _updateHandler()
+        delegate?.onParagraphUpdate(self)
         return self
     }
     
@@ -85,11 +94,11 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     // MARK: Line Spacing
     
     public override var lineSpacing: CGFloat {
-         get { super.lineSpacing }
-         set {
-             super.lineSpacing = newValue
-             _updateHandler()
-         }
+        get { super.lineSpacing }
+        set {
+            super.lineSpacing = newValue
+            delegate?.onParagraphUpdate(self)
+        }
      }
     
     lazy var lineSpacingState: State<CGFloat> = .init(wrappedValue: lineSpacing)
@@ -100,8 +109,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         lineSpacing = v
         if !isListeningLineSpace {
             isListeningLineSpace = true
-            lineSpacingState.listen {
-                self.lineSpacing($0)
+            lineSpacingState.listen { [weak self] in
+                self?.lineSpacing($0)
             }
         }
         return self
@@ -113,18 +122,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return lineSpacing(state.wrappedValue)
     }
     
-    @discardableResult
-    public func lineSpacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        lineSpacing(expressable.unwrap())
-    }
-    
     // MARK: Paragraph Spacing
     
     public override var paragraphSpacing: CGFloat {
         get { super.paragraphSpacing }
         set {
             super.paragraphSpacing = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -136,8 +140,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         paragraphSpacing = v
         if !isListeningParagraphSpacing {
             isListeningParagraphSpacing = true
-            paragraphSpacingState.listen {
-                self.paragraphSpacing($0)
+            paragraphSpacingState.listen { [weak self] in
+                self?.paragraphSpacing($0)
             }
         }
         return self
@@ -149,18 +153,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return paragraphSpacing(state.wrappedValue)
     }
     
-    @discardableResult
-    public func paragraphSpacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        paragraphSpacing(expressable.unwrap())
-    }
-    
     // MARK: First Line Head Indent
     
     public override var firstLineHeadIndent: CGFloat {
         get { super.firstLineHeadIndent }
         set {
             super.firstLineHeadIndent = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -172,8 +171,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         firstLineHeadIndent = v
         if !isListeningFirstLineHeadIndent {
             isListeningFirstLineHeadIndent = true
-            firstLineHeadIndentState.listen {
-                self.firstLineHeadIndent($0)
+            firstLineHeadIndentState.listen { [weak self] in
+                self?.firstLineHeadIndent($0)
             }
         }
         return self
@@ -185,18 +184,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return firstLineHeadIndent(state.wrappedValue)
     }
     
-    @discardableResult
-    public func firstLineHeadIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        firstLineHeadIndent(expressable.unwrap())
-    }
-    
     // MARK: Head Indent
     
     public override var headIndent: CGFloat {
         get { super.headIndent }
         set {
             super.headIndent = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -208,8 +202,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         headIndent = v
         if !isListeningHeadIndent {
             isListeningHeadIndent = true
-            headIndentState.listen {
-                self.headIndent($0)
+            headIndentState.listen { [weak self] in
+                self?.headIndent($0)
             }
         }
         return self
@@ -221,18 +215,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return headIndent(state.wrappedValue)
     }
     
-    @discardableResult
-    public func headIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        headIndent(expressable.unwrap())
-    }
-    
     // MARK: Tail Indent
     
     public override var tailIndent: CGFloat {
         get { super.tailIndent }
         set {
             super.tailIndent = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -244,8 +233,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         tailIndent = v
         if !isListeningTailIndent {
             isListeningTailIndent = true
-            tailIndentState.listen {
-                self.tailIndent($0)
+            tailIndentState.listen { [weak self] in
+                self?.tailIndent($0)
             }
         }
         return self
@@ -257,18 +246,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return tailIndent(state.wrappedValue)
     }
     
-    @discardableResult
-    public func tailIndent<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        tailIndent(expressable.unwrap())
-    }
-    
     // MARK: Minimum Line Height
     
     public override var minimumLineHeight: CGFloat {
         get { super.minimumLineHeight }
         set {
             super.minimumLineHeight = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -280,8 +264,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         minimumLineHeight = v
         if !isListeningMinimumLineHeight {
             isListeningMinimumLineHeight = true
-            minimumLineHeightState.listen {
-                self.minimumLineHeight($0)
+            minimumLineHeightState.listen { [weak self] in
+                self?.minimumLineHeight($0)
             }
         }
         return self
@@ -293,18 +277,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return minimumLineHeight(state.wrappedValue)
     }
     
-    @discardableResult
-    public func minimumLineHeight<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        minimumLineHeight(expressable.unwrap())
-    }
-    
     // MARK: Maximum Line Height
     
     public override var maximumLineHeight: CGFloat {
         get { super.maximumLineHeight }
         set {
             super.maximumLineHeight = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -316,8 +295,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         maximumLineHeight = v
         if !isListeningMaximumLineHeight {
             isListeningMaximumLineHeight = true
-            maximumLineHeightState.listen {
-                self.maximumLineHeight($0)
+            maximumLineHeightState.listen { [weak self] in
+                self?.maximumLineHeight($0)
             }
         }
         return self
@@ -329,18 +308,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return maximumLineHeight(state.wrappedValue)
     }
     
-    @discardableResult
-    public func maximumLineHeight<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        maximumLineHeight(expressable.unwrap())
-    }
-    
     // MARK: Line Height Multiple
     
     public override var lineHeightMultiple: CGFloat {
         get { super.lineHeightMultiple }
         set {
             super.lineHeightMultiple = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -352,8 +326,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         lineHeightMultiple = v
         if !isListeningLineHeightMultiple {
             isListeningLineHeightMultiple = true
-            lineHeightMultipleState.listen {
-                self.lineHeightMultiple($0)
+            lineHeightMultipleState.listen { [weak self] in
+                self?.lineHeightMultiple($0)
             }
         }
         return self
@@ -365,18 +339,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return lineHeightMultiple(state.wrappedValue)
     }
     
-    @discardableResult
-    public func lineHeightMultiple<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        lineHeightMultiple(expressable.unwrap())
-    }
-    
     // MARK: Default Tab Interval
     
     public override var defaultTabInterval: CGFloat {
         get { super.defaultTabInterval }
         set {
             super.defaultTabInterval = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -388,8 +357,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         defaultTabInterval = v
         if !isListeningDefaultTabInterval {
             isListeningDefaultTabInterval = true
-            defaultTabIntervalState.listen {
-                self.defaultTabInterval($0)
+            defaultTabIntervalState.listen { [weak self] in
+                self?.defaultTabInterval($0)
             }
         }
         return self
@@ -401,18 +370,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return defaultTabInterval(state.wrappedValue)
     }
     
-    @discardableResult
-    public func defaultTabInterval<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        defaultTabInterval(expressable.unwrap())
-    }
-    
     // MARK: Paragraph Spacing Before
     
     public override var paragraphSpacingBefore: CGFloat {
         get { super.paragraphSpacingBefore }
         set {
             super.paragraphSpacingBefore = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -424,8 +388,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         paragraphSpacingBefore = v
         if !isListeningParagraphSpacingBefore {
             isListeningParagraphSpacingBefore = true
-            paragraphSpacingBeforeState.listen {
-                self.paragraphSpacingBefore($0)
+            paragraphSpacingBeforeState.listen { [weak self] in
+                self?.paragraphSpacingBefore($0)
             }
         }
         return self
@@ -437,18 +401,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return paragraphSpacingBefore(state.wrappedValue)
     }
     
-    @discardableResult
-    public func paragraphSpacingBefore<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        paragraphSpacingBefore(expressable.unwrap())
-    }
-    
     // MARK: Hyphenation Factor
     
     public override var hyphenationFactor: Float {
         get { super.hyphenationFactor }
         set {
             super.hyphenationFactor = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -460,8 +419,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         hyphenationFactor = v
         if !isListeningHyphenationFactor {
             isListeningHyphenationFactor = true
-            hyphenationFactorState.listen {
-                self.hyphenationFactor($0)
+            hyphenationFactorState.listen { [weak self] in
+                self?.hyphenationFactor($0)
             }
         }
         return self
@@ -473,11 +432,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return hyphenationFactor(state.wrappedValue)
     }
     
-    @discardableResult
-    public func hyphenationFactor<V>(_ expressable: ExpressableState<V, Float>) -> Self {
-        hyphenationFactor(expressable.unwrap())
-    }
-    
     #if os(macOS)
     // MARK: Tightening Factor For Truncation
     
@@ -485,7 +439,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         get { super.tighteningFactorForTruncation }
         set {
             super.tighteningFactorForTruncation = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -497,8 +451,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         tighteningFactorForTruncation = v
         if !isListeningTighteningFactorForTruncation {
             isListeningTighteningFactorForTruncation = true
-            tighteningFactorForTruncationState.listen {
-                self.tighteningFactorForTruncation($0)
+            tighteningFactorForTruncationState.listen { [weak self] in
+                self?.tighteningFactorForTruncation($0)
             }
         }
         return self
@@ -510,18 +464,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return tighteningFactorForTruncation(state.wrappedValue)
     }
     
-    @discardableResult
-    public func tighteningFactorForTruncation<V>(_ expressable: ExpressableState<V, Float>) -> Self {
-        tighteningFactorForTruncation(expressable.unwrap())
-    }
-    
     // MARK: Header Level
     
     public override var headerLevel: Int {
         get { super.headerLevel }
         set {
             super.headerLevel = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -533,8 +482,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         headerLevel = v
         if !isListeningHeaderLevel {
             isListeningHeaderLevel = true
-            headerLevelState.listen {
-                self.headerLevel($0)
+            headerLevelState.listen { [weak self] in
+                self?.headerLevel($0)
             }
         }
         return self
@@ -546,18 +495,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return headerLevel(state.wrappedValue)
     }
     
-    @discardableResult
-    public func headerLevel<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        headerLevel(expressable.unwrap())
-    }
-    
     // MARK: Allows Default Tightening For Truncation
     
     public override var allowsDefaultTighteningForTruncation: Bool {
         get { super.allowsDefaultTighteningForTruncation }
         set {
             super.allowsDefaultTighteningForTruncation = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -569,8 +513,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         allowsDefaultTighteningForTruncation = v
         if !isListeningAllowsDefaultTighteningForTruncation {
             isListeningAllowsDefaultTighteningForTruncation = true
-            allowsDefaultTighteningForTruncationState.listen {
-                self.allowsDefaultTighteningForTruncation($0)
+            allowsDefaultTighteningForTruncationState.listen { [weak self] in
+                self?.allowsDefaultTighteningForTruncation($0)
             }
         }
         return self
@@ -581,11 +525,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         allowsDefaultTighteningForTruncationState.merge(with: state)
         return allowsDefaultTighteningForTruncation(state.wrappedValue)
     }
-    
-    @discardableResult
-    public func allowsDefaultTighteningForTruncation<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        allowsDefaultTighteningForTruncation(expressable.unwrap())
-    }
     #endif
     
     // MARK: Alignment
@@ -594,7 +533,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         get { super.alignment }
         set {
             super.alignment = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -606,8 +545,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         alignment = v
         if !isListeningAlignment {
             isListeningAlignment = true
-            alignmentState.listen {
-                self.alignment($0)
+            alignmentState.listen { [weak self] in
+                self?.alignment($0)
             }
         }
         return self
@@ -619,18 +558,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return alignment(state.wrappedValue)
     }
     
-    @discardableResult
-    public func alignment<V>(_ expressable: ExpressableState<V, NSTextAlignment>) -> Self {
-        alignment(expressable.unwrap())
-    }
-    
     // MARK: Line Break Mode
     
     public override var lineBreakMode: NSLineBreakMode {
         get { super.lineBreakMode }
         set {
             super.lineBreakMode = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -642,8 +576,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         lineBreakMode = v
         if !isListeningLineBreakMode {
             isListeningLineBreakMode = true
-            lineBreakModeState.listen {
-                self.lineBreakMode($0)
+            lineBreakModeState.listen { [weak self] in
+                self?.lineBreakMode($0)
             }
         }
         return self
@@ -655,18 +589,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return lineBreakMode(state.wrappedValue)
     }
     
-    @discardableResult
-    public func lineBreakMode<V>(_ expressable: ExpressableState<V, NSLineBreakMode>) -> Self {
-        lineBreakMode(expressable.unwrap())
-    }
-    
     // MARK: Base Writing Direction
     
     public override var baseWritingDirection: NSWritingDirection {
         get { super.baseWritingDirection }
         set {
             super.baseWritingDirection = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -678,8 +607,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         baseWritingDirection = v
         if !isListeningBaseWritingDirection {
             isListeningBaseWritingDirection = true
-            baseWritingDirectionState.listen {
-                self.baseWritingDirection($0)
+            baseWritingDirectionState.listen { [weak self] in
+                self?.baseWritingDirection($0)
             }
         }
         return self
@@ -691,18 +620,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return baseWritingDirection(state.wrappedValue)
     }
     
-    @discardableResult
-    public func baseWritingDirection<V>(_ expressable: ExpressableState<V, NSWritingDirection>) -> Self {
-        baseWritingDirection(expressable.unwrap())
-    }
-    
     // MARK: Tab Stops
     
     public override var tabStops: [NSTextTab]! {
         get { super.tabStops }
         set {
             super.tabStops = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -714,8 +638,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         tabStops = v
         if !isListeningTabStops {
             isListeningTabStops = true
-            tabStopsState.listen {
-                self.tabStops($0)
+            tabStopsState.listen { [weak self] in
+                self?.tabStops($0)
             }
         }
         return self
@@ -727,11 +651,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return tabStops(state.wrappedValue)
     }
     
-    @discardableResult
-    public func tabStops<V>(_ expressable: ExpressableState<V, [NSTextTab]>) -> Self {
-        tabStops(expressable.unwrap())
-    }
-    
     #if os(macOS)
     // MARK: Text Blocks
     
@@ -739,7 +658,7 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         get { super.textBlocks }
         set {
             super.textBlocks = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -751,8 +670,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         textBlocks = v
         if !isListeningTextBlocks {
             isListeningTextBlocks = true
-            textBlocksState.listen {
-                self.textBlocks($0)
+            textBlocksState.listen { [weak self] in
+                self?.textBlocks($0)
             }
         }
         return self
@@ -764,18 +683,13 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         return textBlocks(state.wrappedValue)
     }
     
-    @discardableResult
-    public func textBlocks<V>(_ expressable: ExpressableState<V, [NSTextBlock]>) -> Self {
-        textBlocks(expressable.unwrap())
-    }
-    
     // MARK: Text Lists
     
     public override var textLists: [NSTextList] {
         get { super.textLists }
         set {
             super.textLists = newValue
-            _updateHandler()
+            delegate?.onParagraphUpdate(self)
         }
     }
     
@@ -787,8 +701,8 @@ public class ParagraphStyle: NSMutableParagraphStyle {
         textLists = v
         if !isListeningTextLists {
             isListeningTextLists = true
-            textListsState.listen {
-                self.textLists($0)
+            textListsState.listen { [weak self] in
+                self?.textLists($0)
             }
         }
         return self
@@ -798,11 +712,6 @@ public class ParagraphStyle: NSMutableParagraphStyle {
     public func textLists(_ state: State<[NSTextList]>) -> Self {
         textListsState.merge(with: state)
         return textLists(state.wrappedValue)
-    }
-    
-    @discardableResult
-    public func textLists<V>(_ expressable: ExpressableState<V, [NSTextList]>) -> Self {
-        textLists(expressable.unwrap())
     }
     #endif
 }

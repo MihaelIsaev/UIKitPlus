@@ -75,7 +75,7 @@ public class UList: UView, UITableViewDataSource {
                 self?.tableView.endUpdates()
             }
         case .nested(let items):
-            items.enumerated().forEach { i, v in
+            for (i, v) in items.enumerated() {
                 process(v, sectionIndex: sectionIndex + i)
             }
         case .none:
@@ -273,12 +273,6 @@ extension UList: UIScrollViewDelegate {
     @discardableResult
     public func scrollPosition(_ binding: UIKitPlus.State<CGPoint>) -> Self {
         scrollPosition = binding
-        return self
-    }
-    
-    @discardableResult
-    public func scrollPosition<V>(_ expressable: ExpressableState<V, CGPoint>) -> Self {
-        scrollPosition = expressable.unwrap()
         return self
     }
     

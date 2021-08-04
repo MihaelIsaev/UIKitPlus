@@ -1,15 +1,12 @@
 #if os(macOS)
 import AppKit
 
-public protocol ArrowPositionable {
+public protocol ArrowPositionable: class {
     @discardableResult
     func arrowPosition(_ value: NSPopUpButton.ArrowPosition) -> Self
     
     @discardableResult
     func arrowPosition(_ binding: UIKitPlus.State<NSPopUpButton.ArrowPosition>) -> Self
-    
-    @discardableResult
-    func arrowPosition<V>(_ expressable: ExpressableState<V, NSPopUpButton.ArrowPosition>) -> Self
 }
 
 protocol _ArrowPositionable: ArrowPositionable {
@@ -19,13 +16,10 @@ protocol _ArrowPositionable: ArrowPositionable {
 extension ArrowPositionable {
     @discardableResult
     public func arrowPosition(_ binding: UIKitPlus.State<NSPopUpButton.ArrowPosition>) -> Self {
-        binding.listen { self.arrowPosition($0) }
+        binding.listen { [weak self] in
+            self?.arrowPosition($0)
+        }
         return arrowPosition(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func arrowPosition<V>(_ expressable: ExpressableState<V, NSPopUpButton.ArrowPosition>) -> Self {
-        arrowPosition(expressable.unwrap())
     }
 }
 

@@ -21,25 +21,91 @@ open class State<Value>: Stateable {
         set {
             let oldValue = _wrappedValue
             _wrappedValue = newValue
-            beginTriggers.forEach { $0() }
-            listeners.forEach { $0(oldValue, newValue) }
-            endTriggers.forEach { $0() }
+            for trigger in beginTriggers {
+                trigger()
+            }
+            for listener in listeners {
+                listener(oldValue, newValue)
+            }
+            for trigger in endTriggers {
+                trigger()
+            }
         }
     }
     
     public var projectedValue: State<Value> { self }
 
+    init (_ stateA: AnyState, _ stateB: AnyState, _ expression: @escaping () -> Value) {
+        let value = expression()
+        _originalValue = value
+        _wrappedValue = value
+        stateA.listen {
+            self.wrappedValue = expression()
+        }
+        stateB.listen {
+            self.wrappedValue = expression()
+        }
+    }
+    
+    init <A, B>(_ stateA: State<A>, _ stateB: State<B>, _ expression: @escaping (A, B) -> Value) {
+        let value = expression(stateA.wrappedValue, stateB.wrappedValue)
+        _originalValue = value
+        _wrappedValue = value
+        stateA.listen {
+            self.wrappedValue = expression(stateA.wrappedValue, stateB.wrappedValue)
+        }
+        stateB.listen {
+            self.wrappedValue = expression(stateA.wrappedValue, stateB.wrappedValue)
+        }
+    }
+    
+    init <A, B>(_ stateA: State<A>, _ stateB: State<B>, _ expression: @escaping (CombinedDeprecatedResult<A, B>) -> Value) {
+        let value = expression(.init(left: stateA.wrappedValue, right: stateB.wrappedValue))
+        _originalValue = value
+        _wrappedValue = value
+        stateA.listen {
+            self.wrappedValue = expression(.init(left: stateA.wrappedValue, right: stateB.wrappedValue))
+        }
+        stateB.listen {
+            self.wrappedValue = expression(.init(left: stateA.wrappedValue, right: stateB.wrappedValue))
+        }
+    }
+    
     public init(wrappedValue value: Value) {
         _originalValue = value
         _wrappedValue = value
     }
     
+    init (_ stateA: AnyState, _ expression: @escaping () -> Value) {
+        let value = expression()
+        _originalValue = value
+        _wrappedValue = value
+        stateA.listen {
+            self.wrappedValue = expression()
+        }
+    }
+    
+    init <A>(_ stateA: State<A>, _ expression: @escaping (A) -> Value) {
+        let value = expression(stateA.wrappedValue)
+        _originalValue = value
+        _wrappedValue = value
+        stateA.listen {
+            self.wrappedValue = expression(stateA.wrappedValue)
+        }
+    }
+    
     public func reset() {
         let oldValue = _wrappedValue
         _wrappedValue = _originalValue
-        beginTriggers.forEach { $0() }
-        listeners.forEach { $0(oldValue, _wrappedValue) }
-        endTriggers.forEach { $0() }
+        for trigger in beginTriggers {
+            trigger()
+        }
+        for listener in listeners {
+            listener(oldValue, _wrappedValue)
+        }
+        for trigger in endTriggers {
+            trigger()
+        }
     }
     
     public func removeAllListeners() {
@@ -80,41 +146,51 @@ open class State<Value>: Stateable {
         self.wrappedValue = state.wrappedValue
         var justSetExternal = false
         var justSetInternal = false
-        state.listen { new in
+        state.listen { [weak self] new in
             guard !justSetInternal else { return }
             justSetExternal = true
-            self.wrappedValue = new
+            self?.wrappedValue = new
             justSetExternal = false
         }
-        self.listen { new in
+        self.listen { [weak state] new in
             guard !justSetExternal else { return }
             justSetInternal = true
-            state.wrappedValue = new
+            state?.wrappedValue = new
             justSetInternal = false
         }
     }
     
-    // MARK: Experimental part
+    public func and<V>(_ state: State<V>) -> CombinedState<Value, V> {
+        CombinedState(left: projectedValue, right: state)
+    }
+}
+
+public class CombinedState<A, B> {
+    let _left: State<A>
+    let _right: State<B>
+    public var left: A { _left.wrappedValue }
+    public var right: B { _right.wrappedValue }
     
-    public struct CombinedStateResult<A, B> {
-        public let left: A
-        public let right: B
+    init (left: State<A>, right: State<B>) {
+        self._left = left
+        self._right = right
     }
     
-    /// Merging two states into one combined state which could be used as expressable state
-    public func and<V>(_ state: State<V>) -> State<CombinedStateResult<Value, V>> {
-        let stateA = self
-        let stateB = state
-        let combinedValue = {
-            return CombinedStateResult(left: stateA.wrappedValue, right: stateB.wrappedValue)
-        }
-        let resultState = State<CombinedStateResult<Value, V>>(wrappedValue: combinedValue())
-        stateA.listen {
-            resultState.wrappedValue = combinedValue()
-        }
-        stateB.listen {
-            resultState.wrappedValue = combinedValue()
-        }
-        return resultState
+    public func map<Result>(_ expression: @escaping () -> Result) -> State<Result> {
+        .init(_left, _right, expression)
     }
+    
+    public func map<Result>(_ expression: @escaping (A, B) -> Result) -> State<Result> {
+        .init(_left, _right, expression)
+    }
+    
+    @available(*, deprecated, message: "🧨 This method will be removed soon. Please switch to `.map { left, right in }`.")
+    public func map<Result>(_ expression: @escaping (CombinedDeprecatedResult<A, B>) -> Result) -> State<Result> {
+        .init(_left, _right, expression)
+    }
+}
+
+public struct CombinedDeprecatedResult<A, B> {
+    public let left: A
+    public let right: B
 }

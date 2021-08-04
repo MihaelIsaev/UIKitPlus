@@ -38,6 +38,9 @@ public class Properties<V> {
     var textColorState: State<UColor> { _textColor }
     
     var hovered: Bool = false
+    #if os(macOS)
+    var isFlipped: Bool = false
+    #endif
     
     public typealias FormatCharactersClosure = (_ textField: V, _ range: NSRange, _ replacement: String) -> Void
     public typealias ChangeCharactersClosure = (_ textField: V, _ range: NSRange, _ replacement: String) -> Bool

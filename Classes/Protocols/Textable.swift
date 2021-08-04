@@ -26,9 +26,6 @@ public protocol Textable: class {
     func text<V: AnyString>(_ state: State<V>) -> Self
     
     @discardableResult
-    func text<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self
-    
-    @discardableResult
     func text(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self
 }
 
@@ -80,14 +77,11 @@ extension Textable {
     @discardableResult
     public func text<A: AnyString>(_ state: State<A>) -> Self {
         text(state.wrappedValue)
-        state.listen { self.text($0) }
+        state.listen { [weak self] in
+            self?.text($0)
+        }
         (self as? TextBindable)?.bind(state)
         return self
-    }
-    
-    @discardableResult
-    public func text<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self {
-        text(expressable.unwrap())
     }
 }
 
@@ -105,7 +99,9 @@ extension Textable {
     @discardableResult
     public func text(_ value: [AnyString]) -> Self {
         guard let s = self as? _Textable else { return self }
-        value.onUpdate(s._changeText)
+        value.onUpdate { [weak s] in
+            s?._changeText(to: $0)
+        }
         s._changeText(to: value.attributedString)
         return self
     }
@@ -129,7 +125,9 @@ extension _Textable {
     
     @discardableResult
     public func text(_ value: [AnyString]) -> Self {
-        value.onUpdate(_changeText)
+        value.onUpdate { [weak self] in
+            self?._changeText(to: $0)
+        }
         _changeText(to: value.attributedString)
         return self
     }

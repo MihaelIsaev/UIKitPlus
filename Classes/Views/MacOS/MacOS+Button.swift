@@ -75,12 +75,6 @@ open class UButton: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
         title(state)
     }
     
-    public init<V, A: AnyString>(_ expressable: ExpressableState<V, A>) {
-        super.init(frame: .zero)
-        _setup()
-        title(expressable)
-    }
-    
     public init (@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
         super.init(frame: .zero)
         _setup()
@@ -226,8 +220,8 @@ open class UButton: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     /// Listens for mouse hover and pass it into state
     @discardableResult
     public func hoveredByMouse(_ state: State<Bool>) -> Self {
-        isHoveredByMouse.listen {
-            state.wrappedValue = $0
+        isHoveredByMouse.listen { [weak state] in
+            state?.wrappedValue = $0
         }
         return self
     }
@@ -272,11 +266,6 @@ open class UButton: NSButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
         _buttonTypeState = state
         setButtonType(state.wrappedValue)
         return self
-    }
-    
-    @discardableResult
-    public func type<V>(_ state: ExpressableState<V, NSButton.ButtonType>) -> Self {
-        self.type(state.unwrap())
     }
     
     // MARK: Action

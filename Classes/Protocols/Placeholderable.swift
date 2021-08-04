@@ -26,9 +26,6 @@ public protocol Placeholderable: class {
     func placeholder<A: AnyString>(_ state: State<A>) -> Self
     
     @discardableResult
-    func placeholder<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self
-    
-    @discardableResult
     func placeholder(@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) -> Self
 }
 
@@ -80,13 +77,10 @@ extension Placeholderable {
     @discardableResult
     public func placeholder<A: AnyString>(_ state: State<A>) -> Self {
         placeholder(state.wrappedValue)
-        state.listen { self.placeholder($0) }
+        state.listen { [weak self] in
+            self?.placeholder($0)
+        }
         return self
-    }
-    
-    @discardableResult
-    public func placeholder<V, A: AnyString>(_ expressable: ExpressableState<V, A>) -> Self {
-        placeholder(expressable.unwrap())
     }
 }
 
@@ -104,7 +98,9 @@ extension Placeholderable {
     @discardableResult
     public func placeholder(_ value: [AnyString]) -> Self {
         guard let s = self as? _Placeholderable else { return self }
-        value.onUpdate(s._changePlaceholder)
+        value.onUpdate { [weak s] in
+            s?._changePlaceholder(to: $0)
+        }
         s._changePlaceholder(to: value.attributedString)
         return self
     }
@@ -128,7 +124,9 @@ extension _Placeholderable {
     
     @discardableResult
     public func placeholder(_ value: [AnyString]) -> Self {
-        value.onUpdate(_changePlaceholder)
+        value.onUpdate { [weak self] in
+            self?._changePlaceholder(to: $0)
+        }
         _changePlaceholder(to: value.attributedString)
         return self
     }

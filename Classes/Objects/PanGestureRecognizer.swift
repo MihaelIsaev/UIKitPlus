@@ -28,13 +28,10 @@ final public class PanGestureRecognizer: NSPanGestureRecognizer, _GestureTrackab
     
     @discardableResult
     public func numberOfTouches(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.numberOfTouchesRequired = $0 }
+        state.listen { [weak self] in
+            self?.numberOfTouchesRequired = $0
+        }
         return self
-    }
-
-    @discardableResult
-    public func numberOfTouches<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        numberOfTouches(expressable.unwrap())
     }
     
     @discardableResult
@@ -45,13 +42,10 @@ final public class PanGestureRecognizer: NSPanGestureRecognizer, _GestureTrackab
     
     @discardableResult
     public func buttonMask(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.buttonMask = $0 }
+        state.listen { [weak self] in
+            self?.buttonMask = $0
+        }
         return self
-    }
-
-    @discardableResult
-    public func buttonMask<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        buttonMask(expressable.unwrap())
     }
     
     var _tag: Int = 0
@@ -89,13 +83,10 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
     
     @discardableResult
     public func minimumNumberOfTouches(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.minimumNumberOfTouches = $0 }
+        state.listen { [weak self] in
+            self?.minimumNumberOfTouches = $0
+        }
         return self
-    }
-
-    @discardableResult
-    public func minimumNumberOfTouches<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        minimumNumberOfTouches(expressable.unwrap())
     }
     
     @discardableResult
@@ -106,13 +97,10 @@ final public class PanGestureRecognizer: UIPanGestureRecognizer, _GestureTrackab
     
     @discardableResult
     public func maximumNumberOfTouches(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.maximumNumberOfTouches = $0 }
+        state.listen { [weak self] in
+            self?.maximumNumberOfTouches = $0
+        }
         return self
-    }
-
-    @discardableResult
-    public func maximumNumberOfTouches<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        maximumNumberOfTouches(expressable.unwrap())
     }
     #endif
     var _tag: Int = 0

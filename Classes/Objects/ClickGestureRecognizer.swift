@@ -25,13 +25,10 @@ final public class ClickGestureRecognizer: NSClickGestureRecognizer, _GestureTra
     
     @discardableResult
     public func numberOfClicksRequired(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.numberOfClicksRequired = $0 }
+        state.listen { [weak self] in
+            self?.numberOfClicksRequired = $0
+        }
         return self
-    }
-
-    @discardableResult
-    public func numberOfClicksRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        numberOfClicksRequired(expressable.unwrap())
     }
     
     @discardableResult
@@ -42,13 +39,10 @@ final public class ClickGestureRecognizer: NSClickGestureRecognizer, _GestureTra
     
     @discardableResult
     public func numberOfTouchesRequired(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.numberOfTouchesRequired = $0 }
+        state.listen { [weak self] in
+            self?.numberOfTouchesRequired = $0
+        }
         return self
-    }
-
-    @discardableResult
-    public func numberOfTouchesRequired<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        numberOfTouchesRequired(expressable.unwrap())
     }
     
     @discardableResult
@@ -59,13 +53,10 @@ final public class ClickGestureRecognizer: NSClickGestureRecognizer, _GestureTra
     
     @discardableResult
     public func buttonMask(_ state: UIKitPlus.State<Int>) -> Self {
-        state.listen { self.buttonMask = $0 }
+        state.listen { [weak self] in
+            self?.buttonMask = $0
+        }
         return self
-    }
-
-    @discardableResult
-    public func buttonMask<V>(_ expressable: ExpressableState<V, Int>) -> Self {
-        buttonMask(expressable.unwrap())
     }
     
     var _tag: Int = 0

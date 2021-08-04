@@ -17,6 +17,12 @@ class _SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
         window = BaseApp.shared.mainScene.viewController.attach(to: scene)
+        BaseApp.shared.mainScene._safeInsetsRetriever = { [weak self] in
+            self?.window?.safeInsets ?? .zero
+        }
+        BaseApp.shared.mainScene._windowRetriever = { [weak self] in
+            self?.window ?? UIWindow()
+        }
         if let shortcutItem = connectionOptions.shortcutItem {
             BaseApp.shared.shortcuts
                 .first { $0.item.type == shortcutItem.type }?

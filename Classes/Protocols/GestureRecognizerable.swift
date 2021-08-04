@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol GestureRecognizerable {
+public protocol GestureRecognizerable: class {
     @discardableResult
     func delegate(_ v: UGestureRecognizerDelegate) -> Self
 }
@@ -49,13 +49,10 @@ extension GestureRecognizerable {
     
     @discardableResult
     public func enabled(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.enabled($0) }
+        binding.listen { [weak self] in
+            self?.enabled($0)
+        }
         return enabled(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func enabled<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        enabled(expressable.unwrap())
     }
     
     #if !os(macOS)
@@ -75,13 +72,10 @@ extension GestureRecognizerable {
     
     @discardableResult
     public func cancelsTouchesInView(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.cancelsTouchesInView($0) }
+        binding.listen { [weak self] in
+            self?.cancelsTouchesInView($0)
+        }
         return cancelsTouchesInView(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func cancelsTouchesInView<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        cancelsTouchesInView(expressable.unwrap())
     }
     
     // MARK: delaysTouchesBegan
@@ -100,13 +94,10 @@ extension GestureRecognizerable {
     
     @discardableResult
     public func delaysTouchesBegan(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.delaysTouchesBegan($0) }
+        binding.listen { [weak self] in
+            self?.delaysTouchesBegan($0)
+        }
         return delaysTouchesBegan(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func delaysTouchesBegan<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        delaysTouchesBegan(expressable.unwrap())
     }
     
     // MARK: delaysTouchesEnded
@@ -125,13 +116,10 @@ extension GestureRecognizerable {
     
     @discardableResult
     public func delaysTouchesEnded(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.delaysTouchesEnded($0) }
+        binding.listen { [weak self] in
+            self?.delaysTouchesEnded($0)
+        }
         return delaysTouchesEnded(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func delaysTouchesEnded<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        delaysTouchesEnded(expressable.unwrap())
     }
     
     // MARK: requiresExclusiveTouchType
@@ -150,13 +138,10 @@ extension GestureRecognizerable {
     
     @discardableResult
     public func requiresExclusiveTouchType(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.requiresExclusiveTouchType($0) }
+        binding.listen { [weak self] in
+            self?.requiresExclusiveTouchType($0)
+        }
         return requiresExclusiveTouchType(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func requiresExclusiveTouchType<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        requiresExclusiveTouchType(expressable.unwrap())
     }
     
     // MARK: allowedTouchTypes
@@ -230,13 +215,10 @@ extension _GestureRecognizerable {
     
     @discardableResult
     public func enabled(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.enabled($0) }
+        binding.listen { [weak self] in
+            self?.enabled($0)
+        }
         return enabled(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func enabled<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        enabled(expressable.unwrap())
     }
     
     #if !os(macOS)
@@ -255,13 +237,10 @@ extension _GestureRecognizerable {
     
     @discardableResult
     public func cancelsTouchesInView(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.cancelsTouchesInView($0) }
+        binding.listen { [weak self] in
+            self?.cancelsTouchesInView($0)
+        }
         return cancelsTouchesInView(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func cancelsTouchesInView<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        cancelsTouchesInView(expressable.unwrap())
     }
     
     // MARK: delaysTouchesBegan
@@ -279,13 +258,10 @@ extension _GestureRecognizerable {
     
     @discardableResult
     public func delaysTouchesBegan(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.delaysTouchesBegan($0) }
+        binding.listen { [weak self] in
+            self?.delaysTouchesBegan($0)
+        }
         return delaysTouchesBegan(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func delaysTouchesBegan<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        delaysTouchesBegan(expressable.unwrap())
     }
     
     // MARK: delaysTouchesEnded
@@ -303,13 +279,10 @@ extension _GestureRecognizerable {
     
     @discardableResult
     public func delaysTouchesEnded(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.delaysTouchesEnded($0) }
+        binding.listen { [weak self] in
+            self?.delaysTouchesEnded($0)
+        }
         return delaysTouchesEnded(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func delaysTouchesEnded<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        delaysTouchesEnded(expressable.unwrap())
     }
     
     // MARK: requiresExclusiveTouchType
@@ -327,13 +300,10 @@ extension _GestureRecognizerable {
     
     @discardableResult
     public func requiresExclusiveTouchType(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.requiresExclusiveTouchType($0) }
+        binding.listen { [weak self] in
+            self?.requiresExclusiveTouchType($0)
+        }
         return requiresExclusiveTouchType(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func requiresExclusiveTouchType<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        requiresExclusiveTouchType(expressable.unwrap())
     }
     
     // MARK: allowedTouchTypes

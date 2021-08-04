@@ -14,9 +14,6 @@ public protocol KeyMaskable: class {
     
     @discardableResult
     func keyMask(_ state: State<NSEvent.ModifierFlags>) -> Self
-    
-    @discardableResult
-    func keyMask<V>(_ expressable: ExpressableState<V, NSEvent.ModifierFlags>) -> Self
 }
 
 protocol _KeyMaskable: KeyMaskable {
@@ -34,13 +31,10 @@ extension KeyMaskable {
     @discardableResult
     public func keyMask(_ state: State<NSEvent.ModifierFlags>) -> Self {
         keyMask(state.wrappedValue)
-        state.listen { self.keyMask($0) }
+        state.listen { [weak self] in
+            self?.keyMask($0)
+        }
         return self
-    }
-
-    @discardableResult
-    public func keyMask<V>(_ expressable: ExpressableState<V, NSEvent.ModifierFlags>) -> Self {
-        keyMask(expressable.unwrap())
     }
 }
 #endif

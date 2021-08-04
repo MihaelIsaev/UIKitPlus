@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Bezeledable {
+public protocol Bezeledable: class {
     @discardableResult
     func bezeled() -> Self
     
@@ -13,9 +13,6 @@ public protocol Bezeledable {
     
     @discardableResult
     func bezeled(_ binding: UIKitPlus.State<Bool>) -> Self
-    
-    @discardableResult
-    func bezeled<V>(_ expressable: ExpressableState<V, Bool>) -> Self
 }
 
 protocol _Bezeledable: Bezeledable {
@@ -30,13 +27,10 @@ extension Bezeledable {
     
     @discardableResult
     public func bezeled(_ binding: UIKitPlus.State<Bool>) -> Self {
-        binding.listen { self.bezeled($0) }
+        binding.listen { [weak self] in
+            self?.bezeled($0)
+        }
         return bezeled(binding.wrappedValue)
-    }
-    
-    @discardableResult
-    public func bezeled<V>(_ expressable: ExpressableState<V, Bool>) -> Self {
-        bezeled(expressable.unwrap())
     }
 }
 

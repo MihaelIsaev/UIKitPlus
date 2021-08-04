@@ -164,8 +164,8 @@ open class UHUD: UView {
     
     @discardableResult
     public func hideAfter(_ timeInterval: TimeInterval, _ animated: Bool = false, _ completionHandler: (()->Void)? = nil) -> Self {
-        DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) {
-            self.hide(animated, completionHandler)
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) { [weak self] in
+            self?.hide(animated, completionHandler)
         }
         return self
     }

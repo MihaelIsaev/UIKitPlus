@@ -183,15 +183,6 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
         return self
     }
     
-    @discardableResult
-    public func spacing<V>(_ expressable: ExpressableState<V, CGFloat>) -> Self {
-        expressable.state.listen { [weak self] _,_ in
-            self?.spacing = expressable.value()
-        }
-        self.spacing = expressable.value()
-        return self
-    }
-    
     func add(item: BodyBuilderItemable) {
         switch item.bodyBuilderItem {
             case .single(let view):
@@ -212,7 +203,8 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
                     #endif
                 }
                 addArrangedSubview(stack)
-                fr.subscribeToChanges({}, { deletions, insertions, _ in
+                fr.subscribeToChanges({}, { [weak self] deletions, insertions, _ in
+                    guard let self = self else { return }
                     stack.arrangedSubviews.removeFromSuperview(at: deletions)
                     insertions.forEach {
                         #if os(macOS)

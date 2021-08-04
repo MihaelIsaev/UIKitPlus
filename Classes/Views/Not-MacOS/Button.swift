@@ -98,12 +98,6 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
         title(state)
     }
     
-    public convenience init<V, A: AnyString>(_ expressable: ExpressableState<V, A>) {
-        self.init(type: .custom)
-        _setup()
-        title(expressable)
-    }
-    
     public convenience init (@AnyStringBuilder stateString: @escaping AnyStringBuilder.Handler) {
         self.init(type: .custom)
         _setup()
@@ -208,16 +202,11 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
         default:
             st = .init(wrappedValue: bind.wrappedValue.attributedString)
         }
-        bind.listen { [weak self] new in
-            st.wrappedValue = new.attributedString
+        bind.listen { [weak self, weak st] new in
+            st?.wrappedValue = new.attributedString
             self?.setAttributedTitle(new.attributedString, for: state)
         }
         return self
-    }
-    
-    @discardableResult
-    public func title<V, A: AnyString>(_ expressable: ExpressableState<V, A>, _ state: UIControl.State = .normal) -> Self {
-        title(expressable.unwrap(), state)
     }
     
     @discardableResult
@@ -240,26 +229,18 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func color(_ binding: UIKitPlus.State<UIColor>, _ state: UIControl.State = .normal) -> Self {
-        binding.listen { self.color($0, state) }
+        binding.listen { [weak self] in
+            self?.color($0, state)
+        }
         return color(binding.wrappedValue, state)
-    }
-    
-    @discardableResult
-    public func color<V>(_ expressable: ExpressableState<V, UIColor>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { _,_ in self.color(expressable.value(), state) }
-        return color(expressable.value(), state)
     }
     
     @discardableResult
     public func color(_ binding: UIKitPlus.State<Int>, _ state: UIControl.State = .normal) -> Self {
-        binding.listen { self.color($0, state) }
+        binding.listen { [weak self] in
+            self?.color($0, state)
+        }
         return color(binding.wrappedValue, state)
-    }
-    
-    @discardableResult
-    public func color<V>(_ expressable: ExpressableState<V, Int>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { _,_ in self.color(expressable.value(), state) }
-        return color(expressable.value(), state)
     }
     
     // MARK: Image
@@ -277,14 +258,10 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func image(_ binding: UIKitPlus.State<UIImage>, _ state: UIControl.State = .normal) -> Self {
-        binding.listen { self.image($0, state) }
+        binding.listen { [weak self] in
+            self?.image($0, state)
+        }
         return image(binding.wrappedValue, state)
-    }
-    
-    @discardableResult
-    public func image<V>(_ expressable: ExpressableState<V, UIImage>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { _,_ in self.image(expressable.value(), state) }
-        return image(expressable.value(), state)
     }
     
     // MARK: Background Image
@@ -302,14 +279,10 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     @discardableResult
     public func backgroundImage(_ binding: UIKitPlus.State<UIImage>, _ state: UIControl.State = .normal) -> Self {
-        binding.listen { self.image($0, state) }
+        binding.listen { [weak self] in
+            self?.image($0, state)
+        }
         return backgroundImage(binding.wrappedValue, state)
-    }
-    
-    @discardableResult
-    public func backgroundImage<V>(_ expressable: ExpressableState<V, UIImage>, _ state: UIControl.State = .normal) -> Self {
-        expressable.state.listen { _,_ in self.image(expressable.value(), state) }
-        return backgroundImage(expressable.value(), state)
     }
     
     @discardableResult
