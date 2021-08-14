@@ -122,7 +122,7 @@ Everything is pretty clear. Clean short code without magic.
 
 ### 5. SwiftUI-like but still beloved UIKit
 
-Declare subviews like in SwiftUI (but con't forget that we're still in UIKit and use autolayout)
+Declare subviews like in SwiftUI (but don't forget that we're still in UIKit and use autolayout)
 
 ```swift
 body {
