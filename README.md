@@ -323,10 +323,10 @@ UView().width(100 !! .iPhone5(80) !! .iPad(150))
 /// 100pt
 UView().height(100)
 
-/// Stateable width
+/// Stateable height
 @UState var height: CGFloat = 100
 
-UView().height($width)
+UView().height($height)
 
 /// Stateable but based on different type
 @UState var expanded = false
