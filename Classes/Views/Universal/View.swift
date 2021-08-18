@@ -92,7 +92,23 @@ open class UView: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProto
     
     open override func didMoveToSuperview() {
         super.didMoveToSuperview()
-        movedToSuperview()
+        if superview != nil {
+            movedToSuperview()
+        } else {
+            removeAllConstraints()
+            _subviewsRecursively(of: self)
+                .compactMap({ $0 as? DeclarativeProtocol })
+                .forEach({ $0.removeAllConstraints() })
+        }
+    }
+
+    private func _subviewsRecursively(of view: UIView) -> [UIView] {
+        let subviews = view.subviews
+        if subviews.isEmpty {
+          return []
+        } else {
+          return subviews + subviews.flatMap(_subviewsRecursively)
+        }
     }
     #endif
     
