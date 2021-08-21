@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Textable: class {
+public protocol Textable: AnyObject {
     #if !os(macOS)
     @discardableResult
     func textChangeTransition(_ value: UIView.AnimationOptions) -> Self

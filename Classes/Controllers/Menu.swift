@@ -129,7 +129,7 @@ struct _MenuContent: MenuBuilderContent {
     let menuBuilderContent: MenuBuilderItem
 }
 
-@_functionBuilder public struct MenuBuilder {
+@resultBuilder public struct MenuBuilder {
     public typealias Block = () -> MenuBuilderContent
     
     public static func buildBlock() -> MenuBuilderContent {

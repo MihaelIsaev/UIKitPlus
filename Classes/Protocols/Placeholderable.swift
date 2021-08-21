@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Placeholderable: class {
+public protocol Placeholderable: AnyObject {
     #if !os(macOS)
     @discardableResult
     func placeholderChangeTransition(_ value: UIView.AnimationOptions) -> Self

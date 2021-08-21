@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Titleable: class {
+public protocol Titleable: AnyObject {
     #if !os(macOS)
     @discardableResult
     func titleChangeTransition(_ value: UIView.AnimationOptions) -> Self

@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Alternateable: class {
+public protocol Alternateable: AnyObject {
     @discardableResult
     func alternate() -> Self
     

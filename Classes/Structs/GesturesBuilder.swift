@@ -7,7 +7,7 @@
 
 import Foundation
 
-@_functionBuilder public struct GesturesBuilder {
+@resultBuilder public struct GesturesBuilder {
     public typealias Block = () -> GesturesBuilderItem
     
     /// Builds an empty preview from an block containing no statements, `{ }`.

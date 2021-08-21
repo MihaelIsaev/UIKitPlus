@@ -8,7 +8,7 @@
 #if !os(macOS)
 import UIKit
 
-public protocol AnyScene: class {
+public protocol AnyScene: AnyObject {
     var persistentIdentifier: String { get }
     var stateRestorationActivity: NSUserActivity? { get }
     var userInfo: [String : Any]? { get }

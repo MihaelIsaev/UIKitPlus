@@ -11,7 +11,7 @@ import AppKit
 import UIKit
 #endif
 
-protocol ParagraphStyleDelegate: class {
+protocol ParagraphStyleDelegate: AnyObject {
     func onParagraphUpdate(_ p: ParagraphStyle)
 }
 

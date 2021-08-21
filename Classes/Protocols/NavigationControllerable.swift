@@ -1,3 +1,3 @@
-public protocol NavigationControllerable: class {
+public protocol NavigationControllerable: AnyObject {
     var isSwipeBackEnabled: Bool { get set }
 }

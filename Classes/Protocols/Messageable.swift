@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Messageable: class {
+public protocol Messageable: AnyObject {
     #if !os(macOS)
     @discardableResult
     func messageChangeTransition(_ value: UIView.AnimationOptions) -> Self
