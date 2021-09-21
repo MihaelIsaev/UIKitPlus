@@ -30,6 +30,7 @@ public protocol Textable: class {
 }
 
 protocol _Textable: Textable {
+    var _currentText: String { get }
     var _statedText: AnyStringBuilder.Handler? { get set }
     #if !os(macOS)
     var _textChangeTransition: UIView.AnimationOptions? { get set }
@@ -77,8 +78,9 @@ extension Textable {
     @discardableResult
     public func text<A: AnyString>(_ state: State<A>) -> Self {
         text(state.wrappedValue)
-        state.listen { [weak self] in
-            self?.text($0)
+        state.listen {
+            if $0.attributedString.string == (self as? _Textable)?._currentText { return }
+            self.text($0)
         }
         (self as? TextBindable)?.bind(state)
         return self

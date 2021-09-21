@@ -389,6 +389,8 @@ extension UTextField: _TextBindable {
 }
 
 extension UTextField: _Textable {
+    var _currentText: String { self.text ?? "" }
+
     var _statedText: AnyStringBuilder.Handler? {
         get { _properties.statedText }
         set { _properties.statedText = newValue }
