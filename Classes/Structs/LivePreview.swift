@@ -206,13 +206,13 @@ public class Preview {
     #endif
 }
 
+@available(iOS 13.0, macOS 10.15, *)
 public protocol DeclarativePreview: SwiftUI.PreviewProvider {
-    @available(iOS 13.0, macOS 10.15, *)
     static var preview: Preview { get }
 }
 
+@available(iOS 13.0, macOS 10.15, *)
 extension DeclarativePreview {
-    @available(iOS 13.0, macOS  10.15, *)
     public static var previews: some SwiftUI.View {
         Localization.current = preview.language
         #if !os(macOS)
@@ -222,13 +222,13 @@ extension DeclarativePreview {
     }
 }
 
+@available(iOS 13.0, macOS 10.15, *)
 public protocol DeclarativePreviewGroup: SwiftUI.PreviewProvider {
-    @available(iOS 13.0, macOS 10.15, *)
     static var previewGroup: PreviewGroup { get }
 }
 
+@available(iOS 13.0, macOS 10.15, *)
 extension DeclarativePreviewGroup {
-    @available(iOS 13.0, macOS 10.15, *)
     public static var previews: some SwiftUI.View {
         Localization.current = previewGroup.language
         #if !os(macOS)
