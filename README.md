@@ -3,10 +3,10 @@
         <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT License">
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/swift-5.3-brightgreen.svg" alt="Swift 5.3">
+        <img src="https://img.shields.io/badge/swift-5.2-brightgreen.svg" alt="Swift 5.2">
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/iOS-9+-brightgreen.svg" alt="Swift 5.3">
+        <img src="https://img.shields.io/badge/iOS-9+-brightgreen.svg" alt="Swift 5.2">
     </a>
     <img src="https://img.shields.io/badge/iPadOS+Catalyst-✓-brightgreen.svg" alt="iPadOS and Catalyst support">
     <img src="https://img.shields.io/badge/macOS-✓-brightgreen.svg" alt="macOS support">
@@ -41,7 +41,7 @@ Good mood
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 2.0.0-alpha.1.9.0'
+pod 'UIKit-Plus', '~> 2.0.0'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
@@ -53,12 +53,9 @@ https://github.com/MihaelIsaev/UIKitPlus
 
 #### IMPORTANT!
 
-⚠️ Guys, who's interested in `UIKitPlus` please migrate to `2.0.0-alpha.1.9.0` asap, it is stable enough to use it already.
-It will be marked it as `beta` when I finish macOS support.
-
 Since version 2.0.0 there are a lot of advantages and fixes, and your project could look cleaner since there are no AppDelegate and SceneDelegate anymore, everything is under the hood like with SwiftUI, but it is very obvious and convenient to use any AppDelegate/SceneDelegate methods.
 
-Check it out by creating a project with the new project template which is available in the `master` branch.
+Check it out by creating a project with the new project template!
 
 #### IMPORTANT!
 
@@ -86,20 +83,28 @@ After that you will be able to go to `File -> New -> Project` and choose `UIKitP
 
 > 💡After project creation you have to install UIKitPlus manually either with Swift Package Manager or with CocoaPods
 
+### File Template
+
+Together with project template you will get the file template 👍
+
 ## Features
 
 ### 1. Delayed constraints
 
 Declare all the constraints in advance before adding view to superview. Even by tags.
 ```swift
-UButton("Click me").width(300).centerInSuperview()
+Button("Click me").width(300).centerInSuperview()
 ```
 
 ### 2. Declarativity
 
 Build everything declarative way. Any view. Any control. Even layers, gestures, colors, fonts, etc.
 ```swift
-UText("Hello world").color(.red).alignment(.center).font(.helveticaNeueRegular, 15)
+UText("Hello world").color(.red).alignment(.center).font(.sfProMedium, 15)
+// or
+UText("Hello ".color(.red).font(.sfProMedium, 15), "world".color(.green).font(.sfProBold, 15)).alignment(.center)
+// or even
+"Hello world".color(.red).alignment(.center).font(.sfProMedium, 15)
 ```
 
 ### 3. Reactivity
@@ -197,7 +202,7 @@ struct MyViewController_Preview: PreviewProvider, DeclarativePreview {
 #endif
 ```
 
-`UView` example
+`View` example
 
 ```swift
 #if canImport(SwiftUI) && DEBUG
@@ -305,7 +310,7 @@ UView().width(100)
 /// Stateable width
 @UState var width: CGFloat = 100
 
-View().width($width)
+UView().width($width)
 
 /// Stateable but based on different type
 @UState var expanded = false
@@ -323,10 +328,10 @@ UView().width(100 !! .iPhone5(80) !! .iPad(150))
 /// 100pt
 UView().height(100)
 
-/// Stateable height
+/// Stateable width
 @UState var height: CGFloat = 100
 
-UView().height($height)
+UView().height($width)
 
 /// Stateable but based on different type
 @UState var expanded = false
@@ -519,7 +524,7 @@ UView().heightToSuperview()
 Read and write view's super constraints directly. And even animate them.
 
 ```swift
-let v = View()
+let v = UView()
 v.top = 24
 v.leading = 16
 v.trailing = 16
@@ -835,7 +840,7 @@ extension UIVisualEffect {
 </details>
 
 <details>
-<summary>WrapperView</summary>
+<summary>UWrapperView</summary>
 
 It is simple `View` but with ability to initialize with inner view
 ```swift
@@ -1022,7 +1027,7 @@ UButton(.shareLink) // Share link
 <details>
 <summary>Status bar style</summary>
 
-In any `ViewController` you can set `statusBarStyle` and all its values are iOS9+.
+In any `UViewController` you can set `statusBarStyle` and all its values are iOS9+.
 ```swift
 override var statusBarStyle: StatusBarStyle { .default }
 override var statusBarStyle: StatusBarStyle { .dark }
@@ -1058,7 +1063,6 @@ UIColor.white.alpha(0.5)
 
 Declare custom colors like this
 ```swift
-import UIKit
 import UIKitPlus
 
 extension UIColor {
@@ -1068,7 +1072,7 @@ extension UIColor {
 ```
 and then use them just like
 ```swift
-Label("Hello world").color(.otherGreen).background(.mainBlack)
+UText("Hello world").color(.otherGreen).background(.mainBlack)
 ```
 </details>
 
@@ -1121,7 +1125,7 @@ $boolStateToColor.map { $0 == true ? .red : .green }
 $boolStateToString.map { !$0 ? "night" : "day" }
 
 /// mix to Int states into one String expressable
-$state1.and($state2).map { $0.left > $0.right ? "higher" : "lower" }
+$state1.and($state2).map { $0 > $1 ? "higher" : "lower" }
 ```
 </details>
 
@@ -1140,7 +1144,7 @@ $state1.and($state2).map { $0.left > $0.right ? "higher" : "lower" }
        .strokeColor(.purple)
        .strokeWidth(1)
        .shadow()
-// or .shadow(offset: .zero, blur: 1, color: .lightGray)
+       // or .shadow(offset: .zero, blur: 1, color: .lightGray)
        .textEffect("someEffect")
        .attachment(someAttachment)
        .link("http://github.com")
@@ -1223,12 +1227,18 @@ Declare custom buttons like this
 ```swift
 import UIKitPlus
 
-extension Button {
+extension UButton {
     static var bigBottomWhite: Button {
-        return Button().color(.darkGray).color(.black, .highlighted).font(.sfProMedium, 15).background(.white).backgroundHighlighted(.lightGray).circle()
+        return UButton()
+            .color(.darkGray)
+            .color(.black, .highlighted)
+            .font(.sfProMedium, 15)
+            .background(.white)
+            .backgroundHighlighted(.lightGray)
+            .circle()
     }
     static var bigBottomGreen: Button {
-        return Button().color(.white).font(.sfProMedium, 15).background(.mainGreen).circle()
+        return UButton().color(.white).font(.sfProMedium, 15).background(.mainGreen).circle()
     }
 }
 ```
@@ -1276,9 +1286,9 @@ UButton.bigBottomWhite.size(300, 50).bottomToSuperview(20).centerInSuperview()
 
 ```swift
 UStackView().axis(.vertical)
-           .alignment(.fill)
-           .distribution(.fillEqually)
-           .spacing(16)
+            .alignment(.fill)
+            .distribution(.fillEqually)
+            .spacing(16)
 ```
 </details>
 
@@ -1391,7 +1401,7 @@ Declare asset images like this
 import UIKitPlus
 
 extension Image {
-    static var welcomeBackground: UImage { return Image("WelcomeBackground") }
+    static var welcomeBackground: UImage { return UImage("WelcomeBackground") }
 }
 ```
 and then use them like this
@@ -1550,15 +1560,15 @@ UTextField().delegate(self)
 or get needed events declarative way
 ```swift
 UTextField().shouldBeginEditing { tf in return true }
-           .didBeginEditing { tf in }
-           .shouldEndEditing { tf in return true }
-           .didEndEditing { tf in }
-           .shouldChangeCharacters { tf, range, replacement in return true }
-           .shouldClear { tf in return true }
-           .shouldReturn { tf in return true }
-           .editingDidBegin { tf in }
-           .editingChanged { tf in }
-           .editingDidEnd { tf in }
+            .didBeginEditing { tf in }
+            .shouldEndEditing { tf in return true }
+            .didEndEditing { tf in }
+            .shouldChangeCharacters { tf, range, replacement in return true }
+            .shouldClear { tf in return true }
+            .shouldReturn { tf in return true }
+            .editingDidBegin { tf in }
+            .editingChanged { tf in }
+            .editingDidEnd { tf in }
 ```
 </details>
 
@@ -1602,10 +1612,7 @@ import UIKitPlus
 
 extension UText {
     static var welcomeLogo: UText {
-        return .init(
-          "My".foreground(.white).font(.sfProBold, 26),
-          "App").font(.sfProBold, 26)
-        )
+        UText("My".foreground(.white).font(.sfProBold, 26), "App".font(.sfProBold, 26))
     }
 }
 ```
@@ -1618,11 +1625,15 @@ let logo = UText.welcomeLogo.centerInSuperview()
 <details>
 <summary>TextView</summary>
 
+> alias is `UTextView`
+
 `// implemented. to be described`
 </details>
 
 <details>
 <summary>Toggle</summary>
+
+> alias is `UToggle`
 
 `// implemented. to be described`
 </details>
@@ -1811,13 +1822,13 @@ UView().shake()
 And you could customize shake effect
 ```swift
 UView().shake(values: [-20, 20, -20, 20, -10, 10, -5, 5, 0],
-             duration: 0.6,
-             axis: .horizontal,
-             timing: .easeInEaseOut)
+              duration: 0.6,
+              axis: .horizontal,
+              timing: .easeInEaseOut)
 UView().shake(-20, 20, -20, 20, -10, 10, -5, 5, 0,
-             duration: 0.6,
-             axis: .horizontal,
-             timing: .easeInEaseOut)
+              duration: 0.6,
+              axis: .horizontal,
+              timing: .easeInEaseOut)
 ```
 or even create an extension
 ```swift
@@ -1826,9 +1837,9 @@ import UIKitPlus
 extension DeclarativeProtocol {
   func myShake() {
       UView().shake(-20, 20, -20, 20, -10, 10, -5, 5, 0,
-                   duration: 0.6,
-                   axis: .horizontal,
-                   timing: .easeInEaseOut)
+                    duration: 0.6,
+                    axis: .horizontal,
+                    timing: .easeInEaseOut)
   }
 }
 ```
@@ -1935,7 +1946,7 @@ extension UTextField {
     }
 }
 extension UButton {
-    static var back: UButton { return UButton("backIcon").topToSuperview(64).leadingToSuperview(24) }
+    static var back: UButton { UButton("backIcon").topToSuperview(64).leadingToSuperview(24) }
     static var bigBottomGreen: UButton {
         UButton()
             .color(.white)
