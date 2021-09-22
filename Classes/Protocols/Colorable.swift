@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Colorable: class {
+public protocol Colorable: AnyObject {
     @discardableResult
     func color(_ color: UColor) -> Self
     

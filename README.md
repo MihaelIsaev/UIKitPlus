@@ -3,10 +3,10 @@
         <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT License">
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/swift-5.2-brightgreen.svg" alt="Swift 5.2">
+        <img src="https://img.shields.io/badge/swift-5.2-brightgreen.svg" alt="Swift 5.5">
     </a>
     <a href="https://swift.org">
-        <img src="https://img.shields.io/badge/iOS-9+-brightgreen.svg" alt="Swift 5.2">
+        <img src="https://img.shields.io/badge/iOS-9+-brightgreen.svg" alt="Swift 5.5">
     </a>
     <img src="https://img.shields.io/badge/iPadOS+Catalyst-✓-brightgreen.svg" alt="iPadOS and Catalyst support">
     <img src="https://img.shields.io/badge/macOS-✓-brightgreen.svg" alt="macOS support">
@@ -29,9 +29,9 @@
 
 ## Requirements
 
-Xcode 12.3+
+Xcode 13.0+
 
-Swift 5.3+
+Swift 5.5+
 
 Good mood
 
@@ -46,7 +46,7 @@ pod 'UIKit-Plus', '~> 2.0.0'
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
 
-In Xcode 12.3+ go to `File -> Swift Packages -> Add Package Dependency` and enter there URL of this repo
+In Xcode 13.0+ go to `File -> Swift Packages -> Add Package Dependency` and enter there URL of this repo
 ```
 https://github.com/MihaelIsaev/UIKitPlus
 ```

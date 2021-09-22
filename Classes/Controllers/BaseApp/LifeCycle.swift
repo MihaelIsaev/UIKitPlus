@@ -10,7 +10,7 @@ import UIKit
 
 public var Lifecycle: LifecycleBuilderProtocol { LifecycleBuilder() }
 
-public protocol LifecycleBuilderProtocol: class, AppBuilderContent {
+public protocol LifecycleBuilderProtocol: AnyObject, AppBuilderContent {
     func didFinishLaunching(_ handler: @escaping () -> Void) -> Self
     func willFinishLaunching(_ handler: @escaping (_ launchOptions: [UIApplication.LaunchOptionsKey: Any]) -> Bool) -> Self
     func didFinishLaunching(_ handler: @escaping (_ launchOptions: [UIApplication.LaunchOptionsKey: Any]) -> Bool) -> Self

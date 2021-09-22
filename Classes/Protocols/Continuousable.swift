@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Continuousable: class {
+public protocol Continuousable: AnyObject {
     @discardableResult
     func continuous() -> Self
     

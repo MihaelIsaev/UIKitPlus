@@ -1,7 +1,7 @@
 #if os(macOS)
 import AppKit
 
-public protocol Soundable: class {
+public protocol Soundable: AnyObject {
     @discardableResult
     func sound(_ value: NSSound?) -> Self
     

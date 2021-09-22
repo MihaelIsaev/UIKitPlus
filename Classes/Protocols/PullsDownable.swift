@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol PullsDownable: class {
+public protocol PullsDownable: AnyObject {
     @discardableResult
     func pullsDown() -> Self
     

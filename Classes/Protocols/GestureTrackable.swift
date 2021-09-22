@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol GestureTrackable: class {
+public protocol GestureTrackable: AnyObject {
     @discardableResult
     func trackState(_ action: @escaping (UGestureRecognizer.State) -> Void) -> Self
     

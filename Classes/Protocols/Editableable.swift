@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Editableable: class {
+public protocol Editableable: AnyObject {
     @discardableResult
     func editable() -> Self
     

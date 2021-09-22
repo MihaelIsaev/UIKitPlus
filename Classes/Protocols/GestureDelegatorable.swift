@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol GestureDelegatorable: class {}
+public protocol GestureDelegatorable: AnyObject {}
 
 protocol _GestureDelegatorable: GestureDelegatorable {
     var _delegator: _GestureDelegator { get set }

@@ -1,4 +1,4 @@
-public protocol Refreshable: class {
+public protocol Refreshable: AnyObject {
     func refresh()
 }
 

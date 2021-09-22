@@ -1,7 +1,7 @@
 #if os(macOS)
 import Cocoa
 
-public protocol ControlStateable: class {
+public protocol ControlStateable: AnyObject {
     @discardableResult
     func state(_ value: NSControl.StateValue) -> Self
     

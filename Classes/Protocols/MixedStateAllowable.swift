@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol MixedStateAllowable: class {
+public protocol MixedStateAllowable: AnyObject {
     @discardableResult
     func allowMixedState() -> Self
     

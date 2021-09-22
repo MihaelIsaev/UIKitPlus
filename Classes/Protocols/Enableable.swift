@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Enableable: class {
+public protocol Enableable: AnyObject {
     @discardableResult
     func enabled() -> Self
     

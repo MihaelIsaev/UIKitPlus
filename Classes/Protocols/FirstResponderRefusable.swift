@@ -4,7 +4,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol FirstResponderRefusable: class {
+public protocol FirstResponderRefusable: AnyObject {
     @discardableResult
     func refuseFirstResponder() -> Self
     

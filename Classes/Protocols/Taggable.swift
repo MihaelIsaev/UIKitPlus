@@ -11,7 +11,7 @@ import AppKit
 import UIKit
 #endif
 
-public protocol Taggable: class {
+public protocol Taggable: AnyObject {
     var tag: Int { get set }
     
     @discardableResult

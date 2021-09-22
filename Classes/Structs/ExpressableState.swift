@@ -10,7 +10,7 @@ extension State {
 
 // MARK: Any States to Expressable
 
-public protocol AnyState: class {
+public protocol AnyState: AnyObject {
     func listen(_ listener: @escaping () -> Void)
 }
 
