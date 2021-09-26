@@ -76,7 +76,7 @@ open class State<Value>: Stateable {
         _wrappedValue = value
     }
     
-    init (_ stateA: AnyState, _ expression: @escaping () -> Value) {
+    public init (_ stateA: AnyState, _ expression: @escaping () -> Value) {
         let value = expression()
         _originalValue = value
         _wrappedValue = value
@@ -85,7 +85,7 @@ open class State<Value>: Stateable {
         }
     }
     
-    init <A>(_ stateA: State<A>, _ expression: @escaping (A) -> Value) {
+    public init <A>(_ stateA: State<A>, _ expression: @escaping (A) -> Value) {
         let value = expression(stateA.wrappedValue)
         _originalValue = value
         _wrappedValue = value
