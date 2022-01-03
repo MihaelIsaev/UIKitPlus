@@ -2,9 +2,14 @@
 // Created by Kevin Guo on 2022/1/3.
 //
 
-import Foundation
 extension DeclarativeProtocol {
-
+    /// Helper method where you could change the object non-declarative way
+    ///
+    /// ```swift
+    /// view1.apply {
+    ///     $0.backgroundColor = .red
+    /// }
+    /// ```
     @discardableResult
     public func apply(_ closure: (V) -> Void) -> Self {
         closure(declarativeView)
