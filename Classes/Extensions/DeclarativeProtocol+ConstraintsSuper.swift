@@ -389,7 +389,7 @@ extension DeclarativeProtocol {
         _self._properties.notAppliedPreConstraintsSuper.removeAll(where: { $0 === pc })
         _self._properties.appliedPreConstraintsSuper.append(pc)
         // Store destination view into pre constraint
-        pc.destinationView = superview
+        pc.destinationView = WeakBaseView(superview)
         // Create constraint
         var constraint: NSLayoutConstraint?
         // If constraint for safeArea then create it through anchor
