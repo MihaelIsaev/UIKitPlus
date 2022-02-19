@@ -45,6 +45,35 @@ extension Int: PreConstraintViewable {
     }
 }
 
+/// A container that stores a `weak` reference to its `Element`
+public class WeakBox<Element>: Hashable where Element: AnyObject, Element: Hashable {
+    /// The stored element
+    weak var underlying: Element?
+
+    init(_ value: Element?) {
+        underlying = value
+    }
+
+    public static func == (lhs: WeakBox<Element>, rhs: WeakBox<Element>) -> Bool {
+        return lhs.underlying == rhs.underlying
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(underlying)
+    }
+}
+typealias WeakBaseView = WeakBox<BaseView>
+
+extension WeakBaseView: PreConstraintViewable {
+    public var preConstraintView: PreConstraintView? {
+        if let view = underlying {
+            return .view(view)
+        }
+        return nil
+    }
+}
+
+
 class PreConstraint: Equatable {
     static func == (lhs: PreConstraint, rhs: PreConstraint) -> Bool {
         lhs.id == rhs.id
@@ -79,7 +108,12 @@ class PreConstraint: Equatable {
         self.attribute2 = attribute2
         self.toSafe = toSafe
         self.fromView = fromView
-        self.destinationView = destinationView
+        if let view = destinationView as? BaseView {
+            self.destinationView = WeakBaseView(view)
+        }
+        else {
+            self.destinationView = destinationView
+        }
         value.listen { [weak self] constant in
             self?.constraint?.constant = constant
             #if os(macOS)
