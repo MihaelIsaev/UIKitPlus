@@ -130,7 +130,7 @@ extension DeclarativeProtocol {
         let constraint = NSLayoutConstraint(item: self,
                                                               attribute: pc.attribute1,
                                                               relatedBy: pc.relation,
-                                                              toItem: pc.destinationView,
+                                                              toItem: ((pc.destinationView as? WeakBaseView) != nil) ? (pc.destinationView as! WeakBaseView).underlying : pc.destinationView,
                                                               attribute: pc.attribute2 ?? .notAnAttribute,
                                                               multiplier: pc.multiplier,
                                                               constant: pc.value.wrappedValue)
