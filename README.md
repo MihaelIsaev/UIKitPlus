@@ -41,7 +41,7 @@ Good mood
 
 Add the following line to your Podfile:
 ```ruby
-pod 'UIKit-Plus', '~> 2.1.0'
+pod 'UIKit-Plus', '~> 2.1.1'
 ```
 
 #### With [Swift Package Manager](https://swift.org/package-manager/)
@@ -53,7 +53,7 @@ https://github.com/MihaelIsaev/UIKitPlus
 
 #### IMPORTANT!
 
-Since version 2.1.0 there are a lot of advantages and fixes, and your project could look cleaner since there are no AppDelegate and SceneDelegate anymore, everything is under the hood like with SwiftUI, but it is very obvious and convenient to use any AppDelegate/SceneDelegate methods.
+Since version 2 there are a lot of advantages and fixes, and your project could look cleaner since there are no AppDelegate and SceneDelegate anymore, everything is under the hood like with SwiftUI, but it is very obvious and convenient to use any AppDelegate/SceneDelegate methods.
 
 Check it out by creating a project with the new project template!
 
