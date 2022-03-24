@@ -199,7 +199,13 @@ public class UCollection: UView, UICollectionViewDataSource {
         collectionView.alwaysBounceVertical = value
         return self
     }
-    
+
+    @discardableResult
+    public func scrollEnabled(_ value: Bool = true) -> Self {
+        collectionView.isScrollEnabled = value
+        return self
+    }
+
     // MARK: Delegate
     
     @discardableResult
