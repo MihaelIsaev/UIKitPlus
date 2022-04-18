@@ -199,18 +199,17 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
                     #if os(macOS)
                     stack.addArrangedSubview([$0].flatten(fr.orientation ?? orientation))
                     #else
-                    stack.addArrangedSubview([$0].flatten(fr.axis ?? axis))
+                    addArrangedSubview([$0].flatten(fr.axis ?? axis))
                     #endif
                 }
-                addArrangedSubview(stack)
                 fr.subscribeToChanges({}, { [weak self] deletions, insertions, _ in
                     guard let self = self else { return }
-                    stack.arrangedSubviews.removeFromSuperview(at: deletions)
+                    self.arrangedSubviews.removeFromSuperview(at: deletions)
                     insertions.forEach {
                         #if os(macOS)
-                        stack.add(arrangedView: [fr.items(at: $0)].flatten(fr.orientation ?? self.orientation), at: $0)
+                        self.add(arrangedView: [fr.items(at: $0)].flatten(fr.orientation ?? self.orientation), at: $0)
                         #else
-                        stack.add(arrangedView: [fr.items(at: $0)].flatten(fr.axis ?? self.axis), at: $0)
+                        self.add(arrangedView: [fr.items(at: $0)].flatten(fr.axis ?? self.axis), at: $0)
                         #endif
                     }
                 }) {}
