@@ -52,11 +52,25 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     
     open override func setAttributedTitle(_ title: NSAttributedString?, for state: UIControl.State) {
         guard let transition = titleChangeTransition else {
-            super.setAttributedTitle(title, for: state)
+            if let title = title {
+                let color = self.titleColor(for: state)
+                let mutable = NSMutableAttributedString(attributedString: title)
+                mutable.addAttribute(.foregroundColor, value: color, range: NSRange(location: 0, length: mutable.length))
+                super.setAttributedTitle(mutable, for: state)
+            } else {
+                super.setAttributedTitle(title, for: state)
+            }
             return
         }
         UIView.transition(with: self, duration: 0.25, options: transition, animations: {
-            super.setAttributedTitle(title, for: state)
+            if let title = title {
+                let color = self.titleColor(for: state)
+                let mutable = NSMutableAttributedString(attributedString: title)
+                mutable.addAttribute(.foregroundColor, value: color, range: NSRange(location: 0, length: mutable.length))
+                super.setAttributedTitle(mutable, for: state)
+            } else {
+                super.setAttributedTitle(title, for: state)
+            }
         }, completion: nil)
     }
     
@@ -215,7 +229,20 @@ open class UButton: UIButton, AnyDeclarativeProtocol, DeclarativeProtocolInterna
     }
     
     // MARK: Title Color
-    
+    open override func setTitleColor(_ color: UIColor?, for state: State) {
+        if #available(iOS 14.0, *) {
+            super.setTitleColor(color, for: state)
+        }
+        else {
+            let attibutedString = attributedTitle(for: state)
+            if let color = color, let attibutedString = attributedTitle(for: state) {
+                let mutable = NSMutableAttributedString(attributedString: attibutedString)
+                mutable.addAttribute(.foregroundColor, value: color, range: NSRange(location: 0, length: mutable.length))
+                super.setAttributedTitle(mutable, for: state)
+            }
+        }
+    }
+
     @discardableResult
     public func color(_ color: UIColor, _ state: UIControl.State = .normal) -> Self {
         setTitleColor(color, for: state)
