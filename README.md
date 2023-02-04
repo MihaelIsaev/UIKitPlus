@@ -24,7 +24,11 @@
 <br/>
 <p align="center">With. Live. Preview. iOS9+.</p>
 <br/>
-<p align="center"><a href="https://github.com/MihaelIsaev/UIKitPlusExample" style="color:green;">A LOT OF EXAMPLES</a></p>
+<p align="center">
+<img src="https://user-images.githubusercontent.com/1272610/216769696-65cc09d1-2796-4b7e-b746-01e25fc70486.jpeg">
+</p>
+<br/>
+<p align="center"><a href="https://github.com/MihaelIsaev/UIKitPlusExample" style="color:green;">EXAMPLES</a></p>
 <p align="center"><a href="https://discord.gg/q5wCPYv">OUR COMMUNITY IN DISCORD</a></p>
 
 ## Requirements
