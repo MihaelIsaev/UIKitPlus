@@ -88,6 +88,14 @@ public class StatusItem: AppBuilderContent {
         return self
     }
     
+    public func attributedTitle(_ state: UState<NSAttributedString>) -> Self {
+        self.attributedTitle(state.wrappedValue)
+        state.listen {
+            self.attributedTitle($0)
+        }
+        return self
+    }
+    
     public func image(_ value: NSImage?) -> Self {
         item.button?.image = value
         return self
@@ -116,6 +124,27 @@ public class StatusItem: AppBuilderContent {
     
     public func enabled(_ value: Bool = true) -> Self {
         item.button?.isEnabled = value
+        return self
+    }
+    
+    public func enabled(_ state: UState<Bool>) -> Self {
+        self.enabled(state.wrappedValue)
+        state.listen {
+            self.enabled($0)
+        }
+        return self
+    }
+    
+    public func visible(_ value: Bool = true) -> Self {
+        item.isVisible = value
+        return self
+    }
+    
+    public func visible(_ state: UState<Bool>) -> Self {
+        self.visible(state.wrappedValue)
+        state.listen {
+            self.visible($0)
+        }
         return self
     }
     
