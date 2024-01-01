@@ -127,8 +127,8 @@ open class UImage: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var clipsToBounds = false
-    open override var wantsDefaultClipping: Bool { !clipsToBounds }
+    private var _clipsToBounds = false
+    open override var wantsDefaultClipping: Bool { !_clipsToBounds }
     
     private func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
@@ -160,7 +160,7 @@ open class UImage: NSImageView, AnyDeclarativeProtocol, DeclarativeProtocolInter
     
     @discardableResult
     public func clipsToBounds(_ value: Bool) -> Self {
-        clipsToBounds = value
+        _clipsToBounds = value
         return self
     }
     
