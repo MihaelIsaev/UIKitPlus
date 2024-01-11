@@ -11,11 +11,15 @@ public protocol Identable: Hashable, AnyIdentable {
 }
 
 extension Identable {
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(self[keyPath: Self.idKey])
     }
     
     public func identHash() -> Int {
         self[keyPath: Self.idKey].hashValue 
+    }
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.identHash() == rhs.identHash()
     }
 }
