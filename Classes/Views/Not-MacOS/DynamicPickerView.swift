@@ -261,7 +261,7 @@ open class UDynamicPickerView<V>: UView where V: UIView, V: UDynamicPickerableVi
     }
     
     @objc
-    public func _hide() {
+    public func hide() {
         UIView.animate(withDuration: 0.5, animations: {
             self.alpha = 0
             self.containerView.bottom = self.defaultHeight
@@ -279,7 +279,7 @@ open class UDynamicPickerView<V>: UView where V: UIView, V: UDynamicPickerableVi
     @objc
     fileprivate func cancel() {
         onCancel()
-        _hide()
+        hide()
         #if !os(tvOS)
         if allowImpactFeedback {
             ImpactFeedback.bzz(.light)
@@ -290,7 +290,7 @@ open class UDynamicPickerView<V>: UView where V: UIView, V: UDynamicPickerableVi
     @objc
     fileprivate func done() {
         onDone(pickerView.value)
-        _hide()
+        hide()
         #if !os(tvOS)
         if allowImpactFeedback {
             ImpactFeedback.success()
