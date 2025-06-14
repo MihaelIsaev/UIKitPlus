@@ -550,7 +550,7 @@ extension DeclarativeProtocol {
     /// By default to `height` of destination view
     @discardableResult
     public func height(to view: PreConstraintViewable, _ value: ConstraintValue = CGFloat(0)) -> Self {
-        width(to: .width, of: view, value)
+        height(to: .height, of: view, value)
     }
     
     // MARK: - equal
