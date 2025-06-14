@@ -34,12 +34,31 @@ open class UPickerView: UIPickerView, AnyDeclarativeProtocol, DeclarativeProtoco
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        translatesAutoresizingMaskIntoConstraints = false
+        _setup()
         delegate = self
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func _setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (self: Self?, previousTraitCollection) in
+                guard let self else { return }
+                self.properties.traitCollectionDidChangeHandlers.values.forEach { $0(self.traitCollection) }
+            }
+        }
+    }
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                properties.traitCollectionDidChangeHandlers.values.forEach { $0(traitCollection) }
+            }
+        }
     }
     
     open override func layoutSubviews() {

@@ -30,6 +30,15 @@ extension DeclarativeProtocol {
         #else
         properties.shadowColor = color.wrappedValue
         declarativeView.layer.shadowColor = color.wrappedValue.cgColor
+        func update(_ c: UIColor) {
+            properties.traitCollectionDidChangeHandlers[.shadowColor] = { [weak self] trait in
+                self?.declarativeView.layer.shadowColor = c.cgColor
+            }
+        }
+        color.listen { _, newColor in
+            update(newColor)
+        }
+        update(color.wrappedValue)
         #endif
     }
     

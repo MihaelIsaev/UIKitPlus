@@ -56,15 +56,36 @@ open class UView: BaseView, UIViewable, AnyDeclarativeProtocol, DeclarativeProto
         self.init(frame: .zero)
     }
     
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func _setup() {
         translatesAutoresizingMaskIntoConstraints = false
+        #if os(macOS)
+        #else
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (self: Self?, previousTraitCollection) in
+                guard let self else { return }
+                self.properties.traitCollectionDidChangeHandlers.values.forEach { $0(self.traitCollection) }
+            }
+        }
+        #endif
         body { body }
         buildView()
     }
     
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    #if os(macOS)
+    #else
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                properties.traitCollectionDidChangeHandlers.values.forEach { $0(traitCollection) }
+            }
+        }
     }
+    #endif
     
     @BodyBuilder open var body: BodyBuilder.Result { EmptyBodyBuilderItem() }
 

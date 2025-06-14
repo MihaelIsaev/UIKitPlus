@@ -30,6 +30,7 @@ open class UWrapperView<V>: UView where V: BaseView {
         trailingConstraint = innerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
         bottomConstraint = innerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
         NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, bottomConstraint])
+        _setup()
     }
     
     public convenience init (_ innerView: () -> V) {
@@ -39,6 +40,30 @@ open class UWrapperView<V>: UView where V: BaseView {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func _setup() {
+        #if os(macOS)
+        #else
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (self: Self?, previousTraitCollection) in
+                guard let self else { return }
+                self.properties.traitCollectionDidChangeHandlers.values.forEach { $0(self.traitCollection) }
+            }
+        }
+        #endif
+    }
+    
+    #if os(macOS)
+    #else
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                properties.traitCollectionDidChangeHandlers.values.forEach { $0(traitCollection) }
+            }
+        }
+    }
+    #endif
     
     #if os(macOS)
     open override func layout() {

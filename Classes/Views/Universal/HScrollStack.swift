@@ -25,6 +25,7 @@ open class UHScrollStack: UScrollView {
         _docView.body {
             stack.subviews(block: block)
         }
+        _setup()
     }
     #else
     public override init (@BodyBuilder block: BodyBuilder.SingleView) {
@@ -32,6 +33,7 @@ open class UHScrollStack: UScrollView {
         body {
             stack.subviews(block: block)
         }
+        _setup()
     }
     #endif
     
@@ -49,6 +51,7 @@ open class UHScrollStack: UScrollView {
             stack
         }
         #endif
+        _setup()
     }
     
     public override init(frame: CGRect) {
@@ -65,11 +68,36 @@ open class UHScrollStack: UScrollView {
             stack
         }
         #endif
+        _setup()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func _setup() {
+        #if os(macOS)
+        #else
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (self: Self?, previousTraitCollection) in
+                guard let self else { return }
+                self.properties.traitCollectionDidChangeHandlers.values.forEach { $0(self.traitCollection) }
+            }
+        }
+        #endif
+    }
+    
+    #if os(macOS)
+    #else
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                properties.traitCollectionDidChangeHandlers.values.forEach { $0(traitCollection) }
+            }
+        }
+    }
+    #endif
     
     #if !os(macOS)
     // Forbids vertical scrolling

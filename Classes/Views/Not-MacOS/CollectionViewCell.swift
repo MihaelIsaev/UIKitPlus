@@ -36,12 +36,32 @@ open class UCollectionCell: UICollectionViewCell, AnyDeclarativeProtocol, Declar
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        _setup()
         buildView()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        _setup()
         buildView()
+    }
+    
+    func _setup() {
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (self: Self?, previousTraitCollection) in
+                guard let self else { return }
+                self.properties.traitCollectionDidChangeHandlers.values.forEach { $0(self.traitCollection) }
+            }
+        }
+    }
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                properties.traitCollectionDidChangeHandlers.values.forEach { $0(traitCollection) }
+            }
+        }
     }
     
     open func buildView() {

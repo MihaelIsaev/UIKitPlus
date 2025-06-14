@@ -118,7 +118,28 @@ open class _StackView: _STV, AnyDeclarativeProtocol, DeclarativeProtocolInternal
     
     func _setup() {
         spacing = 0
+        #if os(macOS)
+        #else
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (self: Self?, previousTraitCollection) in
+                guard let self else { return }
+                self.properties.traitCollectionDidChangeHandlers.values.forEach { $0(self.traitCollection) }
+            }
+        }
+        #endif
     }
+    
+    #if os(macOS)
+    #else
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                properties.traitCollectionDidChangeHandlers.values.forEach { $0(traitCollection) }
+            }
+        }
+    }
+    #endif
     
     #if os(macOS)
     open override func layout() {

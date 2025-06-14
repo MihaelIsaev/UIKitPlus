@@ -29,6 +29,15 @@ extension DeclarativeProtocol {
         #else
         properties.borderColor = color.wrappedValue
         declarativeView.layer.borderColor = color.wrappedValue.cgColor
+        func update(_ c: UIColor) {
+            properties.traitCollectionDidChangeHandlers[.borderColor] = { [weak self] trait in
+                self?.declarativeView.layer.borderColor = c.cgColor
+            }
+        }
+        color.listen { _, newColor in
+            update(newColor)
+        }
+        update(color.wrappedValue)
         #endif
     }
     

@@ -37,6 +37,11 @@ public class Properties<V> {
     @State var textColor: UColor = .clear
     var textColorState: State<UColor> { _textColor }
     
+    enum TraitCollectionHandlerType {
+        case borderColor, shadowColor
+    }
+    var traitCollectionDidChangeHandlers: [TraitCollectionHandlerType: (UITraitCollection) -> Void] = [:]
+    
     var hovered: Bool = false
     #if os(macOS)
     var isFlipped: Bool = false
