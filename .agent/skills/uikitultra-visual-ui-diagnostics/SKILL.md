@@ -10,6 +10,8 @@ Use this skill when a UIKitUltra interface behaves visually differently from wha
 
 This skill owns **diagnostic procedure only**. It does not define UIKitUltra architecture and does not authorize framework mutation by itself.
 
+Keep every temporary visual marker non-layout-affecting, unique for the session, and removed before the diagnostic ends.
+
 ## Use it for questions such as
 
 - Is the target view, row, or control actually rendered?
